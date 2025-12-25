@@ -1,0 +1,7 @@
+{
+  "workspace": ["./backend", "./web"],
+  "tasks": {
+    "start:backend": "deno run --watch -A ./backend/main.ts",
+    "start:web": "deno task --cwd ./web start"
+  }
+}
