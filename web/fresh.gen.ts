@@ -4,22 +4,42 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $_middleware from "./routes/_middleware.ts";
 import * as $api_joke from "./routes/api/joke.ts";
+import * as $api_progress from "./routes/api/progress.ts";
+import * as $dashboard from "./routes/dashboard.tsx";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
+import * as $login from "./routes/login.tsx";
+import * as $logout from "./routes/logout.tsx";
+import * as $map_index from "./routes/map/index.tsx";
+import * as $signup from "./routes/signup.tsx";
+import * as $units_id_ from "./routes/units/[id].tsx";
 import * as $Counter from "./islands/Counter.tsx";
+import * as $ProgressButton from "./islands/ProgressButton.tsx";
+import * as $UnitNode from "./islands/UnitNode.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
+    "./routes/_middleware.ts": $_middleware,
     "./routes/api/joke.ts": $api_joke,
+    "./routes/api/progress.ts": $api_progress,
+    "./routes/dashboard.tsx": $dashboard,
     "./routes/greet/[name].tsx": $greet_name_,
     "./routes/index.tsx": $index,
+    "./routes/login.tsx": $login,
+    "./routes/logout.tsx": $logout,
+    "./routes/map/index.tsx": $map_index,
+    "./routes/signup.tsx": $signup,
+    "./routes/units/[id].tsx": $units_id_,
   },
   islands: {
     "./islands/Counter.tsx": $Counter,
+    "./islands/ProgressButton.tsx": $ProgressButton,
+    "./islands/UnitNode.tsx": $UnitNode,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

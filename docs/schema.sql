@@ -48,5 +48,5 @@ create policy "Users can update own profile." on public.profiles for update usin
 create policy "Units are viewable by everyone." on public.units for select using ( true );
 
 create policy "Users can view own progress." on public.user_progress for select using ( auth.uid() = user_id );
-create policy "Users can update own progress." on public.user_progress for insert with check ( auth.uid() = user_id );
+create policy "Users can insert own progress." on public.user_progress for insert with check ( auth.uid() = user_id );
 create policy "Users can update own progress." on public.user_progress for update using ( auth.uid() = user_id );

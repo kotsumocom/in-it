@@ -1,7 +1,18 @@
 {
   "workspace": ["./backend", "./web"],
+  "nodeModulesDir": "auto",
   "tasks": {
     "start:backend": "deno run --watch -A ./backend/main.ts",
     "start:web": "deno task --cwd ./web start"
+  },
+  "imports": {
+    "preact": "https://esm.sh/preact@10.22.0",
+    "preact/": "https://esm.sh/preact@10.22.0/",
+    "preact/hooks": "https://esm.sh/preact@10.22.0/hooks",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
+    "tailwindcss": "npm:tailwindcss@3.4.1",
+    "tailwindcss/": "npm:/tailwindcss@3.4.1/",
+    "tailwindcss/plugin": "npm:/tailwindcss@3.4.1/plugin.js"
   }
 }

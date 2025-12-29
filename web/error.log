@@ -1,0 +1,7 @@
+The manifest has been generated for 13 routes and 3 islands.
+error: Uncaught (in promise) TypeError: Module not found "file:///C:/Users/oscar/Documents/work/kotsumo/github/in-u-it/web/_middleware.ts".
+    at file:///C:/Users/oscar/Documents/work/kotsumo/github/in-u-it/web/routes/api/progress.ts:3:23
+  const manifest = (await import(toFileUrl(join(dir, "fresh.gen.ts")).href))
+                    ^
+    at async dev (https://deno.land/x/fresh@1.7.3/src/dev/dev_command.ts:38:21)
+    at async file:///C:/Users/oscar/Documents/work/kotsumo/github/in-u-it/web/dev.ts:8:1
