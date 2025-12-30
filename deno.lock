@@ -8,8 +8,6 @@
     "jsr:@std/path@^1.0.6": "1.1.4",
     "jsr:@supabase/functions-js@^0.0.0-automated": "0.0.0-jsr-test.1",
     "jsr:@supabase/supabase-js@*": "2.89.0",
-    "npm:@preact/signals-core@1.5.1": "1.5.1",
-    "npm:@preact/signals@1.2.2": "1.2.2_preact@10.22.0",
     "npm:@supabase/auth-js@2.89.0": "2.89.0",
     "npm:@supabase/postgrest-js@2.89.0": "2.89.0",
     "npm:@supabase/realtime-js@2.89.0": "2.89.0",
@@ -17,7 +15,6 @@
     "npm:autoprefixer@10.4.17": "10.4.17_postcss@8.4.35",
     "npm:cssnano@6.0.3": "6.0.3_postcss@8.4.35",
     "npm:postcss@8.4.35": "8.4.35",
-    "npm:preact@10.22.0": "10.22.0",
     "npm:stripe@*": "20.1.0",
     "npm:tailwindcss@3.4.1": "3.4.1_postcss@8.4.35"
   },
@@ -98,16 +95,6 @@
       "dependencies": [
         "@nodelib/fs.scandir",
         "fastq"
-      ]
-    },
-    "@preact/signals-core@1.5.1": {
-      "integrity": "sha512-dE6f+WCX5ZUDwXzUIWNMhhglmuLpqJhuy3X3xHrhZYI0Hm2LyQwOu0l9mdPiWrVNsE+Q7txOnJPgtIqHCYoBVA=="
-    },
-    "@preact/signals@1.2.2_preact@10.22.0": {
-      "integrity": "sha512-ColCqdo4cRP18bAuIR4Oik5rDpiyFtPIJIygaYPMEAwTnl4buWkBOflGBSzhYyPyJfKpkwlekrvK+1pzQ2ldWw==",
-      "dependencies": [
-        "@preact/signals-core",
-        "preact"
       ]
     },
     "@supabase/auth-js@2.89.0": {
@@ -875,9 +862,6 @@
         "source-map-js"
       ]
     },
-    "preact@10.22.0": {
-      "integrity": "sha512-RRurnSjJPj4rp5K6XoP45Ui33ncb7e4H7WiOHVpjbkvqvA3U+N8Z6Qbo0AE6leGYBV66n8EhEaFixvIu3SkxFw=="
-    },
     "qs@6.14.1": {
       "integrity": "sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==",
       "dependencies": [
@@ -1428,17 +1412,21 @@
     "https://esm.sh/@babel/helper-validator-identifier@7.22.20": "3b0b7d94b8ac689175ecb7e72183b07c6a771cc7680a7c9916091add73bd7f88",
     "https://esm.sh/@babel/helper-validator-identifier@7.22.20/denonext/helper-validator-identifier.mjs": "f765fd69eb4fd81b839b76bf60f227caac4fe4d41b4c646cc08aa7b8d948fe17",
     "https://esm.sh/preact@10.22.0": "0fb9b89617c3a27b6be4eee74bd07b845e92900e6b7fdb757bc3a498a6ec9065",
+    "https://esm.sh/preact@10.22.0&pin=v135/debug": "df72ac53fdd5c6732e22e03adba5e41acc49be6044abded95f7053d140a722e0",
     "https://esm.sh/preact@10.22.0/denonext/hooks.mjs": "f0fe69655ba3c4c88747b228acd6115c315bce6afeb8160d80afdb6712d949ff",
     "https://esm.sh/preact@10.22.0/denonext/jsx-runtime.mjs": "135034958157406811f9d44d7f07595da1da9f8ec9dc6adf316e3f3815661e7e",
     "https://esm.sh/preact@10.22.0/denonext/preact.mjs": "8d07e2251111a69a3d7caf057173bbb806ac7d79954397ce5377309067f50097",
     "https://esm.sh/preact@10.22.0/hooks": "8a1ea3148ef7373b9c3dc027a147ff6728a4e53e10e3506c1191b087f0e564e1",
-    "https://esm.sh/preact@10.22.0/jsx-runtime": "6c6117abd414386ed23785f7c198e03bee696c1fa0fee01b72a64abe5e7ae7fb"
+    "https://esm.sh/preact@10.22.0/hooks?pin=v135": "94fe12928993c62115b7bad4b2dcc3fa796d741fee12f6c88425ee4ff47cf0e1",
+    "https://esm.sh/preact@10.22.0/jsx-runtime": "6c6117abd414386ed23785f7c198e03bee696c1fa0fee01b72a64abe5e7ae7fb",
+    "https://esm.sh/preact@10.22.0?pin=v135": "55397119dec12d6ee0c5a3160753851a7ce136f14767bbb1ec0fa511cf82ad16",
+    "https://esm.sh/stable/preact@10.22.0/denonext/debug.js": "5f10aecc98bfe8bb18226a52433901f59994882ff3a9b06461eb82c3ba10b00d",
+    "https://esm.sh/stable/preact@10.22.0/denonext/devtools.js": "27bf81d6f4e253f36c186f43e3b558cd80207f0d15afbb1709f9ea67ed8fb598",
+    "https://esm.sh/stable/preact@10.22.0/denonext/hooks.js": "09230113132c216bbc3847aaad11289771e088be1b0eb9e49cbc724faaeac205",
+    "https://esm.sh/stable/preact@10.22.0/denonext/preact.mjs": "20c9563e051dd66e053d3afb450f61b48f2fa0d0ce4f69f8f0a2f23c1ef090da"
   },
   "workspace": {
     "dependencies": [
-      "npm:@preact/signals-core@1.5.1",
-      "npm:@preact/signals@1.2.2",
-      "npm:preact@10.22.0",
       "npm:tailwindcss@3.4.1"
     ],
     "members": {

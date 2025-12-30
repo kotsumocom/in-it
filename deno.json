@@ -6,11 +6,11 @@
     "start:web": "deno task --cwd ./web start"
   },
   "imports": {
-    "preact": "npm:preact@10.22.0",
-    "preact/": "npm:preact@10.22.0/",
-    "preact/hooks": "npm:preact@10.22.0/hooks",
-    "@preact/signals": "npm:@preact/signals@1.2.2",
-    "@preact/signals-core": "npm:@preact/signals-core@1.5.1",
+    "preact": "https://esm.sh/preact@10.22.0?pin=v135",
+    "preact/": "https://esm.sh/preact@10.22.0&pin=v135/",
+    "preact/hooks": "https://esm.sh/preact@10.22.0/hooks?pin=v135",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2?pin=v135",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1?pin=v135",
     "tailwindcss": "npm:tailwindcss@3.4.1",
     "tailwindcss/": "npm:/tailwindcss@3.4.1/",
     "tailwindcss/plugin": "npm:/tailwindcss@3.4.1/plugin.js"
