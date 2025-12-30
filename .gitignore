@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Deno
+.deno/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# Build
+dist/
+build/
+_fresh/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
