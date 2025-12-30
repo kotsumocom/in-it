@@ -8,11 +8,8 @@ export default function Header({ user }: HeaderProps) {
   return (
     <header class="border-b border-gray-700/50 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
       <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-        <a
-          href="/"
-          class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-        >
-          in-it
+        <a href="/" class="flex items-center">
+          <img src="/type.svg" alt="in-it" class="h-8" />
         </a>
 
         <nav class="flex items-center gap-4">

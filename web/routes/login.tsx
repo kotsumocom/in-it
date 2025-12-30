@@ -1,23 +1,14 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { signIn } from "@in-it/backend/services/auth.ts";
-import { State } from "./_middleware.ts";
 
 interface LoginData {
   error?: string;
 }
 
-export const handler: Handlers<LoginData, State> = {
+export const handler: Handlers<LoginData> = {
   GET(_req, ctx) {
-    // 既にログイン済みの場合はダッシュボードへ
-    if (ctx.state.user) {
-      return new Response(null, {
-        status: 302,
-        headers: { Location: "/dashboard" },
-      });
-    }
     return ctx.render({});
   },
-
   async POST(req, ctx) {
     const form = await req.formData();
     const email = form.get("email")?.toString() || "";
@@ -35,93 +26,95 @@ export const handler: Handlers<LoginData, State> = {
       return ctx.render({ error: result.error || "ログインに失敗しました" });
     }
 
-    // セッションCookieを設定してダッシュボードへリダイレクト
+    // Cookieにセッションを保存してダッシュボードへリダイレクト
     const headers = new Headers();
+    headers.set(
+      "Set-Cookie",
+      `access_token=${
+        result.session!.access_token
+      }; Path=/; HttpOnly; SameSite=Lax; Max-Age=3600`
+    );
     headers.set("Location", "/dashboard");
-
-    // アクセストークンをCookieに保存
-    const cookieOptions = "Path=/; HttpOnly; SameSite=Lax; Max-Age=604800"; // 7日間
-    headers.append(
-      "Set-Cookie",
-      `access_token=${result.session?.access_token}; ${cookieOptions}`
-    );
-    headers.append(
-      "Set-Cookie",
-      `refresh_token=${result.session?.refresh_token}; ${cookieOptions}`
-    );
-
-    return new Response(null, {
-      status: 302,
-      headers,
-    });
+    return new Response(null, { status: 303, headers });
   },
 };
 
-export default function LoginPage({ data }: PageProps<LoginData>) {
+export default function Login({ data }: PageProps<LoginData>) {
+  const { error } = data;
+
   return (
-    <div class="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-gray-900 text-white flex items-center justify-center px-4">
-      <div class="w-full max-w-md">
-        <div class="text-center mb-8">
-          <a
-            href="/"
-            class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-          >
+    <div class="min-h-screen bg-gray-50">
+      {/* ヘッダー */}
+      <header class="bg-white border-b border-gray-200">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center">
+          <a href="/" class="text-xl font-bold text-blue-600">
             in-it
           </a>
-          <p class="text-gray-400 mt-2">アカウントにログイン</p>
         </div>
+      </header>
 
-        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700">
-          {data.error && (
-            <div class="bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg mb-6">
-              {data.error}
+      <div class="flex items-center justify-center py-12 px-4">
+        <div class="max-w-md w-full">
+          <h1 class="text-2xl font-bold text-gray-900 mb-2 text-center">
+            in-it
+          </h1>
+          <p class="text-gray-600 mb-8 text-center">メンター向けログイン</p>
+
+          {error && (
+            <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700">
+              {error}
             </div>
           )}
 
-          <form method="POST" class="space-y-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2">
+          <form method="POST" class="bg-white p-8 border border-gray-200">
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
                 メールアドレス
               </label>
               <input
                 type="email"
                 name="email"
                 required
-                class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
-                placeholder="your@email.com"
+                class="w-full px-4 py-3 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                placeholder="email@example.com"
               />
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2">
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
                 パスワード
               </label>
               <input
                 type="password"
                 name="password"
                 required
-                class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
-                placeholder="••••••••"
+                class="w-full px-4 py-3 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
               />
             </div>
 
             <button
               type="submit"
-              class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-indigo-500/50"
+              class="w-full py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
             >
               ログイン
             </button>
+
+            <p class="mt-4 text-center">
+              <a
+                href="/forgot-password"
+                class="text-sm text-blue-600 hover:underline"
+              >
+                パスワードを忘れた方
+              </a>
+            </p>
           </form>
 
-          <div class="mt-6 text-center text-gray-400">
-            アカウントをお持ちでないですか？{" "}
-            <a
-              href="/signup"
-              class="text-indigo-400 hover:text-indigo-300 transition-colors"
-            >
-              サインアップ
+          <p class="mt-6 text-center text-gray-600">
+            アカウントをお持ちでない方は{" "}
+            <a href="/signup" class="text-blue-600 hover:underline">
+              新規登録
             </a>
-          </div>
+          </p>
         </div>
       </div>
     </div>

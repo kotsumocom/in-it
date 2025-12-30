@@ -13,10 +13,30 @@ export interface AuthResult {
   error?: string;
 }
 
+export interface MentorProfile {
+  id: string;
+  display_name: string;
+  tagline: string | null;
+  bio: string | null;
+  avatar_url: string | null;
+  category_id: string | null;
+  external_links: ExternalLink[];
+  is_public: boolean;
+  slug: string | null;
+  verification_status: string;
+}
+
+export interface ExternalLink {
+  type: string;
+  url: string;
+  label: string;
+}
+
 export interface UserProfile {
   id: string;
-  nickname: string | null;
-  grade_level: string | null;
+  email: string;
+  mentor_profile: MentorProfile | null;
+  subscription_status: string | null;
 }
 
 /**
@@ -49,17 +69,22 @@ export const signIn = async (
 };
 
 /**
- * 新規ユーザー登録 + プロフィール作成
+ * 新規ユーザー登録（メンター用）
+ * mentor_profilesとsubscriptionsはトリガーで自動作成される
  */
 export const signUp = async (
   email: string,
   password: string,
-  nickname: string
+  displayName: string
 ): Promise<AuthResult> => {
-  // 1. Supabase Auth でユーザー作成
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      data: {
+        display_name: displayName,
+      },
+    },
   });
 
   if (error) {
@@ -68,17 +93,6 @@ export const signUp = async (
 
   if (!data.user) {
     return { success: false, error: "ユーザーの作成に失敗しました" };
-  }
-
-  // 2. プロフィールを作成
-  const { error: profileError } = await supabase.from("profiles").insert({
-    id: data.user.id,
-    nickname,
-  });
-
-  if (profileError) {
-    console.error("Profile creation error:", profileError);
-    // プロフィール作成に失敗してもユーザーは作成されているので続行
   }
 
   return {
@@ -113,7 +127,7 @@ export const signOut = async (): Promise<{
 };
 
 /**
- * アクセストークンからユーザー情報を取得
+ * アクセストークンからユーザー情報を取得（メンター用）
  */
 export const getUser = async (
   accessToken: string
@@ -124,18 +138,39 @@ export const getUser = async (
     return { user: null, error: error?.message };
   }
 
-  // プロフィール情報を取得
+  // メンタープロフィールを取得
   const { data: profile } = await supabase
-    .from("profiles")
-    .select("nickname, grade_level")
+    .from("mentor_profiles")
+    .select("*")
     .eq("id", data.user.id)
+    .single();
+
+  // サブスク状態を取得
+  const { data: subscription } = await supabase
+    .from("subscriptions")
+    .select("status")
+    .eq("user_id", data.user.id)
     .single();
 
   return {
     user: {
       id: data.user.id,
-      nickname: profile?.nickname || null,
-      grade_level: profile?.grade_level || null,
+      email: data.user.email!,
+      mentor_profile: profile
+        ? {
+            id: profile.id,
+            display_name: profile.display_name,
+            tagline: profile.tagline,
+            bio: profile.bio,
+            avatar_url: profile.avatar_url,
+            category_id: profile.category_id,
+            external_links: profile.external_links || [],
+            is_public: profile.is_public,
+            slug: profile.slug,
+            verification_status: profile.verification_status,
+          }
+        : null,
+      subscription_status: subscription?.status || null,
     },
   };
 };

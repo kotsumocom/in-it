@@ -7,13 +7,19 @@ import * as $_app from "./routes/_app.tsx";
 import * as $_middleware from "./routes/_middleware.ts";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $api_progress from "./routes/api/progress.ts";
+import * as $api_stripe_webhook from "./routes/api/stripe/webhook.ts";
+import * as $billing from "./routes/billing.tsx";
 import * as $dashboard from "./routes/dashboard.tsx";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
 import * as $login from "./routes/login.tsx";
 import * as $logout from "./routes/logout.tsx";
 import * as $map_index from "./routes/map/index.tsx";
+import * as $mentors_slug_ from "./routes/mentors/[slug].tsx";
+import * as $mentors_index from "./routes/mentors/index.tsx";
+import * as $profile_edit from "./routes/profile/edit.tsx";
 import * as $signup from "./routes/signup.tsx";
+import * as $subscribe from "./routes/subscribe.tsx";
 import * as $units_id_ from "./routes/units/[id].tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $ProgressButton from "./islands/ProgressButton.tsx";
@@ -27,13 +33,19 @@ const manifest = {
     "./routes/_middleware.ts": $_middleware,
     "./routes/api/joke.ts": $api_joke,
     "./routes/api/progress.ts": $api_progress,
+    "./routes/api/stripe/webhook.ts": $api_stripe_webhook,
+    "./routes/billing.tsx": $billing,
     "./routes/dashboard.tsx": $dashboard,
     "./routes/greet/[name].tsx": $greet_name_,
     "./routes/index.tsx": $index,
     "./routes/login.tsx": $login,
     "./routes/logout.tsx": $logout,
     "./routes/map/index.tsx": $map_index,
+    "./routes/mentors/[slug].tsx": $mentors_slug_,
+    "./routes/mentors/index.tsx": $mentors_index,
+    "./routes/profile/edit.tsx": $profile_edit,
     "./routes/signup.tsx": $signup,
+    "./routes/subscribe.tsx": $subscribe,
     "./routes/units/[id].tsx": $units_id_,
   },
   islands: {
