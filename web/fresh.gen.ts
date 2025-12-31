@@ -6,8 +6,6 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_middleware from "./routes/_middleware.ts";
 import * as $api_joke from "./routes/api/joke.ts";
-import * as $api_progress from "./routes/api/progress.ts";
-import * as $api_stripe_webhook from "./routes/api/stripe/webhook.ts";
 import * as $billing from "./routes/billing.tsx";
 import * as $dashboard from "./routes/dashboard.tsx";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
@@ -32,8 +30,6 @@ const manifest = {
     "./routes/_app.tsx": $_app,
     "./routes/_middleware.ts": $_middleware,
     "./routes/api/joke.ts": $api_joke,
-    "./routes/api/progress.ts": $api_progress,
-    "./routes/api/stripe/webhook.ts": $api_stripe_webhook,
     "./routes/billing.tsx": $billing,
     "./routes/dashboard.tsx": $dashboard,
     "./routes/greet/[name].tsx": $greet_name_,

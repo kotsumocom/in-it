@@ -4,6 +4,8 @@
   "exports": "./main.ts",
   "imports": {
     "@hono/hono": "jsr:@hono/hono",
-    "@supabase/supabase-js": "jsr:@supabase/supabase-js"
+    "@hono/hono/cors": "jsr:@hono/hono/cors",
+    "@supabase/supabase-js": "jsr:@supabase/supabase-js",
+    "$std/": "https://deno.land/std@0.224.0/"
   }
 }
