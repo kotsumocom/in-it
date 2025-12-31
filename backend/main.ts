@@ -104,6 +104,31 @@ app.post("/api/progress", async (c) => {
   }
 });
 
+// Subscriptions API
+app.get("/api/subscriptions/:userId", async (c) => {
+  const userId = c.req.param("userId");
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("subscriptions")
+      .select("status, current_period_start, current_period_end")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Subscription fetch error:", error);
+      return c.json({ error: error.message }, 500);
+    }
+
+    return c.json({
+      status: data?.status || null,
+      current_period_start: data?.current_period_start || null,
+      current_period_end: data?.current_period_end || null,
+    });
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
 // Stripe Checkout Session
 app.post("/api/stripe/checkout", async (c) => {
   try {

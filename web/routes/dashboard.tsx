@@ -1,6 +1,6 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { State } from "./_middleware.ts";
-import { supabaseAdmin } from "@in-it/backend/supabase.ts";
+import { getSubscriptionStatus } from "../lib/api.ts";
 
 interface DashboardData {
   user: State["user"];
@@ -17,22 +17,18 @@ export const handler: Handlers<DashboardData, State> = {
       });
     }
 
-    // サブスク状態を毎回取得（最新状態を反映）
-    const { data: subscription, error } = await supabaseAdmin
-      .from("subscriptions")
-      .select("status")
-      .eq("user_id", ctx.state.user.id)
-      .maybeSingle();
+    // サブスク状態をバックエンドAPIから取得（最新状態を反映）
+    const { status: subscriptionStatus, error } = await getSubscriptionStatus(
+      ctx.state.user.id
+    );
 
-    console.log("Dashboard subscription fetch:", {
-      userId: ctx.state.user.id,
-      subscription,
-      error: error?.message,
-    });
+    if (error) {
+      console.error("Dashboard subscription fetch error:", error);
+    }
 
     return ctx.render({
       user: ctx.state.user,
-      subscriptionStatus: subscription?.status || null,
+      subscriptionStatus: subscriptionStatus,
     });
   },
 };
