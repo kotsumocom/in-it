@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { createCheckoutSession } from "@in-it/backend/services/stripe.ts";
+import { createCheckoutSession } from "../lib/api.ts";
 import { State } from "./_middleware.ts";
 
 export const handler: Handlers<unknown, State> = {
@@ -28,7 +28,7 @@ export const handler: Handlers<unknown, State> = {
     const url = new URL(req.url);
     const origin = url.origin;
 
-    // Checkoutセッション作成
+    // Checkoutセッション作成（バックエンドAPIを呼び出し）
     const { url: checkoutUrl, error } = await createCheckoutSession(
       user.id,
       user.email,
@@ -37,6 +37,7 @@ export const handler: Handlers<unknown, State> = {
     );
 
     if (error || !checkoutUrl) {
+      console.error("Checkout session error:", error);
       // エラー時はダッシュボードにリダイレクト
       return new Response(null, {
         status: 303,
