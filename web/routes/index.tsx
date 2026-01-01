@@ -184,8 +184,8 @@ export default function Home({ data }: PageProps<HomeData>) {
                     href={`/s/${space.slug}`}
                     class="block bg-white border border-gray-200 hover:shadow-md transition-shadow"
                   >
-                    {/* サムネイル */}
-                    <div class="h-32 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                    {/* サムネイル 16:9 */}
+                    <div class="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
                       {space.thumbnail_url ? (
                         <img
                           src={space.thumbnail_url}
