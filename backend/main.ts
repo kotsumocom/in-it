@@ -25,6 +25,8 @@ import {
   addTagsToSpace,
   getSpaceTags,
   removeTagFromSpace as _removeTagFromSpace,
+  getCustomTagRanking,
+  promoteCustomTag,
 } from "./services/tags.ts";
 import {
   getCoupons,
@@ -748,6 +750,71 @@ async function handleSubscriptionDelete(subscription: Stripe.Subscription) {
     console.error("Failed to cancel subscription:", error);
   }
 }
+
+// ===========================================
+// 管理者用 API
+// ===========================================
+
+// カスタムタグランキング取得
+app.get("/api/admin/custom-tags", async (c) => {
+  try {
+    // 管理者認証（簡易的にBasic認証で実装）
+    const authHeader = c.req.header("Authorization");
+    const adminUser = Deno.env.get("ADMIN_USER");
+    const adminPass = Deno.env.get("ADMIN_PASS");
+
+    if (adminUser && adminPass) {
+      if (!authHeader?.startsWith("Basic ")) {
+        return c.json({ error: "認証が必要です" }, 401);
+      }
+      const credentials = atob(authHeader.slice(6));
+      const [user, pass] = credentials.split(":");
+      if (user !== adminUser || pass !== adminPass) {
+        return c.json({ error: "認証に失敗しました" }, 401);
+      }
+    }
+
+    const result = await getCustomTagRanking(50);
+    if (!result.success) {
+      return c.json({ error: result.error }, 400);
+    }
+    return c.json(result.customTags);
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// カスタムタグを公式タグに昇格
+app.post("/api/admin/custom-tags/:id/promote", async (c) => {
+  try {
+    // 管理者認証
+    const authHeader = c.req.header("Authorization");
+    const adminUser = Deno.env.get("ADMIN_USER");
+    const adminPass = Deno.env.get("ADMIN_PASS");
+
+    if (adminUser && adminPass) {
+      if (!authHeader?.startsWith("Basic ")) {
+        return c.json({ error: "認証が必要です" }, 401);
+      }
+      const credentials = atob(authHeader.slice(6));
+      const [user, pass] = credentials.split(":");
+      if (user !== adminUser || pass !== adminPass) {
+        return c.json({ error: "認証に失敗しました" }, 401);
+      }
+    }
+
+    const customTagId = c.req.param("id");
+    const { categoryId } = await c.req.json().catch(() => ({}));
+    const result = await promoteCustomTag(customTagId, categoryId);
+
+    if (!result.success) {
+      return c.json({ error: result.error }, 400);
+    }
+    return c.json({ success: true, tag: result.tag });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
 
 const port = parseInt(Deno.env.get("PORT") || "3001");
 console.log(`Backend server starting on port ${port}...`);

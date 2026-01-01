@@ -268,3 +268,107 @@ export const removeTagFromSpace = async (
 
   return { success: true };
 };
+
+// ===========================================
+// カスタムタグ管理（管理者用）
+// ===========================================
+
+export interface CustomTag {
+  id: string;
+  original_name: string;
+  normalized_name: string;
+  usage_count: number;
+  promoted_to_tag_id: string | null;
+  created_at: string;
+}
+
+export interface CustomTagsResult {
+  success: boolean;
+  customTags?: CustomTag[];
+  error?: string;
+}
+
+/**
+ * カスタムタグランキング取得（使用回数順）
+ */
+export const getCustomTagRanking = async (
+  limit: number = 50
+): Promise<CustomTagsResult> => {
+  const { data: customTags, error } = await supabaseAdmin
+    .from("custom_tags")
+    .select("*")
+    .is("promoted_to_tag_id", null) // 昇格済みは除外
+    .order("usage_count", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  return { success: true, customTags };
+};
+
+/**
+ * カスタムタグを公式タグに昇格
+ */
+export const promoteCustomTag = async (
+  customTagId: string,
+  categoryId?: string
+): Promise<{ success: boolean; tag?: Tag; error?: string }> => {
+  // カスタムタグを取得
+  const { data: customTag, error: fetchError } = await supabaseAdmin
+    .from("custom_tags")
+    .select("*")
+    .eq("id", customTagId)
+    .single();
+
+  if (fetchError || !customTag) {
+    return { success: false, error: "カスタムタグが見つかりません" };
+  }
+
+  // 公式タグを作成
+  const { data: newTag, error: createError } = await supabaseAdmin
+    .from("tags")
+    .insert({
+      name: customTag.normalized_name,
+      display_name: customTag.original_name,
+      category_id: categoryId || null,
+      is_featured: false,
+      display_order: 99,
+      usage_count: customTag.usage_count,
+    })
+    .select()
+    .single();
+
+  if (createError) {
+    console.error("Promote tag error:", createError);
+    return { success: false, error: createError.message };
+  }
+
+  // カスタムタグに昇格先を記録
+  await supabaseAdmin
+    .from("custom_tags")
+    .update({ promoted_to_tag_id: newTag.id })
+    .eq("id", customTagId);
+
+  // 既存のスペースカスタムタグを公式タグに移行
+  const { data: spaceCustomTags } = await supabaseAdmin
+    .from("space_custom_tags")
+    .select("space_id")
+    .eq("custom_tag_id", customTagId);
+
+  if (spaceCustomTags) {
+    for (const { space_id } of spaceCustomTags) {
+      await supabaseAdmin
+        .from("space_tags")
+        .upsert({ space_id, tag_id: newTag.id });
+    }
+    // 旧関連を削除
+    await supabaseAdmin
+      .from("space_custom_tags")
+      .delete()
+      .eq("custom_tag_id", customTagId);
+  }
+
+  return { success: true, tag: newTag };
+};
