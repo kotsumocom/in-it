@@ -1,26 +1,26 @@
 import { useState } from "preact/hooks";
 import type { Category, Tag, SpaceFormData } from "../lib/api.ts";
 
+const API_URL = "https://in-it-backend.deno.dev";
+
 interface SpaceFormProps {
   mode: "create" | "edit";
+  spaceId?: string;
   initialData?: Partial<SpaceFormData>;
   initialTagIds?: string[];
   categories: Category[];
   tags: Tag[];
-  onSubmit: (data: SpaceFormData, tagIds: string[]) => Promise<void>;
-  onDelete?: () => Promise<void>;
-  isSubmitting?: boolean;
+  accessToken: string | null;
 }
 
 export default function SpaceForm({
   mode,
+  spaceId,
   initialData = {},
   initialTagIds = [],
   categories,
   tags,
-  onSubmit,
-  onDelete,
-  isSubmitting = false,
+  accessToken,
 }: SpaceFormProps) {
   const [title, setTitle] = useState(initialData.title || "");
   const [description, setDescription] = useState(initialData.description || "");
@@ -34,6 +34,7 @@ export default function SpaceForm({
   const [slug, setSlug] = useState(initialData.slug || "");
   const [isPublic, setIsPublic] = useState(initialData.is_public || false);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // カテゴリでフィルタされたタグ
   const filteredTags = categoryId
@@ -57,22 +58,115 @@ export default function SpaceForm({
       return;
     }
 
+    if (!accessToken) {
+      setError("認証が必要です。再度ログインしてください。");
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
-      await onSubmit(
-        {
-          title: title.trim(),
-          description: description.trim() || undefined,
-          category_id: categoryId || undefined,
-          website_url: websiteUrl.trim() || undefined,
-          x_url: xUrl.trim() || undefined,
-          instagram_url: instagramUrl.trim() || undefined,
-          slug: slug.trim() || undefined,
-          is_public: isPublic,
-        },
-        selectedTagIds
-      );
+      const formData: SpaceFormData = {
+        title: title.trim(),
+        description: description.trim() || undefined,
+        category_id: categoryId || undefined,
+        website_url: websiteUrl.trim() || undefined,
+        x_url: xUrl.trim() || undefined,
+        instagram_url: instagramUrl.trim() || undefined,
+        slug: slug.trim() || undefined,
+        is_public: isPublic,
+      };
+
+      let spaceResult;
+
+      if (mode === "create") {
+        // スペース作成
+        const res = await fetch(`${API_URL}/api/spaces`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || "スペースの作成に失敗しました");
+        }
+
+        spaceResult = await res.json();
+      } else {
+        // スペース更新
+        const res = await fetch(`${API_URL}/api/spaces/${spaceId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || "スペースの更新に失敗しました");
+        }
+
+        spaceResult = await res.json();
+      }
+
+      // タグを設定
+      if (spaceResult && selectedTagIds.length > 0) {
+        await fetch(`${API_URL}/api/spaces/${spaceResult.id}/tags`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ tagIds: selectedTagIds }),
+        });
+      }
+
+      // ダッシュボードにリダイレクト
+      globalThis.location.href =
+        mode === "create"
+          ? "/dashboard?created=true"
+          : "/dashboard?updated=true";
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!confirm("本当にこのスペースを削除しますか？")) {
+      return;
+    }
+
+    if (!accessToken || !spaceId) {
+      setError("認証が必要です。");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch(`${API_URL}/api/spaces/${spaceId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "削除に失敗しました");
+      }
+
+      globalThis.location.href = "/dashboard?deleted=true";
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "エラーが発生しました");
+      setIsSubmitting(false);
     }
   };
 
@@ -251,10 +345,10 @@ export default function SpaceForm({
             : "変更を保存"}
         </button>
 
-        {mode === "edit" && onDelete && (
+        {mode === "edit" && (
           <button
             type="button"
-            onClick={onDelete}
+            onClick={handleDelete}
             disabled={isSubmitting}
             class="px-6 py-2 border border-red-300 text-red-600 font-medium hover:bg-red-50 transition-colors disabled:opacity-50"
           >

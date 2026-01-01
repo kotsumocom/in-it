@@ -1,12 +1,7 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { State } from "../_middleware.ts";
-import {
-  getCategories,
-  getTags,
-  createSpace,
-  updateSpaceTags,
-} from "../../lib/api.ts";
-import type { Category, Tag, SpaceFormData } from "../../lib/api.ts";
+import { getCategories, getTags } from "../../lib/api.ts";
+import type { Category, Tag } from "../../lib/api.ts";
 import SpaceForm from "../../islands/SpaceForm.tsx";
 
 interface NewSpaceData {
@@ -56,8 +51,11 @@ export default function NewSpacePage({ data }: PageProps<NewSpaceData>) {
       {/* ヘッダー */}
       <header class="bg-white border-b border-gray-200">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <a href="/" class="flex items-center">
+          <a href="/dashboard" class="flex items-center gap-2">
             <img src="/type.svg" alt="in-it" class="h-8" />
+            <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-medium">
+              メンター
+            </span>
           </a>
           <nav class="flex items-center gap-4">
             <a href="/dashboard" class="text-gray-600 hover:text-gray-900">
@@ -85,7 +83,8 @@ export default function NewSpacePage({ data }: PageProps<NewSpaceData>) {
         </h1>
 
         <div class="bg-white border border-gray-200 p-6">
-          <SpaceFormIsland
+          <SpaceForm
+            mode="create"
             categories={categories}
             tags={tags}
             accessToken={accessToken}
@@ -93,44 +92,5 @@ export default function NewSpacePage({ data }: PageProps<NewSpaceData>) {
         </div>
       </div>
     </div>
-  );
-}
-
-// Island用のラッパーコンポーネント
-function SpaceFormIsland({
-  categories,
-  tags,
-  accessToken,
-}: {
-  categories: Category[];
-  tags: Tag[];
-  accessToken: string | null;
-}) {
-  const handleSubmit = async (formData: SpaceFormData, tagIds: string[]) => {
-    if (!accessToken) {
-      throw new Error("認証が必要です");
-    }
-
-    const { space, error } = await createSpace(accessToken, formData);
-    if (error) {
-      throw new Error(error);
-    }
-
-    // タグを設定
-    if (space && tagIds.length > 0) {
-      await updateSpaceTags(accessToken, space.id, tagIds);
-    }
-
-    // ダッシュボードにリダイレクト
-    globalThis.location.href = "/dashboard?created=true";
-  };
-
-  return (
-    <SpaceForm
-      mode="create"
-      categories={categories}
-      tags={tags}
-      onSubmit={handleSubmit}
-    />
   );
 }

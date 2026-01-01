@@ -1,14 +1,7 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { State } from "../../_middleware.ts";
-import {
-  getCategories,
-  getTags,
-  getSpace,
-  updateSpace,
-  deleteSpace,
-  updateSpaceTags,
-} from "../../../lib/api.ts";
-import type { Category, Tag, Space, SpaceFormData } from "../../../lib/api.ts";
+import { getCategories, getTags, getSpace } from "../../../lib/api.ts";
+import type { Category, Tag, Space } from "../../../lib/api.ts";
 import SpaceForm from "../../../islands/SpaceForm.tsx";
 
 interface EditSpaceData {
@@ -79,8 +72,11 @@ export default function EditSpacePage({ data }: PageProps<EditSpaceData>) {
       {/* ヘッダー */}
       <header class="bg-white border-b border-gray-200">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <a href="/" class="flex items-center">
+          <a href="/dashboard" class="flex items-center gap-2">
             <img src="/type.svg" alt="in-it" class="h-8" />
+            <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-medium">
+              メンター
+            </span>
           </a>
           <nav class="flex items-center gap-4">
             <a href="/dashboard" class="text-gray-600 hover:text-gray-900">
@@ -106,8 +102,20 @@ export default function EditSpacePage({ data }: PageProps<EditSpaceData>) {
         <h1 class="text-2xl font-bold text-gray-900 mb-8">スペースを編集</h1>
 
         <div class="bg-white border border-gray-200 p-6">
-          <SpaceFormIsland
-            space={space}
+          <SpaceForm
+            mode="edit"
+            spaceId={space.id}
+            initialData={{
+              title: space.title,
+              description: space.description || undefined,
+              category_id: space.category_id || undefined,
+              website_url: space.website_url || undefined,
+              x_url: space.x_url || undefined,
+              instagram_url: space.instagram_url || undefined,
+              slug: space.slug || undefined,
+              is_public: space.is_public,
+            }}
+            initialTagIds={space.tags?.map((t) => t.id) || []}
             categories={categories}
             tags={tags}
             accessToken={accessToken}
@@ -115,74 +123,5 @@ export default function EditSpacePage({ data }: PageProps<EditSpaceData>) {
         </div>
       </div>
     </div>
-  );
-}
-
-// Island用のラッパーコンポーネント
-function SpaceFormIsland({
-  space,
-  categories,
-  tags,
-  accessToken,
-}: {
-  space: Space;
-  categories: Category[];
-  tags: Tag[];
-  accessToken: string | null;
-}) {
-  const handleSubmit = async (formData: SpaceFormData, tagIds: string[]) => {
-    if (!accessToken) {
-      throw new Error("認証が必要です");
-    }
-
-    const { error } = await updateSpace(accessToken, space.id, formData);
-    if (error) {
-      throw new Error(error);
-    }
-
-    // タグを更新
-    await updateSpaceTags(accessToken, space.id, tagIds);
-
-    // ダッシュボードにリダイレクト
-    globalThis.location.href = "/dashboard?updated=true";
-  };
-
-  const handleDelete = async () => {
-    if (!accessToken) {
-      throw new Error("認証が必要です");
-    }
-
-    if (!confirm("このスペースを削除してもよろしいですか？")) {
-      return;
-    }
-
-    const { error } = await deleteSpace(accessToken, space.id);
-    if (error) {
-      throw new Error(error);
-    }
-
-    // ダッシュボードにリダイレクト
-    globalThis.location.href = "/dashboard?deleted=true";
-  };
-
-  return (
-    <SpaceForm
-      mode="edit"
-      initialData={{
-        title: space.title,
-        description: space.description || undefined,
-        category_id: space.category_id || undefined,
-        website_url: space.website_url || undefined,
-        x_url: space.x_url || undefined,
-        instagram_url: space.instagram_url || undefined,
-        slug: space.slug || undefined,
-        is_public: space.is_public,
-      }}
-      initialTagIds={space.tags?.map((t) => t.id) || []}
-      categories={categories}
-      tags={tags}
-      onSubmit={handleSubmit}
-      onDelete={handleDelete}
-    />
   );
 }
