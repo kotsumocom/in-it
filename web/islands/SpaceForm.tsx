@@ -37,7 +37,7 @@ export default function SpaceForm({
 
   // カテゴリでフィルタされたタグ
   const filteredTags = categoryId
-    ? tags.filter((t) => t.category_id === categoryId || !t.category_id)
+    ? tags.filter((tag) => tag.category_id === categoryId || !tag.category_id)
     : tags;
 
   const handleTagToggle = (tagId: string) => {
