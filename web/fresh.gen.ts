@@ -25,6 +25,7 @@ import * as $subscribe from "./routes/subscribe.tsx";
 import * as $units_id_ from "./routes/units/[id].tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $ProgressButton from "./islands/ProgressButton.tsx";
+import * as $ReferralCode from "./islands/ReferralCode.tsx";
 import * as $SpaceForm from "./islands/SpaceForm.tsx";
 import * as $UnitNode from "./islands/UnitNode.tsx";
 import type { Manifest } from "$fresh/server.ts";
@@ -56,6 +57,7 @@ const manifest = {
   islands: {
     "./islands/Counter.tsx": $Counter,
     "./islands/ProgressButton.tsx": $ProgressButton,
+    "./islands/ReferralCode.tsx": $ReferralCode,
     "./islands/SpaceForm.tsx": $SpaceForm,
     "./islands/UnitNode.tsx": $UnitNode,
   },

@@ -2,6 +2,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { State } from "./_middleware.ts";
 import { getSubscriptionStatus, getUserSpaces } from "../lib/api.ts";
 import type { Space } from "../lib/api.ts";
+import ReferralCode from "../islands/ReferralCode.tsx";
 
 interface DashboardData {
   user: State["user"];
@@ -203,26 +204,9 @@ export default function Dashboard({ data }: PageProps<DashboardData>) {
         {/* 招待コード */}
         <section class="p-6 bg-white border border-gray-200">
           <h2 class="text-lg font-bold text-gray-900 mb-4">🎫 招待コード</h2>
-          <div class="mb-4">
-            <p class="text-gray-600 mb-2">あなたの招待コード:</p>
-            <div class="flex items-center gap-2">
-              <code class="px-4 py-2 bg-gray-100 text-lg font-mono">
-                COMING_SOON
-              </code>
-              <button
-                type="button"
-                class="px-3 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
-                disabled
-              >
-                コピー
-              </button>
-            </div>
-          </div>
-          <div class="p-4 bg-blue-50 border border-blue-100">
-            <p class="text-blue-700 text-sm">
-              ✨ 招待特典: 招待された人も、招待した人も1ヶ月無料！
-            </p>
-          </div>
+          <ReferralCode
+            code={user?.id?.slice(0, 8).toUpperCase() || "--------"}
+          />
         </section>
       </div>
     </div>
