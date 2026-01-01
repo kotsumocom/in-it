@@ -37,6 +37,14 @@ export interface Space {
   slug: string | null;
   created_at: string;
   updated_at: string;
+  // Subscription status
+  subscription_status:
+    | "active"
+    | "trialing"
+    | "past_due"
+    | "canceled"
+    | "forever_free"
+    | null;
   // Joined data
   category?: {
     id: string;
@@ -151,6 +159,7 @@ export const getSpace = async (spaceId: string): Promise<SpaceResult> => {
 
 /**
  * スペース取得（slug）- 公開ページ用
+ * サブスクが有効（active, trialing, forever_free）なスペースのみ公開
  */
 export const getSpaceBySlug = async (slug: string): Promise<SpaceResult> => {
   const { data: space, error } = await supabase
@@ -161,7 +170,8 @@ export const getSpaceBySlug = async (slug: string): Promise<SpaceResult> => {
       category:categories(*),
       space_tags(
         tag:tags(*)
-      )
+      ),
+      subscription:subscriptions(status)
     `
     )
     .eq("slug", slug)
@@ -172,10 +182,20 @@ export const getSpaceBySlug = async (slug: string): Promise<SpaceResult> => {
     return { success: false, error: "スペースが見つかりません" };
   }
 
+  // サブスク状態を確認
+  const subscriptionStatus = space.subscription?.status || null;
+  const validStatuses = ["active", "trialing", "forever_free"];
+
+  if (!subscriptionStatus || !validStatuses.includes(subscriptionStatus)) {
+    return { success: false, error: "このスペースは現在公開されていません" };
+  }
+
   const formattedSpace = {
     ...space,
     tags: space.space_tags?.map((st: { tag: unknown }) => st.tag) || [],
     space_tags: undefined,
+    subscription_status: subscriptionStatus,
+    subscription: undefined,
   };
 
   return { success: true, space: formattedSpace };
@@ -275,7 +295,8 @@ export const getUserSpaces = async (userId: string): Promise<SpacesResult> => {
       category:categories(*),
       space_tags(
         tag:tags(*)
-      )
+      ),
+      subscription:subscriptions(status)
     `
     )
     .eq("user_id", userId)
@@ -290,6 +311,8 @@ export const getUserSpaces = async (userId: string): Promise<SpacesResult> => {
     ...space,
     tags: space.space_tags?.map((st: { tag: unknown }) => st.tag) || [],
     space_tags: undefined,
+    subscription_status: space.subscription?.status || null,
+    subscription: undefined,
   }));
 
   return { success: true, spaces: formattedSpaces };

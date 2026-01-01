@@ -163,6 +163,13 @@ export interface Space {
   slug: string | null;
   created_at: string;
   updated_at: string;
+  subscription_status:
+    | "active"
+    | "trialing"
+    | "past_due"
+    | "canceled"
+    | "forever_free"
+    | null;
   category?: Category;
   tags?: Tag[];
 }
