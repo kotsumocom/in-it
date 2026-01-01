@@ -79,12 +79,13 @@
 
 ---
 
-## Phase 4: Stripe 連携
+## Phase 4: Stripe 連携 ✅
 
-- [ ] 年間プラン用 Price 作成
-- [ ] 紹介制度用 Promotion Code 作成
+- [x] 年間プラン用 Price 作成（setup-stripe.ts スクリプト）
+- [x] 紹介制度用クーポン作成（setup-stripe.ts スクリプト）
+- [x] 紹介コードでクーポン自動適用
 - [ ] Invoice Credit（紹介者報酬）ロジック
-- [ ] Webhook 処理の更新
+- [x] Webhook 処理の更新（space_id 対応済み）
 
 ---
 

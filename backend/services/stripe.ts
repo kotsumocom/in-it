@@ -62,7 +62,14 @@ export async function createCheckoutSession(
         plan_type: planType,
         referral_code: referralCode || "",
       },
-      allow_promotion_codes: true,
+      // 紹介コードがある場合は紹介クーポンを自動適用、なければ手動入力を許可
+      ...(referralCode
+        ? {
+            discounts: [
+              { coupon: Deno.env.get("STRIPE_REFERRAL_COUPON_ID") || "" },
+            ].filter((d) => d.coupon), // coupon が空なら適用しない
+          }
+        : { allow_promotion_codes: true }),
     };
 
     const session = await stripe.checkout.sessions.create(sessionParams);
