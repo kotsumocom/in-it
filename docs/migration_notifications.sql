@@ -45,10 +45,12 @@ ALTER TABLE public.space_custom_tags ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
 
 -- カスタムタグは誰でも読める
+DROP POLICY IF EXISTS "Custom tags are viewable by everyone" ON public.custom_tags;
 CREATE POLICY "Custom tags are viewable by everyone"
   ON public.custom_tags FOR SELECT USING (true);
 
 -- スペースカスタムタグは公開スペース or 自分のスペース
+DROP POLICY IF EXISTS "Space custom tags are viewable" ON public.space_custom_tags;
 CREATE POLICY "Space custom tags are viewable"
   ON public.space_custom_tags FOR SELECT USING (
     EXISTS (
@@ -58,8 +60,10 @@ CREATE POLICY "Space custom tags are viewable"
   );
 
 -- 通知は自分のものだけ読める
+DROP POLICY IF EXISTS "Users can view own notifications" ON public.notifications;
 CREATE POLICY "Users can view own notifications"
   ON public.notifications FOR SELECT USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own notifications" ON public.notifications;
 CREATE POLICY "Users can update own notifications"
   ON public.notifications FOR UPDATE USING (auth.uid() = user_id);

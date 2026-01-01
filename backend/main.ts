@@ -833,20 +833,29 @@ async function handleSubscriptionDelete(subscription: Stripe.Subscription) {
 // カスタムタグランキング取得
 app.get("/api/admin/custom-tags", async (c) => {
   try {
-    // 管理者認証（簡易的にBasic認証で実装）
+    // 管理者認証（Supabase Auth + is_admin チェック）
     const authHeader = c.req.header("Authorization");
-    const adminUser = Deno.env.get("ADMIN_USER");
-    const adminPass = Deno.env.get("ADMIN_PASS");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
 
-    if (adminUser && adminPass) {
-      if (!authHeader?.startsWith("Basic ")) {
-        return c.json({ error: "認証が必要です" }, 401);
-      }
-      const credentials = atob(authHeader.slice(6));
-      const [user, pass] = credentials.split(":");
-      if (user !== adminUser || pass !== adminPass) {
-        return c.json({ error: "認証に失敗しました" }, 401);
-      }
+    // 管理者チェック
+    const { data: profile } = await supabaseAdmin
+      .from("mentor_profiles")
+      .select("is_admin")
+      .eq("id", user.id)
+      .single();
+
+    if (!profile?.is_admin) {
+      return c.json({ error: "管理者権限が必要です" }, 403);
     }
 
     const result = await getCustomTagRanking(50);
@@ -862,20 +871,29 @@ app.get("/api/admin/custom-tags", async (c) => {
 // カスタムタグを公式タグに昇格
 app.post("/api/admin/custom-tags/:id/promote", async (c) => {
   try {
-    // 管理者認証
+    // 管理者認証（Supabase Auth + is_admin チェック）
     const authHeader = c.req.header("Authorization");
-    const adminUser = Deno.env.get("ADMIN_USER");
-    const adminPass = Deno.env.get("ADMIN_PASS");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
 
-    if (adminUser && adminPass) {
-      if (!authHeader?.startsWith("Basic ")) {
-        return c.json({ error: "認証が必要です" }, 401);
-      }
-      const credentials = atob(authHeader.slice(6));
-      const [user, pass] = credentials.split(":");
-      if (user !== adminUser || pass !== adminPass) {
-        return c.json({ error: "認証に失敗しました" }, 401);
-      }
+    // 管理者チェック
+    const { data: profile } = await supabaseAdmin
+      .from("mentor_profiles")
+      .select("is_admin")
+      .eq("id", user.id)
+      .single();
+
+    if (!profile?.is_admin) {
+      return c.json({ error: "管理者権限が必要です" }, 403);
     }
 
     const customTagId = c.req.param("id");
