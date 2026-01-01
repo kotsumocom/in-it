@@ -24,8 +24,14 @@ import {
   searchTags,
   addTagsToSpace,
   getSpaceTags,
-  removeTagFromSpace,
+  removeTagFromSpace as _removeTagFromSpace,
 } from "./services/tags.ts";
+import {
+  getCoupons,
+  createCoupon,
+  deleteCoupon,
+  applyCoupon,
+} from "./services/coupons.ts";
 import { supabase, supabaseAdmin } from "./supabase.ts";
 import type Stripe from "npm:stripe";
 
@@ -406,7 +412,93 @@ app.get("/api/subscriptions/:userId", async (c) => {
       current_period_end: data?.current_period_end || null,
     });
   } catch (e) {
-    return c.json({ error: e.message }, 500);
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// ===========================================
+// Admin Coupons API
+// ===========================================
+
+// クーポン一覧取得（管理者用）
+app.get("/api/admin/coupons", async (c) => {
+  try {
+    // TODO: 管理者権限チェック
+    const result = await getCoupons();
+    if (!result.success) {
+      return c.json({ error: result.error }, 500);
+    }
+    return c.json(result.coupons);
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// クーポン作成（管理者用）
+app.post("/api/admin/coupons", async (c) => {
+  try {
+    // TODO: 管理者権限チェック
+    const body = await c.req.json();
+    const { code, type, duration_months, max_uses, expires_at } = body;
+
+    if (!code || !type) {
+      return c.json({ error: "code と type は必須です" }, 400);
+    }
+
+    const result = await createCoupon({
+      code,
+      type,
+      duration_months,
+      max_uses,
+      expires_at,
+    });
+
+    if (!result.success) {
+      return c.json({ error: result.error }, 400);
+    }
+
+    return c.json(result.coupon, 201);
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// クーポン削除（管理者用）
+app.delete("/api/admin/coupons/:id", async (c) => {
+  try {
+    // TODO: 管理者権限チェック
+    const couponId = c.req.param("id");
+    const result = await deleteCoupon(couponId);
+
+    if (!result.success) {
+      return c.json({ error: result.error }, 400);
+    }
+
+    return c.json({ success: true });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// クーポン適用
+app.post("/api/coupons/apply", async (c) => {
+  try {
+    const body = await c.req.json();
+    const { code } = body;
+
+    if (!code) {
+      return c.json({ error: "code は必須です" }, 400);
+    }
+
+    const result = await applyCoupon(code);
+
+    if (!result.success) {
+      return c.json({ error: result.error }, 400);
+    }
+
+    return c.json({ success: true, coupon: result.coupon });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
   }
 });
 

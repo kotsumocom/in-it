@@ -44,9 +44,10 @@
 
 ### クーポン管理
 
-- [ ] `POST /api/admin/coupons` - クーポン作成（管理者用）
-- [ ] `GET /api/admin/coupons` - クーポン一覧
-- [ ] `POST /api/coupons/apply` - クーポン適用
+- [x] `POST /api/admin/coupons` - クーポン作成（管理者用）
+- [x] `GET /api/admin/coupons` - クーポン一覧
+- [x] `DELETE /api/admin/coupons/:id` - クーポン削除
+- [x] `POST /api/coupons/apply` - クーポン適用
 
 ---
 
@@ -75,7 +76,7 @@
 
 ### 管理者機能
 
-- [ ] クーポン管理画面
+- [x] クーポン管理画面
 
 ---
 
