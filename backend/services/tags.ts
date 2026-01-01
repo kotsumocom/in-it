@@ -1,4 +1,4 @@
-import { supabase } from "../supabase.ts";
+import { supabase, supabaseAdmin } from "../supabase.ts";
 
 // ===========================================
 // 型定義
@@ -121,12 +121,13 @@ export const searchTags = async (query: string): Promise<TagsResult> => {
 // ===========================================
 
 /**
- * スペースにタグを追加
+ * スペースにタグを追加（カスタムタグ対応）
  */
 export const addTagsToSpace = async (
   spaceId: string,
   userId: string,
-  tagIds: string[]
+  tagIds: string[],
+  customTags: string[] = []
 ): Promise<{ success: boolean; error?: string }> => {
   // 所有権チェック
   const { data: space } = await supabase
@@ -140,7 +141,7 @@ export const addTagsToSpace = async (
   }
 
   // 既存のタグを削除
-  await supabase.from("space_tags").delete().eq("space_id", spaceId);
+  await supabaseAdmin.from("space_tags").delete().eq("space_id", spaceId);
 
   // 新しいタグを追加
   if (tagIds.length > 0) {
@@ -149,7 +150,7 @@ export const addTagsToSpace = async (
       tag_id: tagId,
     }));
 
-    const { error } = await supabase.from("space_tags").insert(insertData);
+    const { error } = await supabaseAdmin.from("space_tags").insert(insertData);
 
     if (error) {
       console.error("Add tags error:", error);
@@ -158,7 +159,55 @@ export const addTagsToSpace = async (
 
     // タグの使用回数を更新
     for (const tagId of tagIds) {
-      await supabase.rpc("increment_tag_usage", { tag_id: tagId });
+      await supabaseAdmin.rpc("increment_tag_usage", { tag_id: tagId });
+    }
+  }
+
+  // カスタムタグを保存
+  if (customTags.length > 0) {
+    for (const tagName of customTags) {
+      const normalizedName = tagName.toLowerCase().trim().replace(/\s+/g, "-");
+
+      // 既存のカスタムタグを検索、なければ作成
+      const { data: existingCustomTag } = await supabaseAdmin
+        .from("custom_tags")
+        .select("id")
+        .eq("normalized_name", normalizedName)
+        .single();
+
+      let customTagId: string;
+
+      if (existingCustomTag) {
+        customTagId = existingCustomTag.id;
+        // 使用回数をインクリメント
+        await supabaseAdmin
+          .from("custom_tags")
+          .update({ usage_count: supabaseAdmin.rpc("increment", 1) })
+          .eq("id", customTagId);
+      } else {
+        // 新規カスタムタグ作成
+        const { data: newTag, error: createError } = await supabaseAdmin
+          .from("custom_tags")
+          .insert({
+            original_name: tagName,
+            normalized_name: normalizedName,
+            usage_count: 1,
+          })
+          .select()
+          .single();
+
+        if (createError) {
+          console.error("Create custom tag error:", createError);
+          continue;
+        }
+        customTagId = newTag.id;
+      }
+
+      // スペースとカスタムタグを紐付け
+      await supabaseAdmin.from("space_custom_tags").upsert({
+        space_id: spaceId,
+        custom_tag_id: customTagId,
+      });
     }
   }
 

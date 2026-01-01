@@ -349,7 +349,40 @@ app.delete("/api/spaces/:id", async (c) => {
   }
 });
 
-// スペースのタグを更新
+// スペースのタグを更新（カスタムタグ対応）
+app.put("/api/spaces/:id/tags", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const spaceId = c.req.param("id");
+    const { tagIds, customTags } = await c.req.json();
+    const result = await addTagsToSpace(
+      spaceId,
+      user.id,
+      tagIds || [],
+      customTags || []
+    );
+    if (!result.success) {
+      return c.json({ error: result.error }, 400);
+    }
+    return c.json({ success: true });
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// 後方互換性のため POST も対応
 app.post("/api/spaces/:id/tags", async (c) => {
   try {
     const authHeader = c.req.header("Authorization");
@@ -366,8 +399,13 @@ app.post("/api/spaces/:id/tags", async (c) => {
     }
 
     const spaceId = c.req.param("id");
-    const { tagIds } = await c.req.json();
-    const result = await addTagsToSpace(spaceId, user.id, tagIds || []);
+    const { tagIds, customTags } = await c.req.json();
+    const result = await addTagsToSpace(
+      spaceId,
+      user.id,
+      tagIds || [],
+      customTags || []
+    );
     if (!result.success) {
       return c.json({ error: result.error }, 400);
     }

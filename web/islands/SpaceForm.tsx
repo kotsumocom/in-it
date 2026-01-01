@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useState, useRef, useEffect } from "preact/hooks";
 import type { Category, Tag, SpaceFormData } from "../lib/api.ts";
 
 const API_URL = "https://be.in-it.ooo";
@@ -8,6 +8,7 @@ interface SpaceFormProps {
   spaceId?: string;
   initialData?: Partial<SpaceFormData>;
   initialTagIds?: string[];
+  initialCustomTags?: string[];
   categories: Category[];
   tags: Tag[];
   accessToken: string | null;
@@ -18,6 +19,7 @@ export default function SpaceForm({
   spaceId,
   initialData = {},
   initialTagIds = [],
+  initialCustomTags = [],
   categories,
   tags,
   accessToken,
@@ -26,6 +28,7 @@ export default function SpaceForm({
   const [description, setDescription] = useState(initialData.description || "");
   const [categoryId, setCategoryId] = useState(initialData.category_id || "");
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>(initialTagIds);
+  const [customTags, setCustomTags] = useState<string[]>(initialCustomTags);
   const [websiteUrl, setWebsiteUrl] = useState(initialData.website_url || "");
   const [xUrl, setXUrl] = useState(initialData.x_url || "");
   const [instagramUrl, setInstagramUrl] = useState(
@@ -36,10 +39,21 @@ export default function SpaceForm({
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // カテゴリでフィルタされたタグ
-  const filteredTags = categoryId
-    ? tags.filter((tag) => tag.category_id === categoryId || !tag.category_id)
-    : tags;
+  // タグ検索・入力用
+  const [tagSearch, setTagSearch] = useState("");
+  const [showTagDropdown, setShowTagDropdown] = useState(false);
+  const tagInputRef = useRef<HTMLInputElement>(null);
+
+  // カテゴリでフィルタされたタグ + 検索フィルタ
+  const filteredTags = tags.filter((tag) => {
+    const matchesCategory =
+      !categoryId || tag.category_id === categoryId || !tag.category_id;
+    const matchesSearch =
+      !tagSearch ||
+      tag.display_name.toLowerCase().includes(tagSearch.toLowerCase()) ||
+      tag.name.toLowerCase().includes(tagSearch.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const handleTagToggle = (tagId: string) => {
     setSelectedTagIds((prev) =>
@@ -47,6 +61,48 @@ export default function SpaceForm({
         ? prev.filter((id) => id !== tagId)
         : [...prev, tagId]
     );
+  };
+
+  const handleAddCustomTag = () => {
+    const trimmed = tagSearch.trim();
+    if (!trimmed) return;
+
+    // 既存タグに一致するかチェック
+    const existingTag = tags.find(
+      (t) => t.display_name.toLowerCase() === trimmed.toLowerCase()
+    );
+
+    if (existingTag) {
+      // 既存タグを選択
+      if (!selectedTagIds.includes(existingTag.id)) {
+        setSelectedTagIds((prev) => [...prev, existingTag.id]);
+      }
+    } else {
+      // カスタムタグとして追加
+      if (!customTags.includes(trimmed)) {
+        setCustomTags((prev) => [...prev, trimmed]);
+      }
+    }
+
+    setTagSearch("");
+    setShowTagDropdown(false);
+  };
+
+  const handleRemoveCustomTag = (tag: string) => {
+    setCustomTags((prev) => prev.filter((t) => t !== tag));
+  };
+
+  const handleTagKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddCustomTag();
+    }
+  };
+
+  // 選択されたタグの表示名を取得
+  const getTagDisplayName = (tagId: string) => {
+    const tag = tags.find((t) => t.id === tagId);
+    return tag?.display_name || "";
   };
 
   const handleSubmit = async (e: Event) => {
@@ -80,7 +136,6 @@ export default function SpaceForm({
       let resultSpace;
 
       if (mode === "create") {
-        // スペース作成
         const res = await fetch(`${API_URL}/api/spaces`, {
           method: "POST",
           headers: {
@@ -97,7 +152,6 @@ export default function SpaceForm({
 
         resultSpace = await res.json();
       } else {
-        // スペース更新
         const res = await fetch(`${API_URL}/api/spaces/${spaceId}`, {
           method: "PUT",
           headers: {
@@ -116,18 +170,20 @@ export default function SpaceForm({
       }
 
       // タグを設定
-      if (resultSpace && selectedTagIds.length > 0) {
+      if (resultSpace) {
         await fetch(`${API_URL}/api/spaces/${resultSpace.id}/tags`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
-          body: JSON.stringify({ tagIds: selectedTagIds }),
+          body: JSON.stringify({
+            tagIds: selectedTagIds,
+            customTags: customTags,
+          }),
         });
       }
 
-      // ダッシュボードにリダイレクト
       globalThis.location.href =
         mode === "create"
           ? "/dashboard?created=true"
@@ -170,6 +226,20 @@ export default function SpaceForm({
     }
   };
 
+  // ドロップダウン外クリックで閉じる
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        tagInputRef.current &&
+        !tagInputRef.current.contains(e.target as Node)
+      ) {
+        setShowTagDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <form onSubmit={handleSubmit} class="space-y-6">
       {error && (
@@ -193,7 +263,7 @@ export default function SpaceForm({
         />
       </div>
 
-      {/* カテゴリ */}
+      {/* カテゴリ - コンボボックス */}
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">
           カテゴリ
@@ -212,32 +282,103 @@ export default function SpaceForm({
         </select>
       </div>
 
-      {/* タグ */}
+      {/* タグ - 検索可能なコンボボックス + 自由入力 */}
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">
-          タグ（複数選択可）
+          タグ（複数選択・自由入力可）
         </label>
-        <div class="flex flex-wrap gap-2 p-4 border border-gray-200 bg-gray-50 max-h-48 overflow-y-auto">
-          {filteredTags.map((tag) => (
-            <button
-              key={tag.id}
-              type="button"
-              onClick={() => handleTagToggle(tag.id)}
-              class={`px-3 py-1 text-sm border transition-colors ${
-                selectedTagIds.includes(tag.id)
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white text-gray-700 border-gray-300 hover:border-blue-400"
-              }`}
+
+        {/* 選択済みタグ表示 */}
+        <div class="flex flex-wrap gap-2 mb-2">
+          {selectedTagIds.map((tagId) => (
+            <span
+              key={tagId}
+              class="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full"
             >
-              {tag.display_name}
-            </button>
+              {getTagDisplayName(tagId)}
+              <button
+                type="button"
+                onClick={() => handleTagToggle(tagId)}
+                class="hover:text-blue-900"
+              >
+                ×
+              </button>
+            </span>
+          ))}
+          {customTags.map((tag) => (
+            <span
+              key={tag}
+              class="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full"
+            >
+              {tag}
+              <button
+                type="button"
+                onClick={() => handleRemoveCustomTag(tag)}
+                class="hover:text-purple-900"
+              >
+                ×
+              </button>
+            </span>
           ))}
         </div>
-        {selectedTagIds.length > 0 && (
-          <p class="text-sm text-gray-500 mt-1">
-            {selectedTagIds.length}個のタグを選択中
-          </p>
-        )}
+
+        {/* 検索入力 */}
+        <div class="relative" ref={tagInputRef}>
+          <input
+            type="text"
+            value={tagSearch}
+            onInput={(e) => {
+              setTagSearch((e.target as HTMLInputElement).value);
+              setShowTagDropdown(true);
+            }}
+            onFocus={() => setShowTagDropdown(true)}
+            onKeyDown={handleTagKeyDown}
+            placeholder="タグを検索・入力..."
+            class="w-full px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+          />
+
+          {/* タグドロップダウン */}
+          {showTagDropdown && (
+            <div class="absolute z-10 w-full mt-1 bg-white border border-gray-200 shadow-lg max-h-48 overflow-y-auto">
+              {filteredTags.length > 0 ? (
+                filteredTags.map((tag) => (
+                  <button
+                    key={tag.id}
+                    type="button"
+                    onClick={() => {
+                      handleTagToggle(tag.id);
+                      setTagSearch("");
+                    }}
+                    class={`w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center justify-between ${
+                      selectedTagIds.includes(tag.id) ? "bg-blue-50" : ""
+                    }`}
+                  >
+                    <span>{tag.display_name}</span>
+                    {selectedTagIds.includes(tag.id) && (
+                      <span class="text-blue-600">✓</span>
+                    )}
+                  </button>
+                ))
+              ) : tagSearch.trim() ? (
+                <button
+                  type="button"
+                  onClick={handleAddCustomTag}
+                  class="w-full px-4 py-2 text-left hover:bg-purple-50 text-purple-700"
+                >
+                  「{tagSearch}」を追加
+                </button>
+              ) : (
+                <div class="px-4 py-2 text-gray-500">タグが見つかりません</div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <p class="text-sm text-gray-500 mt-1">
+          {selectedTagIds.length + customTags.length > 0
+            ? `${selectedTagIds.length + customTags.length}個選択中`
+            : "Enterで自由入力も可能"}
+        </p>
       </div>
 
       {/* 説明 */}
