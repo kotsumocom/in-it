@@ -200,6 +200,81 @@ app.get("/api/tags/search", async (c) => {
 });
 
 // ===========================================
+// Profile API
+// ===========================================
+
+// プロフィール取得
+app.get("/api/profile", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const { data: profile, error } = await supabaseAdmin
+      .from("mentor_profiles")
+      .select("*")
+      .eq("id", user.id)
+      .single();
+
+    if (error) {
+      return c.json({ error: error.message }, 400);
+    }
+    return c.json(profile);
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// プロフィール更新
+app.put("/api/profile", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const body = await c.req.json();
+    const { display_name, avatar_url } = body;
+
+    const updateData: Record<string, unknown> = {};
+    if (display_name !== undefined) updateData.display_name = display_name;
+    if (avatar_url !== undefined) updateData.avatar_url = avatar_url;
+    updateData.updated_at = new Date().toISOString();
+
+    const { data: profile, error } = await supabaseAdmin
+      .from("mentor_profiles")
+      .update(updateData)
+      .eq("id", user.id)
+      .select()
+      .single();
+
+    if (error) {
+      return c.json({ error: error.message }, 400);
+    }
+    return c.json(profile);
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// ===========================================
 // Spaces API
 // ===========================================
 

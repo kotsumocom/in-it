@@ -56,9 +56,17 @@ export default function Dashboard({ data }: PageProps<DashboardData>) {
       </header>
 
       <div class="max-w-3xl mx-auto py-12 px-4">
-        <h1 class="text-2xl font-bold text-gray-900 mb-8">
-          👋 {profile?.display_name || "メンター"} さん
-        </h1>
+        <div class="flex items-center justify-between mb-8">
+          <h1 class="text-2xl font-bold text-gray-900">
+            👋 {profile?.display_name || "メンター"} さん
+          </h1>
+          <a
+            href="/profile/edit"
+            class="text-blue-600 hover:text-blue-700 text-sm"
+          >
+            プロフィール編集 →
+          </a>
+        </div>
 
         {/* スペース一覧 */}
         <section class="mb-8 p-6 bg-white border border-gray-200">
