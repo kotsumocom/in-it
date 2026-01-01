@@ -12,6 +12,7 @@ import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
 import * as $login from "./routes/login.tsx";
 import * as $logout from "./routes/logout.tsx";
+import * as $lp from "./routes/lp.tsx";
 import * as $map_index from "./routes/map/index.tsx";
 import * as $mentors_slug_ from "./routes/mentors/[slug].tsx";
 import * as $mentors_index from "./routes/mentors/index.tsx";
@@ -40,6 +41,7 @@ const manifest = {
     "./routes/index.tsx": $index,
     "./routes/login.tsx": $login,
     "./routes/logout.tsx": $logout,
+    "./routes/lp.tsx": $lp,
     "./routes/map/index.tsx": $map_index,
     "./routes/mentors/[slug].tsx": $mentors_slug_,
     "./routes/mentors/index.tsx": $mentors_index,

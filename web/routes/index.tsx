@@ -1,219 +1,266 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { State } from "./_middleware.ts";
+import { getCategories, getTags } from "../lib/api.ts";
+import type { Category, Tag, Space } from "../lib/api.ts";
 
 interface HomeData {
   user: State["user"];
+  categories: Category[];
+  featuredTags: Tag[];
+  spaces: Space[];
 }
 
+const API_URL = Deno.env.get("API_URL") || "http://localhost:3001";
+
 export const handler: Handlers<HomeData, State> = {
-  GET(_req, ctx) {
-    return ctx.render({ user: ctx.state.user });
+  async GET(_req, ctx) {
+    // カテゴリとタグを取得
+    const { categories } = await getCategories();
+    const { tags } = await getTags();
+    const featuredTags = tags.filter((t) => t.is_featured);
+
+    // 公開スペース一覧を取得
+    let spaces: Space[] = [];
+    try {
+      const res = await fetch(`${API_URL}/api/public/spaces?limit=12`);
+      if (res.ok) {
+        spaces = await res.json();
+      }
+    } catch (e) {
+      console.error("Failed to fetch spaces:", e);
+    }
+
+    return ctx.render({
+      user: ctx.state.user,
+      categories,
+      featuredTags,
+      spaces,
+    });
   },
 };
 
 export default function Home({ data }: PageProps<HomeData>) {
-  const { user } = data;
+  const { user, categories, featuredTags, spaces } = data;
 
   return (
-    <div class="min-h-screen bg-white">
+    <div class="min-h-screen bg-gray-50">
       {/* ヘッダー */}
-      <header class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
-        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+      <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <a href="/" class="flex items-center">
             <img src="/type.svg" alt="in-it" class="h-8" />
           </a>
           <nav class="flex items-center gap-4">
-            <a href="/mentors" class="text-gray-600 hover:text-gray-900">
-              メンター一覧
+            <a href="/lp" class="text-gray-600 hover:text-gray-900 text-sm">
+              メンター向け
             </a>
             {user ? (
               <a
                 href="/dashboard"
-                class="px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
+                class="px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors text-sm"
               >
                 マイページ
               </a>
             ) : (
-              <a
-                href="/login"
-                class="px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
-              >
-                ログイン
-              </a>
+              <>
+                <a
+                  href="/login"
+                  class="text-gray-600 hover:text-gray-900 text-sm"
+                >
+                  ログイン
+                </a>
+                <a
+                  href="/signup"
+                  class="px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors text-sm"
+                >
+                  登録
+                </a>
+              </>
             )}
           </nav>
         </div>
       </header>
 
       {/* ヒーローセクション */}
-      <section class="pt-32 pb-20 px-4">
-        <div class="max-w-3xl mx-auto text-center">
-          <div class="flex justify-center mb-6">
-            <img src="/type.svg" alt="in-it" class="h-16" />
-          </div>
-          <p class="text-xl md:text-2xl text-gray-700 mb-4">
-            手数料ゼロ・直接契約OKの
+      <section class="bg-gradient-to-b from-blue-600 to-blue-700 text-white py-12 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-3xl md:text-4xl font-bold mb-4">
+            あなたにぴったりのメンターを見つけよう
+          </h1>
+          <p class="text-lg opacity-90 mb-8">
+            プログラミング、デザイン、マーケティングなど様々な分野のプロに相談できます
           </p>
-          <p class="text-xl md:text-2xl text-gray-700 mb-8">
-            メンター掲載プラットフォーム
-          </p>
-          <p class="text-lg text-gray-500 mb-10">月額1,000円、それだけ。</p>
-          <a
-            href="/signup"
-            class="inline-block px-8 py-4 bg-blue-600 text-white text-lg font-medium hover:bg-blue-700 transition-colors"
-          >
-            今すぐ登録する
-          </a>
-        </div>
-      </section>
 
-      {/* ペインポイントセクション */}
-      <section class="py-16 px-4 bg-gray-50">
-        <div class="max-w-3xl mx-auto">
-          <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">
-            こんなお悩みありませんか？
-          </h2>
-          <div class="space-y-4">
-            {[
-              "売上の20-30%が手数料で消える",
-              "生徒と直接やり取りできない",
-              "自分の予約ページに誘導できない",
-              "プラットフォームに依存してしまう",
-            ].map((pain) => (
-              <div class="flex items-center gap-3 text-gray-700">
-                <span class="text-2xl">😓</span>
-                <span class="text-lg">{pain}</span>
-              </div>
-            ))}
+          {/* 検索バー */}
+          <div class="max-w-xl mx-auto">
+            <form action="/" method="GET" class="flex gap-2">
+              <input
+                type="text"
+                name="q"
+                placeholder="キーワードで検索..."
+                class="flex-1 px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              />
+              <button
+                type="submit"
+                class="px-6 py-3 bg-white text-blue-600 font-medium hover:bg-gray-100 transition-colors"
+              >
+                検索
+              </button>
+            </form>
           </div>
         </div>
       </section>
 
-      {/* ソリューションセクション */}
-      <section class="py-16 px-4">
-        <div class="max-w-4xl mx-auto">
-          <h2 class="text-2xl font-bold text-gray-900 mb-10 text-center">
-            in-it なら、すべて解決。
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                icon: "💰",
-                title: "手数料0%",
-                desc: "売上は100%あなたのもの",
-              },
-              {
-                icon: "📅",
-                title: "月額1,000円",
-                desc: "固定料金、隠れコストなし",
-              },
-              {
-                icon: "🔗",
-                title: "直接取引OK",
-                desc: "予約・SNS・Zoom 自由掲載",
-              },
-              {
-                icon: "⚡",
-                title: "5分で公開",
-                desc: "プロフィール入力だけ",
-              },
-            ].map((feature) => (
-              <div class="p-6 bg-white border border-gray-200 hover:shadow-md transition-shadow">
-                <div class="text-3xl mb-3">{feature.icon}</div>
-                <h3 class="text-lg font-bold text-gray-900 mb-1">
-                  {feature.title}
-                </h3>
-                <p class="text-gray-600">{feature.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 招待特典セクション */}
-      <section class="py-16 px-4 bg-blue-50">
-        <div class="max-w-3xl mx-auto text-center">
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">
-            🎁 招待で初月無料
-          </h2>
-          <p class="text-gray-700 mb-6">
-            既存メンターからの招待コードで初月無料でお試しできます
-          </p>
-          <a
-            href="/signup"
-            class="inline-block px-6 py-3 border-2 border-blue-600 text-blue-600 font-medium hover:bg-blue-600 hover:text-white transition-colors"
-          >
-            招待コードで登録する
-          </a>
-        </div>
-      </section>
-
-      {/* 料金セクション */}
-      <section class="py-16 px-4">
-        <div class="max-w-xl mx-auto">
-          <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">
-            💳 シンプルな料金体系
-          </h2>
-          <div class="p-8 bg-white border-2 border-blue-600 text-center">
-            <p class="text-gray-600 mb-2">月額</p>
-            <p class="text-4xl font-bold text-gray-900 mb-6">
-              ¥1,000
-              <span class="text-base font-normal text-gray-500">（税別）</span>
-            </p>
-            <ul class="text-left space-y-3 mb-8">
-              {[
-                "手数料0%",
-                "外部リンク可",
-                "いつでも解約",
-                "招待で初月無料",
-              ].map((item) => (
-                <li class="flex items-center gap-2 text-gray-700">
-                  <span class="text-green-500">✓</span>
-                  {item}
-                </li>
+      {/* 注目タグ */}
+      {featuredTags.length > 0 && (
+        <section class="py-6 px-4 border-b border-gray-200 bg-white">
+          <div class="max-w-6xl mx-auto">
+            <div class="flex flex-wrap gap-2 justify-center">
+              {featuredTags.map((tag) => (
+                <a
+                  key={tag.id}
+                  href={`/?tag=${tag.id}`}
+                  class="px-4 py-2 bg-gray-100 text-gray-700 text-sm hover:bg-blue-100 hover:text-blue-700 transition-colors"
+                >
+                  {tag.display_name}
+                </a>
               ))}
-            </ul>
-            <a
-              href="/signup"
-              class="inline-block w-full px-6 py-4 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
-            >
-              今すぐ登録
-            </a>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* 最終CTA */}
-      <section class="py-20 px-4 bg-gradient-to-r from-blue-600 to-blue-700">
-        <div class="max-w-3xl mx-auto text-center text-white">
-          <p class="text-xl md:text-2xl mb-2">あなたのスキルを、誰かの力に。</p>
-          <p class="text-lg mb-8 opacity-90">手数料に悩まない働き方を。</p>
-          <a
-            href="/signup"
-            class="inline-block px-8 py-4 bg-white text-blue-600 text-lg font-medium hover:bg-gray-100 transition-colors"
-          >
-            メンター登録を始める
-          </a>
+      <div class="max-w-6xl mx-auto py-8 px-4">
+        <div class="flex gap-8">
+          {/* サイドバー: カテゴリ */}
+          <aside class="hidden md:block w-64 flex-shrink-0">
+            <div class="sticky top-24">
+              <h2 class="text-lg font-bold text-gray-900 mb-4">カテゴリ</h2>
+              <nav class="space-y-1">
+                <a
+                  href="/"
+                  class="block px-3 py-2 text-gray-700 hover:bg-gray-100 font-medium"
+                >
+                  すべて
+                </a>
+                {categories.map((cat) => (
+                  <a
+                    key={cat.id}
+                    href={`/?category=${cat.id}`}
+                    class="block px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                  >
+                    {cat.display_name}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </aside>
+
+          {/* メインコンテンツ: スペース一覧 */}
+          <main class="flex-1">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-bold text-gray-900">スペース一覧</h2>
+              <select class="px-3 py-2 border border-gray-300 text-gray-700 text-sm">
+                <option value="newest">新着順</option>
+                <option value="popular">人気順</option>
+              </select>
+            </div>
+
+            {spaces.length === 0 ? (
+              <div class="text-center py-16 text-gray-500">
+                <p class="text-lg mb-4">まだスペースがありません</p>
+                <a
+                  href="/lp"
+                  class="text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  メンターとして登録する →
+                </a>
+              </div>
+            ) : (
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {spaces.map((space) => (
+                  <a
+                    key={space.id}
+                    href={`/s/${space.slug}`}
+                    class="block bg-white border border-gray-200 hover:shadow-md transition-shadow"
+                  >
+                    {/* サムネイル */}
+                    <div class="h-32 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                      {space.thumbnail_url ? (
+                        <img
+                          src={space.thumbnail_url}
+                          alt={space.title}
+                          class="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span class="text-4xl">📚</span>
+                      )}
+                    </div>
+
+                    <div class="p-4">
+                      {/* カテゴリ */}
+                      {space.category && (
+                        <p class="text-xs text-blue-600 mb-1">
+                          {space.category.display_name}
+                        </p>
+                      )}
+
+                      {/* タイトル */}
+                      <h3 class="font-bold text-gray-900 mb-2 line-clamp-2">
+                        {space.title}
+                      </h3>
+
+                      {/* タグ */}
+                      {space.tags && space.tags.length > 0 && (
+                        <div class="flex flex-wrap gap-1 mb-2">
+                          {space.tags.slice(0, 3).map((tag) => (
+                            <span
+                              key={tag.id}
+                              class="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs"
+                            >
+                              {tag.display_name}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* 説明 */}
+                      {space.description && (
+                        <p class="text-sm text-gray-500 line-clamp-2">
+                          {space.description}
+                        </p>
+                      )}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            )}
+          </main>
         </div>
-      </section>
+      </div>
 
       {/* フッター */}
-      <footer class="py-12 px-4 bg-gray-900 text-gray-400">
-        <div class="max-w-4xl mx-auto">
-          <p class="text-xl font-bold text-white mb-6">in-it</p>
-          <div class="flex flex-wrap gap-6 mb-8">
-            <a href="/terms" class="hover:text-white">
-              利用規約
-            </a>
-            <a href="/privacy" class="hover:text-white">
-              プライバシーポリシー
-            </a>
-            <a href="/legal" class="hover:text-white">
-              特定商取引法に基づく表記
-            </a>
-            <a href="/contact" class="hover:text-white">
-              お問い合わせ
-            </a>
+      <footer class="py-12 px-4 bg-gray-900 text-gray-400 mt-12">
+        <div class="max-w-6xl mx-auto">
+          <div class="flex flex-wrap justify-between items-start gap-8 mb-8">
+            <div>
+              <p class="text-xl font-bold text-white mb-2">in-it</p>
+              <p class="text-sm">手数料ゼロのメンタープラットフォーム</p>
+            </div>
+            <div class="flex flex-wrap gap-6">
+              <a href="/lp" class="hover:text-white">
+                メンター向け
+              </a>
+              <a href="/terms" class="hover:text-white">
+                利用規約
+              </a>
+              <a href="/privacy" class="hover:text-white">
+                プライバシーポリシー
+              </a>
+              <a href="/contact" class="hover:text-white">
+                お問い合わせ
+              </a>
+            </div>
           </div>
           <p class="text-sm">© 2025 in-it</p>
         </div>
