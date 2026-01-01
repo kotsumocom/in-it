@@ -406,17 +406,35 @@ app.get("/api/subscriptions/:userId", async (c) => {
 app.post("/api/stripe/checkout", async (c) => {
   try {
     const body = await c.req.json();
-    const { userId, email, successUrl, cancelUrl } = body;
+    const {
+      userId,
+      email,
+      spaceId,
+      planType,
+      referralCode,
+      successUrl,
+      cancelUrl,
+    } = body;
 
-    if (!userId || !email) {
-      return c.json({ error: "userId and email are required" }, 400);
+    if (!userId || !email || !spaceId) {
+      return c.json({ error: "userId, email, and spaceId are required" }, 400);
     }
+
+    const plan = planType === "yearly" ? "yearly" : "monthly";
 
     const baseUrl = Deno.env.get("APP_URL") || "https://in-it.ooo";
     const success = successUrl || `${baseUrl}/dashboard?success=true`;
     const cancel = cancelUrl || `${baseUrl}/dashboard?canceled=true`;
 
-    const result = await createCheckoutSession(userId, email, success, cancel);
+    const result = await createCheckoutSession(
+      userId,
+      email,
+      spaceId,
+      plan,
+      success,
+      cancel,
+      referralCode
+    );
 
     if (result.error) {
       return c.json({ error: result.error }, 500);
@@ -488,28 +506,38 @@ app.post("/api/stripe/webhook", async (c) => {
  */
 async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
   const userId = session.metadata?.user_id;
+  const spaceId = session.metadata?.space_id;
+  const planType = session.metadata?.plan_type || "monthly";
+  const referralCode = session.metadata?.referral_code;
   const customerId = session.customer as string;
   const subscriptionId = session.subscription as string;
 
   console.log("handleCheckoutComplete:", {
     userId,
+    spaceId,
+    planType,
+    referralCode,
     customerId,
     subscriptionId,
   });
 
-  if (!userId) {
-    console.error("Missing user_id in session metadata");
+  if (!userId || !spaceId) {
+    console.error("Missing user_id or space_id in session metadata");
     return;
   }
 
-  const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+  // deno-lint-ignore no-explicit-any
+  const subscription: any = await stripe.subscriptions.retrieve(subscriptionId);
 
   const { error } = await supabaseAdmin.from("subscriptions").upsert(
     {
       user_id: userId,
+      space_id: spaceId,
       stripe_customer_id: customerId,
       stripe_subscription_id: subscriptionId,
       status: subscription.status,
+      plan_type: planType,
+      referral_code: referralCode || null,
       current_period_start: new Date(
         subscription.current_period_start * 1000
       ).toISOString(),
@@ -517,13 +545,19 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
         subscription.current_period_end * 1000
       ).toISOString(),
     },
-    { onConflict: "user_id" }
+    { onConflict: "space_id" }
   );
 
   if (error) {
     console.error("Failed to update subscription:", error);
   } else {
-    console.log("Subscription updated successfully for user:", userId);
+    console.log("Subscription updated successfully for space:", spaceId);
+  }
+
+  // 紹介コードがあれば紹介者にクレジットを付与（将来実装）
+  if (referralCode) {
+    console.log("Referral code used:", referralCode);
+    // TODO: 紹介者への 1,000 円クレジット付与ロジック
   }
 }
 
