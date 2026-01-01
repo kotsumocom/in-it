@@ -1,12 +1,11 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { State } from "./_middleware.ts";
-import { getSubscriptionStatus, getUserSpaces } from "../lib/api.ts";
+import { getUserSpaces } from "../lib/api.ts";
 import type { Space } from "../lib/api.ts";
 import ReferralCode from "../islands/ReferralCode.tsx";
 
 interface DashboardData {
   user: State["user"];
-  subscriptionStatus: string | null;
   spaces: Space[];
 }
 
@@ -20,64 +19,19 @@ export const handler: Handlers<DashboardData, State> = {
       });
     }
 
-    // サブスク状態をバックエンドAPIから取得
-    const { status: subscriptionStatus, error } = await getSubscriptionStatus(
-      ctx.state.user.id
-    );
-
-    if (error) {
-      console.error("Dashboard subscription fetch error:", error);
-    }
-
     // ユーザーのスペース一覧を取得
     const { spaces } = await getUserSpaces(ctx.state.user.id);
 
     return ctx.render({
       user: ctx.state.user,
-      subscriptionStatus: subscriptionStatus,
       spaces,
     });
   },
 };
 
 export default function Dashboard({ data }: PageProps<DashboardData>) {
-  const { user, subscriptionStatus, spaces } = data;
+  const { user, spaces } = data;
   const profile = user?.mentor_profile;
-
-  const getStatusBadge = (status: string | null) => {
-    switch (status) {
-      case "active":
-        return (
-          <span class="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium">
-            有効
-          </span>
-        );
-      case "trialing":
-        return (
-          <span class="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium">
-            トライアル中
-          </span>
-        );
-      case "past_due":
-        return (
-          <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-sm font-medium">
-            支払い遅延
-          </span>
-        );
-      case "canceled":
-        return (
-          <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium">
-            解約済み
-          </span>
-        );
-      default:
-        return (
-          <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium">
-            未登録
-          </span>
-        );
-    }
-  };
 
   return (
     <div class="min-h-screen bg-gray-50">
@@ -207,34 +161,6 @@ export default function Dashboard({ data }: PageProps<DashboardData>) {
                 );
               })}
             </div>
-          )}
-        </section>
-
-        {/* サブスク状態 */}
-        <section class="mb-8 p-6 bg-white border border-gray-200">
-          <h2 class="text-lg font-bold text-gray-900 mb-4">📊 ステータス</h2>
-          <div class="flex items-center gap-4 mb-4">
-            <span class="text-gray-600">サブスクリプション:</span>
-            {getStatusBadge(subscriptionStatus)}
-          </div>
-          {(!subscriptionStatus ||
-            subscriptionStatus === "inactive" ||
-            subscriptionStatus === "canceled") && (
-            <a
-              href="/subscribe"
-              class="inline-block px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
-            >
-              プランを選択
-            </a>
-          )}
-          {(subscriptionStatus === "active" ||
-            subscriptionStatus === "trialing") && (
-            <a
-              href="/billing"
-              class="inline-block px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
-            >
-              支払い設定を管理
-            </a>
           )}
         </section>
 
