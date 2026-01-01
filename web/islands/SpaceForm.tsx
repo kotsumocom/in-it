@@ -1,6 +1,8 @@
 import { useState } from "preact/hooks";
 import type { Category, Tag, SpaceFormData } from "../lib/api.ts";
 
+const API_URL = "https://be.in-it.ooo";
+
 interface SpaceFormProps {
   mode: "create" | "edit";
   spaceId?: string;
@@ -78,8 +80,8 @@ export default function SpaceForm({
       let resultSpace;
 
       if (mode === "create") {
-        // スペース作成（相対パスで Fresh API ルート経由）
-        const res = await fetch("/api/spaces", {
+        // スペース作成
+        const res = await fetch(`${API_URL}/api/spaces`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -96,7 +98,7 @@ export default function SpaceForm({
         resultSpace = await res.json();
       } else {
         // スペース更新
-        const res = await fetch(`/api/spaces/${spaceId}`, {
+        const res = await fetch(`${API_URL}/api/spaces/${spaceId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -115,7 +117,7 @@ export default function SpaceForm({
 
       // タグを設定
       if (resultSpace && selectedTagIds.length > 0) {
-        await fetch(`/api/spaces/${resultSpace.id}/tags`, {
+        await fetch(`${API_URL}/api/spaces/${resultSpace.id}/tags`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -149,7 +151,7 @@ export default function SpaceForm({
     setIsSubmitting(true);
 
     try {
-      const res = await fetch(`/api/spaces/${spaceId}`, {
+      const res = await fetch(`${API_URL}/api/spaces/${spaceId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${accessToken}`,
