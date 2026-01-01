@@ -26,6 +26,7 @@ import * as $spaces_new from "./routes/spaces/new.tsx";
 import * as $subscribe from "./routes/subscribe.tsx";
 import * as $units_id_ from "./routes/units/[id].tsx";
 import * as $Counter from "./islands/Counter.tsx";
+import * as $CouponForm from "./islands/CouponForm.tsx";
 import * as $ProgressButton from "./islands/ProgressButton.tsx";
 import * as $ReferralCode from "./islands/ReferralCode.tsx";
 import * as $SpaceForm from "./islands/SpaceForm.tsx";
@@ -60,6 +61,7 @@ const manifest = {
   },
   islands: {
     "./islands/Counter.tsx": $Counter,
+    "./islands/CouponForm.tsx": $CouponForm,
     "./islands/ProgressButton.tsx": $ProgressButton,
     "./islands/ReferralCode.tsx": $ReferralCode,
     "./islands/SpaceForm.tsx": $SpaceForm,
