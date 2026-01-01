@@ -8,21 +8,35 @@ interface HomeData {
   categories: Category[];
   featuredTags: Tag[];
   spaces: Space[];
+  searchQuery: string;
+  selectedCategory: string;
+  selectedTag: string;
 }
 
 const API_URL = Deno.env.get("API_URL") || "http://localhost:3001";
 
 export const handler: Handlers<HomeData, State> = {
-  async GET(_req, ctx) {
+  async GET(req, ctx) {
+    const url = new URL(req.url);
+    const searchQuery = url.searchParams.get("q") || "";
+    const selectedCategory = url.searchParams.get("category") || "";
+    const selectedTag = url.searchParams.get("tag") || "";
+
     // カテゴリとタグを取得
     const { categories } = await getCategories();
     const { tags } = await getTags();
     const featuredTags = tags.filter((t) => t.is_featured);
 
-    // 公開スペース一覧を取得
+    // 公開スペース一覧を取得（検索クエリ付き）
     let spaces: Space[] = [];
     try {
-      const res = await fetch(`${API_URL}/api/public/spaces?limit=12`);
+      const apiParams = new URLSearchParams();
+      if (searchQuery) apiParams.set("q", searchQuery);
+      if (selectedCategory) apiParams.set("category", selectedCategory);
+      if (selectedTag) apiParams.set("tag", selectedTag);
+      apiParams.set("limit", "24");
+
+      const res = await fetch(`${API_URL}/api/public/spaces?${apiParams}`);
       if (res.ok) {
         spaces = await res.json();
       }
@@ -35,12 +49,23 @@ export const handler: Handlers<HomeData, State> = {
       categories,
       featuredTags,
       spaces,
+      searchQuery,
+      selectedCategory,
+      selectedTag,
     });
   },
 };
 
 export default function Home({ data }: PageProps<HomeData>) {
-  const { user, categories, featuredTags, spaces } = data;
+  const {
+    user,
+    categories,
+    featuredTags,
+    spaces,
+    searchQuery,
+    selectedCategory,
+    selectedTag,
+  } = data;
 
   return (
     <div class="min-h-screen bg-gray-50">
@@ -98,6 +123,7 @@ export default function Home({ data }: PageProps<HomeData>) {
                 type="text"
                 name="q"
                 placeholder="キーワードで検索..."
+                value={searchQuery}
                 class="flex-1 px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
               />
               <button
@@ -107,6 +133,11 @@ export default function Home({ data }: PageProps<HomeData>) {
                 検索
               </button>
             </form>
+            {searchQuery && (
+              <p class="mt-3 text-sm opacity-75">
+                「{searchQuery}」の検索結果: {spaces.length}件
+              </p>
+            )}
           </div>
         </div>
       </section>
@@ -120,7 +151,11 @@ export default function Home({ data }: PageProps<HomeData>) {
                 <a
                   key={tag.id}
                   href={`/?tag=${tag.id}`}
-                  class="px-4 py-2 bg-gray-100 text-gray-700 text-sm hover:bg-blue-100 hover:text-blue-700 transition-colors"
+                  class={`px-4 py-2 text-sm transition-colors ${
+                    selectedTag === tag.id
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-700"
+                  }`}
                 >
                   {tag.display_name}
                 </a>
@@ -139,7 +174,11 @@ export default function Home({ data }: PageProps<HomeData>) {
               <nav class="space-y-1">
                 <a
                   href="/"
-                  class="block px-3 py-2 text-gray-700 hover:bg-gray-100 font-medium"
+                  class={`block px-3 py-2 font-medium ${
+                    !selectedCategory
+                      ? "bg-blue-100 text-blue-700"
+                      : "text-gray-700 hover:bg-gray-100"
+                  }`}
                 >
                   すべて
                 </a>
@@ -147,7 +186,11 @@ export default function Home({ data }: PageProps<HomeData>) {
                   <a
                     key={cat.id}
                     href={`/?category=${cat.id}`}
-                    class="block px-3 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                    class={`block px-3 py-2 transition-colors ${
+                      selectedCategory === cat.id
+                        ? "bg-blue-100 text-blue-700 font-medium"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    }`}
                   >
                     {cat.display_name}
                   </a>

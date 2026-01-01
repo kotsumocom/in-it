@@ -296,14 +296,20 @@ export const getUserSpaces = async (userId: string): Promise<SpacesResult> => {
 };
 
 /**
- * 公開スペース一覧
+ * 公開スペース一覧取得（検索・フィルタリング対応）
  */
 export const getPublicSpaces = async (
-  categoryId?: string,
-  limit = 20,
-  offset = 0
+  options: {
+    query?: string;
+    categoryId?: string;
+    tagId?: string;
+    limit?: number;
+    offset?: number;
+  } = {}
 ): Promise<SpacesResult> => {
-  let query = supabase
+  const { query, categoryId, tagId, limit = 20, offset = 0 } = options;
+
+  let dbQuery = supabase
     .from("mentor_spaces")
     .select(
       `
@@ -318,22 +324,36 @@ export const getPublicSpaces = async (
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
 
+  // カテゴリフィルタ
   if (categoryId) {
-    query = query.eq("category_id", categoryId);
+    dbQuery = dbQuery.eq("category_id", categoryId);
   }
 
-  const { data: spaces, error } = await query;
+  // キーワード検索（タイトルと説明文）
+  if (query) {
+    dbQuery = dbQuery.or(`title.ilike.%${query}%,description.ilike.%${query}%`);
+  }
+
+  const { data: spaces, error } = await dbQuery;
 
   if (error) {
     return { success: false, error: error.message };
   }
 
   // deno-lint-ignore no-explicit-any
-  const formattedSpaces = spaces.map((space: any) => ({
+  let formattedSpaces = spaces.map((space: any) => ({
     ...space,
     tags: space.space_tags?.map((st: { tag: unknown }) => st.tag) || [],
     space_tags: undefined,
   }));
+
+  // タグフィルタ（クライアントサイドでフィルタリング）
+  if (tagId) {
+    // deno-lint-ignore no-explicit-any
+    formattedSpaces = formattedSpaces.filter((space: any) =>
+      space.tags?.some((t: { id: string }) => t.id === tagId)
+    );
+  }
 
   return { success: true, spaces: formattedSpaces };
 };

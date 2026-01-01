@@ -195,13 +195,21 @@ app.get("/api/tags/search", async (c) => {
 // Spaces API
 // ===========================================
 
-// 公開スペース一覧
+// 公開スペース一覧（検索・フィルタリング対応）
 app.get("/api/public/spaces", async (c) => {
   try {
+    const query = c.req.query("q");
     const categoryId = c.req.query("category");
+    const tagId = c.req.query("tag");
     const limit = parseInt(c.req.query("limit") || "20");
     const offset = parseInt(c.req.query("offset") || "0");
-    const result = await getPublicSpaces(categoryId, limit, offset);
+    const result = await getPublicSpaces({
+      query,
+      categoryId,
+      tagId,
+      limit,
+      offset,
+    });
     if (!result.success) {
       return c.json({ error: result.error }, 500);
     }
