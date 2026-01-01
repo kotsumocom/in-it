@@ -351,17 +351,38 @@ export const promoteCustomTag = async (
     .update({ promoted_to_tag_id: newTag.id })
     .eq("id", customTagId);
 
-  // 既存のスペースカスタムタグを公式タグに移行
+  // 既存のスペースカスタムタグを公式タグに移行 & メンターに通知
   const { data: spaceCustomTags } = await supabaseAdmin
     .from("space_custom_tags")
-    .select("space_id")
+    .select("space_id, mentor_spaces(user_id)")
     .eq("custom_tag_id", customTagId);
 
+  const notifiedUsers = new Set<string>();
+
   if (spaceCustomTags) {
-    for (const { space_id } of spaceCustomTags) {
+    for (const item of spaceCustomTags) {
+      // deno-lint-ignore no-explicit-any
+      const userId = (item as any).mentor_spaces?.user_id;
+
+      // スペースタグに追加
       await supabaseAdmin
         .from("space_tags")
-        .upsert({ space_id, tag_id: newTag.id });
+        .upsert({ space_id: item.space_id, tag_id: newTag.id });
+
+      // メンターに通知（重複防止）
+      if (userId && !notifiedUsers.has(userId)) {
+        notifiedUsers.add(userId);
+        await supabaseAdmin.from("notifications").insert({
+          user_id: userId,
+          type: "tag_promoted",
+          title: "タグが公式に追加されました",
+          message: `あなたが入力した「${customTag.original_name}」が公式タグとして追加されました！`,
+          data: {
+            tag_id: newTag.id,
+            tag_name: newTag.display_name,
+          },
+        });
+      }
     }
     // 旧関連を削除
     await supabaseAdmin

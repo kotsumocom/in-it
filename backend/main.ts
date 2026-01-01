@@ -891,6 +891,107 @@ app.post("/api/admin/custom-tags/:id/promote", async (c) => {
   }
 });
 
+// ===========================================
+// 通知 API
+// ===========================================
+
+// 通知一覧取得
+app.get("/api/notifications", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const { data: notifications, error } = await supabaseAdmin
+      .from("notifications")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(50);
+
+    if (error) {
+      return c.json({ error: error.message }, 400);
+    }
+
+    // 未読数も返す
+    const { count } = await supabaseAdmin
+      .from("notifications")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .eq("is_read", false);
+
+    return c.json({ notifications, unread_count: count || 0 });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// 通知を既読にする
+app.put("/api/notifications/:id/read", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const notificationId = c.req.param("id");
+    await supabaseAdmin
+      .from("notifications")
+      .update({ is_read: true })
+      .eq("id", notificationId)
+      .eq("user_id", user.id);
+
+    return c.json({ success: true });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// 全通知を既読にする
+app.put("/api/notifications/read-all", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    await supabaseAdmin
+      .from("notifications")
+      .update({ is_read: true })
+      .eq("user_id", user.id)
+      .eq("is_read", false);
+
+    return c.json({ success: true });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
 const port = parseInt(Deno.env.get("PORT") || "3001");
 console.log(`Backend server starting on port ${port}...`);
 Deno.serve({ port }, app.fetch);
