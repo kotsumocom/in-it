@@ -99,7 +99,7 @@ export const createSpace = async (
     }
   }
 
-  const { data: space, error } = await supabase
+  const { data: space, error } = await supabaseAdmin
     .from("mentor_spaces")
     .insert({
       user_id: userId,
@@ -234,7 +234,7 @@ export const updateSpace = async (
     }
   }
 
-  const { data: space, error } = await supabase
+  const { data: space, error } = await supabaseAdmin
     .from("mentor_spaces")
     .update({
       ...data,
@@ -270,7 +270,7 @@ export const deleteSpace = async (
     return { success: false, error: "権限がありません" };
   }
 
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from("mentor_spaces")
     .delete()
     .eq("id", spaceId);
