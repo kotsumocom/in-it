@@ -84,8 +84,11 @@ export default function Dashboard({ data }: PageProps<DashboardData>) {
       {/* ヘッダー */}
       <header class="bg-white border-b border-gray-200">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <a href="/" class="flex items-center">
+          <a href="/dashboard" class="flex items-center gap-2">
             <img src="/type.svg" alt="in-it" class="h-8" />
+            <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-medium">
+              メンター
+            </span>
           </a>
           <nav class="flex items-center gap-4">
             <a href="/mentors" class="text-gray-600 hover:text-gray-900">
