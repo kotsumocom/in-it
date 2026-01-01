@@ -47,18 +47,18 @@ export default function Login({ data }: PageProps<LoginData>) {
       {/* ヘッダー */}
       <header class="bg-white border-b border-gray-200">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center">
-          <a href="/" class="text-xl font-bold text-blue-600">
-            in-it
+          <a href="/" class="flex items-center">
+            <img src="/logo.svg" alt="in-it" class="h-8" />
           </a>
         </div>
       </header>
 
       <div class="flex items-center justify-center py-12 px-4">
         <div class="max-w-md w-full">
-          <h1 class="text-2xl font-bold text-gray-900 mb-2 text-center">
-            in-it
-          </h1>
-          <p class="text-gray-600 mb-8 text-center">メンター向けログイン</p>
+          <div class="text-center mb-8">
+            <img src="/logo.svg" alt="in-it" class="h-12 mx-auto mb-4" />
+            <p class="text-gray-600">メンター向けログイン</p>
+          </div>
 
           {error && (
             <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700">
