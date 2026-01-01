@@ -4,22 +4,21 @@ export default function Error404() {
   return (
     <>
       <Head>
-        <title>404 - ページが見つかりません</title>
+        <title>404 - ペ�Eジが見つかりません</title>
       </Head>
       <div class="px-4 py-8 mx-auto bg-[#86efac]">
         <div class="max-w-screen-md mx-auto flex flex-col items-center justify-center">
           <img
             class="my-6"
-            src="/logo.svg"
+            src="/type.svg"
             width="128"
             height="128"
             alt="in-it ロゴ"
           />
-          <h1 class="text-4xl font-bold">404 - ページが見つかりません</h1>
-          <p class="my-4">お探しのページは存在しません。</p>
+          <h1 class="text-4xl font-bold">404 - ペ�Eジが見つかりません</h1>
+          <p class="my-4">お探し�Eペ�Eジは存在しません、E/p>
           <a href="/" class="underline">
-            ホームに戻る
-          </a>
+            ホ�Eムに戻めE          </a>
         </div>
       </div>
     </>
