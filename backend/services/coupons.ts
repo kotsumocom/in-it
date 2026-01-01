@@ -9,7 +9,7 @@ export interface AdminCoupon {
   id: string;
   code: string;
   stripe_coupon_id: string | null;
-  type: "year_free" | "custom";
+  type: "year_free" | "forever_free" | "custom";
   duration_months: number | null;
   max_uses: number;
   use_count: number;
@@ -19,7 +19,7 @@ export interface AdminCoupon {
 
 export interface CreateCouponInput {
   code: string;
-  type: "year_free" | "custom";
+  type: "year_free" | "forever_free" | "custom";
   duration_months?: number;
   max_uses?: number;
   expires_at?: string;
@@ -73,7 +73,12 @@ export const createCoupon = async (
     .insert({
       code: code.toUpperCase(),
       type,
-      duration_months: type === "year_free" ? 12 : duration_months,
+      duration_months:
+        type === "year_free"
+          ? 12
+          : type === "forever_free"
+          ? null
+          : duration_months,
       max_uses,
       expires_at,
     })

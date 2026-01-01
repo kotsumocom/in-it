@@ -4,7 +4,7 @@ import { State } from "./_middleware.ts";
 interface AdminCoupon {
   id: string;
   code: string;
-  type: "year_free" | "custom";
+  type: "year_free" | "forever_free" | "custom";
   duration_months: number | null;
   max_uses: number;
   use_count: number;
@@ -69,7 +69,10 @@ export const handler: Handlers<AdminData, State> = {
 
     if (action === "create") {
       const code = formData.get("code") as string;
-      const type = formData.get("type") as "year_free" | "custom";
+      const type = formData.get("type") as
+        | "year_free"
+        | "forever_free"
+        | "custom";
       const duration_months =
         parseInt(formData.get("duration_months") as string) || null;
       const max_uses = parseInt(formData.get("max_uses") as string) || 1;
@@ -177,22 +180,25 @@ export default function AdminPage({ data }: PageProps<AdminData>) {
                 </label>
                 <select
                   name="type"
+                  id="coupon-type"
                   required
                   class="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="year_free">1年無料</option>
-                  <option value="custom">カスタム</option>
+                  <option value="forever_free">永久無料</option>
+                  <option value="custom">カスタム（期間指定）</option>
                 </select>
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">
                   無料期間（月）
+                  <span class="text-gray-400 text-xs ml-1">※カスタムのみ</span>
                 </label>
                 <input
                   type="number"
                   name="duration_months"
-                  placeholder="12"
+                  placeholder="カスタム選択時に入力"
                   class="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -264,7 +270,11 @@ export default function AdminPage({ data }: PageProps<AdminData>) {
                               : "bg-blue-100 text-blue-700"
                           }`}
                         >
-                          {coupon.type === "year_free" ? "1年無料" : "カスタム"}
+                          {coupon.type === "year_free"
+                            ? "1年無料"
+                            : coupon.type === "forever_free"
+                            ? "永久無料"
+                            : "カスタム"}
                         </span>
                       </td>
                       <td class="py-3">
