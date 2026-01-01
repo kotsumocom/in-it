@@ -22,6 +22,7 @@ import * as $profile_edit from "./routes/profile/edit.tsx";
 import * as $s_slug_ from "./routes/s/[slug].tsx";
 import * as $signup from "./routes/signup.tsx";
 import * as $spaces_id_edit from "./routes/spaces/[id]/edit.tsx";
+import * as $spaces_id_subscribe from "./routes/spaces/[id]/subscribe.tsx";
 import * as $spaces_new from "./routes/spaces/new.tsx";
 import * as $subscribe from "./routes/subscribe.tsx";
 import * as $units_id_ from "./routes/units/[id].tsx";
@@ -55,6 +56,7 @@ const manifest = {
     "./routes/s/[slug].tsx": $s_slug_,
     "./routes/signup.tsx": $signup,
     "./routes/spaces/[id]/edit.tsx": $spaces_id_edit,
+    "./routes/spaces/[id]/subscribe.tsx": $spaces_id_subscribe,
     "./routes/spaces/new.tsx": $spaces_new,
     "./routes/subscribe.tsx": $subscribe,
     "./routes/units/[id].tsx": $units_id_,
