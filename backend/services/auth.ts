@@ -16,20 +16,7 @@ export interface AuthResult {
 export interface MentorProfile {
   id: string;
   display_name: string;
-  tagline: string | null;
-  bio: string | null;
   avatar_url: string | null;
-  category_id: string | null;
-  external_links: ExternalLink[];
-  is_public: boolean;
-  slug: string | null;
-  verification_status: string;
-}
-
-export interface ExternalLink {
-  type: string;
-  url: string;
-  label: string;
 }
 
 export interface UserProfile {
@@ -160,14 +147,7 @@ export const getUser = async (
         ? {
             id: profile.id,
             display_name: profile.display_name,
-            tagline: profile.tagline,
-            bio: profile.bio,
             avatar_url: profile.avatar_url,
-            category_id: profile.category_id,
-            external_links: profile.external_links || [],
-            is_public: profile.is_public,
-            slug: profile.slug,
-            verification_status: profile.verification_status,
           }
         : null,
       subscription_status: subscription?.status || null,

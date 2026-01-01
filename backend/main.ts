@@ -8,7 +8,25 @@ import {
   stripe,
   createCheckoutSession,
 } from "./services/stripe.ts";
-import { supabaseAdmin } from "./supabase.ts";
+import {
+  createSpace,
+  getSpace,
+  getSpaceBySlug,
+  updateSpace,
+  deleteSpace,
+  getUserSpaces,
+  getPublicSpaces,
+} from "./services/spaces.ts";
+import {
+  getCategories,
+  getTags,
+  getFeaturedTags,
+  searchTags,
+  addTagsToSpace,
+  getSpaceTags,
+  removeTagFromSpace,
+} from "./services/tags.ts";
+import { supabase, supabaseAdmin } from "./supabase.ts";
 import type Stripe from "npm:stripe";
 
 const app = new Hono();
@@ -40,6 +58,17 @@ app.use("*", async (c, next) => {
 
   // Stripe Webhookはベーシック認証をスキップ
   if (c.req.path === "/api/stripe/webhook") {
+    return next();
+  }
+
+  // 公開APIはベーシック認証をスキップ
+  const publicPaths = [
+    "/api/categories",
+    "/api/tags",
+    "/api/public/spaces",
+    "/api/health",
+  ];
+  if (publicPaths.some((path) => c.req.path.startsWith(path))) {
     return next();
   }
 
@@ -99,6 +128,250 @@ app.post("/api/progress", async (c) => {
   try {
     await updateUserProgress(userId, unitId, status);
     return c.json({ success: true });
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// ===========================================
+// Categories & Tags API
+// ===========================================
+
+// カテゴリ一覧
+app.get("/api/categories", async (c) => {
+  try {
+    const result = await getCategories();
+    if (!result.success) {
+      return c.json({ error: result.error }, 500);
+    }
+    return c.json(result.categories);
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// タグ一覧（カテゴリで絞り込み可能）
+app.get("/api/tags", async (c) => {
+  try {
+    const categoryId = c.req.query("category");
+    const result = await getTags(categoryId);
+    if (!result.success) {
+      return c.json({ error: result.error }, 500);
+    }
+    return c.json(result.tags);
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// 注目タグ
+app.get("/api/tags/featured", async (c) => {
+  try {
+    const result = await getFeaturedTags();
+    if (!result.success) {
+      return c.json({ error: result.error }, 500);
+    }
+    return c.json(result.tags);
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// タグ検索
+app.get("/api/tags/search", async (c) => {
+  try {
+    const query = c.req.query("q") || "";
+    const result = await searchTags(query);
+    if (!result.success) {
+      return c.json({ error: result.error }, 500);
+    }
+    return c.json(result.tags);
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// ===========================================
+// Spaces API
+// ===========================================
+
+// 公開スペース一覧
+app.get("/api/public/spaces", async (c) => {
+  try {
+    const categoryId = c.req.query("category");
+    const limit = parseInt(c.req.query("limit") || "20");
+    const offset = parseInt(c.req.query("offset") || "0");
+    const result = await getPublicSpaces(categoryId, limit, offset);
+    if (!result.success) {
+      return c.json({ error: result.error }, 500);
+    }
+    return c.json(result.spaces);
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// スペース公開ページ（slugで取得）
+app.get("/api/public/spaces/:slug", async (c) => {
+  try {
+    const slug = c.req.param("slug");
+    const result = await getSpaceBySlug(slug);
+    if (!result.success) {
+      return c.json({ error: result.error }, 404);
+    }
+    return c.json(result.space);
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// ユーザーのスペース一覧
+app.get("/api/users/:userId/spaces", async (c) => {
+  try {
+    const userId = c.req.param("userId");
+    const result = await getUserSpaces(userId);
+    if (!result.success) {
+      return c.json({ error: result.error }, 500);
+    }
+    return c.json(result.spaces);
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// スペース作成
+app.post("/api/spaces", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const body = await c.req.json();
+    const result = await createSpace(user.id, body);
+    if (!result.success) {
+      return c.json({ error: result.error }, 400);
+    }
+    return c.json(result.space, 201);
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// スペース取得
+app.get("/api/spaces/:id", async (c) => {
+  try {
+    const spaceId = c.req.param("id");
+    const result = await getSpace(spaceId);
+    if (!result.success) {
+      return c.json({ error: result.error }, 404);
+    }
+    return c.json(result.space);
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// スペース更新
+app.put("/api/spaces/:id", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const spaceId = c.req.param("id");
+    const body = await c.req.json();
+    const result = await updateSpace(spaceId, user.id, body);
+    if (!result.success) {
+      return c.json({ error: result.error }, 400);
+    }
+    return c.json(result.space);
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// スペース削除
+app.delete("/api/spaces/:id", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const spaceId = c.req.param("id");
+    const result = await deleteSpace(spaceId, user.id);
+    if (!result.success) {
+      return c.json({ error: result.error }, 400);
+    }
+    return c.json({ success: true });
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// スペースのタグを更新
+app.post("/api/spaces/:id/tags", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const spaceId = c.req.param("id");
+    const { tagIds } = await c.req.json();
+    const result = await addTagsToSpace(spaceId, user.id, tagIds || []);
+    if (!result.success) {
+      return c.json({ error: result.error }, 400);
+    }
+    return c.json({ success: true });
+  } catch (e) {
+    return c.json({ error: e.message }, 500);
+  }
+});
+
+// スペースのタグを取得
+app.get("/api/spaces/:id/tags", async (c) => {
+  try {
+    const spaceId = c.req.param("id");
+    const result = await getSpaceTags(spaceId);
+    if (!result.success) {
+      return c.json({ error: result.error }, 500);
+    }
+    return c.json(result.tags);
   } catch (e) {
     return c.json({ error: e.message }, 500);
   }

@@ -16,11 +16,15 @@ import * as $map_index from "./routes/map/index.tsx";
 import * as $mentors_slug_ from "./routes/mentors/[slug].tsx";
 import * as $mentors_index from "./routes/mentors/index.tsx";
 import * as $profile_edit from "./routes/profile/edit.tsx";
+import * as $s_slug_ from "./routes/s/[slug].tsx";
 import * as $signup from "./routes/signup.tsx";
+import * as $spaces_id_edit from "./routes/spaces/[id]/edit.tsx";
+import * as $spaces_new from "./routes/spaces/new.tsx";
 import * as $subscribe from "./routes/subscribe.tsx";
 import * as $units_id_ from "./routes/units/[id].tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $ProgressButton from "./islands/ProgressButton.tsx";
+import * as $SpaceForm from "./islands/SpaceForm.tsx";
 import * as $UnitNode from "./islands/UnitNode.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
@@ -40,13 +44,17 @@ const manifest = {
     "./routes/mentors/[slug].tsx": $mentors_slug_,
     "./routes/mentors/index.tsx": $mentors_index,
     "./routes/profile/edit.tsx": $profile_edit,
+    "./routes/s/[slug].tsx": $s_slug_,
     "./routes/signup.tsx": $signup,
+    "./routes/spaces/[id]/edit.tsx": $spaces_id_edit,
+    "./routes/spaces/new.tsx": $spaces_new,
     "./routes/subscribe.tsx": $subscribe,
     "./routes/units/[id].tsx": $units_id_,
   },
   islands: {
     "./islands/Counter.tsx": $Counter,
     "./islands/ProgressButton.tsx": $ProgressButton,
+    "./islands/SpaceForm.tsx": $SpaceForm,
     "./islands/UnitNode.tsx": $UnitNode,
   },
   baseUrl: import.meta.url,
