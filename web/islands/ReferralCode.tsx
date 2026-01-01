@@ -2,9 +2,10 @@ import { useState } from "preact/hooks";
 
 interface ReferralCodeProps {
   code: string;
+  baseUrl: string;
 }
 
-export default function ReferralCode({ code }: ReferralCodeProps) {
+export default function ReferralCode({ code, baseUrl }: ReferralCodeProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -25,7 +26,7 @@ export default function ReferralCode({ code }: ReferralCodeProps) {
     }
   };
 
-  const shareUrl = `https://in-it.ooo/signup?ref=${code}`;
+  const shareUrl = `${baseUrl}/signup?ref=${code}`;
 
   const handleShare = async () => {
     if (navigator.share) {

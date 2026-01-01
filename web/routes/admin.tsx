@@ -28,13 +28,12 @@ export const handler: Handlers<AdminData, State> = {
     if (!user) {
       return new Response(null, {
         status: 302,
-        headers: { Location: "/login" },
+        headers: { Location: "/admin/login" },
       });
     }
 
-    // TODO: 管理者権限チェック（簡易的にメールアドレスで判定）
-    const adminEmails = ["admin@in-it.ooo", "oscarw@gmail.com"];
-    if (!adminEmails.includes(user.email || "")) {
+    // 管理者権限チェック（is_admin フラグで判定）
+    if (!user.is_admin) {
       return new Response(null, {
         status: 302,
         headers: { Location: "/dashboard" },

@@ -17,6 +17,7 @@ export interface MentorProfile {
   id: string;
   display_name: string;
   avatar_url: string | null;
+  is_admin: boolean;
 }
 
 export interface UserProfile {
@@ -24,6 +25,7 @@ export interface UserProfile {
   email: string;
   mentor_profile: MentorProfile | null;
   subscription_status: string | null;
+  is_admin: boolean;
 }
 
 /**
@@ -148,9 +150,11 @@ export const getUser = async (
             id: profile.id,
             display_name: profile.display_name,
             avatar_url: profile.avatar_url,
+            is_admin: profile.is_admin || false,
           }
         : null,
       subscription_status: subscription?.status || null,
+      is_admin: profile?.is_admin || false,
     },
   };
 };
