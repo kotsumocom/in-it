@@ -353,6 +353,83 @@ app.post("/api/profile/avatar", async (c) => {
 });
 
 // ===========================================
+// Space Image Upload API
+// ===========================================
+
+// スペース画像アップロード（サムネイル・エディタ内画像共通）
+app.post("/api/spaces/upload-image", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const formData = await c.req.formData();
+    const file = formData.get("file") as File | null;
+    const spaceId = formData.get("spaceId")?.toString() || "temp";
+    const imageType = formData.get("type")?.toString() || "content"; // "thumbnail" or "content"
+
+    if (!file) {
+      return c.json({ error: "ファイルがありません" }, 400);
+    }
+
+    // ファイルサイズチェック (10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      return c.json({ error: "ファイルサイズは10MB以下にしてください" }, 400);
+    }
+
+    // ファイルタイプチェック
+    if (!file.type.startsWith("image/")) {
+      return c.json({ error: "画像ファイルを選択してください" }, 400);
+    }
+
+    const fileExt = file.name.split(".").pop() || "png";
+    const timestamp = Date.now();
+    const fileName = `${user.id}/${spaceId}/${imageType}-${timestamp}.${fileExt}`;
+    const arrayBuffer = await file.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
+
+    // Supabase Storage にアップロード
+    const { error: uploadError } = await supabaseAdmin.storage
+      .from("spaces")
+      .upload(fileName, uint8Array, {
+        contentType: file.type,
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error("Upload error:", uploadError);
+      return c.json(
+        { error: "アップロードに失敗しました: " + uploadError.message },
+        400
+      );
+    }
+
+    // 公開 URL を取得
+    const { data: urlData } = supabaseAdmin.storage
+      .from("spaces")
+      .getPublicUrl(fileName);
+
+    return c.json({
+      success: 1, // Editor.js 形式
+      file: {
+        url: urlData.publicUrl,
+      },
+    });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// ===========================================
 // Spaces API
 // ===========================================
 

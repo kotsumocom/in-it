@@ -40,3 +40,31 @@ USING (
   bucket_id = 'avatars' 
   AND auth.uid()::text = (storage.foldername(name))[1]
 );
+
+-- =============================================
+-- スペース画像用 Storage バケット
+-- =============================================
+
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('spaces', 'spaces', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- 誰でも読める
+CREATE POLICY "Public Space Image Access"
+ON storage.objects FOR SELECT
+USING (bucket_id = 'spaces');
+
+-- 認証済みユーザーは自分のスペースフォルダにアップロード可能
+CREATE POLICY "Users can upload space images"
+ON storage.objects FOR INSERT
+WITH CHECK (bucket_id = 'spaces');
+
+-- 認証済みユーザーはスペース画像を更新可能
+CREATE POLICY "Users can update space images"
+ON storage.objects FOR UPDATE
+USING (bucket_id = 'spaces');
+
+-- 認証済みユーザーはスペース画像を削除可能
+CREATE POLICY "Users can delete space images"
+ON storage.objects FOR DELETE
+USING (bucket_id = 'spaces');

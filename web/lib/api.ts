@@ -184,6 +184,7 @@ export interface SpaceFormData {
   external_links?: { label: string; url: string }[];
   is_public?: boolean;
   slug?: string;
+  thumbnail_url?: string;
 }
 
 /**

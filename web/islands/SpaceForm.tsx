@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "preact/hooks";
 import type { Category, Tag, SpaceFormData } from "../lib/api.ts";
+import BlockEditor from "./BlockEditor.tsx";
 
 const API_URL = "https://be.in-it.ooo";
 
@@ -36,8 +37,13 @@ export default function SpaceForm({
   );
   const [slug, setSlug] = useState(initialData.slug || "");
   const [isPublic, setIsPublic] = useState(initialData.is_public || false);
+  const [thumbnailUrl, setThumbnailUrl] = useState(
+    initialData.thumbnail_url || ""
+  );
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploadingThumbnail, setIsUploadingThumbnail] = useState(false);
+  const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
   // タグ検索・入力用
   const [tagSearch, setTagSearch] = useState("");
@@ -131,6 +137,7 @@ export default function SpaceForm({
         instagram_url: instagramUrl.trim() || undefined,
         slug: slug.trim() || undefined,
         is_public: isPublic,
+        thumbnail_url: thumbnailUrl.trim() || undefined,
       };
 
       let resultSpace;
@@ -381,16 +388,80 @@ export default function SpaceForm({
         </p>
       </div>
 
-      {/* 説明 */}
+      {/* サムネイル画像 */}
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          サムネイル画像
+        </label>
+        <div class="flex items-center gap-4">
+          {thumbnailUrl ? (
+            <img
+              src={thumbnailUrl}
+              alt="サムネイル"
+              class="w-32 h-20 object-cover border border-gray-200"
+            />
+          ) : (
+            <div class="w-32 h-20 bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400">
+              <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+              </svg>
+            </div>
+          )}
+          <div>
+            <input
+              ref={thumbnailInputRef}
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                const file = (e.target as HTMLInputElement).files?.[0];
+                if (!file || !accessToken) return;
+                setIsUploadingThumbnail(true);
+                try {
+                  const formData = new FormData();
+                  formData.append("file", file);
+                  formData.append("spaceId", spaceId || "temp");
+                  formData.append("type", "thumbnail");
+                  const res = await fetch(
+                    `${API_URL}/api/spaces/upload-image`,
+                    {
+                      method: "POST",
+                      headers: { Authorization: `Bearer ${accessToken}` },
+                      body: formData,
+                    }
+                  );
+                  const data = await res.json();
+                  if (data.file?.url) {
+                    setThumbnailUrl(data.file.url);
+                  }
+                } catch (err) {
+                  console.error("Thumbnail upload error:", err);
+                } finally {
+                  setIsUploadingThumbnail(false);
+                }
+              }}
+              class="hidden"
+            />
+            <button
+              type="button"
+              onClick={() => thumbnailInputRef.current?.click()}
+              disabled={isUploadingThumbnail}
+              class="px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            >
+              {isUploadingThumbnail ? "アップロード中..." : "画像を選択"}
+            </button>
+            <p class="mt-1 text-xs text-gray-500">推奨: 16:10 比率</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 説明（ブロックエディタ） */}
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">説明</label>
-        <textarea
-          value={description}
-          onInput={(e) =>
-            setDescription((e.target as HTMLTextAreaElement).value)
-          }
-          class="w-full px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none min-h-32"
-          placeholder="スペースの説明を入力してください"
+        <BlockEditor
+          initialData={description}
+          accessToken={accessToken || ""}
+          spaceId={spaceId}
+          onChange={(data) => setDescription(data)}
         />
       </div>
 
