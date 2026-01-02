@@ -1,6 +1,12 @@
-import { useState, useRef } from "preact/hooks";
+import { useState, useRef, useEffect } from "preact/hooks";
 
 const API_URL = "https://be.in-it.ooo";
+
+// Cropper.js CDN URLs
+const CROPPER_JS_URL =
+  "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js";
+const CROPPER_CSS_URL =
+  "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css";
 
 interface AvatarUploaderProps {
   accessToken: string;
@@ -8,6 +14,9 @@ interface AvatarUploaderProps {
   currentAvatarUrl: string | null;
   onUploadComplete: (url: string) => void;
 }
+
+// deno-lint-ignore no-explicit-any
+declare const Cropper: any;
 
 export default function AvatarUploader({
   accessToken,
@@ -20,12 +29,81 @@ export default function AvatarUploader({
   const [error, setError] = useState<string | null>(null);
   const [showCropper, setShowCropper] = useState(false);
   const [originalImage, setOriginalImage] = useState<string | null>(null);
+  const [cropperLoaded, setCropperLoaded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-  const [cropPosition, setCropPosition] = useState({ x: 0, y: 0, size: 200 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  // deno-lint-ignore no-explicit-any
+  const cropperRef = useRef<any>(null);
+
+  // Cropper.js の動的読み込み
+  useEffect(() => {
+    if (typeof window !== "undefined" && !cropperLoaded) {
+      // CSS 読み込み
+      if (!document.querySelector(`link[href="${CROPPER_CSS_URL}"]`)) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = CROPPER_CSS_URL;
+        document.head.appendChild(link);
+      }
+
+      // JS 読み込み
+      if (!document.querySelector(`script[src="${CROPPER_JS_URL}"]`)) {
+        const script = document.createElement("script");
+        script.src = CROPPER_JS_URL;
+        script.onload = () => setCropperLoaded(true);
+        document.body.appendChild(script);
+      } else if (typeof Cropper !== "undefined") {
+        setCropperLoaded(true);
+      }
+    }
+  }, []);
+
+  // Cropper インスタンスの初期化
+  useEffect(() => {
+    if (
+      showCropper &&
+      cropperLoaded &&
+      imageRef.current &&
+      !cropperRef.current
+    ) {
+      cropperRef.current = new Cropper(imageRef.current, {
+        aspectRatio: 1,
+        viewMode: 1,
+        dragMode: "move",
+        cropBoxResizable: true,
+        cropBoxMovable: true,
+        minCropBoxWidth: 100,
+        minCropBoxHeight: 100,
+        background: false,
+        guides: false,
+        center: true,
+        highlight: false,
+        ready() {
+          // 円形プレビュー用のスタイルを適用
+          const cropBox = document.querySelector(".cropper-crop-box");
+          if (cropBox) {
+            (cropBox as HTMLElement).style.borderRadius = "50%";
+          }
+          const viewBox = document.querySelector(".cropper-view-box");
+          if (viewBox) {
+            (viewBox as HTMLElement).style.borderRadius = "50%";
+            (viewBox as HTMLElement).style.outline = "none";
+          }
+          const face = document.querySelector(".cropper-face");
+          if (face) {
+            (face as HTMLElement).style.borderRadius = "50%";
+          }
+        },
+      });
+    }
+
+    return () => {
+      if (cropperRef.current) {
+        cropperRef.current.destroy();
+        cropperRef.current = null;
+      }
+    };
+  }, [showCropper, cropperLoaded, originalImage]);
 
   const handleFileSelect = (e: Event) => {
     const input = e.target as HTMLInputElement;
@@ -51,86 +129,36 @@ export default function AvatarUploader({
     reader.readAsDataURL(file);
   };
 
-  const handleImageLoad = () => {
-    if (imageRef.current) {
-      const img = imageRef.current;
-      const minDim = Math.min(img.naturalWidth, img.naturalHeight);
-      const size = Math.min(minDim, 300);
-      setCropPosition({
-        x: (img.naturalWidth - size) / 2,
-        y: (img.naturalHeight - size) / 2,
-        size,
-      });
-    }
-  };
-
-  const handleMouseDown = (e: MouseEvent) => {
-    setIsDragging(true);
-    setDragStart({
-      x: e.clientX - cropPosition.x,
-      y: e.clientY - cropPosition.y,
-    });
-  };
-
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isDragging || !imageRef.current) return;
-    const img = imageRef.current;
-    const newX = Math.max(
-      0,
-      Math.min(e.clientX - dragStart.x, img.naturalWidth - cropPosition.size)
-    );
-    const newY = Math.max(
-      0,
-      Math.min(e.clientY - dragStart.y, img.naturalHeight - cropPosition.size)
-    );
-    setCropPosition({ ...cropPosition, x: newX, y: newY });
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
   const cropAndUpload = async () => {
-    if (!originalImage || !canvasRef.current) return;
+    if (!cropperRef.current) return;
 
     setIsUploading(true);
     setError(null);
 
     try {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
+      // 円形にクロップした画像を取得
+      const canvas = cropperRef.current.getCroppedCanvas({
+        width: 256,
+        height: 256,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: "high",
+      });
+
+      // 円形マスクを適用
+      const circularCanvas = document.createElement("canvas");
+      circularCanvas.width = 256;
+      circularCanvas.height = 256;
+      const ctx = circularCanvas.getContext("2d");
       if (!ctx) throw new Error("Canvas context error");
 
-      const img = new Image();
-      img.src = originalImage;
-      await new Promise((resolve) => (img.onload = resolve));
-
-      // 出力サイズ
-      const outputSize = 256;
-      canvas.width = outputSize;
-      canvas.height = outputSize;
-
-      // 円形クリッピング
       ctx.beginPath();
-      ctx.arc(outputSize / 2, outputSize / 2, outputSize / 2, 0, Math.PI * 2);
+      ctx.arc(128, 128, 128, 0, Math.PI * 2);
       ctx.clip();
-
-      // 画像描画
-      ctx.drawImage(
-        img,
-        cropPosition.x,
-        cropPosition.y,
-        cropPosition.size,
-        cropPosition.size,
-        0,
-        0,
-        outputSize,
-        outputSize
-      );
+      ctx.drawImage(canvas, 0, 0, 256, 256);
 
       // Blob 変換
       const blob = await new Promise<Blob>((resolve, reject) => {
-        canvas.toBlob(
+        circularCanvas.toBlob(
           (b) => (b ? resolve(b) : reject(new Error("Blob error"))),
           "image/png"
         );
@@ -168,6 +196,10 @@ export default function AvatarUploader({
   const cancelCrop = () => {
     setShowCropper(false);
     setOriginalImage(null);
+    if (cropperRef.current) {
+      cropperRef.current.destroy();
+      cropperRef.current = null;
+    }
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -224,52 +256,20 @@ export default function AvatarUploader({
       {/* クロップモーダル */}
       {showCropper && originalImage && (
         <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div class="bg-white p-6 max-w-md w-full mx-4">
+          <div class="bg-white p-6 max-w-lg w-full mx-4">
             <h3 class="text-lg font-bold mb-4">画像を調整</h3>
 
-            <div
-              class="relative overflow-hidden mb-4 bg-gray-100"
-              style={{ maxHeight: "300px" }}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-            >
+            <div class="mb-4" style={{ maxHeight: "400px" }}>
               <img
                 ref={imageRef}
                 src={originalImage}
-                onLoad={handleImageLoad}
-                class="max-w-full"
-                style={{ maxHeight: "300px" }}
-              />
-              {/* 円形プレビュー枠 */}
-              <div
-                class="absolute border-4 border-blue-500 rounded-full cursor-move"
-                style={{
-                  left: `${
-                    (cropPosition.x / (imageRef.current?.naturalWidth || 1)) *
-                    100
-                  }%`,
-                  top: `${
-                    (cropPosition.y / (imageRef.current?.naturalHeight || 1)) *
-                    100
-                  }%`,
-                  width: `${
-                    (cropPosition.size /
-                      (imageRef.current?.naturalWidth || 1)) *
-                    100
-                  }%`,
-                  height: `${
-                    (cropPosition.size /
-                      (imageRef.current?.naturalHeight || 1)) *
-                    100
-                  }%`,
-                }}
-                onMouseDown={handleMouseDown}
+                alt="クロップ対象"
+                style={{ maxWidth: "100%", display: "block" }}
               />
             </div>
 
             <p class="text-sm text-gray-500 mb-4">
-              円形の枠をドラッグして位置を調整してください
+              ドラッグして位置を調整、枠をドラッグしてサイズを変更できます
             </p>
 
             <div class="flex gap-3">
@@ -283,7 +283,7 @@ export default function AvatarUploader({
               <button
                 type="button"
                 onClick={cropAndUpload}
-                disabled={isUploading}
+                disabled={isUploading || !cropperLoaded}
                 class="flex-1 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
               >
                 {isUploading ? "アップロード中..." : "この画像を使用"}
@@ -292,9 +292,6 @@ export default function AvatarUploader({
           </div>
         </div>
       )}
-
-      {/* 隠しキャンバス */}
-      <canvas ref={canvasRef} class="hidden" />
     </div>
   );
 }
