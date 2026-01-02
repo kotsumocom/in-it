@@ -233,7 +233,7 @@ export default function AvatarUploader({
           )}
         </div>
 
-        {/* アップロードボタン */}
+        {/* アップロード・削除ボタン */}
         <div>
           <input
             ref={fileInputRef}
@@ -242,13 +242,39 @@ export default function AvatarUploader({
             onChange={handleFileSelect}
             class="hidden"
           />
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            class="px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
-          >
-            画像を選択
-          </button>
+          <div class="flex gap-2">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              class="px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+              画像を選択
+            </button>
+            {previewUrl && (
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    const res = await fetch(`${API_URL}/api/profile/avatar`, {
+                      method: "DELETE",
+                      headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                      },
+                    });
+                    if (res.ok) {
+                      setPreviewUrl(null);
+                      onUploadComplete("");
+                    }
+                  } catch (err) {
+                    console.error("Delete error:", err);
+                  }
+                }}
+                class="px-4 py-2 border border-red-300 text-red-600 hover:bg-red-50 transition-colors"
+              >
+                削除
+              </button>
+            )}
+          </div>
           <p class="mt-1 text-xs text-gray-500">5MB以下の画像ファイル</p>
         </div>
       </div>

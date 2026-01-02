@@ -352,6 +352,39 @@ app.post("/api/profile/avatar", async (c) => {
   }
 });
 
+// プロフィール画像削除
+app.delete("/api/profile/avatar", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    // Storage から削除（エラーは無視）
+    await supabaseAdmin.storage
+      .from("avatars")
+      .remove([`${user.id}/avatar.png`]);
+
+    // プロフィールの avatar_url を null に
+    await supabaseAdmin
+      .from("mentor_profiles")
+      .update({ avatar_url: null })
+      .eq("id", user.id);
+
+    return c.json({ success: true });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
 // ===========================================
 // Space Image Upload API
 // ===========================================

@@ -441,14 +441,25 @@ export default function SpaceForm({
               }}
               class="hidden"
             />
-            <button
-              type="button"
-              onClick={() => thumbnailInputRef.current?.click()}
-              disabled={isUploadingThumbnail}
-              class="px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-            >
-              {isUploadingThumbnail ? "アップロード中..." : "画像を選択"}
-            </button>
+            <div class="flex gap-2">
+              <button
+                type="button"
+                onClick={() => thumbnailInputRef.current?.click()}
+                disabled={isUploadingThumbnail}
+                class="px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+              >
+                {isUploadingThumbnail ? "アップロード中..." : "画像を選択"}
+              </button>
+              {thumbnailUrl && (
+                <button
+                  type="button"
+                  onClick={() => setThumbnailUrl("")}
+                  class="px-4 py-2 border border-red-300 text-red-600 hover:bg-red-50"
+                >
+                  削除
+                </button>
+              )}
+            </div>
             <p class="mt-1 text-xs text-gray-500">推奨: 16:10 比率</p>
           </div>
         </div>
