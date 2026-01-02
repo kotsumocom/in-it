@@ -11,13 +11,13 @@ INSERT INTO storage.buckets (id, name, public)
 VALUES ('avatars', 'avatars', true)
 ON CONFLICT (id) DO NOTHING;
 
--- RLS ポリシー
--- 誰でも読める
+-- RLS ポリシー（既存削除してから作成）
+DROP POLICY IF EXISTS "Public Avatar Access" ON storage.objects;
 CREATE POLICY "Public Avatar Access"
 ON storage.objects FOR SELECT
 USING (bucket_id = 'avatars');
 
--- 認証済みユーザーは自分のフォルダにアップロード可能
+DROP POLICY IF EXISTS "Users can upload own avatar" ON storage.objects;
 CREATE POLICY "Users can upload own avatar"
 ON storage.objects FOR INSERT
 WITH CHECK (
@@ -25,7 +25,7 @@ WITH CHECK (
   AND auth.uid()::text = (storage.foldername(name))[1]
 );
 
--- 認証済みユーザーは自分のアバターを更新可能
+DROP POLICY IF EXISTS "Users can update own avatar" ON storage.objects;
 CREATE POLICY "Users can update own avatar"
 ON storage.objects FOR UPDATE
 USING (
@@ -33,7 +33,7 @@ USING (
   AND auth.uid()::text = (storage.foldername(name))[1]
 );
 
--- 認証済みユーザーは自分のアバターを削除可能
+DROP POLICY IF EXISTS "Users can delete own avatar" ON storage.objects;
 CREATE POLICY "Users can delete own avatar"
 ON storage.objects FOR DELETE
 USING (
@@ -49,22 +49,22 @@ INSERT INTO storage.buckets (id, name, public)
 VALUES ('spaces', 'spaces', true)
 ON CONFLICT (id) DO NOTHING;
 
--- 誰でも読める
+DROP POLICY IF EXISTS "Public Space Image Access" ON storage.objects;
 CREATE POLICY "Public Space Image Access"
 ON storage.objects FOR SELECT
 USING (bucket_id = 'spaces');
 
--- 認証済みユーザーは自分のスペースフォルダにアップロード可能
+DROP POLICY IF EXISTS "Users can upload space images" ON storage.objects;
 CREATE POLICY "Users can upload space images"
 ON storage.objects FOR INSERT
 WITH CHECK (bucket_id = 'spaces');
 
--- 認証済みユーザーはスペース画像を更新可能
+DROP POLICY IF EXISTS "Users can update space images" ON storage.objects;
 CREATE POLICY "Users can update space images"
 ON storage.objects FOR UPDATE
 USING (bucket_id = 'spaces');
 
--- 認証済みユーザーはスペース画像を削除可能
+DROP POLICY IF EXISTS "Users can delete space images" ON storage.objects;
 CREATE POLICY "Users can delete space images"
 ON storage.objects FOR DELETE
 USING (bucket_id = 'spaces');
