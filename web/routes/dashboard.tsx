@@ -57,9 +57,25 @@ export default function Dashboard({ data }: PageProps<DashboardData>) {
 
       <div class="max-w-3xl mx-auto py-12 px-4">
         <div class="flex items-center justify-between mb-8">
-          <h1 class="text-2xl font-bold text-gray-900">
-            👋 {profile?.display_name || "メンター"} さん
-          </h1>
+          <div class="flex items-center gap-4">
+            {/* プロフィール画像 */}
+            {profile?.avatar_url ? (
+              <img
+                src={profile.avatar_url}
+                alt={profile.display_name || "アバター"}
+                class="w-14 h-14 rounded-full object-cover border-2 border-gray-200"
+              />
+            ) : (
+              <div class="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+                <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                </svg>
+              </div>
+            )}
+            <h1 class="text-2xl font-bold text-gray-900">
+              👋 {profile?.display_name || "メンター"} さん
+            </h1>
+          </div>
           <a
             href="/profile/edit"
             class="text-blue-600 hover:text-blue-700 text-sm"

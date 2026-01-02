@@ -1,15 +1,22 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { supabase } from "@in-it/backend/supabase.ts";
 import { State } from "../_middleware.ts";
+import AvatarUploader from "../../islands/AvatarUploader.tsx";
 
 interface ProfileEditData {
   user: State["user"];
+  accessToken: string | null;
   error?: string;
   success?: boolean;
 }
 
+function getCookie(cookies: string, name: string): string | null {
+  const match = cookies.match(new RegExp(`(^| )${name}=([^;]+)`));
+  return match ? match[2] : null;
+}
+
 export const handler: Handlers<ProfileEditData, State> = {
-  async GET(_req, ctx) {
+  async GET(req, ctx) {
     if (!ctx.state.user) {
       return new Response(null, {
         status: 303,
@@ -17,8 +24,12 @@ export const handler: Handlers<ProfileEditData, State> = {
       });
     }
 
+    const cookies = req.headers.get("cookie") || "";
+    const accessToken = getCookie(cookies, "access_token");
+
     return ctx.render({
       user: ctx.state.user,
+      accessToken,
     });
   },
 
@@ -35,10 +46,14 @@ export const handler: Handlers<ProfileEditData, State> = {
     const tagline = form.get("tagline")?.toString() || "";
     const bio = form.get("bio")?.toString() || "";
 
+    const cookies = req.headers.get("cookie") || "";
+    const accessToken = getCookie(cookies, "access_token");
+
     // バリデーション
     if (!displayName) {
       return ctx.render({
         user: ctx.state.user,
+        accessToken,
         error: "表示名は必須です",
       });
     }
@@ -56,6 +71,7 @@ export const handler: Handlers<ProfileEditData, State> = {
     if (error) {
       return ctx.render({
         user: ctx.state.user,
+        accessToken,
         error: "保存に失敗しました: " + error.message,
       });
     }
@@ -69,7 +85,7 @@ export const handler: Handlers<ProfileEditData, State> = {
 };
 
 export default function ProfileEdit({ data }: PageProps<ProfileEditData>) {
-  const { user, error } = data;
+  const { user, accessToken, error } = data;
   const profile = user?.mentor_profile;
 
   return (
@@ -93,6 +109,24 @@ export default function ProfileEdit({ data }: PageProps<ProfileEditData>) {
           <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700">
             {error}
           </div>
+        )}
+
+        {/* プロフィール画像（Island） */}
+        {accessToken && user && (
+          <section class="p-6 bg-white border border-gray-200 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4">
+              プロフィール画像
+            </h2>
+            <AvatarUploader
+              accessToken={accessToken}
+              userId={user.id}
+              currentAvatarUrl={profile?.avatar_url || null}
+              onUploadComplete={() => {
+                // ページをリロードして最新の画像を表示
+                globalThis.location.reload();
+              }}
+            />
+          </section>
         )}
 
         <form method="POST" class="space-y-8">

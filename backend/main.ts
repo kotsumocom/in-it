@@ -274,6 +274,84 @@ app.put("/api/profile", async (c) => {
   }
 });
 
+// プロフィール画像アップロード
+app.post("/api/profile/avatar", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const formData = await c.req.formData();
+    const file = formData.get("file") as File | null;
+
+    if (!file) {
+      return c.json({ error: "ファイルがありません" }, 400);
+    }
+
+    // ファイルサイズチェック (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      return c.json({ error: "ファイルサイズは5MB以下にしてください" }, 400);
+    }
+
+    // ファイルタイプチェック
+    if (!file.type.startsWith("image/")) {
+      return c.json({ error: "画像ファイルを選択してください" }, 400);
+    }
+
+    const fileExt = file.name.split(".").pop() || "png";
+    const fileName = `${user.id}/avatar.${fileExt}`;
+    const arrayBuffer = await file.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
+
+    // Supabase Storage にアップロード
+    const { error: uploadError } = await supabaseAdmin.storage
+      .from("avatars")
+      .upload(fileName, uint8Array, {
+        contentType: file.type,
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error("Upload error:", uploadError);
+      return c.json(
+        { error: "アップロードに失敗しました: " + uploadError.message },
+        400
+      );
+    }
+
+    // 公開 URL を取得
+    const { data: urlData } = supabaseAdmin.storage
+      .from("avatars")
+      .getPublicUrl(fileName);
+
+    // キャッシュバスティング用のタイムスタンプを追加
+    const avatarUrl = `${urlData.publicUrl}?t=${Date.now()}`;
+
+    // プロフィールを更新
+    const { error: updateError } = await supabaseAdmin
+      .from("mentor_profiles")
+      .update({ avatar_url: avatarUrl })
+      .eq("id", user.id);
+
+    if (updateError) {
+      return c.json({ error: "プロフィール更新に失敗しました" }, 400);
+    }
+
+    return c.json({ avatar_url: avatarUrl });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
 // ===========================================
 // Spaces API
 // ===========================================
