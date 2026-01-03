@@ -20,7 +20,7 @@ export default function LandingPage({ data }: PageProps<LPData>) {
       <header class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <a href="/" class="flex items-center">
-            <img src="/type.svg" alt="in-it" class="h-8" />
+            <img src="/type.svg" alt="イニット" class="h-8" />
           </a>
           <nav class="flex items-center gap-4">
             <a href="/mentors" class="text-gray-600 hover:text-gray-900">
@@ -49,7 +49,7 @@ export default function LandingPage({ data }: PageProps<LPData>) {
       <section class="pt-32 pb-20 px-4">
         <div class="max-w-3xl mx-auto text-center">
           <div class="flex justify-center mb-6">
-            <img src="/type.svg" alt="in-it" class="h-16" />
+            <img src="/type.svg" alt="イニット" class="h-16" />
           </div>
           <p class="text-xl md:text-2xl text-gray-700 mb-4">
             手数料ゼロ・直接契約OKの
@@ -93,7 +93,7 @@ export default function LandingPage({ data }: PageProps<LPData>) {
       <section class="py-16 px-4">
         <div class="max-w-4xl mx-auto">
           <h2 class="text-2xl font-bold text-gray-900 mb-10 text-center">
-            in-it なら、すべて解決。
+            イニットなら、すべて解決。
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
@@ -200,7 +200,7 @@ export default function LandingPage({ data }: PageProps<LPData>) {
       {/* フッター */}
       <footer class="py-12 px-4 bg-gray-900 text-gray-400">
         <div class="max-w-4xl mx-auto">
-          <p class="text-xl font-bold text-white mb-6">in-it</p>
+          <img src="/type.svg" alt="イニット" class="h-6 mb-6" />
           <div class="flex flex-wrap gap-6 mb-8">
             <a href="/terms" class="hover:text-white">
               利用規約
@@ -211,11 +211,16 @@ export default function LandingPage({ data }: PageProps<LPData>) {
             <a href="/legal" class="hover:text-white">
               特定商取引法に基づく表記
             </a>
-            <a href="/contact" class="hover:text-white">
+            <a
+              href="https://forms.gle/6PkZAk7AdMu52qGUA"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-white"
+            >
               お問い合わせ
             </a>
           </div>
-          <p class="text-sm">© 2025 in-it</p>
+          <p class="text-sm">© 2025 コツモ</p>
         </div>
       </footer>
     </div>

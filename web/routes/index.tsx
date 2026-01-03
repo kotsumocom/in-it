@@ -73,7 +73,7 @@ export default function Home({ data }: PageProps<HomeData>) {
       <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <a href="/" class="flex items-center">
-            <img src="/type.svg" alt="in-it" class="h-8" />
+            <img src="/type.svg" alt="イニット" class="h-8" />
           </a>
           <nav class="flex items-center gap-4">
             <a href="/lp" class="text-gray-600 hover:text-gray-900 text-sm">
@@ -306,7 +306,7 @@ export default function Home({ data }: PageProps<HomeData>) {
         <div class="max-w-6xl mx-auto">
           <div class="flex flex-wrap justify-between items-start gap-8 mb-8">
             <div>
-              <img src="/type.svg" alt="in-it" class="h-6 mb-2" />
+              <img src="/type.svg" alt="イニット" class="h-6 mb-2" />
               <p class="text-sm">手数料ゼロのメンタープラットフォーム</p>
             </div>
             <div class="flex flex-wrap gap-6">
@@ -319,7 +319,12 @@ export default function Home({ data }: PageProps<HomeData>) {
               <a href="/privacy" class="hover:text-white">
                 プライバシーポリシー
               </a>
-              <a href="/contact" class="hover:text-white">
+              <a
+                href="https://forms.gle/6PkZAk7AdMu52qGUA"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-white"
+              >
                 お問い合わせ
               </a>
             </div>

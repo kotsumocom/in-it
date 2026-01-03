@@ -48,7 +48,7 @@ export default function Login({ data }: PageProps<LoginData>) {
       <header class="bg-white border-b border-gray-200">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center">
           <a href="/" class="flex items-center">
-            <img src="/type.svg" alt="in-it" class="h-8" />
+            <img src="/type.svg" alt="イニット" class="h-8" />
           </a>
         </div>
       </header>
@@ -56,7 +56,7 @@ export default function Login({ data }: PageProps<LoginData>) {
       <div class="flex items-center justify-center py-12 px-4">
         <div class="max-w-md w-full">
           <div class="text-center mb-8">
-            <img src="/type.svg" alt="in-it" class="h-12 mx-auto mb-4" />
+            <img src="/type.svg" alt="イニット" class="h-12 mx-auto mb-4" />
             <p class="text-gray-600">メンター向けログイン</p>
           </div>
 

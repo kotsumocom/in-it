@@ -27,8 +27,8 @@ export default function Privacy({ data }: PageProps<PrivacyData>) {
       <header class="bg-white border-b border-gray-200">
         <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <a href="/" class="flex items-center gap-2">
-            <img src="/symbol.svg" alt="in-it" class="h-8" />
-            <img src="/type.svg" alt="in-it" class="h-5" />
+            <img src="/symbol.svg" alt="イニット" class="h-8" />
+            <img src="/type.svg" alt="イニット" class="h-5" />
           </a>
         </div>
       </header>

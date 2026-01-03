@@ -130,7 +130,7 @@ export default function AdminPage({ data }: PageProps<AdminData>) {
       <header class="bg-white border-b border-gray-200">
         <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
           <a href="/admin" class="flex items-center gap-2">
-            <img src="/type.svg" alt="in-it" class="h-8" />
+            <img src="/type.svg" alt="イニット" class="h-8" />
             <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-medium">
               Admin
             </span>

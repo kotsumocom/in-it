@@ -7,7 +7,7 @@ export default function App({ Component }: PageProps) {
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>in-it - 手数料ゼロのメンター掲載プラットフォーム</title>
+        <title>イニット - 手数料ゼロのメンター掲載プラットフォーム</title>
         <meta
           name="description"
           content="手数料ゼロ・直接契約OK。月額1,000円でメンターとして掲載できるプラットフォーム。"
