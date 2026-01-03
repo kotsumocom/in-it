@@ -117,69 +117,104 @@ export default function Dashboard({ data }: PageProps<DashboardData>) {
                 return (
                   <div
                     key={space.id}
-                    class="flex items-center justify-between p-4 border border-gray-200 hover:border-gray-300 transition-colors"
+                    class="p-4 border border-gray-200 hover:border-gray-300 transition-colors"
                   >
-                    <div class="flex-1">
-                      <div class="flex items-center gap-2 mb-1">
-                        <h3 class="font-medium text-gray-900">{space.title}</h3>
-                        {/* サブスク状態バッジ */}
-                        {space.subscription_status === "active" && (
-                          <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs">
-                            課金中
-                          </span>
+                    <div class="flex items-start justify-between gap-4">
+                      <div class="flex-1 min-w-0">
+                        {/* タイトル行 */}
+                        <div class="flex items-center gap-2 mb-1">
+                          <h3 class="font-medium text-gray-900 truncate">
+                            {space.title}
+                          </h3>
+                          {!isSubscribed && (
+                            <span class="flex-shrink-0 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs">
+                              未課金
+                            </span>
+                          )}
+                        </div>
+
+                        {/* カテゴリ */}
+                        {space.category && (
+                          <p class="text-sm text-gray-500 mb-2">
+                            {space.category.display_name}
+                          </p>
                         )}
-                        {space.subscription_status === "forever_free" && (
-                          <span class="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs">
-                            永久無料
+
+                        {/* 課金・公開ステータス行 */}
+                        <div class="flex flex-wrap items-center gap-2 text-xs mb-2">
+                          {/* 課金ステータス */}
+                          <span
+                            class={`px-2 py-0.5 ${
+                              isSubscribed
+                                ? space.subscription_status === "forever_free"
+                                  ? "bg-purple-100 text-purple-700"
+                                  : "bg-green-100 text-green-700"
+                                : "bg-gray-100 text-gray-500"
+                            }`}
+                          >
+                            課金ステータス：
+                            {space.subscription_status === "active"
+                              ? "課金中"
+                              : space.subscription_status === "trialing"
+                              ? "トライアル中"
+                              : space.subscription_status === "forever_free"
+                              ? "永久無料"
+                              : space.subscription_status === "past_due"
+                              ? "支払い遅延"
+                              : "未課金"}
                           </span>
-                        )}
-                        {space.subscription_status === "past_due" && (
-                          <span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs">
-                            支払い遅延
-                          </span>
-                        )}
-                        {!space.subscription_status && (
-                          <span class="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs">
-                            未課金
-                          </span>
-                        )}
-                        {/* 公開状態 */}
-                        {space.is_public && isSubscribed && (
-                          <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs">
-                            公開中
-                          </span>
+
+                          {/* 公開ステータス */}
+                          {isSubscribed && (
+                            <span
+                              class={`px-2 py-0.5 ${
+                                space.is_public
+                                  ? "bg-blue-100 text-blue-700"
+                                  : "bg-gray-100 text-gray-500"
+                              }`}
+                            >
+                              {space.is_public ? "公開中" : "非公開"}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* タグ */}
+                        {space.tags && space.tags.length > 0 && (
+                          <div class="flex flex-wrap gap-1">
+                            {space.tags.slice(0, 5).map((tag) => (
+                              <span
+                                key={tag.id}
+                                class="px-2 py-0.5 bg-gray-50 text-gray-600 text-xs rounded-full border border-gray-200"
+                              >
+                                {tag.display_name}
+                              </span>
+                            ))}
+                            {space.tags.length > 5 && (
+                              <span class="px-2 py-0.5 text-gray-400 text-xs">
+                                +{space.tags.length - 5}
+                              </span>
+                            )}
+                          </div>
                         )}
                       </div>
-                      {space.category && (
-                        <p class="text-sm text-gray-500">
-                          {space.category.display_name}
-                        </p>
-                      )}
-                    </div>
-                    <div class="flex items-center gap-2">
-                      {/* 未課金の場合、決済ボタンを表示 */}
-                      {!isSubscribed && (
+
+                      {/* ボタン */}
+                      <div class="flex flex-col gap-2">
+                        {!isSubscribed && (
+                          <a
+                            href={`/spaces/${space.id}/subscribe`}
+                            class="px-4 py-1.5 text-sm text-white bg-blue-600 hover:bg-blue-700 text-center"
+                          >
+                            課金する
+                          </a>
+                        )}
                         <a
-                          href={`/spaces/${space.id}/subscribe`}
-                          class="px-3 py-1 text-sm text-white bg-blue-600 hover:bg-blue-700"
+                          href={`/spaces/${space.id}/edit`}
+                          class="px-4 py-1.5 text-sm text-blue-600 border border-blue-300 hover:bg-blue-50 text-center"
                         >
-                          課金して公開
+                          編集
                         </a>
-                      )}
-                      {space.slug && space.is_public && isSubscribed && (
-                        <a
-                          href={`/s/${space.slug}`}
-                          class="px-3 py-1 text-sm text-gray-600 border border-gray-300 hover:bg-gray-50"
-                        >
-                          プレビュー
-                        </a>
-                      )}
-                      <a
-                        href={`/spaces/${space.id}/edit`}
-                        class="px-3 py-1 text-sm text-blue-600 border border-blue-300 hover:bg-blue-50"
-                      >
-                        編集
-                      </a>
+                      </div>
                     </div>
                   </div>
                 );
