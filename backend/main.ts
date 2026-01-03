@@ -1024,35 +1024,48 @@ app.post("/api/stripe/checkout", async (c) => {
             `Referral code ${referralCode} matched user ${inviter.id}`
           );
 
-          // 招待履歴を記録
-          await supabaseAdmin.from("invitation_usages").insert({
-            inviter_user_id: inviter.id,
-            invitee_user_id: userId,
-            invitee_space_id: spaceId,
-            credit_granted: false,
-          });
+          // 既にこのユーザーが招待コードを使用済みかチェック
+          const { data: existingInvitation } = await supabaseAdmin
+            .from("invitation_usages")
+            .select("id")
+            .eq("invitee_user_id", userId)
+            .maybeSingle();
 
-          // 1ヶ月無料クーポンでStripeチェックアウト
-          const envCouponId = Deno.env.get("STRIPE_REFERRAL_COUPON_ID");
-          if (envCouponId) {
-            const result = await createCheckoutSession(
-              userId,
-              email,
-              spaceId,
-              plan,
-              success,
-              cancel,
-              referralCode,
-              envCouponId // Stripeの1ヶ月無料クーポン
-            );
+          if (existingInvitation) {
+            // 既に招待コードを使用済み → 通常のチェックアウトへ
+            console.log(`User ${userId} has already used a referral code`);
+          } else {
+            // 招待履歴を記録
+            await supabaseAdmin.from("invitation_usages").insert({
+              inviter_user_id: inviter.id,
+              invitee_user_id: userId,
+              invitee_space_id: spaceId,
+              credit_granted: false,
+            });
 
-            if (result.error || !result.url) {
-              return c.json({ error: result.error || "決済エラー" }, 500);
+            // 1,000円OFFクーポンでStripeチェックアウト
+            const envCouponId = Deno.env.get("STRIPE_REFERRAL_COUPON_ID");
+            if (envCouponId) {
+              const result = await createCheckoutSession(
+                userId,
+                email,
+                spaceId,
+                plan,
+                success,
+                cancel,
+                referralCode,
+                envCouponId // Stripeの1,000円OFFクーポン
+              );
+
+              if (result.error || !result.url) {
+                return c.json({ error: result.error || "決済エラー" }, 500);
+              }
+
+              return c.json({ url: result.url, referralApplied: true });
             }
-
-            return c.json({ url: result.url, referralApplied: true });
+            // 環境変数がない場合は通常のチェックアウトへ
           }
-          // 環境変数がない場合は通常のチェックアウトへ
+          // 既に使用済みの場合は通常のチェックアウトへ
         } else {
           // 招待コードも見つからない場合はエラー
           return c.json(
