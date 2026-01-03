@@ -119,6 +119,9 @@ export default function EditSpacePage({ data }: PageProps<EditSpaceData>) {
             categories={categories}
             tags={tags}
             accessToken={accessToken}
+            isSubscribed={["active", "trialing", "forever_free"].includes(
+              space.subscription_status || ""
+            )}
           />
         </div>
       </div>

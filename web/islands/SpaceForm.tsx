@@ -13,6 +13,7 @@ interface SpaceFormProps {
   categories: Category[];
   tags: Tag[];
   accessToken: string | null;
+  isSubscribed?: boolean; // サブスクリプション状態
 }
 
 export default function SpaceForm({
@@ -24,6 +25,7 @@ export default function SpaceForm({
   categories,
   tags,
   accessToken,
+  isSubscribed = false,
 }: SpaceFormProps) {
   const [title, setTitle] = useState(initialData.title || "");
   const [description, setDescription] = useState(initialData.description || "");
@@ -540,19 +542,23 @@ export default function SpaceForm({
         </p>
       </div>
 
-      {/* 公開設定 */}
-      <div class="flex items-center gap-3">
-        <input
-          type="checkbox"
-          id="is_public"
-          checked={isPublic}
-          onChange={(e) => setIsPublic((e.target as HTMLInputElement).checked)}
-          class="w-4 h-4"
-        />
-        <label htmlFor="is_public" class="text-sm text-gray-700">
-          このスペースを公開する
-        </label>
-      </div>
+      {/* 公開設定 - 課金ユーザーのみ表示 */}
+      {isSubscribed && (
+        <div class="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="is_public"
+            checked={isPublic}
+            onChange={(e) =>
+              setIsPublic((e.target as HTMLInputElement).checked)
+            }
+            class="w-4 h-4"
+          />
+          <label htmlFor="is_public" class="text-sm text-gray-700">
+            このスペースを公開する
+          </label>
+        </div>
+      )}
 
       {/* ボタン */}
       <div class="flex gap-3 pt-4">
