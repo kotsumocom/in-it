@@ -823,10 +823,81 @@ app.post("/api/stripe/checkout", async (c) => {
       return c.json({ error: "userId, email, and spaceId are required" }, 400);
     }
 
-    const plan = planType === "yearly" ? "yearly" : "monthly";
-
     const baseUrl = Deno.env.get("APP_URL") || "https://in-it.ooo";
     const success = successUrl || `${baseUrl}/dashboard?success=true`;
+
+    // クーポンコードが入力されている場合、admin_couponsを確認
+    if (referralCode) {
+      const couponResult = await applyCoupon(referralCode);
+
+      if (couponResult.success && couponResult.coupon) {
+        const coupon = couponResult.coupon;
+
+        // クーポンタイプに応じてサブスクリプションを直接作成
+        if (
+          coupon.type === "forever_free" ||
+          coupon.type === "year_free" ||
+          coupon.type === "custom"
+        ) {
+          // 期間を計算
+          let periodEnd: Date;
+          let status: string;
+
+          if (coupon.type === "forever_free") {
+            // 永久無料: 100年後を設定
+            periodEnd = new Date();
+            periodEnd.setFullYear(periodEnd.getFullYear() + 100);
+            status = "forever_free";
+          } else {
+            // year_free または custom: duration_months分を加算
+            const months = coupon.duration_months || 12;
+            periodEnd = new Date();
+            periodEnd.setMonth(periodEnd.getMonth() + months);
+            status = "active";
+          }
+
+          // サブスクリプションを直接作成（Stripe決済スキップ）
+          const { error: upsertError } = await supabaseAdmin
+            .from("subscriptions")
+            .upsert(
+              {
+                user_id: userId,
+                space_id: spaceId,
+                stripe_customer_id: null,
+                stripe_subscription_id: null,
+                status,
+                plan_type:
+                  coupon.type === "forever_free" ? "forever_free" : "monthly",
+                referral_code: referralCode.toUpperCase(),
+                current_period_start: new Date().toISOString(),
+                current_period_end: periodEnd.toISOString(),
+              },
+              { onConflict: "space_id" }
+            );
+
+          if (upsertError) {
+            console.error(
+              "Failed to create subscription with coupon:",
+              upsertError
+            );
+            return c.json(
+              { error: "サブスクリプションの作成に失敗しました" },
+              500
+            );
+          }
+
+          console.log(
+            `Coupon ${referralCode} applied: ${coupon.type} for space ${spaceId}`
+          );
+
+          // 決済をスキップして成功URLにリダイレクト
+          return c.json({ url: success, couponApplied: true });
+        }
+      }
+      // クーポンが見つからない場合やエラーの場合は通常のStripe決済へ進む
+    }
+
+    const plan = planType === "yearly" ? "yearly" : "monthly";
     const cancel = cancelUrl || `${baseUrl}/dashboard?canceled=true`;
 
     const result = await createCheckoutSession(
@@ -846,7 +917,7 @@ app.post("/api/stripe/checkout", async (c) => {
     return c.json({ url: result.url });
   } catch (e) {
     console.error("Checkout error:", e);
-    return c.json({ error: e.message }, 500);
+    return c.json({ error: (e as Error).message }, 500);
   }
 });
 
