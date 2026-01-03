@@ -287,7 +287,7 @@ export const deleteSpace = async (
  * ユーザーのスペース一覧
  */
 export const getUserSpaces = async (userId: string): Promise<SpacesResult> => {
-  const { data: spaces, error } = await supabase
+  const { data: spaces, error } = await supabaseAdmin
     .from("mentor_spaces")
     .select(
       `
