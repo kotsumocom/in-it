@@ -18,10 +18,7 @@ export default function FeedbackFAB({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
-  const API_URL =
-    (typeof globalThis !== "undefined" &&
-      (globalThis as unknown as { __API_URL__?: string }).__API_URL__) ||
-    "http://localhost:3001";
+  const API_URL = "https://be.in-it.ooo";
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
