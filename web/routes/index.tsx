@@ -245,8 +245,10 @@ export default function Home({ data }: PageProps<HomeData>) {
                 {spaces.map((space) => (
                   <a
                     key={space.id}
-                    href={`/s/${space.slug}`}
-                    class="block bg-white border border-gray-200 hover:shadow-md transition-shadow"
+                    href={space.slug ? `/s/${space.slug}` : `#`}
+                    class={`block bg-white border border-gray-200 hover:shadow-md transition-shadow ${
+                      !space.slug ? "pointer-events-none opacity-75" : ""
+                    }`}
                   >
                     {/* サムネイル 16:9 */}
                     <div class="aspect-video bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
@@ -276,7 +278,7 @@ export default function Home({ data }: PageProps<HomeData>) {
 
                       {/* タグ */}
                       {space.tags && space.tags.length > 0 && (
-                        <div class="flex flex-wrap gap-1 mb-2">
+                        <div class="flex flex-wrap gap-1">
                           {space.tags.slice(0, 3).map((tag) => (
                             <span
                               key={tag.id}
@@ -286,13 +288,6 @@ export default function Home({ data }: PageProps<HomeData>) {
                             </span>
                           ))}
                         </div>
-                      )}
-
-                      {/* 説明 */}
-                      {space.description && (
-                        <p class="text-sm text-gray-500 line-clamp-2">
-                          {space.description}
-                        </p>
                       )}
                     </div>
                   </a>
