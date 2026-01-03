@@ -1,4 +1,4 @@
-import { supabase } from "../supabase.ts";
+import { supabaseAdmin } from "../supabase.ts";
 
 export interface UserProgress {
   unit_id: string;
@@ -8,7 +8,7 @@ export interface UserProgress {
 export const getUserProgress = async (
   userId: string
 ): Promise<UserProgress[]> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("user_progress")
     .select("unit_id, status")
     .eq("user_id", userId);
@@ -26,7 +26,7 @@ export const updateUserProgress = async (
   unitId: string,
   status: string
 ) => {
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from("user_progress")
     .upsert({ user_id: userId, unit_id: unitId, status })
     .select();

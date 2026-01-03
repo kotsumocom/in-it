@@ -1,4 +1,4 @@
-import { supabase, supabaseAdmin } from "../supabase.ts";
+import { supabaseAdmin } from "../supabase.ts";
 
 // ===========================================
 // 型定義
@@ -88,7 +88,7 @@ export const createSpace = async (
 ): Promise<SpaceResult> => {
   // slug の重複チェック
   if (data.slug) {
-    const { data: existing } = await supabase
+    const { data: existing } = await supabaseAdmin
       .from("mentor_spaces")
       .select("id")
       .eq("slug", data.slug)
@@ -129,7 +129,7 @@ export const createSpace = async (
  * スペース取得（ID）
  */
 export const getSpace = async (spaceId: string): Promise<SpaceResult> => {
-  const { data: space, error } = await supabase
+  const { data: space, error } = await supabaseAdmin
     .from("mentor_spaces")
     .select(
       `
@@ -162,7 +162,7 @@ export const getSpace = async (spaceId: string): Promise<SpaceResult> => {
  * サブスクが有効（active, trialing, forever_free）なスペースのみ公開
  */
 export const getSpaceBySlug = async (slug: string): Promise<SpaceResult> => {
-  const { data: space, error } = await supabase
+  const { data: space, error } = await supabaseAdmin
     .from("mentor_spaces")
     .select(
       `
@@ -210,7 +210,7 @@ export const updateSpace = async (
   data: Partial<SpaceData>
 ): Promise<SpaceResult> => {
   // 所有権チェック
-  const { data: existing } = await supabase
+  const { data: existing } = await supabaseAdmin
     .from("mentor_spaces")
     .select("user_id")
     .eq("id", spaceId)
@@ -222,7 +222,7 @@ export const updateSpace = async (
 
   // slug の重複チェック（変更する場合）
   if (data.slug) {
-    const { data: slugCheck } = await supabase
+    const { data: slugCheck } = await supabaseAdmin
       .from("mentor_spaces")
       .select("id")
       .eq("slug", data.slug)
@@ -260,7 +260,7 @@ export const deleteSpace = async (
   userId: string
 ): Promise<{ success: boolean; error?: string }> => {
   // 所有権チェック
-  const { data: existing } = await supabase
+  const { data: existing } = await supabaseAdmin
     .from("mentor_spaces")
     .select("user_id")
     .eq("id", spaceId)
@@ -332,7 +332,7 @@ export const getPublicSpaces = async (
 ): Promise<SpacesResult> => {
   const { query, categoryId, tagId, limit = 20, offset = 0 } = options;
 
-  let dbQuery = supabase
+  let dbQuery = supabaseAdmin
     .from("mentor_spaces")
     .select(
       `

@@ -1,4 +1,4 @@
-import { supabase } from "../supabase.ts";
+import { supabaseAdmin } from "../supabase.ts";
 
 export interface Unit {
   id: string;
@@ -14,7 +14,7 @@ export interface Unit {
 }
 
 export const getUnitsTree = async (): Promise<Unit[]> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("units")
     .select("*")
     .order("order_index", { ascending: true });

@@ -1,4 +1,4 @@
-import { supabase, supabaseAdmin } from "../supabase.ts";
+import { supabaseAdmin } from "../supabase.ts";
 
 // ===========================================
 // 型定義
@@ -43,7 +43,7 @@ export interface TagsResult {
  * カテゴリ一覧取得（階層構造対応）
  */
 export const getCategories = async (): Promise<CategoriesResult> => {
-  const { data: categories, error } = await supabase
+  const { data: categories, error } = await supabaseAdmin
     .from("categories")
     .select("*")
     .order("display_order", { ascending: true });
@@ -74,7 +74,7 @@ export const getCategories = async (): Promise<CategoriesResult> => {
  * タグ一覧取得（カテゴリで絞り込み可能）
  */
 export const getTags = async (categoryId?: string): Promise<TagsResult> => {
-  let query = supabase
+  let query = supabaseAdmin
     .from("tags")
     .select("*")
     .order("is_featured", { ascending: false })
@@ -97,7 +97,7 @@ export const getTags = async (categoryId?: string): Promise<TagsResult> => {
  * 注目タグ取得（ランディングページ用）
  */
 export const getFeaturedTags = async (): Promise<TagsResult> => {
-  const { data: tags, error } = await supabase
+  const { data: tags, error } = await supabaseAdmin
     .from("tags")
     .select("*")
     .eq("is_featured", true)
@@ -115,7 +115,7 @@ export const getFeaturedTags = async (): Promise<TagsResult> => {
  * タグ検索
  */
 export const searchTags = async (query: string): Promise<TagsResult> => {
-  const { data: tags, error } = await supabase
+  const { data: tags, error } = await supabaseAdmin
     .from("tags")
     .select("*")
     .ilike("display_name", `%${query}%`)
@@ -143,7 +143,7 @@ export const addTagsToSpace = async (
   customTags: string[] = []
 ): Promise<{ success: boolean; error?: string }> => {
   // 所有権チェック
-  const { data: space } = await supabase
+  const { data: space } = await supabaseAdmin
     .from("mentor_spaces")
     .select("user_id")
     .eq("id", spaceId)
@@ -231,7 +231,7 @@ export const addTagsToSpace = async (
  * スペースのタグを取得
  */
 export const getSpaceTags = async (spaceId: string): Promise<TagsResult> => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("space_tags")
     .select(
       `
@@ -258,7 +258,7 @@ export const removeTagFromSpace = async (
   tagId: string
 ): Promise<{ success: boolean; error?: string }> => {
   // 所有権チェック
-  const { data: space } = await supabase
+  const { data: space } = await supabaseAdmin
     .from("mentor_spaces")
     .select("user_id")
     .eq("id", spaceId)
@@ -268,7 +268,7 @@ export const removeTagFromSpace = async (
     return { success: false, error: "権限がありません" };
   }
 
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from("space_tags")
     .delete()
     .eq("space_id", spaceId)
