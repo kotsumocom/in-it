@@ -24,7 +24,7 @@ export default function App({ Component }: PageProps) {
           rel="stylesheet"
         />
         <link rel="stylesheet" href="/styles.css" />
-        {/* Google Analytics */}
+        {/* Google Tag (gtag.js) */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-08DVEJVK5G"
