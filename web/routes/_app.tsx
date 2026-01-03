@@ -24,6 +24,21 @@ export default function App({ Component }: PageProps) {
           rel="stylesheet"
         />
         <link rel="stylesheet" href="/styles.css" />
+        {/* Google Analytics */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-08DVEJVK5G"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-08DVEJVK5G');
+            `,
+          }}
+        />
       </head>
       <body>
         <Component />
