@@ -1011,11 +1011,57 @@ app.post("/api/stripe/checkout", async (c) => {
           return c.json({ url: success, couponApplied: true });
         }
       } else {
-        // クーポンが見つからないか無効な場合はエラーを返す
-        return c.json(
-          { error: couponResult.error || "クーポンが無効です" },
-          400
-        );
+        // admin_couponsに見つからない場合、招待コード（user_idの最初の8文字）として検索
+        const { data: inviter } = await supabaseAdmin
+          .from("mentor_profiles")
+          .select("id")
+          .ilike("id", `${referralCode}%`)
+          .maybeSingle();
+
+        if (inviter && inviter.id !== userId) {
+          // 招待コードが有効（自分自身ではない）
+          console.log(
+            `Referral code ${referralCode} matched user ${inviter.id}`
+          );
+
+          // 招待履歴を記録
+          await supabaseAdmin.from("invitation_usages").insert({
+            inviter_user_id: inviter.id,
+            invitee_user_id: userId,
+            invitee_space_id: spaceId,
+            credit_granted: false,
+          });
+
+          // 1ヶ月無料クーポンでStripeチェックアウト
+          const envCouponId = Deno.env.get("STRIPE_REFERRAL_COUPON_ID");
+          if (envCouponId) {
+            const result = await createCheckoutSession(
+              userId,
+              email,
+              spaceId,
+              plan,
+              success,
+              cancel,
+              referralCode,
+              envCouponId // Stripeの1ヶ月無料クーポン
+            );
+
+            if (result.error || !result.url) {
+              return c.json({ error: result.error || "決済エラー" }, 500);
+            }
+
+            return c.json({ url: result.url, referralApplied: true });
+          }
+          // 環境変数がない場合は通常のチェックアウトへ
+        } else {
+          // 招待コードも見つからない場合はエラー
+          return c.json(
+            {
+              error: couponResult.error || "クーポンまたは招待コードが無効です",
+            },
+            400
+          );
+        }
       }
     }
 
@@ -1158,10 +1204,57 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
     console.error("Error in handleCheckoutComplete:", err);
   }
 
-  // 紹介コードがあれば紹介者にクレジットを付与（将来実装）
+  // 招待コードがあれば招待者にクレジットを付与
   if (referralCode) {
-    console.log("Referral code used:", referralCode);
-    // TODO: 紹介者への 1,000 円クレジット付与ロジック
+    console.log("Processing referral code:", referralCode);
+    try {
+      // invitation_usagesから招待者を取得
+      const { data: invitation } = await supabaseAdmin
+        .from("invitation_usages")
+        .select("inviter_user_id, credit_granted")
+        .eq("invitee_user_id", userId)
+        .eq("invitee_space_id", spaceId)
+        .maybeSingle();
+
+      if (invitation && !invitation.credit_granted) {
+        // 招待者のStripe Customer IDを取得
+        const { data: inviterSub } = await supabaseAdmin
+          .from("subscriptions")
+          .select("stripe_customer_id")
+          .eq("user_id", invitation.inviter_user_id)
+          .maybeSingle();
+
+        if (inviterSub?.stripe_customer_id) {
+          // Stripeで招待者に1000円クレジットを付与
+          await stripe.customers.createBalanceTransaction(
+            inviterSub.stripe_customer_id,
+            {
+              amount: -1000, // 負の値 = クレジット（次回請求から引かれる）
+              currency: "jpy",
+              description: `招待特典: ${userId} の登録による1000円クレジット`,
+            }
+          );
+          console.log(
+            `Credited 1000 JPY to inviter ${invitation.inviter_user_id}`
+          );
+        }
+
+        // クレジット付与済みにマーク
+        await supabaseAdmin
+          .from("invitation_usages")
+          .update({
+            credit_granted: true,
+            inviter_stripe_customer_id: inviterSub?.stripe_customer_id || null,
+          })
+          .eq("inviter_user_id", invitation.inviter_user_id)
+          .eq("invitee_user_id", userId);
+
+        console.log("Referral credit processing completed");
+      }
+    } catch (creditError) {
+      console.error("Failed to process referral credit:", creditError);
+      // クレジット付与失敗してもサブスク処理は続行
+    }
   }
 }
 
