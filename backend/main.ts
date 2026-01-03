@@ -929,11 +929,16 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
     return;
   }
 
-  // deno-lint-ignore no-explicit-any
-  const subscription: any = await stripe.subscriptions.retrieve(subscriptionId);
+  try {
+    console.log("Fetching subscription from Stripe:", subscriptionId);
+    // deno-lint-ignore no-explicit-any
+    const subscription: any = await stripe.subscriptions.retrieve(
+      subscriptionId
+    );
+    console.log("Stripe subscription retrieved:", subscription.status);
 
-  const { error } = await supabaseAdmin.from("subscriptions").upsert(
-    {
+    console.log("Upserting to subscriptions table...");
+    const upsertData = {
       user_id: userId,
       space_id: spaceId,
       stripe_customer_id: customerId,
@@ -947,14 +952,20 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
       current_period_end: new Date(
         subscription.current_period_end * 1000
       ).toISOString(),
-    },
-    { onConflict: "space_id" }
-  );
+    };
+    console.log("Upsert data:", JSON.stringify(upsertData));
 
-  if (error) {
-    console.error("Failed to update subscription:", error);
-  } else {
-    console.log("Subscription updated successfully for space:", spaceId);
+    const { error } = await supabaseAdmin
+      .from("subscriptions")
+      .upsert(upsertData, { onConflict: "space_id" });
+
+    if (error) {
+      console.error("Failed to update subscription:", error);
+    } else {
+      console.log("Subscription updated successfully for space:", spaceId);
+    }
+  } catch (err) {
+    console.error("Error in handleCheckoutComplete:", err);
   }
 
   // 紹介コードがあれば紹介者にクレジットを付与（将来実装）
