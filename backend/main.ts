@@ -1022,11 +1022,15 @@ app.post("/api/stripe/checkout", async (c) => {
       } else {
         // admin_couponsに見つからない場合、招待コード（user_idの最初の8文字）として検索
         const normalizedCode = referralCode.toLowerCase();
-        const { data: inviter } = await supabaseAdmin
-          .from("mentor_profiles")
-          .select("id")
-          .ilike("id", `${normalizedCode}%`)
-          .maybeSingle();
+
+        // UUID型のidをテキストとして検索（rpc使用）
+        const { data: inviterResults } = await supabaseAdmin.rpc(
+          "find_mentor_by_id_prefix",
+          {
+            prefix: normalizedCode,
+          }
+        );
+        const inviter = inviterResults?.[0] || null;
 
         if (inviter && inviter.id !== userId) {
           // 招待コードが有効（自分自身ではない）
