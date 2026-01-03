@@ -98,6 +98,8 @@ export interface Category {
   name: string;
   display_name: string;
   display_order: number;
+  parent_id?: string | null;
+  children?: Category[];
 }
 
 export interface Tag {

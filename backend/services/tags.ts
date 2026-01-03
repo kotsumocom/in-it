@@ -9,6 +9,8 @@ export interface Category {
   name: string;
   display_name: string;
   display_order: number;
+  parent_id?: string | null;
+  children?: Category[];
 }
 
 export interface Tag {
@@ -38,7 +40,7 @@ export interface TagsResult {
 // ===========================================
 
 /**
- * カテゴリ一覧取得
+ * カテゴリ一覧取得（階層構造対応）
  */
 export const getCategories = async (): Promise<CategoriesResult> => {
   const { data: categories, error } = await supabase
@@ -50,7 +52,18 @@ export const getCategories = async (): Promise<CategoriesResult> => {
     return { success: false, error: error.message };
   }
 
-  return { success: true, categories };
+  // 親カテゴリのみを取得し、子カテゴリをネスト
+  const parentCategories = categories?.filter((c) => !c.parent_id) || [];
+  const childCategories = categories?.filter((c) => c.parent_id) || [];
+
+  const categoriesWithChildren = parentCategories.map((parent) => ({
+    ...parent,
+    children: childCategories
+      .filter((child) => child.parent_id === parent.id)
+      .sort((a, b) => a.display_order - b.display_order),
+  }));
+
+  return { success: true, categories: categoriesWithChildren };
 };
 
 // ===========================================

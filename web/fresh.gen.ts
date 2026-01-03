@@ -30,6 +30,7 @@ import * as $AvatarUploader from "./islands/AvatarUploader.tsx";
 import * as $BlockEditor from "./islands/BlockEditor.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $CouponForm from "./islands/CouponForm.tsx";
+import * as $FeedbackFAB from "./islands/FeedbackFAB.tsx";
 import * as $ProfileForm from "./islands/ProfileForm.tsx";
 import * as $ProgressButton from "./islands/ProgressButton.tsx";
 import * as $ReferralCode from "./islands/ReferralCode.tsx";
@@ -69,6 +70,7 @@ const manifest = {
     "./islands/BlockEditor.tsx": $BlockEditor,
     "./islands/Counter.tsx": $Counter,
     "./islands/CouponForm.tsx": $CouponForm,
+    "./islands/FeedbackFAB.tsx": $FeedbackFAB,
     "./islands/ProfileForm.tsx": $ProfileForm,
     "./islands/ProgressButton.tsx": $ProgressButton,
     "./islands/ReferralCode.tsx": $ReferralCode,

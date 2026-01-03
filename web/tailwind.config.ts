@@ -1,7 +1,12 @@
 import { type Config } from "tailwindcss";
 
 export default {
-  content: [
-    "{routes,islands,components}/**/*.{ts,tsx,js,jsx}",
-  ],
+  content: ["{routes,islands,components}/**/*.{ts,tsx,js,jsx}"],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ["Inter", "Noto Sans JP", "sans-serif"],
+      },
+    },
+  },
 } satisfies Config;

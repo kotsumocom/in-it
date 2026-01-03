@@ -183,17 +183,36 @@ export default function Home({ data }: PageProps<HomeData>) {
                   すべて
                 </a>
                 {categories.map((cat) => (
-                  <a
-                    key={cat.id}
-                    href={`/?category=${cat.id}`}
-                    class={`block px-3 py-2 transition-colors ${
-                      selectedCategory === cat.id
-                        ? "bg-blue-100 text-blue-700 font-medium"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                    }`}
-                  >
-                    {cat.display_name}
-                  </a>
+                  <div key={cat.id}>
+                    <a
+                      href={`/?category=${cat.id}`}
+                      class={`block px-3 py-2 font-medium transition-colors ${
+                        selectedCategory === cat.id
+                          ? "bg-blue-100 text-blue-700"
+                          : "text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      {cat.display_name}
+                    </a>
+                    {/* サブカテゴリ */}
+                    {cat.children && cat.children.length > 0 && (
+                      <div class="ml-4 border-l border-gray-200">
+                        {cat.children.map((child) => (
+                          <a
+                            key={child.id}
+                            href={`/?category=${child.id}`}
+                            class={`block px-3 py-1.5 text-sm transition-colors ${
+                              selectedCategory === child.id
+                                ? "bg-blue-50 text-blue-700 font-medium"
+                                : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                            }`}
+                          >
+                            {child.display_name}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </nav>
             </div>
@@ -305,7 +324,16 @@ export default function Home({ data }: PageProps<HomeData>) {
               </a>
             </div>
           </div>
-          <p class="text-sm">© 2025 in-it</p>
+          <p class="text-sm">
+            <a
+              href="https://kotsumo.com/"
+              class="hover:text-white"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              © 2025 コツモ
+            </a>
+          </p>
         </div>
       </footer>
     </div>

@@ -1198,6 +1198,112 @@ app.put("/api/notifications/read-all", async (c) => {
   }
 });
 
+// ===========================================
+// フィードバック API
+// ===========================================
+
+// フィードバック送信（認証任意）
+app.post("/api/feedbacks", async (c) => {
+  try {
+    let userId: string | null = null;
+
+    // 認証があればユーザーIDを取得
+    const authHeader = c.req.header("Authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      const token = authHeader.slice(7);
+      const {
+        data: { user },
+      } = await supabase.auth.getUser(token);
+      if (user) {
+        userId = user.id;
+      }
+    }
+
+    const body = await c.req.json();
+    const { message, category, page_url, space_id } = body;
+
+    if (!message || message.trim().length === 0) {
+      return c.json({ error: "メッセージは必須です" }, 400);
+    }
+
+    if (category && !["bug", "feature", "question"].includes(category)) {
+      return c.json({ error: "無効なカテゴリです" }, 400);
+    }
+
+    const { data, error } = await supabaseAdmin
+      .from("feedbacks")
+      .insert({
+        user_id: userId,
+        space_id: space_id || null,
+        page_url: page_url || null,
+        message: message.trim(),
+        category: category || null,
+        status: "new",
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Feedback insert error:", error);
+      return c.json({ error: "フィードバックの送信に失敗しました" }, 500);
+    }
+
+    return c.json({ success: true, feedback: data }, 201);
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// フィードバック一覧取得（管理者用）
+app.get("/api/admin/feedbacks", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    // 管理者チェック
+    const { data: profile } = await supabaseAdmin
+      .from("mentor_profiles")
+      .select("is_admin")
+      .eq("id", user.id)
+      .single();
+
+    if (!profile?.is_admin) {
+      return c.json({ error: "管理者権限が必要です" }, 403);
+    }
+
+    const status = c.req.query("status");
+    let query = supabaseAdmin
+      .from("feedbacks")
+      .select("*, mentor_spaces(title, slug)")
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    if (status) {
+      query = query.eq("status", status);
+    }
+
+    const { data: feedbacks, error } = await query;
+
+    if (error) {
+      return c.json({ error: error.message }, 500);
+    }
+
+    return c.json(feedbacks);
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
 const port = parseInt(Deno.env.get("PORT") || "3001");
 console.log(`Backend server starting on port ${port}...`);
 Deno.serve({ port }, app.fetch);
