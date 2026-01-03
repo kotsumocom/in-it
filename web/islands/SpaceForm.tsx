@@ -518,7 +518,7 @@ export default function SpaceForm({
                   )
                 }
                 class="flex-1 px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
-                placeholder="moai_redcap"
+                placeholder="username"
               />
             </div>
           </div>
