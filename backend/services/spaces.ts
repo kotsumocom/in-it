@@ -86,17 +86,26 @@ export const createSpace = async (
   userId: string,
   data: SpaceData
 ): Promise<SpaceResult> => {
-  // slug の重複チェック
-  if (data.slug) {
-    const { data: existing } = await supabaseAdmin
-      .from("mentor_spaces")
-      .select("id")
-      .eq("slug", data.slug)
-      .single();
+  // slugが未指定の場合は自動生成
+  let slug = data.slug;
+  if (!slug) {
+    // UUIDの最初の8文字 + タイムスタンプの下4桁でユニークなslugを生成
+    const timestamp = Date.now().toString().slice(-4);
+    const randomPart = crypto.randomUUID().split("-")[0];
+    slug = `space-${randomPart}-${timestamp}`;
+  }
 
-    if (existing) {
-      return { success: false, error: "この URL は既に使用されています" };
-    }
+  // slug の重複チェック
+  const { data: existing } = await supabaseAdmin
+    .from("mentor_spaces")
+    .select("id")
+    .eq("slug", slug)
+    .single();
+
+  if (existing) {
+    // 重複がある場合はさらにランダムな文字列を追加
+    const extraRandom = crypto.randomUUID().split("-")[0];
+    slug = `${slug}-${extraRandom}`;
   }
 
   const { data: space, error } = await supabaseAdmin
@@ -112,7 +121,7 @@ export const createSpace = async (
       instagram_url: data.instagram_url,
       external_links: data.external_links || [],
       is_public: data.is_public || false,
-      slug: data.slug,
+      slug: slug,
     })
     .select()
     .single();
