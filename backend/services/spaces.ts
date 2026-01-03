@@ -317,9 +317,9 @@ export const getUserSpaces = async (userId: string): Promise<SpacesResult> => {
 
   return { success: true, spaces: formattedSpaces };
 };
-
 /**
  * 公開スペース一覧取得（検索・フィルタリング対応）
+ * サブスクリプションがアクティブなスペースのみ表示
  */
 export const getPublicSpaces = async (
   options: {
@@ -331,6 +331,19 @@ export const getPublicSpaces = async (
   } = {}
 ): Promise<SpacesResult> => {
   const { query, categoryId, tagId, limit = 20, offset = 0 } = options;
+
+  // アクティブなサブスクリプションを持つスペースIDを取得
+  const { data: activeSubscriptions } = await supabaseAdmin
+    .from("subscriptions")
+    .select("space_id")
+    .in("status", ["active", "trialing", "forever_free"]);
+
+  const activeSpaceIds = activeSubscriptions?.map((s) => s.space_id) || [];
+
+  // アクティブなサブスクがない場合は空を返す
+  if (activeSpaceIds.length === 0) {
+    return { success: true, spaces: [] };
+  }
 
   let dbQuery = supabaseAdmin
     .from("mentor_spaces")
@@ -344,6 +357,7 @@ export const getPublicSpaces = async (
     `
     )
     .eq("is_public", true)
+    .in("id", activeSpaceIds)
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
 
