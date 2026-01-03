@@ -81,8 +81,10 @@ export async function createCheckoutSession(
         plan_type: planType,
         referral_code: referralCode || "",
       },
-      discounts,
-      allow_promotion_codes: allowPromotionCodes && !discounts,
+      // discountsがある場合はallow_promotion_codesを設定しない（排他的）
+      ...(discounts
+        ? { discounts }
+        : { allow_promotion_codes: allowPromotionCodes }),
     };
 
     const session = await stripe.checkout.sessions.create(sessionParams);
