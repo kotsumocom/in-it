@@ -42,6 +42,15 @@ export default function BlockEditor({
   // deno-lint-ignore no-explicit-any
   const editorInstanceRef = useRef<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  // onChangeをrefで保持してコンポジション中の問題を回避
+  const onChangeRef = useRef<((data: string) => void) | undefined>(onChange);
+  // 初期データをrefで保持して再初期化を防ぐ
+  const initialDataRef = useRef(initialData);
+
+  // onChangeが変わったらrefを更新
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
   // スクリプト読み込み
   useEffect(() => {
@@ -74,13 +83,15 @@ export default function BlockEditor({
     if (!isLoaded || !editorRef.current || editorInstanceRef.current) return;
 
     let parsedData = null;
-    if (initialData) {
+    if (initialDataRef.current) {
       try {
-        parsedData = JSON.parse(initialData);
+        parsedData = JSON.parse(initialDataRef.current);
       } catch {
         // 旧形式のMarkdownテキストの場合はパラグラフとして扱う
         parsedData = {
-          blocks: [{ type: "paragraph", data: { text: initialData } }],
+          blocks: [
+            { type: "paragraph", data: { text: initialDataRef.current } },
+          ],
         };
       }
     }
@@ -127,9 +138,9 @@ export default function BlockEditor({
         quote: Quote,
       },
       onChange: async () => {
-        if (editorInstanceRef.current && onChange) {
+        if (editorInstanceRef.current && onChangeRef.current) {
           const outputData = await editorInstanceRef.current.save();
-          onChange(JSON.stringify(outputData));
+          onChangeRef.current(JSON.stringify(outputData));
         }
       },
     });
@@ -140,7 +151,7 @@ export default function BlockEditor({
         editorInstanceRef.current = null;
       }
     };
-  }, [isLoaded, initialData, accessToken, spaceId]);
+  }, [isLoaded, accessToken, spaceId]);
 
   // データを外部から取得するためのメソッド
   const getData = async (): Promise<string> => {
