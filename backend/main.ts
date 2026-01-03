@@ -893,8 +893,13 @@ app.post("/api/stripe/checkout", async (c) => {
           // 決済をスキップして成功URLにリダイレクト
           return c.json({ url: success, couponApplied: true });
         }
+      } else {
+        // クーポンが見つからないか無効な場合はエラーを返す
+        return c.json(
+          { error: couponResult.error || "クーポンが無効です" },
+          400
+        );
       }
-      // クーポンが見つからない場合やエラーの場合は通常のStripe決済へ進む
     }
 
     const plan = planType === "yearly" ? "yearly" : "monthly";
