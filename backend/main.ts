@@ -845,6 +845,12 @@ app.post("/api/stripe/checkout", async (c) => {
           return c.json({ error: "このクーポンは既に使用済みです" }, 400);
         }
 
+        // forever_freeは管理者メールのみ使用可能
+        const ADMIN_EMAIL = "s.ono@kotsumo.com";
+        if (coupon.type === "forever_free" && email !== ADMIN_EMAIL) {
+          return c.json({ error: "このクーポンは使用できません" }, 403);
+        }
+
         // クーポンタイプに応じてサブスクリプションを直接作成
         if (
           coupon.type === "forever_free" ||
