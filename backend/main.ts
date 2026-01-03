@@ -385,6 +385,51 @@ app.delete("/api/profile/avatar", async (c) => {
   }
 });
 
+// メンタープロフィール削除（データ完全削除）
+app.delete("/api/profile", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseAdmin.auth.getUser(token);
+
+    if (authError || !user) {
+      return c.json({ error: "認証エラー" }, 401);
+    }
+
+    // 関連するスペースを削除
+    await supabaseAdmin.from("mentor_spaces").delete().eq("user_id", user.id);
+
+    // サブスクリプションを削除
+    await supabaseAdmin.from("subscriptions").delete().eq("user_id", user.id);
+
+    // プロフィールを削除
+    const { error } = await supabaseAdmin
+      .from("mentor_profiles")
+      .delete()
+      .eq("id", user.id);
+
+    if (error) {
+      return c.json({ error: error.message }, 500);
+    }
+
+    // Storageからアバターを削除（エラーは無視）
+    await supabaseAdmin.storage
+      .from("avatars")
+      .remove([`${user.id}/avatar.png`]);
+
+    console.log(`Mentor profile deleted: ${user.id} (${user.email})`);
+    return c.json({ success: true });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
 // ===========================================
 // Space Image Upload API
 // ===========================================

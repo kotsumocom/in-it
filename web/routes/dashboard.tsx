@@ -4,6 +4,7 @@ import { getUserSpaces } from "../lib/api.ts";
 import type { Space } from "../lib/api.ts";
 import ReferralCode from "../islands/ReferralCode.tsx";
 import SpacePublicToggle from "../islands/SpacePublicToggle.tsx";
+import DeleteMentorButton from "../islands/DeleteMentorButton.tsx";
 
 function getCookie(cookies: string, name: string): string | null {
   const match = cookies.match(new RegExp(`(^| )${name}=([^;]+)`));
@@ -88,12 +89,15 @@ export default function Dashboard({ data }: PageProps<DashboardData>) {
               👋 {profile?.display_name || "メンター"} さん
             </h1>
           </div>
-          <a
-            href="/profile/edit"
-            class="text-blue-600 hover:text-blue-700 text-sm"
-          >
-            プロフィール編集 →
-          </a>
+          <div class="flex items-center gap-4">
+            <a
+              href="/profile/edit"
+              class="text-blue-600 hover:text-blue-700 text-sm"
+            >
+              プロフィール編集 →
+            </a>
+            <DeleteMentorButton accessToken={accessToken} />
+          </div>
         </div>
 
         {/* スペース一覧 */}
