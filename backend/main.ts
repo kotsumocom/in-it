@@ -833,6 +833,18 @@ app.post("/api/stripe/checkout", async (c) => {
       if (couponResult.success && couponResult.coupon) {
         const coupon = couponResult.coupon;
 
+        // このユーザーが同じクーポンを既に使用しているか確認
+        const { data: existingUsage } = await supabaseAdmin
+          .from("coupon_usages")
+          .select("id")
+          .eq("coupon_id", coupon.id)
+          .eq("user_id", userId)
+          .maybeSingle();
+
+        if (existingUsage) {
+          return c.json({ error: "このクーポンは既に使用済みです" }, 400);
+        }
+
         // クーポンタイプに応じてサブスクリプションを直接作成
         if (
           coupon.type === "forever_free" ||
@@ -907,6 +919,13 @@ app.post("/api/stripe/checkout", async (c) => {
           console.log(
             `Coupon ${referralCode} applied: ${coupon.type} for space ${spaceId}`
           );
+
+          // クーポン使用履歴を記録
+          await supabaseAdmin.from("coupon_usages").insert({
+            coupon_id: coupon.id,
+            user_id: userId,
+            space_id: spaceId,
+          });
 
           // 決済をスキップして成功URLにリダイレクト
           return c.json({ url: success, couponApplied: true });
