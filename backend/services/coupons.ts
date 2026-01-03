@@ -50,7 +50,7 @@ export const getCoupons = async (): Promise<CouponResult> => {
 };
 
 /**
- * クーポンを作成
+ * クーポンを作成（Stripeにも100%オフクーポンを作成）
  */
 export const createCoupon = async (
   input: CreateCouponInput
@@ -68,19 +68,53 @@ export const createCoupon = async (
     return { success: false, error: "このクーポンコードは既に存在します" };
   }
 
+  // クーポン期間を計算
+  const durationMonths =
+    type === "year_free"
+      ? 12
+      : type === "forever_free"
+      ? null
+      : duration_months;
+
+  // Stripeに100%オフクーポンを作成
+  let stripeCouponId: string | null = null;
+  try {
+    const { stripe } = await import("./stripe.ts");
+
+    const stripeCouponParams: {
+      percent_off: number;
+      duration: "once" | "repeating" | "forever";
+      duration_in_months?: number;
+      id: string;
+      name: string;
+    } = {
+      percent_off: 100,
+      duration: durationMonths ? "repeating" : "forever",
+      id: `coupon_${code.toUpperCase()}_${Date.now()}`,
+      name: `${code.toUpperCase()} - ${type}`,
+    };
+
+    if (durationMonths) {
+      stripeCouponParams.duration_in_months = durationMonths;
+    }
+
+    const stripeCoupon = await stripe.coupons.create(stripeCouponParams);
+    stripeCouponId = stripeCoupon.id;
+    console.log(`Created Stripe coupon: ${stripeCouponId}`);
+  } catch (stripeError) {
+    console.error("Failed to create Stripe coupon:", stripeError);
+    // Stripeクーポン作成失敗時もDBには保存（後で手動対応可能）
+  }
+
   const { data, error } = await supabaseAdmin
     .from("admin_coupons")
     .insert({
       code: code.toUpperCase(),
       type,
-      duration_months:
-        type === "year_free"
-          ? 12
-          : type === "forever_free"
-          ? null
-          : duration_months,
+      duration_months: durationMonths,
       max_uses,
       expires_at,
+      stripe_coupon_id: stripeCouponId,
     })
     .select()
     .single();

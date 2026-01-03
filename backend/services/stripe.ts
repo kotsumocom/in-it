@@ -23,6 +23,7 @@ export type PlanType = "monthly" | "yearly";
  * @param successUrl 成功時リダイレクトURL
  * @param cancelUrl キャンセル時リダイレクトURL
  * @param referralCode 紹介コード（オプション）
+ * @param stripeCouponId Stripeクーポン ID（オプション：指定時は100%オフ）
  */
 export async function createCheckoutSession(
   userId: string,
@@ -31,7 +32,8 @@ export async function createCheckoutSession(
   planType: PlanType,
   successUrl: string,
   cancelUrl: string,
-  referralCode?: string
+  referralCode?: string,
+  stripeCouponId?: string
 ): Promise<{ url: string | null; error?: string }> {
   try {
     const priceId =
@@ -42,6 +44,23 @@ export async function createCheckoutSession(
         url: null,
         error: `${planType} プランの価格IDが設定されていません`,
       };
+    }
+
+    // discountsの設定
+    let discounts: { coupon: string }[] | undefined;
+    let allowPromotionCodes = true;
+
+    if (stripeCouponId) {
+      // 明示的にStripeクーポンIDが渡された場合（admin_couponsからのクーポン）
+      discounts = [{ coupon: stripeCouponId }];
+      allowPromotionCodes = false;
+    } else if (referralCode) {
+      // 紹介コードがある場合は環境変数のクーポンを適用
+      const envCouponId = Deno.env.get("STRIPE_REFERRAL_COUPON_ID");
+      if (envCouponId) {
+        discounts = [{ coupon: envCouponId }];
+        allowPromotionCodes = false;
+      }
     }
 
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
@@ -62,14 +81,8 @@ export async function createCheckoutSession(
         plan_type: planType,
         referral_code: referralCode || "",
       },
-      // 紹介コードがある場合は紹介クーポンを自動適用、なければ手動入力を許可
-      ...(referralCode
-        ? {
-            discounts: [
-              { coupon: Deno.env.get("STRIPE_REFERRAL_COUPON_ID") || "" },
-            ].filter((d) => d.coupon), // coupon が空なら適用しない
-          }
-        : { allow_promotion_codes: true }),
+      discounts,
+      allow_promotion_codes: allowPromotionCodes && !discounts,
     };
 
     const session = await stripe.checkout.sessions.create(sessionParams);

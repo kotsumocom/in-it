@@ -825,6 +825,8 @@ app.post("/api/stripe/checkout", async (c) => {
 
     const baseUrl = Deno.env.get("APP_URL") || "https://in-it.ooo";
     const success = successUrl || `${baseUrl}/dashboard?success=true`;
+    const cancel = cancelUrl || `${baseUrl}/dashboard?canceled=true`;
+    const plan = planType === "yearly" ? "yearly" : "monthly";
 
     // クーポンコードが入力されている場合、admin_couponsを確認
     if (referralCode) {
@@ -846,36 +848,67 @@ app.post("/api/stripe/checkout", async (c) => {
         }
 
         // forever_freeは管理者メールのみ使用可能
-        const ADMIN_EMAIL = "s.ono@kotsumo.com";
-        if (coupon.type === "forever_free" && email !== ADMIN_EMAIL) {
+        const ADMIN_EMAIL = Deno.env.get("ADMIN_EMAIL");
+        if (
+          coupon.type === "forever_free" &&
+          (!ADMIN_EMAIL || email !== ADMIN_EMAIL)
+        ) {
           return c.json({ error: "このクーポンは使用できません" }, 403);
         }
 
-        // クーポンタイプに応じてサブスクリプションを直接作成
+        // クーポンタイプに応じた処理
         if (
           coupon.type === "forever_free" ||
           coupon.type === "year_free" ||
           coupon.type === "custom"
         ) {
-          // 期間を計算
+          // Stripeクーポンがある場合はStripeチェックアウトを使用
+          if (coupon.stripe_coupon_id) {
+            // クーポン使用履歴を記録
+            await supabaseAdmin.from("coupon_usages").insert({
+              coupon_id: coupon.id,
+              user_id: userId,
+              space_id: spaceId,
+            });
+
+            console.log(
+              `Using Stripe coupon ${coupon.stripe_coupon_id} for ${referralCode}`
+            );
+
+            // Stripeチェックアウトに進む（100%オフクーポン適用）
+            const result = await createCheckoutSession(
+              userId,
+              email,
+              spaceId,
+              plan,
+              success,
+              cancel,
+              referralCode,
+              coupon.stripe_coupon_id
+            );
+
+            if (result.error || !result.url) {
+              return c.json({ error: result.error || "決済エラー" }, 500);
+            }
+
+            return c.json({ url: result.url, couponApplied: true });
+          }
+
+          // Stripeクーポンがない場合（既存クーポン用：DB直接作成）
           let periodEnd: Date;
           let status: string;
 
           if (coupon.type === "forever_free") {
-            // 永久無料: 100年後を設定
             periodEnd = new Date();
             periodEnd.setFullYear(periodEnd.getFullYear() + 100);
             status = "forever_free";
           } else {
-            // year_free または custom: duration_months分を加算
             const months = coupon.duration_months || 12;
             periodEnd = new Date();
             periodEnd.setMonth(periodEnd.getMonth() + months);
             status = "active";
           }
 
-          // サブスクリプションを直接作成（Stripe決済スキップ）
-          // 既存のサブスクリプションを確認
           const { data: existingSub } = await supabaseAdmin
             .from("subscriptions")
             .select("id")
@@ -897,14 +930,12 @@ app.post("/api/stripe/checkout", async (c) => {
 
           let upsertError;
           if (existingSub) {
-            // 既存がある場合は更新
             const { error } = await supabaseAdmin
               .from("subscriptions")
               .update(subscriptionData)
               .eq("id", existingSub.id);
             upsertError = error;
           } else {
-            // 新規作成
             const { error } = await supabaseAdmin
               .from("subscriptions")
               .insert(subscriptionData);
@@ -923,17 +954,15 @@ app.post("/api/stripe/checkout", async (c) => {
           }
 
           console.log(
-            `Coupon ${referralCode} applied: ${coupon.type} for space ${spaceId}`
+            `Coupon ${referralCode} applied (no Stripe): ${coupon.type} for space ${spaceId}`
           );
 
-          // クーポン使用履歴を記録
           await supabaseAdmin.from("coupon_usages").insert({
             coupon_id: coupon.id,
             user_id: userId,
             space_id: spaceId,
           });
 
-          // 決済をスキップして成功URLにリダイレクト
           return c.json({ url: success, couponApplied: true });
         }
       } else {
@@ -944,9 +973,6 @@ app.post("/api/stripe/checkout", async (c) => {
         );
       }
     }
-
-    const plan = planType === "yearly" ? "yearly" : "monthly";
-    const cancel = cancelUrl || `${baseUrl}/dashboard?canceled=true`;
 
     const result = await createCheckoutSession(
       userId,
