@@ -134,10 +134,10 @@ export default function LandingPage({ data }: PageProps<LPData>) {
       <section class="py-16 px-4 bg-blue-50">
         <div class="max-w-3xl mx-auto text-center">
           <h2 class="text-2xl font-bold text-gray-900 mb-4">
-            🎁 招待で初月無料
+            🎁 招待で1,000円OFF
           </h2>
           <p class="text-gray-700 mb-6">
-            既存メンターからの招待コードで初月無料でお試しできます
+            既存メンターからの招待コードで1,000円OFFでお試しできます
           </p>
           <a
             href="/signup"
@@ -165,7 +165,7 @@ export default function LandingPage({ data }: PageProps<LPData>) {
                 "手数料0%",
                 "外部リンク可",
                 "いつでも解約",
-                "招待で初月無料",
+                "招待で1,000円OFF",
               ].map((item) => (
                 <li class="flex items-center gap-2 text-gray-700">
                   <span class="text-green-500">✓</span>

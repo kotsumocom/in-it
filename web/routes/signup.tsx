@@ -172,7 +172,9 @@ export default function SignUp({ data }: PageProps<SignUpData>) {
                 class="w-full px-4 py-3 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
                 placeholder="INVITE123"
               />
-              <p class="mt-1 text-sm text-blue-600">※招待コードで初月無料！</p>
+              <p class="mt-1 text-sm text-blue-600">
+                ※招待コードで1,000円OFF！
+              </p>
             </div>
 
             <div class="mb-6">

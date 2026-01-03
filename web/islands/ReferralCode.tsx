@@ -33,7 +33,7 @@ export default function ReferralCode({ code, baseUrl }: ReferralCodeProps) {
       try {
         await navigator.share({
           title: "in-it - 手数料ゼロのメンタープラットフォーム",
-          text: "in-it で一緒にメンターを始めませんか？招待コードで初月無料！",
+          text: "in-it で一緒にメンターを始めませんか？招待コードで1,000円OFF！",
           url: shareUrl,
         });
       } catch {
@@ -80,7 +80,7 @@ export default function ReferralCode({ code, baseUrl }: ReferralCodeProps) {
       <div class="p-4 bg-blue-50 border border-blue-100">
         <p class="text-blue-700 text-sm font-medium mb-1">✨ 招待特典</p>
         <ul class="text-blue-700 text-sm space-y-1">
-          <li>• 招待された人: 初月無料</li>
+          <li>• 招待された人: 1ヶ月相当無料（1,000円OFF）</li>
           <li>• 招待した人: 1,000円クレジット</li>
         </ul>
       </div>
