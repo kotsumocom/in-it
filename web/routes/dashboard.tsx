@@ -3,14 +3,21 @@ import { State } from "./_middleware.ts";
 import { getUserSpaces } from "../lib/api.ts";
 import type { Space } from "../lib/api.ts";
 import ReferralCode from "../islands/ReferralCode.tsx";
+import SpacePublicToggle from "../islands/SpacePublicToggle.tsx";
+
+function getCookie(cookies: string, name: string): string | null {
+  const match = cookies.match(new RegExp(`(^| )${name}=([^;]+)`));
+  return match ? match[2] : null;
+}
 
 interface DashboardData {
   user: State["user"];
   spaces: Space[];
+  accessToken: string | null;
 }
 
 export const handler: Handlers<DashboardData, State> = {
-  async GET(_req, ctx) {
+  async GET(req, ctx) {
     // 未ログインの場合はログインページへリダイレクト
     if (!ctx.state.user) {
       return new Response(null, {
@@ -22,15 +29,20 @@ export const handler: Handlers<DashboardData, State> = {
     // ユーザーのスペース一覧を取得
     const { spaces } = await getUserSpaces(ctx.state.user.id);
 
+    // アクセストークンを取得
+    const cookies = req.headers.get("cookie") || "";
+    const accessToken = getCookie(cookies, "access_token");
+
     return ctx.render({
       user: ctx.state.user,
       spaces,
+      accessToken,
     });
   },
 };
 
 export default function Dashboard({ data }: PageProps<DashboardData>) {
-  const { user, spaces } = data;
+  const { user, spaces, accessToken } = data;
   const profile = user?.mentor_profile;
 
   return (
@@ -164,17 +176,16 @@ export default function Dashboard({ data }: PageProps<DashboardData>) {
                               : "未課金"}
                           </span>
 
-                          {/* 公開ステータス */}
+                          {/* 公開トグル */}
                           {isSubscribed && (
-                            <span
-                              class={`px-2 py-0.5 ${
-                                space.is_public
-                                  ? "bg-blue-100 text-blue-700"
-                                  : "bg-gray-100 text-gray-500"
-                              }`}
-                            >
-                              {space.is_public ? "公開中" : "非公開"}
-                            </span>
+                            <div class="flex items-center gap-2">
+                              <span class="text-gray-500">公開:</span>
+                              <SpacePublicToggle
+                                spaceId={space.id}
+                                initialValue={space.is_public}
+                                accessToken={accessToken}
+                              />
+                            </div>
                           )}
                         </div>
 

@@ -574,17 +574,35 @@ export default function SpaceForm({
             : "変更を保存"}
         </button>
 
-        {mode === "edit" && (
+        <button
+          type="button"
+          onClick={() => (globalThis.location.href = "/dashboard")}
+          disabled={isSubmitting}
+          class="px-6 py-2 border border-gray-300 text-gray-600 font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
+        >
+          キャンセル
+        </button>
+      </div>
+
+      {/* デンジャーゾーン（編集時のみ） */}
+      {mode === "edit" && (
+        <div class="mt-12 pt-6 border-t border-red-200">
+          <h3 class="text-lg font-medium text-red-600 mb-2">
+            デンジャーゾーン
+          </h3>
+          <p class="text-sm text-gray-600 mb-4">
+            スペースを削除すると、すべてのデータが完全に削除されます。この操作は取り消せません。
+          </p>
           <button
             type="button"
             onClick={handleDelete}
             disabled={isSubmitting}
-            class="px-6 py-2 border border-red-300 text-red-600 font-medium hover:bg-red-50 transition-colors disabled:opacity-50"
+            class="px-6 py-2 bg-red-600 text-white font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
           >
-            削除
+            スペースを削除
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </form>
   );
 }
