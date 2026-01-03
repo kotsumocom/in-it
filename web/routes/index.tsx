@@ -306,7 +306,7 @@ export default function Home({ data }: PageProps<HomeData>) {
         <div class="max-w-6xl mx-auto">
           <div class="flex flex-wrap justify-between items-start gap-8 mb-8">
             <div>
-              <p class="text-xl font-bold text-white mb-2">in-it</p>
+              <img src="/type.svg" alt="in-it" class="h-6 mb-2" />
               <p class="text-sm">手数料ゼロのメンタープラットフォーム</p>
             </div>
             <div class="flex flex-wrap gap-6">

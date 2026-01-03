@@ -5,8 +5,8 @@
 -- 1. parent_id カラム追加
 ALTER TABLE public.categories ADD COLUMN IF NOT EXISTS parent_id UUID REFERENCES public.categories(id);
 
--- 2. 「その他」カテゴリ削除
-DELETE FROM public.categories WHERE name = 'other';
+-- 2. 「その他」系カテゴリ削除
+DELETE FROM public.categories WHERE name IN ('other', 'it-other', 'business-other');
 
 -- 3. サブカテゴリ挿入
 -- IT・テクノロジー配下
