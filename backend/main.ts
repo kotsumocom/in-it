@@ -423,7 +423,16 @@ app.delete("/api/profile", async (c) => {
       .from("avatars")
       .remove([`${user.id}/avatar.png`]);
 
-    console.log(`Mentor profile deleted: ${user.id} (${user.email})`);
+    // Supabase Authからユーザーを完全削除
+    const { error: authDeleteError } =
+      await supabaseAdmin.auth.admin.deleteUser(user.id);
+
+    if (authDeleteError) {
+      console.error("Failed to delete auth user:", authDeleteError);
+      // エラーでも続行（プロフィールは削除済み）
+    }
+
+    console.log(`Mentor fully deleted: ${user.id} (${user.email})`);
     return c.json({ success: true });
   } catch (e) {
     return c.json({ error: (e as Error).message }, 500);
