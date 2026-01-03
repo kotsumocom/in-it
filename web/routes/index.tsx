@@ -22,9 +22,11 @@ export const handler: Handlers<HomeData, State> = {
     const selectedCategory = url.searchParams.get("category") || "";
     const selectedTag = url.searchParams.get("tag") || "";
 
-    // カテゴリとタグを取得
-    const { categories } = await getCategories();
-    const { tags } = await getTags();
+    // カテゴリとタグを並列取得
+    const [{ categories }, { tags }] = await Promise.all([
+      getCategories(),
+      getTags(),
+    ]);
     const featuredTags = tags.filter((t) => t.is_featured);
 
     // 公開スペース一覧を取得（検索クエリ付き）

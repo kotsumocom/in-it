@@ -21,9 +21,11 @@ export const handler: Handlers<NewSpaceData, State> = {
       });
     }
 
-    // カテゴリとタグを取得
-    const { categories } = await getCategories();
-    const { tags } = await getTags();
+    // カテゴリとタグを並列取得
+    const [{ categories }, { tags }] = await Promise.all([
+      getCategories(),
+      getTags(),
+    ]);
 
     // アクセストークンを取得
     const cookies = req.headers.get("cookie") || "";
