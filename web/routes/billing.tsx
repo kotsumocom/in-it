@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { supabase } from "@in-it/backend/supabase.ts";
+import { supabaseAdmin } from "@in-it/backend/supabase.ts";
 import { createCustomerPortalSession } from "@in-it/backend/services/stripe.ts";
 import { State } from "./_middleware.ts";
 
@@ -16,7 +16,7 @@ export const handler: Handlers<unknown, State> = {
     const user = ctx.state.user;
 
     // Stripe Customer IDを取得
-    const { data: subscription } = await supabase
+    const { data: subscription } = await supabaseAdmin
       .from("subscriptions")
       .select("stripe_customer_id")
       .eq("user_id", user.id)
