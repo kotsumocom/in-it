@@ -208,6 +208,15 @@ export default function Dashboard({ data }: PageProps<DashboardData>) {
                             課金する
                           </a>
                         )}
+                        {isSubscribed &&
+                          space.subscription_status !== "forever_free" && (
+                            <a
+                              href="/billing"
+                              class="px-4 py-1.5 text-sm text-gray-600 border border-gray-300 hover:bg-gray-50 text-center"
+                            >
+                              請求管理
+                            </a>
+                          )}
                         <a
                           href={`/spaces/${space.id}/edit`}
                           class="px-4 py-1.5 text-sm text-blue-600 border border-blue-300 hover:bg-blue-50 text-center"
