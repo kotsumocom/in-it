@@ -26,6 +26,7 @@
     "tailwindcss/": "npm:/tailwindcss@3.4.1/",
     "tailwindcss/plugin": "npm:/tailwindcss@3.4.1/plugin.js",
     "$std/": "https://deno.land/std@0.216.0/",
+    "marked": "npm:marked@15.0.4",
     "@in-it/backend/": "../backend/"
   },
   "compilerOptions": {
