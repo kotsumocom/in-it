@@ -16,7 +16,7 @@ export const handler: Handlers<SignUpData> = {
     const password = form.get("password")?.toString() || "";
     const confirmPassword = form.get("confirmPassword")?.toString() || "";
     const displayName = form.get("displayName")?.toString() || "";
-    const inviteCode = form.get("inviteCode")?.toString() || "";
+
     const agreeTerms = form.get("agreeTerms") === "on";
 
     // バリデーション
@@ -42,8 +42,6 @@ export const handler: Handlers<SignUpData> = {
     if (!result.success) {
       return ctx.render({ error: result.error || "登録に失敗しました" });
     }
-
-    // TODO: 招待コードの処理
 
     // セッションがあればCookieに保存してダッシュボードへリダイレクト
     if (result.session) {
@@ -160,21 +158,6 @@ export default function SignUp({ data }: PageProps<SignUpData>) {
                 minLength={8}
                 class="w-full px-4 py-3 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
               />
-            </div>
-
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                招待コード（任意）
-              </label>
-              <input
-                type="text"
-                name="inviteCode"
-                class="w-full px-4 py-3 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-                placeholder="INVITE123"
-              />
-              <p class="mt-1 text-sm text-blue-600">
-                ※招待コードで1,000円OFF！
-              </p>
             </div>
 
             <div class="mb-6">
