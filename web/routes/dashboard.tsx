@@ -248,7 +248,7 @@ export default function Dashboard({ data }: PageProps<DashboardData>) {
         <section class="p-6 bg-white border border-gray-200">
           <h2 class="text-lg font-bold text-gray-900 mb-4">🎫 招待コード</h2>
           <ReferralCode
-            code={user?.id?.slice(0, 8).toUpperCase() || "--------"}
+            code={user?.mentor_profile?.referral_code || "--------"}
             baseUrl={Deno.env.get("APP_URL") || "https://in-it.ooo"}
           />
         </section>

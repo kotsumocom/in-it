@@ -18,6 +18,7 @@ export interface MentorProfile {
   display_name: string;
   avatar_url: string | null;
   is_admin: boolean;
+  referral_code: string | null;
 }
 
 export interface UserProfile {
@@ -151,6 +152,7 @@ export const getUser = async (
             display_name: profile.display_name,
             avatar_url: profile.avatar_url,
             is_admin: profile.is_admin || false,
+            referral_code: profile.referral_code || null,
           }
         : null,
       subscription_status: subscription?.status || null,

@@ -1020,17 +1020,15 @@ app.post("/api/stripe/checkout", async (c) => {
           return c.json({ url: success, couponApplied: true });
         }
       } else {
-        // admin_couponsに見つからない場合、招待コード（user_idの最初の8文字）として検索
-        const normalizedCode = referralCode.toLowerCase();
+        // admin_couponsに見つからない場合、招待コード（referral_code）として検索
+        const normalizedCode = referralCode.toUpperCase();
 
-        // UUID型のidをテキストとして検索（rpc使用）
-        const { data: inviterResults } = await supabaseAdmin.rpc(
-          "find_mentor_by_id_prefix",
-          {
-            prefix: normalizedCode,
-          }
-        );
-        const inviter = inviterResults?.[0] || null;
+        // mentor_profilesのreferral_codeカラムで検索
+        const { data: inviter } = await supabaseAdmin
+          .from("mentor_profiles")
+          .select("id")
+          .eq("referral_code", normalizedCode)
+          .maybeSingle();
 
         if (inviter && inviter.id !== userId) {
           // 招待コードが有効（自分自身ではない）
