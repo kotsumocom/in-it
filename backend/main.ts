@@ -857,23 +857,41 @@ app.post("/api/stripe/checkout", async (c) => {
           }
 
           // サブスクリプションを直接作成（Stripe決済スキップ）
-          const { error: upsertError } = await supabaseAdmin
+          // 既存のサブスクリプションを確認
+          const { data: existingSub } = await supabaseAdmin
             .from("subscriptions")
-            .upsert(
-              {
-                user_id: userId,
-                space_id: spaceId,
-                stripe_customer_id: null,
-                stripe_subscription_id: null,
-                status,
-                plan_type:
-                  coupon.type === "forever_free" ? "forever_free" : "monthly",
-                referral_code: referralCode.toUpperCase(),
-                current_period_start: new Date().toISOString(),
-                current_period_end: periodEnd.toISOString(),
-              },
-              { onConflict: "space_id" }
-            );
+            .select("id")
+            .or(`user_id.eq.${userId},space_id.eq.${spaceId}`)
+            .maybeSingle();
+
+          const subscriptionData = {
+            user_id: userId,
+            space_id: spaceId,
+            stripe_customer_id: null,
+            stripe_subscription_id: null,
+            status,
+            plan_type:
+              coupon.type === "forever_free" ? "forever_free" : "monthly",
+            referral_code: referralCode.toUpperCase(),
+            current_period_start: new Date().toISOString(),
+            current_period_end: periodEnd.toISOString(),
+          };
+
+          let upsertError;
+          if (existingSub) {
+            // 既存がある場合は更新
+            const { error } = await supabaseAdmin
+              .from("subscriptions")
+              .update(subscriptionData)
+              .eq("id", existingSub.id);
+            upsertError = error;
+          } else {
+            // 新規作成
+            const { error } = await supabaseAdmin
+              .from("subscriptions")
+              .insert(subscriptionData);
+            upsertError = error;
+          }
 
           if (upsertError) {
             console.error(
