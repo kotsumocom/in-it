@@ -101,16 +101,20 @@ export default function BlockEditor({
       placeholder: "スペースの詳細を入力してください...",
       data: parsedData,
       tools: {
+        // h3-h6を使用（表示はCSSでh1-h4相当にスタイリング）
         header: {
           class: Header,
           config: {
-            levels: [2, 3, 4],
-            defaultLevel: 2,
+            levels: [3, 4, 5, 6],
+            defaultLevel: 3,
           },
         },
         list: {
           class: List,
           inlineToolbar: true,
+          config: {
+            defaultStyle: "unordered",
+          },
         },
         image: {
           class: ImageTool,
@@ -183,7 +187,7 @@ export default function BlockEditor({
   return (
     <div
       ref={editorRef}
-      class="border border-gray-300 p-4 min-h-[200px] bg-white prose prose-sm max-w-none"
+      class="border border-gray-300 p-4 min-h-[200px] bg-white markdown-body"
     />
   );
 }

@@ -31,11 +31,39 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
+/* h3 = 見出し1相当（最大） */
 .markdown-body h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* h4 = 見出し2相当 */
+.markdown-body h4 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+/* h5 = 見出し3相当 */
+.markdown-body h5 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+/* h6 = 見出し4相当 */
+.markdown-body h6 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #4b5563;
 }
 
 .markdown-body p {

@@ -33,11 +33,17 @@ export default function SpaceForm({
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>(initialTagIds);
   const [customTags, setCustomTags] = useState<string[]>(initialCustomTags);
   const [websiteUrl, setWebsiteUrl] = useState(initialData.website_url || "");
-  const [xUrl, setXUrl] = useState(initialData.x_url || "");
-  const [instagramUrl, setInstagramUrl] = useState(
-    initialData.instagram_url || ""
+  // X/Instagramはユーザー名のみ保存（@なし）
+  const [xUsername, setXUsername] = useState(
+    initialData.x_url
+      ? initialData.x_url.replace(/^.*\//, "").replace(/^@/, "")
+      : ""
   );
-  const [slug, setSlug] = useState(initialData.slug || "");
+  const [instagramUsername, setInstagramUsername] = useState(
+    initialData.instagram_url
+      ? initialData.instagram_url.replace(/^.*\//, "").replace(/^@/, "")
+      : ""
+  );
   const [isPublic, setIsPublic] = useState(initialData.is_public || false);
   const [thumbnailUrl, setThumbnailUrl] = useState(
     initialData.thumbnail_url || ""
@@ -135,9 +141,12 @@ export default function SpaceForm({
         description: description.trim() || undefined,
         category_id: categoryId || undefined,
         website_url: websiteUrl.trim() || undefined,
-        x_url: xUrl.trim() || undefined,
-        instagram_url: instagramUrl.trim() || undefined,
-        slug: slug.trim() || undefined,
+        x_url: xUsername.trim()
+          ? `https://x.com/${xUsername.trim()}`
+          : undefined,
+        instagram_url: instagramUsername.trim()
+          ? `https://instagram.com/${instagramUsername.trim()}`
+          : undefined,
         is_public: isPublic,
         thumbnail_url: thumbnailUrl.trim() || undefined,
       };
@@ -496,51 +505,46 @@ export default function SpaceForm({
           </div>
           <div>
             <label class="block text-sm text-gray-600 mb-1">X (Twitter)</label>
-            <input
-              type="url"
-              value={xUrl}
-              onInput={(e) => setXUrl((e.target as HTMLInputElement).value)}
-              class="w-full px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
-              placeholder="https://x.com/username"
-            />
+            <div class="flex items-center">
+              <span class="px-3 py-2 bg-gray-100 border border-r-0 border-gray-300 text-gray-500">
+                @
+              </span>
+              <input
+                type="text"
+                value={xUsername}
+                onInput={(e) =>
+                  setXUsername(
+                    (e.target as HTMLInputElement).value.replace(/^@/, "")
+                  )
+                }
+                class="flex-1 px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                placeholder="moai_redcap"
+              />
+            </div>
           </div>
           <div>
             <label class="block text-sm text-gray-600 mb-1">Instagram</label>
-            <input
-              type="url"
-              value={instagramUrl}
-              onInput={(e) =>
-                setInstagramUrl((e.target as HTMLInputElement).value)
-              }
-              class="w-full px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
-              placeholder="https://instagram.com/username"
-            />
+            <div class="flex items-center">
+              <span class="px-3 py-2 bg-gray-100 border border-r-0 border-gray-300 text-gray-500">
+                @
+              </span>
+              <input
+                type="text"
+                value={instagramUsername}
+                onInput={(e) =>
+                  setInstagramUsername(
+                    (e.target as HTMLInputElement).value.replace(/^@/, "")
+                  )
+                }
+                class="flex-1 px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                placeholder="username"
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Slug */}
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">
-          URL（スラッグ）
-        </label>
-        <div class="flex items-center">
-          <span class="px-3 py-2 bg-gray-100 border border-r-0 border-gray-300 text-gray-500">
-            in-it.ooo/s/
-          </span>
-          <input
-            type="text"
-            value={slug}
-            onInput={(e) => setSlug((e.target as HTMLInputElement).value)}
-            class="flex-1 px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
-            placeholder="my-space"
-            pattern="[a-z0-9-]+"
-          />
-        </div>
-        <p class="text-sm text-gray-500 mt-1">
-          半角英数字とハイフンのみ使用できます
-        </p>
-      </div>
+      {/* Slug - 自動生成のため非表示（スペース作成時に運営が自動割り振り） */}
 
       {/* 公開設定 - 課金ユーザーのみ表示 */}
       {isSubscribed && (
