@@ -6,6 +6,7 @@ interface SpacePublicToggleProps {
   spaceId: string;
   initialValue: boolean;
   accessToken: string | null;
+  isSubscribed?: boolean;
   disabled?: boolean;
 }
 
@@ -13,6 +14,7 @@ export default function SpacePublicToggle({
   spaceId,
   initialValue,
   accessToken,
+  isSubscribed = true,
   disabled = false,
 }: SpacePublicToggleProps) {
   const [isPublic, setIsPublic] = useState(initialValue);
@@ -20,6 +22,12 @@ export default function SpacePublicToggle({
 
   const handleToggle = async () => {
     if (!accessToken || isUpdating || disabled) return;
+
+    // 非課金の場合はアラートを表示
+    if (!isSubscribed) {
+      alert("公開するには、課金または無料クーポン期間である必要があります。");
+      return;
+    }
 
     const newValue = !isPublic;
     setIsUpdating(true);
@@ -53,10 +61,12 @@ export default function SpacePublicToggle({
       disabled={isUpdating || disabled}
       class={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
         isPublic ? "bg-blue-600" : "bg-gray-200"
-      } ${isUpdating || disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+      } ${isUpdating || disabled ? "opacity-50 cursor-not-allowed" : ""} ${
+        !isSubscribed ? "opacity-75" : ""
+      }`}
       title={
-        disabled
-          ? "課金するとトグル可能になります"
+        !isSubscribed
+          ? "公開するには課金が必要です"
           : isPublic
           ? "非公開にする"
           : "公開する"

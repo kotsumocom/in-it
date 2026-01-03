@@ -195,19 +195,16 @@ export default function Dashboard({ data }: PageProps<DashboardData>) {
 
                     {/* 公開トグル（左）とボタン（右）の横並び */}
                     <div class="flex items-center justify-between gap-4 pt-2 border-t border-gray-100">
-                      {/* 左側：公開トグル */}
-                      {isSubscribed ? (
-                        <div class="flex items-center gap-2">
-                          <span class="text-xs text-gray-500">公開</span>
-                          <SpacePublicToggle
-                            spaceId={space.id}
-                            initialValue={space.is_public}
-                            accessToken={accessToken}
-                          />
-                        </div>
-                      ) : (
-                        <div />
-                      )}
+                      {/* 左側：公開トグル（常に表示） */}
+                      <div class="flex items-center gap-2">
+                        <span class="text-xs text-gray-500">公開</span>
+                        <SpacePublicToggle
+                          spaceId={space.id}
+                          initialValue={space.is_public}
+                          accessToken={accessToken}
+                          isSubscribed={isSubscribed}
+                        />
+                      </div>
 
                       {/* 右側：ボタン */}
                       <div class="flex items-center gap-2">
