@@ -457,6 +457,107 @@ app.delete("/api/profile", async (c) => {
 });
 
 // ===========================================
+// Account Settings API (Email & Password)
+// ===========================================
+
+// メールアドレス変更
+app.put("/api/account/email", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const { email } = await c.req.json();
+
+    if (!email) {
+      return c.json({ error: "メールアドレスを入力してください" }, 400);
+    }
+
+    // メールアドレスの形式チェック
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return c.json({ error: "有効なメールアドレスを入力してください" }, 400);
+    }
+
+    // Supabase Auth でメールアドレス変更（確認メールが送信される）
+    const { error: updateError } =
+      await supabaseAdmin.auth.admin.updateUserById(user.id, {
+        email,
+        email_confirm: false,
+      });
+
+    if (updateError) {
+      console.error("Email update error:", updateError);
+      return c.json(
+        { error: "メールアドレスの変更に失敗しました: " + updateError.message },
+        400
+      );
+    }
+
+    console.log(`Email change requested: ${user.id} -> ${email}`);
+    return c.json({ success: true, message: "確認メールを送信しました" });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// パスワード変更
+app.put("/api/account/password", async (c) => {
+  try {
+    const authHeader = c.req.header("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "認証が必要です" }, 401);
+    }
+    const token = authHeader.slice(7);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      return c.json({ error: "認証に失敗しました" }, 401);
+    }
+
+    const { password } = await c.req.json();
+
+    if (!password) {
+      return c.json({ error: "パスワードを入力してください" }, 400);
+    }
+
+    if (password.length < 6) {
+      return c.json({ error: "パスワードは6文字以上で入力してください" }, 400);
+    }
+
+    // Supabase Auth でパスワード変更
+    const { error: updateError } =
+      await supabaseAdmin.auth.admin.updateUserById(user.id, { password });
+
+    if (updateError) {
+      console.error("Password update error:", updateError);
+      return c.json(
+        { error: "パスワードの変更に失敗しました: " + updateError.message },
+        400
+      );
+    }
+
+    console.log(`Password changed: ${user.id}`);
+    return c.json({ success: true });
+  } catch (e) {
+    return c.json({ error: (e as Error).message }, 500);
+  }
+});
+
+// ===========================================
 // Space Image Upload API
 // ===========================================
 

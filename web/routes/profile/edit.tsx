@@ -2,6 +2,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { supabase } from "@in-it/backend/supabase.ts";
 import { State } from "../_middleware.ts";
 import AvatarUploader from "../../islands/AvatarUploader.tsx";
+import AccountSettings from "../../islands/AccountSettings.tsx";
 
 interface ProfileEditData {
   user: State["user"];
@@ -204,6 +205,16 @@ export default function ProfileEdit({ data }: PageProps<ProfileEditData>) {
             </button>
           </div>
         </form>
+
+        {/* アカウント設定（メール・パスワード変更） */}
+        {accessToken && user && (
+          <div class="mt-8">
+            <AccountSettings
+              accessToken={accessToken}
+              currentEmail={user.email || ""}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
