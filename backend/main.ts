@@ -658,6 +658,24 @@ app.delete("/api/spaces/:id", async (c) => {
     }
 
     const spaceId = c.req.param("id");
+
+    // 課金中のスペースは削除不可
+    const { data: subscription } = await supabaseAdmin
+      .from("subscriptions")
+      .select("status")
+      .eq("space_id", spaceId)
+      .maybeSingle();
+
+    if (subscription && subscription.status === "active") {
+      return c.json(
+        {
+          error:
+            "課金中のスペースは削除できません。先にサブスクリプションを解約してください。",
+        },
+        400
+      );
+    }
+
     const result = await deleteSpace(spaceId, user.id);
     if (!result.success) {
       return c.json({ error: result.error }, 400);
