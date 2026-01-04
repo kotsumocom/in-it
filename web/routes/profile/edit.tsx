@@ -96,13 +96,27 @@ export default function ProfileEdit({ data }: PageProps<ProfileEditData>) {
           <a href="/dashboard" class="flex items-center gap-2">
             <img src="/type.svg" alt="in-it" class="h-8" />
           </a>
-          <a href="/dashboard" class="text-gray-600 hover:text-gray-900">
-            ← ダッシュボードに戻る
-          </a>
+          <nav class="flex items-center gap-4">
+            <a href="/dashboard" class="text-gray-600 hover:text-gray-900">
+              ダッシュボード
+            </a>
+            <a href="/logout" class="text-gray-600 hover:text-gray-900">
+              ログアウト
+            </a>
+          </nav>
         </div>
       </header>
 
       <div class="max-w-2xl mx-auto py-12 px-4">
+        <div class="mb-8">
+          <a
+            href="/dashboard"
+            class="text-blue-600 hover:text-blue-700 text-sm"
+          >
+            ← ダッシュボードに戻る
+          </a>
+        </div>
+
         <h1 class="text-2xl font-bold text-gray-900 mb-8">プロフィール編集</h1>
 
         {error && (

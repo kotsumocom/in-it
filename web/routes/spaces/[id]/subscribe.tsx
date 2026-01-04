@@ -129,6 +129,15 @@ export default function SubscribePage({ data }: PageProps<SubscribeData>) {
       </header>
 
       <div class="max-w-lg mx-auto py-12 px-4">
+        <div class="mb-8">
+          <a
+            href="/dashboard"
+            class="text-blue-600 hover:text-blue-700 text-sm"
+          >
+            ← ダッシュボードに戻る
+          </a>
+        </div>
+
         <h1 class="text-2xl font-bold text-gray-900 mb-2">
           スペースを公開する
         </h1>
@@ -217,12 +226,6 @@ export default function SubscribePage({ data }: PageProps<SubscribeData>) {
             <li>• 手数料なしでサービス提供</li>
           </ul>
         </div>
-
-        <p class="mt-6 text-center">
-          <a href="/dashboard" class="text-gray-600 hover:text-gray-900">
-            ← ダッシュボードに戻る
-          </a>
-        </p>
       </div>
     </div>
   );

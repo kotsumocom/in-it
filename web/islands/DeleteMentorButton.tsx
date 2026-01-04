@@ -62,7 +62,7 @@ export default function DeleteMentorButton({
       type="button"
       onClick={handleDelete}
       disabled={isDeleting}
-      class="text-red-600 hover:text-red-700 text-sm underline disabled:opacity-50"
+      class="px-4 py-1.5 text-sm text-red-600 border border-red-300 hover:bg-red-50 disabled:opacity-50"
     >
       {isDeleting ? "削除中..." : "メンターデータを削除"}
     </button>
