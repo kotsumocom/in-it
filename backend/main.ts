@@ -402,6 +402,23 @@ app.delete("/api/profile", async (c) => {
       return c.json({ error: "認証エラー" }, 401);
     }
 
+    // 課金中のスペースがあるかチェック
+    const { data: activeSubscriptions } = await supabaseAdmin
+      .from("subscriptions")
+      .select("id, space_id, status")
+      .eq("user_id", user.id)
+      .in("status", ["active", "trialing"]);
+
+    if (activeSubscriptions && activeSubscriptions.length > 0) {
+      return c.json(
+        {
+          error:
+            "課金中のスペースがあるため削除できません。先にすべてのサブスクリプションを解約してください。",
+        },
+        400
+      );
+    }
+
     // 関連するスペースを削除
     await supabaseAdmin.from("mentor_spaces").delete().eq("user_id", user.id);
 
