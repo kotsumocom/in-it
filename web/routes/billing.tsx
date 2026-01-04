@@ -15,18 +15,20 @@ export const handler: Handlers<unknown, State> = {
 
     const user = ctx.state.user;
 
-    // Stripe Customer IDを取得
+    // Stripe Customer IDを取得（複数スペースがある場合は最初のもの）
     const { data: subscription } = await supabaseAdmin
       .from("subscriptions")
       .select("stripe_customer_id")
       .eq("user_id", user.id)
-      .single();
+      .not("stripe_customer_id", "is", null)
+      .limit(1)
+      .maybeSingle();
 
     if (!subscription?.stripe_customer_id) {
-      // Customer IDがなければサブスク登録へ
+      // Customer IDがなければダッシュボードへ（サブスク未登録）
       return new Response(null, {
         status: 303,
-        headers: { Location: "/subscribe" },
+        headers: { Location: "/dashboard" },
       });
     }
 
