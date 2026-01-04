@@ -593,9 +593,27 @@ app.post("/api/spaces", async (c) => {
     if (!result.success) {
       return c.json({ error: result.error }, 400);
     }
+
+    // 管理者の場合は自動で永年無料サブスクリプションを作成
+    const ADMIN_EMAILS = ["s.ono@kotsumo.com"];
+    if (user.email && ADMIN_EMAILS.includes(user.email) && result.space) {
+      await supabaseAdmin.from("subscriptions").upsert(
+        {
+          user_id: user.id,
+          space_id: result.space.id,
+          status: "forever_free",
+          plan_type: "admin",
+        },
+        { onConflict: "space_id" }
+      );
+      console.log(
+        `Admin space created with forever_free status: ${result.space.id}`
+      );
+    }
+
     return c.json(result.space, 201);
   } catch (e) {
-    return c.json({ error: e.message }, 500);
+    return c.json({ error: (e as Error).message }, 500);
   }
 });
 
