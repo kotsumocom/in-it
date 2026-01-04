@@ -189,12 +189,20 @@ export default function ProfileEdit({ data }: PageProps<ProfileEditData>) {
             </div>
           </section>
 
-          <button
-            type="submit"
-            class="w-full py-4 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
-          >
-            保存する
-          </button>
+          <div class="flex gap-4">
+            <a
+              href="/dashboard"
+              class="flex-1 py-4 text-center text-gray-700 font-medium border border-gray-300 hover:bg-gray-50 transition-colors"
+            >
+              キャンセル
+            </a>
+            <button
+              type="submit"
+              class="flex-1 py-4 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
+            >
+              保存する
+            </button>
+          </div>
         </form>
       </div>
     </div>
