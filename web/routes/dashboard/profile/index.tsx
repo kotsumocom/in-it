@@ -1,6 +1,6 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { State } from "../_middleware.ts";
-import DashboardLayout from "../../components/DashboardLayout.tsx";
+import { State } from "../../_middleware.ts";
+import DashboardLayout from "../../../components/DashboardLayout.tsx";
 
 function getCookie(cookies: string, name: string): string | null {
   const match = cookies.match(new RegExp(`(^| )${name}=([^;]+)`));
@@ -61,7 +61,7 @@ export default function ProfilePage({ data }: PageProps<ProfileData>) {
           </div>
         </div>
         <a
-          href="/dashboard/account"
+          href="/dashboard/profile/edit"
           class="px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
         >
           プロフィールを編集
