@@ -5,24 +5,12 @@ import { State } from "../_middleware.ts";
 interface Mentor {
   id: string;
   display_name: string;
-  tagline: string | null;
   avatar_url: string | null;
-  slug: string;
-  category: {
-    display_name: string;
-  } | null;
-}
-
-interface Category {
-  id: string;
-  name: string;
-  display_name: string;
+  space_count: number;
 }
 
 interface MentorsData {
   mentors: Mentor[];
-  categories: Category[];
-  selectedCategory: string | null;
   searchQuery: string;
   user: State["user"];
 }
@@ -30,54 +18,43 @@ interface MentorsData {
 export const handler: Handlers<MentorsData, State> = {
   async GET(req, ctx) {
     const url = new URL(req.url);
-    const selectedCategory = url.searchParams.get("category");
     const searchQuery = url.searchParams.get("q") || "";
 
-    // カテゴリ一覧を取得
-    const { data: categories } = await supabase
-      .from("categories")
-      .select("id, name, display_name")
-      .order("display_order");
-
-    // メンター一覧を取得
-    let query = supabase
-      .from("mentor_profiles")
-      .select(
-        `
+    // 公開スペースを持つメンター一覧を取得
+    // mentor_spacesテーブルからis_public=trueのスペースを持つユーザーを集計
+    let query = supabase.from("mentor_profiles").select(`
         id,
         display_name,
-        tagline,
-        avatar_url,
-        slug,
-        category:categories(display_name)
-      `
-      )
-      .eq("is_public", true)
-      .not("slug", "is", null);
+        avatar_url
+      `);
 
-    if (selectedCategory) {
-      const { data: cat } = await supabase
-        .from("categories")
-        .select("id")
-        .eq("name", selectedCategory)
-        .single();
-      if (cat) {
-        query = query.eq("category_id", cat.id);
+    if (searchQuery) {
+      query = query.ilike("display_name", `%${searchQuery}%`);
+    }
+
+    const { data: profiles } = await query;
+
+    // 公開スペース数を各メンターに付与
+    const mentors: Mentor[] = [];
+    if (profiles) {
+      for (const profile of profiles) {
+        const { count } = await supabase
+          .from("mentor_spaces")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", profile.id)
+          .eq("is_public", true);
+
+        if (count && count > 0) {
+          mentors.push({
+            ...profile,
+            space_count: count,
+          });
+        }
       }
     }
 
-    if (searchQuery) {
-      query = query.or(
-        `display_name.ilike.%${searchQuery}%,tagline.ilike.%${searchQuery}%`
-      );
-    }
-
-    const { data: mentors } = await query;
-
     return ctx.render({
-      mentors: (mentors || []) as Mentor[],
-      categories: (categories || []) as Category[],
-      selectedCategory,
+      mentors,
       searchQuery,
       user: ctx.state.user,
     });
@@ -85,17 +62,20 @@ export const handler: Handlers<MentorsData, State> = {
 };
 
 export default function Mentors({ data }: PageProps<MentorsData>) {
-  const { mentors, categories, selectedCategory, searchQuery, user } = data;
+  const { mentors, searchQuery, user } = data;
 
   return (
     <div class="min-h-screen bg-gray-50">
       {/* ヘッダー */}
       <header class="bg-white border-b border-gray-200">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <a href="/" class="text-xl font-bold text-blue-600">
-            in-it
+          <a href="/" class="flex items-center">
+            <img src="/type.svg" alt="in-it" class="h-8" />
           </a>
           <nav class="flex items-center gap-4">
+            <a href="/" class="text-gray-600 hover:text-gray-900">
+              スペース一覧
+            </a>
             {user ? (
               <a
                 href="/dashboard"
@@ -118,30 +98,16 @@ export default function Mentors({ data }: PageProps<MentorsData>) {
       <div class="max-w-5xl mx-auto py-8 px-4">
         <h1 class="text-2xl font-bold text-gray-900 mb-6">メンター一覧</h1>
 
-        {/* 検索・フィルター */}
+        {/* 検索 */}
         <form method="GET" class="mb-8">
-          <div class="flex flex-col md:flex-row gap-4">
+          <div class="flex gap-4">
             <input
               type="text"
               name="q"
               value={searchQuery}
-              placeholder="キーワードで検索..."
+              placeholder="メンター名で検索..."
               class="flex-1 px-4 py-3 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
-            <select
-              name="category"
-              class="px-4 py-3 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-            >
-              <option value="">すべてのカテゴリ</option>
-              {categories.map((cat) => (
-                <option
-                  value={cat.name}
-                  selected={selectedCategory === cat.name}
-                >
-                  {cat.display_name}
-                </option>
-              ))}
-            </select>
             <button
               type="submit"
               class="px-6 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
@@ -160,18 +126,18 @@ export default function Mentors({ data }: PageProps<MentorsData>) {
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mentors.map((mentor) => (
               <a
-                href={`/mentors/${mentor.slug}`}
+                href={`/mentors/${mentor.id}`}
                 class="block p-6 bg-white border border-gray-200 hover:shadow-md transition-shadow"
               >
-                <div class="flex items-start gap-4">
+                <div class="flex items-center gap-4">
                   {mentor.avatar_url ? (
                     <img
                       src={mentor.avatar_url}
                       alt={mentor.display_name}
-                      class="w-16 h-16 object-cover"
+                      class="w-16 h-16 rounded-full object-cover"
                     />
                   ) : (
-                    <div class="w-16 h-16 bg-gray-200 flex items-center justify-center text-2xl">
+                    <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-2xl">
                       👤
                     </div>
                   )}
@@ -179,16 +145,9 @@ export default function Mentors({ data }: PageProps<MentorsData>) {
                     <h2 class="text-lg font-bold text-gray-900 truncate">
                       {mentor.display_name}
                     </h2>
-                    {mentor.category && (
-                      <p class="text-sm text-blue-600 mb-1">
-                        {mentor.category.display_name}
-                      </p>
-                    )}
-                    {mentor.tagline && (
-                      <p class="text-gray-600 text-sm line-clamp-2">
-                        {mentor.tagline}
-                      </p>
-                    )}
+                    <p class="text-sm text-gray-500">
+                      {mentor.space_count} スペース
+                    </p>
                   </div>
                 </div>
               </a>

@@ -44,8 +44,6 @@ export const handler: Handlers<ProfileEditData, State> = {
 
     const form = await req.formData();
     const displayName = form.get("displayName")?.toString() || "";
-    const tagline = form.get("tagline")?.toString() || "";
-    const bio = form.get("bio")?.toString() || "";
 
     const cookies = req.headers.get("cookie") || "";
     const accessToken = getCookie(cookies, "access_token");
@@ -64,8 +62,6 @@ export const handler: Handlers<ProfileEditData, State> = {
       .from("mentor_profiles")
       .update({
         display_name: displayName,
-        tagline: tagline || null,
-        bio: bio || null,
       })
       .eq("id", ctx.state.user.id);
 
@@ -160,33 +156,6 @@ export default function ProfileEdit({ data }: PageProps<ProfileEditData>) {
                 required
                 class="w-full px-4 py-3 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
               />
-            </div>
-
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                キャッチコピー
-              </label>
-              <input
-                type="text"
-                name="tagline"
-                value={profile?.tagline || ""}
-                placeholder="例: Pythonでデータ分析を教えます"
-                class="w-full px-4 py-3 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-              />
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                自己紹介
-              </label>
-              <textarea
-                name="bio"
-                rows={8}
-                placeholder="あなたの経歴やスキル、教え方について..."
-                class="w-full px-4 py-3 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-              >
-                {profile?.bio || ""}
-              </textarea>
             </div>
           </section>
 
