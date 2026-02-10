@@ -9,7 +9,7 @@ export const handler: Handlers<TermsData> = {
   async GET(_req, ctx) {
     try {
       const markdown = await Deno.readTextFile(
-        new URL("../content/terms.md", import.meta.url)
+        new URL("../content/terms.md", import.meta.url),
       );
       const html = await marked(markdown);
       return ctx.render({ html });
@@ -25,10 +25,9 @@ export default function Terms({ data }: PageProps<TermsData>) {
     <div class="min-h-screen bg-gray-50">
       {/* ヘッダー */}
       <header class="bg-white border-b border-gray-200">
-        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <a href="/" class="flex items-center gap-2">
-            <img src="/symbol.svg" alt="イニット" class="h-8" />
-            <img src="/type.svg" alt="イニット" class="h-5" />
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center">
+          <a href="/" class="flex items-center">
+            <img src="/type.svg" alt="イニット" class="h-8" />
           </a>
         </div>
       </header>
