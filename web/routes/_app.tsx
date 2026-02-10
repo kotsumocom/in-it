@@ -30,6 +30,7 @@ export default function App({ Component }: PageProps) {
           name="twitter:description"
           content="手数料ゼロ・直接契約OK。月額1,000円のメンター掲載プラットフォーム。"
         />
+        <meta name="twitter:site" content="@in_it_ooo" />
         <meta name="twitter:image" content="https://in-it.ooo/ogp.png" />
         <link rel="icon" type="image/svg+xml" href="/symbol.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -60,7 +60,7 @@
 - [x] `POST /api/subscribe` を `space_id` 対応に更新
 - [x] 年間プラン対応（10,000 円/年）
 - [x] 紹介コード適用ロジック（追跡のみ）
-- [ ] Invoice Credit（紹介者報酬）ロジック
+- [x] Invoice Credit（紹介者報酬）ロジック（Webhook内で実装済み）
 
 ### クーポン管理
 
@@ -97,7 +97,6 @@
 ### マイページ
 
 - [x] 自分のスペース一覧
-- [ ] 契約中のスペース一覧
 - [x] 紹介コード表示・共有
 - [x] ダッシュボードにアバター表示
 
@@ -113,10 +112,10 @@
 - [x] 年間プラン用 Price 作成（setup-stripe.ts スクリプト）
 - [x] 紹介制度用クーポン作成（setup-stripe.ts スクリプト）
 - [x] 紹介コードでクーポン自動適用
-- [ ] Invoice Credit（紹介者報酬）ロジック
+- [x] Invoice Credit（紹介者報酬）ロジック（Webhook内で実装済み）
 - [x] Webhook 処理の更新（space_id 対応済み）
 
-## Phase 5: マーケティング・SEO ✅（一部残あり）
+## Phase 5: マーケティング・SEO ✅
 
 ### SEO / OGP
 
@@ -131,39 +130,37 @@
 ### SNS共有
 
 - [x] SNS共有ボタン Island（X / LINE / リンクコピー）
-- [ ] メンタープロフィールページにもSNS共有ボタン追加
-- [ ] トップページへのSNS共有ボタン追加
+- [x] メンタープロフィールページにもSNS共有ボタン追加
+- [x] トップページフッターに公式SNSリンク追加
 
 ### LP
 
 - [x] メンター向けLP（`/lp`）にOGPメタタグ追加
 - [x] メンター向けLP（`/lp`）に「スペースとは？」セクション追加
 - [x] メンティー向けLP（`/for-learners`）新規作成
-- [ ] FAQページ（`/faq`）作成
+- [x] FAQページ（`/faq`）作成（SEOメタタグ + JSON-LD構造化データ付き）
 
 ### SNS運用（非コード）
 
-- [ ] Xアカウント開設・運用開始
-- [ ] noteでの発信（スペースという新しいメンタリング形式）
+- [x] Xアカウント開設・運用開始（https://x.com/in_it_ooo）
+- [x] noteでの発信（https://note.com/in_it_ooo）
 - [ ] Google Search Console にsitemap.xml登録
 
 ---
 
 ## 残りタスク
 
-### 機能
+### マーケティング（非コード）
 
-- [ ] **Invoice Credit（紹介者報酬）** - 紹介クーポン使用時に紹介者へ1,000クレジット付与
-
-### マーケティング
-
-- [ ] **FAQページ作成** - よくある質問ページ
-- [ ] **メンタープロフィールページにSNS共有ボタン追加**
 - [ ] **Google Search Console設定** - sitemap.xml登録
-- [ ] **Xアカウント開設** - SNSプレゼンス構築
 
 ### 完了済み
 
+- [x] **Invoice Credit（紹介者報酬）** - Webhook内で実装済み（handleCheckoutComplete）
+- [x] **FAQページ作成** - よくある質問ページ（SEOメタタグ + JSON-LD付き）
+- [x] **メンタープロフィールページにSNS共有ボタン追加**
+- [x] **Xアカウント開設** - https://x.com/in_it_ooo
+- [x] **noteアカウント開設** - https://note.com/in_it_ooo
 - [x] **プロフィールからtagline/bio削除** - スペースへの集約に伴い、プロフィール編集ページから削除
 - [x] **メンターページ改造** - 旧メンター公開ページをスペース一覧ページに改造
 - [x] **メンター一覧ページ修正** - tagline等の旧カラム参照を削除

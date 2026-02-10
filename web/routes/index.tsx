@@ -305,10 +305,38 @@ export default function Home({ data }: PageProps<HomeData>) {
             <div>
               <img src="/type.svg" alt="イニット" class="h-6 mb-2" />
               <p class="text-sm">手数料ゼロのメンタープラットフォーム</p>
+              {/* 公式SNS */}
+              <div class="flex items-center gap-3 mt-3">
+                <a
+                  href="https://x.com/in_it_ooo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-8 h-8 flex items-center justify-center bg-gray-800 text-gray-400 rounded-full hover:bg-gray-700 hover:text-white transition-colors"
+                  title="公式X"
+                >
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
+                <a
+                  href="https://note.com/in_it_ooo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-8 h-8 flex items-center justify-center bg-gray-800 text-gray-400 rounded-full hover:bg-gray-700 hover:text-white transition-colors"
+                  title="公式note"
+                >
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M22.904 6.162c-.078-1.476-.936-2.496-2.478-2.964-.624-.192-5.4-1.074-8.094-.408C9.696 3.45 8.742 5.154 8.742 7.17v4.596c0 .378.27.588.594.468l.792-.288c.33-.126.594-.51.594-.846V8.238c0-.612.456-1.338 1.056-1.56 0 0 3.87-1.398 6.3-.87 1.014.222 1.56.846 1.56 1.848v6.942c0 1.002-.606 1.62-1.608 1.62-.534 0-2.022-.264-3.222-.534-.912-.204-1.746.168-2.1.846-.354.684-.174 1.476.444 1.92.33.234 3.066 1.53 5.466 1.53 2.058 0 3.474-1.014 3.954-2.754.144-.504.33-3.93.33-5.55V6.162zM6.27 10.86c-.924 0-1.674.75-1.674 1.674 0 .924.75 1.674 1.674 1.674.924 0 1.674-.75 1.674-1.674 0-.924-.75-1.674-1.674-1.674z" />
+                  </svg>
+                </a>
+              </div>
             </div>
             <div class="flex flex-wrap gap-6">
               <a href="/lp" class="hover:text-white">
                 メンター向け
+              </a>
+              <a href="/faq" class="hover:text-white">
+                よくある質問
               </a>
               <a href="/terms" class="hover:text-white">
                 利用規約

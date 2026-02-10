@@ -1,6 +1,7 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { supabase } from "@in-it/backend/supabase.ts";
 import { State } from "../_middleware.ts";
+import ShareButtons from "../../islands/ShareButtons.tsx";
 
 interface SpaceItem {
   id: string;
@@ -82,7 +83,7 @@ export default function MentorPage({ data }: PageProps<MentorPageData>) {
       <header class="bg-white border-b border-gray-200">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <a href="/" class="flex items-center">
-            <img src="/type.svg" alt="in-it" class="h-8" />
+            <img src="/type.svg" alt="イニット" class="h-8" />
           </a>
           <nav class="flex items-center gap-4">
             <a href="/" class="text-gray-600 hover:text-gray-900">
@@ -124,6 +125,13 @@ export default function MentorPage({ data }: PageProps<MentorPageData>) {
                 {mentor.display_name}
               </h1>
             </div>
+          </div>
+          {/* SNS共有ボタン */}
+          <div class="mt-4">
+            <ShareButtons
+              url={`https://in-it.ooo/mentors/${mentor.id}`}
+              title={mentor.display_name}
+            />
           </div>
         </section>
 

@@ -32,8 +32,8 @@ export default function ReferralCode({ code, baseUrl }: ReferralCodeProps) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "in-it - 手数料ゼロのメンタープラットフォーム",
-          text: "in-it で一緒にメンターを始めませんか？招待コードで1,000円OFF！",
+          title: "イニット - 手数料ゼロのメンタープラットフォーム",
+          text: "イニット で一緒にメンターを始めませんか？招待コードで1,000円OFF！",
           url: shareUrl,
         });
       } catch {

@@ -34,7 +34,7 @@ export const handler: Handlers<LoginData, State> = {
     headers.set("Location", "/admin");
     headers.set(
       "Set-Cookie",
-      `access_token=${result.session.access_token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800`
+      `access_token=${result.session.access_token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800`,
     );
 
     return new Response(null, { status: 302, headers });
@@ -48,7 +48,7 @@ export default function AdminLoginPage({ data }: PageProps<LoginData>) {
     <div class="min-h-screen bg-gray-900 flex items-center justify-center px-4">
       <div class="max-w-md w-full">
         <div class="text-center mb-8">
-          <h1 class="text-2xl font-bold text-white mb-2">in-it Admin</h1>
+          <h1 class="text-2xl font-bold text-white mb-2">イニット Admin</h1>
           <p class="text-gray-400">管理者ログイン</p>
         </div>
 
