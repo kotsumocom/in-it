@@ -132,10 +132,6 @@ export default function ProfileEdit({ data }: PageProps<ProfileEditData>) {
               accessToken={accessToken}
               userId={user.id}
               currentAvatarUrl={profile?.avatar_url || null}
-              onUploadComplete={() => {
-                // ページをリロードして最新の画像を表示
-                globalThis.location.reload();
-              }}
             />
           </section>
         )}

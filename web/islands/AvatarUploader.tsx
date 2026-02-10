@@ -12,7 +12,6 @@ interface AvatarUploaderProps {
   accessToken: string;
   userId: string;
   currentAvatarUrl: string | null;
-  onUploadComplete: (url: string) => void;
 }
 
 // deno-lint-ignore no-explicit-any
@@ -22,7 +21,6 @@ export default function AvatarUploader({
   accessToken,
   userId,
   currentAvatarUrl,
-  onUploadComplete,
 }: AvatarUploaderProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(currentAvatarUrl);
   const [isUploading, setIsUploading] = useState(false);
@@ -160,7 +158,7 @@ export default function AvatarUploader({
       const blob = await new Promise<Blob>((resolve, reject) => {
         circularCanvas.toBlob(
           (b) => (b ? resolve(b) : reject(new Error("Blob error"))),
-          "image/png"
+          "image/png",
         );
       });
 
@@ -185,7 +183,8 @@ export default function AvatarUploader({
       setPreviewUrl(avatar_url);
       setShowCropper(false);
       setOriginalImage(null);
-      onUploadComplete(avatar_url);
+      // ページをリロードして最新の画像を表示
+      globalThis.location.reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
     } finally {
@@ -263,7 +262,8 @@ export default function AvatarUploader({
                     });
                     if (res.ok) {
                       setPreviewUrl(null);
-                      onUploadComplete("");
+                      // ページをリロードして最新の状態を表示
+                      globalThis.location.reload();
                     }
                   } catch (err) {
                     console.error("Delete error:", err);
