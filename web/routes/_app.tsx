@@ -12,6 +12,25 @@ export default function App({ Component }: PageProps) {
           name="description"
           content="手数料ゼロ・直接契約OK。月額1,000円でメンターとして掲載できるプラットフォーム。"
         />
+        {/* OGP */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="イニット" />
+        <meta property="og:title" content="イニット - メンターを見つけよう" />
+        <meta
+          property="og:description"
+          content="プログラミング、デザイン、マーケティングなど様々な分野のプロに直接相談。手数料ゼロ・月額1,000円のメンター掲載プラットフォーム。"
+        />
+        <meta property="og:url" content="https://in-it.ooo" />
+        <meta property="og:image" content="https://in-it.ooo/ogp.png" />
+        <meta property="og:locale" content="ja_JP" />
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="イニット - メンターを見つけよう" />
+        <meta
+          name="twitter:description"
+          content="手数料ゼロ・直接契約OK。月額1,000円のメンター掲載プラットフォーム。"
+        />
+        <meta name="twitter:image" content="https://in-it.ooo/ogp.png" />
         <link rel="icon" type="image/svg+xml" href="/symbol.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

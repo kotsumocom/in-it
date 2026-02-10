@@ -1,7 +1,9 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
+import { Head } from "$fresh/runtime.ts";
 import { State } from "../_middleware.ts";
 import { getPublicSpace } from "../../lib/api.ts";
 import type { Space } from "../../lib/api.ts";
+import ShareButtons from "../../islands/ShareButtons.tsx";
 
 interface SpacePageData {
   space: Space;
@@ -38,7 +40,7 @@ function renderDescription(description: string | undefined) {
         {data.blocks.map(
           (
             block: { type: string; data: Record<string, unknown> },
-            index: number
+            index: number,
           ) => {
             switch (block.type) {
               case "header": {
@@ -139,7 +141,7 @@ function renderDescription(description: string | undefined) {
               default:
                 return null;
             }
-          }
+          },
         )}
       </div>
     );
@@ -159,11 +161,40 @@ function extractUsername(url: string | undefined): string | undefined {
 export default function SpacePage({ data }: PageProps<SpacePageData>) {
   const { space, user } = data;
 
-  const xUsername = extractUsername(space.x_url);
-  const instagramUsername = extractUsername(space.instagram_url);
+  const xUsername = extractUsername(space.x_url ?? undefined);
+  const instagramUsername = extractUsername(space.instagram_url ?? undefined);
+  const spaceUrl = `https://in-it.ooo/s/${space.slug}`;
+  const ogDescription = space.description
+    ? space.description.substring(0, 120).replace(/[\n\r]/g, " ")
+    : `${space.title} - イニットで相談できます`;
+  const ogImage = space.thumbnail_url || "https://in-it.ooo/ogp.svg";
 
   return (
     <div class="min-h-screen bg-gray-50">
+      <Head>
+        <title>{space.title} - イニット</title>
+        <meta name="description" content={ogDescription} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={`${space.title} - イニット`} />
+        <meta property="og:description" content={ogDescription} />
+        <meta property="og:url" content={spaceUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${space.title} - イニット`} />
+        <meta name="twitter:description" content={ogDescription} />
+        <meta name="twitter:image" content={ogImage} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: space.title,
+            description: ogDescription,
+            url: spaceUrl,
+            image: ogImage,
+            category: space.category?.name || undefined,
+          })}
+        </script>
+      </Head>
       {/* ヘッダー */}
       <header class="bg-white border-b border-gray-200">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -191,6 +222,11 @@ export default function SpacePage({ data }: PageProps<SpacePageData>) {
       </header>
 
       <div class="max-w-3xl mx-auto py-12 px-4">
+        {/* SNS共有ボタン */}
+        <div class="mb-6 flex justify-end">
+          <ShareButtons url={spaceUrl} title={space.title} />
+        </div>
+
         {/* スペースヘッダー */}
         <div class="mb-8">
           {/* カテゴリ（リンク） */}

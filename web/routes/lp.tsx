@@ -1,4 +1,5 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
+import { Head } from "$fresh/runtime.ts";
 import { State } from "./_middleware.ts";
 
 interface LPData {
@@ -16,6 +17,26 @@ export default function LandingPage({ data }: PageProps<LPData>) {
 
   return (
     <div class="min-h-screen bg-white">
+      <Head>
+        <title>メンター登録 - イニット</title>
+        <meta
+          name="description"
+          content="手数料ゼロ・月額1,000円でメンターとして掲載。直接契約OK、外部リンク自由。イニットでメンターとしての活動を始めましょう。"
+        />
+        <meta property="og:title" content="メンター登録 - イニット" />
+        <meta
+          property="og:description"
+          content="手数料ゼロ・月額1,000円のメンター掲載プラットフォーム。直接契約OK。"
+        />
+        <meta property="og:url" content="https://in-it.ooo/lp" />
+        <meta property="og:image" content="https://in-it.ooo/ogp.svg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="メンター登録 - イニット" />
+        <meta
+          name="twitter:description"
+          content="手数料ゼロ・月額1,000円のメンター掲載プラットフォーム"
+        />
+      </Head>
       {/* ヘッダー */}
       <header class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -145,6 +166,53 @@ export default function LandingPage({ data }: PageProps<LPData>) {
           >
             招待コードで登録する
           </a>
+        </div>
+      </section>
+
+      {/* スペースとは？セクション */}
+      <section class="py-16 px-4 bg-white">
+        <div class="max-w-3xl mx-auto">
+          <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">
+            📋 「スペース」とは？
+          </h2>
+          <p class="text-gray-600 text-center mb-10">
+            イニットでは、メンターが作成する相談窓口を「スペース」と呼びます。
+          </p>
+          <div class="space-y-6">
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">
+                1
+              </div>
+              <div>
+                <h3 class="font-bold text-gray-900 mb-1">スペースを作成</h3>
+                <p class="text-gray-600 text-sm">
+                  タイトル、説明文、カテゴリ、連絡先リンクなどを自由に設定。あなただけの相談窓口ページが完成します。
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">
+                2
+              </div>
+              <div>
+                <h3 class="font-bold text-gray-900 mb-1">生徒が検索・発見</h3>
+                <p class="text-gray-600 text-sm">
+                  カテゴリやキーワードであなたのスペースが検索結果に表示。SNSでのシェアもかんたんです。
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">
+                3
+              </div>
+              <div>
+                <h3 class="font-bold text-gray-900 mb-1">直接やり取り開始</h3>
+                <p class="text-gray-600 text-sm">
+                  スペースに掲載した連絡先から生徒が直接コンタクト。予約システム、LINE、Zoom等お好みの方法で。
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
