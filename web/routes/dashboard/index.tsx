@@ -38,7 +38,7 @@ export default function DashboardIndex({ data }: PageProps<DashboardData>) {
   );
 
   return (
-    <DashboardLayout activeSection="dashboard">
+    <DashboardLayout activeSection="dashboard" user={user}>
       <div class="flex items-center gap-4 mb-8">
         {profile?.avatar_url ? (
           <img

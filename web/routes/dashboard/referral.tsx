@@ -26,7 +26,7 @@ export default function ReferralPage({ data }: PageProps<ReferralData>) {
   const { user } = data;
 
   return (
-    <DashboardLayout activeSection="referral">
+    <DashboardLayout activeSection="referral" user={user}>
       <h1 class="text-2xl font-bold text-gray-900 mb-8">招待クーポン</h1>
       <div class="bg-white border border-gray-200 p-6">
         <ReferralCode

@@ -44,10 +44,10 @@ function getCookie(cookies: string, name: string): string | null {
 }
 
 export default function NewSpacePage({ data }: PageProps<NewSpaceData>) {
-  const { categories, tags, accessToken } = data;
+  const { user, categories, tags, accessToken } = data;
 
   return (
-    <DashboardLayout activeSection="spaces">
+    <DashboardLayout activeSection="spaces" user={user}>
       <div class="max-w-2xl">
         <h1 class="text-2xl font-bold text-gray-900 mb-8">
           新しいスペースを作成

@@ -38,10 +38,10 @@ export const handler: Handlers<SpacesData, State> = {
 };
 
 export default function SpacesIndex({ data }: PageProps<SpacesData>) {
-  const { spaces, accessToken } = data;
+  const { user, spaces, accessToken } = data;
 
   return (
-    <DashboardLayout activeSection="spaces">
+    <DashboardLayout activeSection="spaces" user={user}>
       <div class="flex items-center justify-between mb-8">
         <h1 class="text-2xl font-bold text-gray-900">マイスペース</h1>
         <a

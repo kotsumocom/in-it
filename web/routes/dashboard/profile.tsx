@@ -1,24 +1,19 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { supabase } from "@in-it/backend/supabase.ts";
 import { State } from "../_middleware.ts";
-import AvatarUploader from "../../islands/AvatarUploader.tsx";
-import AccountSettings from "../../islands/AccountSettings.tsx";
 import DashboardLayout from "../../components/DashboardLayout.tsx";
-
-interface ProfileEditData {
-  user: State["user"];
-  accessToken: string | null;
-  error?: string;
-  success?: boolean;
-}
 
 function getCookie(cookies: string, name: string): string | null {
   const match = cookies.match(new RegExp(`(^| )${name}=([^;]+)`));
   return match ? match[2] : null;
 }
 
-export const handler: Handlers<ProfileEditData, State> = {
-  async GET(req, ctx) {
+interface ProfileData {
+  user: State["user"];
+  accessToken: string | null;
+}
+
+export const handler: Handlers<ProfileData, State> = {
+  GET(req, ctx) {
     if (!ctx.state.user) {
       return new Response(null, {
         status: 303,
@@ -34,120 +29,44 @@ export const handler: Handlers<ProfileEditData, State> = {
       accessToken,
     });
   },
-
-  async POST(req, ctx) {
-    if (!ctx.state.user) {
-      return new Response(null, {
-        status: 303,
-        headers: { Location: "/login" },
-      });
-    }
-
-    const form = await req.formData();
-    const displayName = form.get("displayName")?.toString() || "";
-
-    const cookies = req.headers.get("cookie") || "";
-    const accessToken = getCookie(cookies, "access_token");
-
-    if (!displayName) {
-      return ctx.render({
-        user: ctx.state.user,
-        accessToken,
-        error: "表示名は必須です",
-      });
-    }
-
-    const { error } = await supabase
-      .from("mentor_profiles")
-      .update({
-        display_name: displayName,
-      })
-      .eq("id", ctx.state.user.id);
-
-    if (error) {
-      return ctx.render({
-        user: ctx.state.user,
-        accessToken,
-        error: "保存に失敗しました: " + error.message,
-      });
-    }
-
-    return new Response(null, {
-      status: 303,
-      headers: { Location: "/dashboard/profile?saved=1" },
-    });
-  },
 };
 
-export default function ProfileEdit({ data }: PageProps<ProfileEditData>) {
-  const { user, accessToken, error } = data;
+export default function ProfilePage({ data }: PageProps<ProfileData>) {
+  const { user } = data;
   const profile = user?.mentor_profile;
 
   return (
-    <DashboardLayout activeSection="profile">
-      <h1 class="text-2xl font-bold text-gray-900 mb-8">プロフィール編集</h1>
-
-      {error && (
-        <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700">
-          {error}
-        </div>
-      )}
-
-      {/* プロフィール画像（Island） */}
-      {accessToken && user && (
-        <section class="p-6 bg-white border border-gray-200 mb-8">
-          <h2 class="text-lg font-bold text-gray-900 mb-4">プロフィール画像</h2>
-          <AvatarUploader
-            accessToken={accessToken}
-            userId={user.id}
-            currentAvatarUrl={profile?.avatar_url || null}
-          />
-        </section>
-      )}
-
-      <form method="POST" class="space-y-8">
-        <section class="p-6 bg-white border border-gray-200">
-          <h2 class="text-lg font-bold text-gray-900 mb-4">基本情報</h2>
-
-          <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 mb-2">
-              表示名 <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              name="displayName"
-              value={profile?.display_name || ""}
-              required
-              class="w-full px-4 py-3 border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+    <DashboardLayout activeSection="profile" user={user}>
+      <h1 class="text-2xl font-bold text-gray-900 mb-8">プロフィール</h1>
+      <div class="bg-white border border-gray-200 p-6">
+        <div class="flex items-center gap-4 mb-6">
+          {profile?.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt={profile.display_name || "アバター"}
+              class="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
             />
+          ) : (
+            <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+              <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+              </svg>
+            </div>
+          )}
+          <div>
+            <h2 class="text-lg font-bold text-gray-900">
+              {profile?.display_name || "未設定"}
+            </h2>
+            <p class="text-gray-600">{user?.email}</p>
           </div>
-        </section>
-
-        <div class="flex gap-4">
-          <a
-            href="/dashboard"
-            class="flex-1 py-4 text-center text-gray-700 font-medium border border-gray-300 hover:bg-gray-50 transition-colors"
-          >
-            キャンセル
-          </a>
-          <button
-            type="submit"
-            class="flex-1 py-4 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
-          >
-            保存する
-          </button>
         </div>
-      </form>
-
-      {/* アカウント設定（メール・パスワード変更） */}
-      {accessToken && user && (
-        <div class="mt-8">
-          <AccountSettings
-            accessToken={accessToken}
-            currentEmail={user.email || ""}
-          />
-        </div>
-      )}
+        <a
+          href="/dashboard/account"
+          class="px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
+        >
+          プロフィールを編集
+        </a>
+      </div>
     </DashboardLayout>
   );
 }

@@ -112,10 +112,10 @@ export const handler: Handlers<SubscribeData, State> = {
 };
 
 export default function SubscribePage({ data }: PageProps<SubscribeData>) {
-  const { space, error } = data;
+  const { user, space, error } = data;
 
   return (
-    <DashboardLayout activeSection="spaces">
+    <DashboardLayout activeSection="spaces" user={user}>
       <div class="max-w-lg">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">
           スペースを公開する

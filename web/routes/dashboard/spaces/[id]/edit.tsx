@@ -63,10 +63,10 @@ function getCookie(cookies: string, name: string): string | null {
 }
 
 export default function EditSpacePage({ data }: PageProps<EditSpaceData>) {
-  const { space, categories, tags, accessToken } = data;
+  const { user, space, categories, tags, accessToken } = data;
 
   return (
-    <DashboardLayout activeSection="spaces">
+    <DashboardLayout activeSection="spaces" user={user}>
       <div class="max-w-2xl">
         <h1 class="text-2xl font-bold text-gray-900 mb-8">スペースを編集</h1>
 
