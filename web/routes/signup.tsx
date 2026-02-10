@@ -48,7 +48,7 @@ export const handler: Handlers<SignUpData> = {
       const headers = new Headers();
       headers.set(
         "Set-Cookie",
-        `access_token=${result.session.access_token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=3600`
+        `access_token=${result.session.access_token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=3600`,
       );
       headers.set("Location", "/dashboard");
       return new Response(null, { status: 303, headers });
@@ -88,17 +88,15 @@ export default function SignUp({ data }: PageProps<SignUpData>) {
       {/* ヘッダー */}
       <header class="bg-white border-b border-gray-200">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center">
-          <a href="/" class="text-xl font-bold text-blue-600">
-            in-it
+          <a href="/" class="flex items-center">
+            <img src="/type.svg" alt="イニット" class="h-8" />
           </a>
         </div>
       </header>
 
       <div class="flex items-center justify-center py-12 px-4">
         <div class="max-w-md w-full">
-          <h1 class="text-2xl font-bold text-gray-900 mb-2 text-center">
-            in-it
-          </h1>
+          <img src="/type.svg" alt="イニット" class="h-12 mx-auto mb-4" />
           <p class="text-gray-600 mb-8 text-center">メンターとして登録</p>
 
           {error && (
