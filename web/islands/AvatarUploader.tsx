@@ -183,8 +183,6 @@ export default function AvatarUploader({
       setPreviewUrl(avatar_url);
       setShowCropper(false);
       setOriginalImage(null);
-      // ページをリロードして最新の画像を表示
-      globalThis.location.reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
     } finally {
@@ -262,8 +260,6 @@ export default function AvatarUploader({
                     });
                     if (res.ok) {
                       setPreviewUrl(null);
-                      // ページをリロードして最新の状態を表示
-                      globalThis.location.reload();
                     }
                   } catch (err) {
                     console.error("Delete error:", err);
