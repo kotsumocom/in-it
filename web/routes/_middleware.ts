@@ -55,7 +55,18 @@ export async function handler(req: Request, ctx: FreshContext<State>) {
     ctx.state.user = null;
   }
 
-  return ctx.next();
+  const response = await ctx.next();
+
+  // 認証済みページはキャッシュしない（プロフィール変更等の即時反映のため）
+  if (ctx.state.user) {
+    response.headers.set(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+    );
+    response.headers.set("Pragma", "no-cache");
+  }
+
+  return response;
 }
 
 function getCookie(cookies: string, name: string): string | null {
