@@ -1,9 +1,9 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { State } from "../_middleware.ts";
-import { getUserSpaces } from "../../lib/api.ts";
-import type { Space } from "../../lib/api.ts";
-import SpacePublicToggle from "../../islands/SpacePublicToggle.tsx";
-import DashboardLayout from "../../components/DashboardLayout.tsx";
+import { State } from "../../_middleware.ts";
+import { getUserSpaces } from "../../../lib/api.ts";
+import type { Space } from "../../../lib/api.ts";
+import SpacePublicToggle from "../../../islands/SpacePublicToggle.tsx";
+import DashboardLayout from "../../../components/DashboardLayout.tsx";
 
 function getCookie(cookies: string, name: string): string | null {
   const match = cookies.match(new RegExp(`(^| )${name}=([^;]+)`));
