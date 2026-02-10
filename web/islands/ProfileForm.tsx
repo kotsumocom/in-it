@@ -51,7 +51,7 @@ export default function ProfileForm({
 
       setSuccess(true);
       setTimeout(() => {
-        globalThis.location.href = "/dashboard?profile_updated=true";
+        globalThis.location.href = "/dashboard/profile?profile_updated=true";
       }, 1000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");

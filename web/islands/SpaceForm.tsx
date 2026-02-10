@@ -37,16 +37,16 @@ export default function SpaceForm({
   const [xUsername, setXUsername] = useState(
     initialData.x_url
       ? initialData.x_url.replace(/^.*\//, "").replace(/^@/, "")
-      : ""
+      : "",
   );
   const [instagramUsername, setInstagramUsername] = useState(
     initialData.instagram_url
       ? initialData.instagram_url.replace(/^.*\//, "").replace(/^@/, "")
-      : ""
+      : "",
   );
   const [isPublic, setIsPublic] = useState(initialData.is_public || false);
   const [thumbnailUrl, setThumbnailUrl] = useState(
-    initialData.thumbnail_url || ""
+    initialData.thumbnail_url || "",
   );
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -73,7 +73,7 @@ export default function SpaceForm({
     setSelectedTagIds((prev) =>
       prev.includes(tagId)
         ? prev.filter((id) => id !== tagId)
-        : [...prev, tagId]
+        : [...prev, tagId],
     );
   };
 
@@ -83,7 +83,7 @@ export default function SpaceForm({
 
     // 既存タグに一致するかチェック
     const existingTag = tags.find(
-      (t) => t.display_name.toLowerCase() === trimmed.toLowerCase()
+      (t) => t.display_name.toLowerCase() === trimmed.toLowerCase(),
     );
 
     if (existingTag) {
@@ -204,8 +204,8 @@ export default function SpaceForm({
 
       globalThis.location.href =
         mode === "create"
-          ? "/dashboard?created=true"
-          : "/dashboard?updated=true";
+          ? "/dashboard/spaces?created=true"
+          : "/dashboard/spaces?updated=true";
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
       setIsSubmitting(false);
@@ -237,7 +237,7 @@ export default function SpaceForm({
         throw new Error(data.error || "削除に失敗しました");
       }
 
-      globalThis.location.href = "/dashboard?deleted=true";
+      globalThis.location.href = "/dashboard/spaces?deleted=true";
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
       setIsSubmitting(false);
@@ -438,7 +438,7 @@ export default function SpaceForm({
                       method: "POST",
                       headers: { Authorization: `Bearer ${accessToken}` },
                       body: formData,
-                    }
+                    },
                   );
                   const data = await res.json();
                   if (data.file?.url) {
@@ -514,7 +514,7 @@ export default function SpaceForm({
                 value={xUsername}
                 onInput={(e) =>
                   setXUsername(
-                    (e.target as HTMLInputElement).value.replace(/^@/, "")
+                    (e.target as HTMLInputElement).value.replace(/^@/, ""),
                   )
                 }
                 class="flex-1 px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
@@ -533,7 +533,7 @@ export default function SpaceForm({
                 value={instagramUsername}
                 onInput={(e) =>
                   setInstagramUsername(
-                    (e.target as HTMLInputElement).value.replace(/^@/, "")
+                    (e.target as HTMLInputElement).value.replace(/^@/, ""),
                   )
                 }
                 class="flex-1 px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
@@ -574,13 +574,13 @@ export default function SpaceForm({
           {isSubmitting
             ? "処理中..."
             : mode === "create"
-            ? "スペースを作成"
-            : "変更を保存"}
+              ? "スペースを作成"
+              : "変更を保存"}
         </button>
 
         <button
           type="button"
-          onClick={() => (globalThis.location.href = "/dashboard")}
+          onClick={() => (globalThis.location.href = "/dashboard/spaces")}
           disabled={isSubmitting}
           class="px-6 py-2 border border-gray-300 text-gray-600 font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
         >

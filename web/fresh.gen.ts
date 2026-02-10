@@ -9,15 +9,24 @@ import * as $admin from "./routes/admin.tsx";
 import * as $admin_login from "./routes/admin/login.tsx";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $billing from "./routes/billing.tsx";
-import * as $dashboard from "./routes/dashboard.tsx";
+import * as $dashboard_account from "./routes/dashboard/account.tsx";
+import * as $dashboard_index from "./routes/dashboard/index.tsx";
+import * as $dashboard_profile from "./routes/dashboard/profile.tsx";
+import * as $dashboard_referral from "./routes/dashboard/referral.tsx";
+import * as $dashboard_spaces_id_edit from "./routes/dashboard/spaces/[id]/edit.tsx";
+import * as $dashboard_spaces_id_subscribe from "./routes/dashboard/spaces/[id]/subscribe.tsx";
+import * as $dashboard_spaces_index from "./routes/dashboard/spaces/index.tsx";
+import * as $dashboard_spaces_new from "./routes/dashboard/spaces/new.tsx";
+import * as $faq from "./routes/faq.tsx";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
 import * as $login from "./routes/login.tsx";
 import * as $logout from "./routes/logout.tsx";
 import * as $lp from "./routes/lp.tsx";
 import * as $map_index from "./routes/map/index.tsx";
-import * as $mentors_slug_ from "./routes/mentors/[slug].tsx";
+import * as $mentors_id_ from "./routes/mentors/[id].tsx";
 import * as $mentors_index from "./routes/mentors/index.tsx";
+import * as $privacy from "./routes/privacy.tsx";
 import * as $profile_edit from "./routes/profile/edit.tsx";
 import * as $s_slug_ from "./routes/s/[slug].tsx";
 import * as $signup from "./routes/signup.tsx";
@@ -25,16 +34,21 @@ import * as $spaces_id_edit from "./routes/spaces/[id]/edit.tsx";
 import * as $spaces_id_subscribe from "./routes/spaces/[id]/subscribe.tsx";
 import * as $spaces_new from "./routes/spaces/new.tsx";
 import * as $subscribe from "./routes/subscribe.tsx";
+import * as $terms from "./routes/terms.tsx";
 import * as $units_id_ from "./routes/units/[id].tsx";
+import * as $AccountSettings from "./islands/AccountSettings.tsx";
 import * as $AvatarUploader from "./islands/AvatarUploader.tsx";
 import * as $BlockEditor from "./islands/BlockEditor.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $CouponForm from "./islands/CouponForm.tsx";
+import * as $DeleteMentorButton from "./islands/DeleteMentorButton.tsx";
+import * as $FAQ from "./islands/FAQ.tsx";
 import * as $FeedbackFAB from "./islands/FeedbackFAB.tsx";
 import * as $ProfileForm from "./islands/ProfileForm.tsx";
 import * as $ProgressButton from "./islands/ProgressButton.tsx";
 import * as $ReferralCode from "./islands/ReferralCode.tsx";
 import * as $SpaceForm from "./islands/SpaceForm.tsx";
+import * as $SpacePublicToggle from "./islands/SpacePublicToggle.tsx";
 import * as $UnitNode from "./islands/UnitNode.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
@@ -47,15 +61,25 @@ const manifest = {
     "./routes/admin/login.tsx": $admin_login,
     "./routes/api/joke.ts": $api_joke,
     "./routes/billing.tsx": $billing,
-    "./routes/dashboard.tsx": $dashboard,
+    "./routes/dashboard/account.tsx": $dashboard_account,
+    "./routes/dashboard/index.tsx": $dashboard_index,
+    "./routes/dashboard/profile.tsx": $dashboard_profile,
+    "./routes/dashboard/referral.tsx": $dashboard_referral,
+    "./routes/dashboard/spaces/[id]/edit.tsx": $dashboard_spaces_id_edit,
+    "./routes/dashboard/spaces/[id]/subscribe.tsx":
+      $dashboard_spaces_id_subscribe,
+    "./routes/dashboard/spaces/index.tsx": $dashboard_spaces_index,
+    "./routes/dashboard/spaces/new.tsx": $dashboard_spaces_new,
+    "./routes/faq.tsx": $faq,
     "./routes/greet/[name].tsx": $greet_name_,
     "./routes/index.tsx": $index,
     "./routes/login.tsx": $login,
     "./routes/logout.tsx": $logout,
     "./routes/lp.tsx": $lp,
     "./routes/map/index.tsx": $map_index,
-    "./routes/mentors/[slug].tsx": $mentors_slug_,
+    "./routes/mentors/[id].tsx": $mentors_id_,
     "./routes/mentors/index.tsx": $mentors_index,
+    "./routes/privacy.tsx": $privacy,
     "./routes/profile/edit.tsx": $profile_edit,
     "./routes/s/[slug].tsx": $s_slug_,
     "./routes/signup.tsx": $signup,
@@ -63,18 +87,23 @@ const manifest = {
     "./routes/spaces/[id]/subscribe.tsx": $spaces_id_subscribe,
     "./routes/spaces/new.tsx": $spaces_new,
     "./routes/subscribe.tsx": $subscribe,
+    "./routes/terms.tsx": $terms,
     "./routes/units/[id].tsx": $units_id_,
   },
   islands: {
+    "./islands/AccountSettings.tsx": $AccountSettings,
     "./islands/AvatarUploader.tsx": $AvatarUploader,
     "./islands/BlockEditor.tsx": $BlockEditor,
     "./islands/Counter.tsx": $Counter,
     "./islands/CouponForm.tsx": $CouponForm,
+    "./islands/DeleteMentorButton.tsx": $DeleteMentorButton,
+    "./islands/FAQ.tsx": $FAQ,
     "./islands/FeedbackFAB.tsx": $FeedbackFAB,
     "./islands/ProfileForm.tsx": $ProfileForm,
     "./islands/ProgressButton.tsx": $ProgressButton,
     "./islands/ReferralCode.tsx": $ReferralCode,
     "./islands/SpaceForm.tsx": $SpaceForm,
+    "./islands/SpacePublicToggle.tsx": $SpacePublicToggle,
     "./islands/UnitNode.tsx": $UnitNode,
   },
   baseUrl: import.meta.url,
