@@ -35,6 +35,14 @@ export { RadioGroup } from "./interactive/RadioGroup.tsx";
 export type { RadioGroupProps, RadioOption } from "./interactive/RadioGroup.tsx";
 export { Drawer } from "./interactive/Drawer.tsx";
 export type { DrawerProps } from "./interactive/Drawer.tsx";
+export { Slider } from "./interactive/Slider.tsx";
+export type { SliderProps } from "./interactive/Slider.tsx";
+export { Pagination } from "./interactive/Pagination.tsx";
+export type { PaginationProps } from "./interactive/Pagination.tsx";
+export { Steps } from "./interactive/Steps.tsx";
+export type { StepsProps, StepItem } from "./interactive/Steps.tsx";
+export { Tooltip } from "./interactive/Tooltip.tsx";
+export type { TooltipProps } from "./interactive/Tooltip.tsx";
 
 // Layout
 export { AdminShell } from "./admin/AdminShell.tsx";
