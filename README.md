@@ -2,33 +2,30 @@
 
 > **Everything is in it.** — SaaS を最速で立ち上げるための統合フレームワーク
 
-[![jsr](https://jsr.io/badges/@kotsumo/in-it)](https://jsr.io/@kotsumo/in-it)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 ## 🚀 クイックスタート
 
 ```bash
-# プロジェクト作成
-deno run jsr:@kotsumo/create-in-it my-saas
-cd my-saas
+deno add @kotsumo/in-it
+```
 
-# 開発開始（HMR 付き）
-deno task dev
+```typescript
+import { Button, Card, ThemeToggle } from "@kotsumo/in-it";
+```
+
+```html
+<link rel="stylesheet" href="@kotsumo/in-it/src/css/main.css" />
 ```
 
 ## ✨ 特徴
 
 - **ワンスタック** — Hono 1 つでサーバーもクライアントも
-- **ゼロ外部依存** — ARIA、ルーター、コンポーネント全て自前
-- **アクセシビリティ** — WAI-ARIA APG 準拠の全コンポーネント
-- **AI/LLM ネイティブ** — Deno のパーミッションモデルで安全
-- **デュアルランタイム** — Deno でも Bun でも動く
-
-## 📦 パッケージ
-
-| パッケージ | 説明 |
-|---|---|
-| `@kotsumo/in-it` | コアライブラリ（コンポーネント + ARIA + CSS） |
-| `@kotsumo/create-in-it` | CLI（プロジェクト生成） |
+- **ゼロ外部依存** — ARIA、ルーター、カラーシステム、Markdown パーサー全て自前
+- **50+ コンポーネント** — フォーム、フィードバック、ナビゲーション、レイアウト
+- **HCT カラー** — Material Design 3 互換、プリセット 1 つでライト/ダーク対応
+- **ARIA 準拠** — WAI-ARIA APG 準拠のインタラクティブコンポーネント
+- **デュアルランタイム** — Deno でも Bun でも動作
 
 ## 🧩 コンポーネント
 
@@ -41,36 +38,73 @@ deno task dev
 | Tabs | Tabs |
 | Menu | Menu Button |
 | Select | Listbox |
+| Combobox | Combobox |
 | Accordion | Accordion |
 | Popover | Dialog (Non-modal) |
 | Toast | Alert / Live Region |
-| Tooltip | Tooltip |
+| Checkbox | Checkbox |
+| RadioGroup | Radio Group |
+| Drawer | Dialog (Non-modal) |
+| ThemeToggle | Switch |
+
+### フォーム
+
+Input, Textarea, NumberInput, PasswordInput, TagsInput, FileUpload, Slider, RatingGroup, Editable, Toggle, PinInput
 
 ### UI
 
-Badge, Button, Card, StatCard, DataTable, Input, Avatar, Chip, Skeleton, EmptyState
+Button, Badge, Card, StatCard, DataTable, Avatar, Chip, Skeleton, EmptyState, Divider, Kbd, Alert, Progress, ProgressCircular, Breadcrumb, Aside
 
 ### レイアウト
 
-AdminShell（サイドバー + ツールバー + コンテンツ）
+AdminShell, DocsShell, LandingHeader, LandingHero, LandingFeatures, LandingSection, LandingFooter
+
+## 🎨 HCT カラーシステム
+
+Material Design 3 互換の HCT (Hue-Chroma-Tone) カラーシステムを自前実装（ゼロ外部依存）。
+
+```typescript
+import { HctColor, generateScheme, getPresetCss } from "@kotsumo/in-it";
+
+// プリセットで簡単に
+const css = getPresetCss("teal");
+
+// カスタムカラーで
+const { light, dark } = generateScheme("#6750a4");
+
+// HCT で色操作
+const color = HctColor.fromHex("#1565c0");
+const lighter = color.withTone(80); // Tone 80 に変更
+```
+
+プリセット: `purple`, `blue`, `teal`, `green`, `orange`, `pink`, `red`, `indigo`
+
+## 📖 ドキュメント
+
+自前 Markdown パーサー搭載（JSON Frontmatter、TOC 自動生成、Aside/Callout 対応）:
+
+```markdown
+---json
+{
+  "title": "Button",
+  "description": "ボタンコンポーネント"
+}
+---
+
+# Button
+
+> [!TIP]
+> in-it は Deno と Bun の両方で動作します。
+```
 
 ## 🛠 技術スタック
 
 | 技術 | 役割 |
 |---|---|
 | [Hono](https://hono.dev) | Web フレームワーク（サーバー + クライアント JSX） |
-| [hono/jsx/dom](https://hono.dev) | クライアントサイド JSX ランタイム |
-| [Deno](https://deno.com) | 推奨ランタイム |
-| [Vite](https://vitejs.dev) | テンプレートの HMR（Kit には含まない） |
-
-## 📖 使い方
-
-```typescript
-import { AdminShell, Switch, Dialog, toast } from "@kotsumo/in-it/components";
-import { createSwitch } from "@kotsumo/in-it/aria";
-import "@kotsumo/in-it/css";
-```
+| [Deno](https://deno.com) / [Bun](https://bun.sh) | ランタイム |
+| [Vite](https://vitejs.dev) | 開発時 HMR |
 
 ## 📄 ライセンス
 
-MIT
+[MIT](./LICENSE)
