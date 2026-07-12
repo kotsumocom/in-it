@@ -25,3 +25,9 @@ export type { ToastApi, Toast, ToastVariant, CreateToastOptions } from "./toast.
 
 export { createSelect } from "./select.ts";
 export type { SelectApi, SelectOption, CreateSelectOptions } from "./select.ts";
+
+export { createAccordion } from "./accordion.ts";
+export type { AccordionApi, AccordionItem, CreateAccordionOptions } from "./accordion.ts";
+
+export { createPopover } from "./popover.ts";
+export type { PopoverApi, CreatePopoverOptions } from "./popover.ts";

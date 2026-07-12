@@ -15,6 +15,10 @@ export { ToastContainer, toast } from "./interactive/Toast.tsx";
 export type { ToastContainerProps, ToastItem } from "./interactive/Toast.tsx";
 export { Select } from "./interactive/Select.tsx";
 export type { SelectProps, SelectOption } from "./interactive/Select.tsx";
+export { Accordion } from "./interactive/Accordion.tsx";
+export type { AccordionProps, AccordionItemDef } from "./interactive/Accordion.tsx";
+export { Popover } from "./interactive/Popover.tsx";
+export type { PopoverProps } from "./interactive/Popover.tsx";
 
 // Admin
 export { AdminShell } from "./admin/AdminShell.tsx";
