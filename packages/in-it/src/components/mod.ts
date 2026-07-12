@@ -2,6 +2,9 @@
 export { Badge, Card, Button, StatCard, DataTable, Input, Avatar, Chip, Skeleton, EmptyState } from "./ui/mod.tsx";
 export type { BadgeProps, CardProps, ButtonProps, StatCardProps, DataTableColumn, DataTableProps, InputProps, AvatarProps, ChipProps, SkeletonProps, EmptyStateProps } from "./ui/mod.tsx";
 
+export { Textarea, Alert, Progress, ProgressCircular, Breadcrumb, Divider, Kbd } from "./ui/extras.tsx";
+export type { TextareaProps, AlertProps, ProgressProps, ProgressCircularProps, BreadcrumbItem, BreadcrumbProps, DividerProps, KbdProps } from "./ui/extras.tsx";
+
 // Interactive
 export { Switch } from "./interactive/Switch.tsx";
 export type { SwitchProps } from "./interactive/Switch.tsx";
@@ -23,6 +26,12 @@ export { ThemeToggle } from "./interactive/ThemeToggle.tsx";
 export type { ThemeToggleProps, Theme } from "./interactive/ThemeToggle.tsx";
 export { Combobox } from "./interactive/Combobox.tsx";
 export type { ComboboxProps } from "./interactive/Combobox.tsx";
+export { Checkbox } from "./interactive/Checkbox.tsx";
+export type { CheckboxProps } from "./interactive/Checkbox.tsx";
+export { RadioGroup } from "./interactive/RadioGroup.tsx";
+export type { RadioGroupProps, RadioOption } from "./interactive/RadioGroup.tsx";
+export { Drawer } from "./interactive/Drawer.tsx";
+export type { DrawerProps } from "./interactive/Drawer.tsx";
 
 // Admin
 export { AdminShell } from "./admin/AdminShell.tsx";
