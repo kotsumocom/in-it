@@ -13,6 +13,8 @@ export { Menu } from "./interactive/Menu.tsx";
 export type { MenuProps, MenuItemDef } from "./interactive/Menu.tsx";
 export { ToastContainer, toast } from "./interactive/Toast.tsx";
 export type { ToastContainerProps, ToastItem } from "./interactive/Toast.tsx";
+export { Select } from "./interactive/Select.tsx";
+export type { SelectProps, SelectOption } from "./interactive/Select.tsx";
 
 // Admin
 export { AdminShell } from "./admin/AdminShell.tsx";

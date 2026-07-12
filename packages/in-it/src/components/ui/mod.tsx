@@ -84,7 +84,8 @@ export function StatCard({ label, value, trend, trendUp }: StatCardProps) {
 /** データテーブル */
 export interface DataTableColumn<T> {
   key: keyof T & string;
-  label: string;
+  header?: string;
+  label?: string;
   render?: (value: any, row: T) => any;
   align?: "left" | "center" | "right";
 }
@@ -92,10 +93,11 @@ export interface DataTableColumn<T> {
 export interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
   data: T[];
-  rowKey: (row: T) => string;
+  rowKey?: (row: T) => string;
 }
 
 export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>) {
+  const getKey = rowKey ?? ((_row: T, i: number) => String(i));
   return (
     <div class="sc-data-table-wrap">
       <table class="sc-data-table">
@@ -103,14 +105,14 @@ export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>) {
           <tr>
             {columns.map((col) => (
               <th key={col.key} class={col.align ? `sc-data-table__th--${col.align}` : ""}>
-                {col.label}
+                {col.header ?? col.label ?? col.key}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => (
-            <tr key={rowKey(row)}>
+          {data.map((row, i) => (
+            <tr key={getKey(row, i)}>
               {columns.map((col) => (
                 <td key={col.key} class={col.align ? `sc-data-table__td--${col.align}` : ""}>
                   {col.render ? col.render(row[col.key], row) : String(row[col.key])}

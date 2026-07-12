@@ -22,3 +22,6 @@ export type { TooltipApi, CreateTooltipOptions } from "./tooltip.ts";
 
 export { createToastManager } from "./toast.ts";
 export type { ToastApi, Toast, ToastVariant, CreateToastOptions } from "./toast.ts";
+
+export { createSelect } from "./select.ts";
+export type { SelectApi, SelectOption, CreateSelectOptions } from "./select.ts";

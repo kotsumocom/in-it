@@ -1,10 +1,10 @@
 import { render } from "hono/jsx/dom";
-import { AdminShell, Menu, ToastContainer } from "@in-it/components/mod.ts";
+import { AdminShell, ToastContainer } from "@in-it/components/mod.ts";
 import { Route, Switch, useLocation } from "@in-it/router.tsx";
 import { DashboardPage } from "./pages/Dashboard.tsx";
 import { SettingsPage } from "./pages/Settings.tsx";
+import { UsersPage } from "./pages/Users.tsx";
 import type { NavItem } from "@in-it/components/admin/AdminShell.tsx";
-import type { MenuItemDef } from "@in-it/components/interactive/Menu.tsx";
 
 const NAV_ITEMS: NavItem[] = [
   { icon: "📊", label: "概要", href: "/admin" },
@@ -12,26 +12,6 @@ const NAV_ITEMS: NavItem[] = [
   { icon: "📁", label: "プロジェクト", href: "/admin/projects" },
   { icon: "⚙️", label: "設定", href: "/admin/settings" },
 ];
-
-const USER_MENU: MenuItemDef[] = [
-  { id: "profile", label: "プロフィール", icon: "👤" },
-  { id: "settings", label: "個人設定", icon: "⚙️" },
-  { id: "logout", label: "ログアウト", icon: "🚪", separator: true },
-];
-
-function UsersPage() {
-  return (
-    <div>
-      <div class="sc-page__header">
-        <div>
-          <h2 class="sc-page__title">ユーザー管理</h2>
-          <p class="sc-page__desc">ユーザーの管理と権限設定</p>
-        </div>
-      </div>
-      <p style={{ color: "var(--sc-on-surface-variant)" }}>ユーザー管理ページ（準備中）</p>
-    </div>
-  );
-}
 
 function NotFound() {
   return (
