@@ -1,10 +1,5 @@
-/**
- * @module in-it
- * SaaS スターターキット — Everything is in it.
- */
-
-// Components
 export * from "./components/mod.ts";
-
-// ARIA
-export * from "./aria/mod.ts";
+export * from "./color/hct.ts";
+export * from "./color/scheme.ts";
+export * from "./color/presets.ts";
+export { Router } from "./router.tsx";

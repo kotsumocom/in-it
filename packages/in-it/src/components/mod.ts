@@ -5,6 +5,9 @@ export type { BadgeProps, CardProps, ButtonProps, StatCardProps, DataTableColumn
 export { Textarea, Alert, Progress, ProgressCircular, Breadcrumb, Divider, Kbd } from "./ui/extras.tsx";
 export type { TextareaProps, AlertProps, ProgressProps, ProgressCircularProps, BreadcrumbItem, BreadcrumbProps, DividerProps, KbdProps } from "./ui/extras.tsx";
 
+export { Aside } from "./ui/Aside.tsx";
+export type { AsideProps, AsideVariant } from "./ui/Aside.tsx";
+
 // Interactive
 export { Switch } from "./interactive/Switch.tsx";
 export type { SwitchProps } from "./interactive/Switch.tsx";
@@ -33,6 +36,10 @@ export type { RadioGroupProps, RadioOption } from "./interactive/RadioGroup.tsx"
 export { Drawer } from "./interactive/Drawer.tsx";
 export type { DrawerProps } from "./interactive/Drawer.tsx";
 
-// Admin
+// Layout
 export { AdminShell } from "./admin/AdminShell.tsx";
 export type { AdminShellProps, NavItem } from "./admin/AdminShell.tsx";
+export { DocsShell } from "./layout/DocsShell.tsx";
+export type { DocsShellProps, DocsSidebarGroup, DocsSidebarItem, DocsTocItem } from "./layout/DocsShell.tsx";
+export { LandingHeader, LandingHero, LandingFeatures, LandingSection, LandingFooter } from "./layout/Landing.tsx";
+export type { LandingHeaderProps, LandingHeroProps, FeatureCard, LandingFeaturesProps, LandingSectionProps, LandingFooterProps } from "./layout/Landing.tsx";
