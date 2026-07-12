@@ -10,7 +10,7 @@ Disallow: /api/
 Disallow: /login
 Disallow: /signup
 
-Sitemap: https://init.dev/sitemap.xml
+Sitemap: https://in-it.dev/sitemap.xml
 `;
 
     return new Response(robotsTxt, {

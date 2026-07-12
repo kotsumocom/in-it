@@ -1,7 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
 
 const API_URL = Deno.env.get("API_URL") || "http://localhost:3001";
-const SITE_URL = "https://init.dev";
+const SITE_URL = "https://in-it.dev";
 
 export const handler: Handlers = {
   async GET(_req, _ctx) {

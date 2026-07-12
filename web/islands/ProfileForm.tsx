@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 
-const API_URL = "https://be.init.dev";
+const API_URL = "https://be.in-it.dev";
 
 interface ProfileFormProps {
   accessToken: string;
@@ -101,7 +101,7 @@ export default function ProfileForm({
           class="w-full px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
           placeholder="https://example.com/avatar.jpg"
         />
-        <p class="text-sm text-gray-500 mt-1">画像�E URL を�E力してください</p>
+        <p class="text-sm text-gray-500 mt-1">画像�E URL を�E力してください</p>
 
         {/* プレビュー */}
         {avatarUrl && (
@@ -119,7 +119,7 @@ export default function ProfileForm({
         )}
       </div>
 
-      {/* 保存�Eタン */}
+      {/* 保存�Eタン */}
       <div class="pt-4">
         <button
           type="submit"

@@ -163,11 +163,11 @@ export default function SpacePage({ data }: PageProps<SpacePageData>) {
 
   const xUsername = extractUsername(space.x_url ?? undefined);
   const instagramUsername = extractUsername(space.instagram_url ?? undefined);
-  const spaceUrl = `https://init.dev/s/${space.slug}`;
+  const spaceUrl = `https://in-it.dev/s/${space.slug}`;
   const ogDescription = space.description
     ? space.description.substring(0, 120).replace(/[\n\r]/g, " ")
     : `${space.title} - イニットで相談できます`;
-  const ogImage = space.thumbnail_url || "https://init.dev/ogp.svg";
+  const ogImage = space.thumbnail_url || "https://in-it.dev/ogp.svg";
 
   return (
     <div class="min-h-screen bg-gray-50">
