@@ -1,11 +1,24 @@
 {
   "name": "@kotsumo/in-it",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "license": "MIT",
   "exports": {
     ".": "./src/mod.ts",
     "./aria": "./src/aria/mod.ts",
     "./components": "./src/components/mod.ts",
+    "./color": "./src/color/hct.ts",
+    "./color/scheme": "./src/color/scheme.ts",
+    "./color/presets": "./src/color/presets.ts",
+    "./docs": "./src/docs/markdown.ts",
     "./css": "./src/css/main.css",
     "./router": "./src/router.tsx"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx"
+  },
+  "imports": {
+    "hono/jsx": "npm:hono@^4/jsx",
+    "hono/jsx/dom": "npm:hono@^4/jsx/dom"
   }
 }
