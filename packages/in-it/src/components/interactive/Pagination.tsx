@@ -1,5 +1,5 @@
 /**
- * Pagination — ページネーションコンポーネント
+ * Pagination — Pagination component
  */
 import { useState, useMemo } from "hono/jsx";
 
@@ -39,8 +39,8 @@ export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount
   };
 
   return (
-    <nav class="ii-pagination" aria-label="ページネーション">
-      <button class="ii-pagination__btn" disabled={current === 1} onClick={() => go(current - 1)} aria-label="前のページ">
+    <nav class="ii-pagination" aria-label="Pagination">
+      <button class="ii-pagination__btn" disabled={current === 1} onClick={() => go(current - 1)} aria-label="Previous page">
         ←
       </button>
       {pages.map((p, i) =>
@@ -53,7 +53,7 @@ export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount
           </button>
         )
       )}
-      <button class="ii-pagination__btn" disabled={current === totalPages} onClick={() => go(current + 1)} aria-label="次のページ">
+      <button class="ii-pagination__btn" disabled={current === totalPages} onClick={() => go(current + 1)} aria-label="Next page">
         →
       </button>
     </nav>

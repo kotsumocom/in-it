@@ -1,8 +1,8 @@
 /**
- * WAI-ARIA Alert + Live Region パターン（Toast）
+ * WAI-ARIA Alert + Live Region pattern (Toast)
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/alert/
  *
- * スクリーンリーダーに通知を伝えるための aria-live 管理。
+ * Manages aria-live for screen reader notifications.
  */
 
 export type ToastVariant = "success" | "error" | "warning" | "info";
@@ -16,33 +16,33 @@ export interface Toast {
 }
 
 export interface ToastApi {
-  /** トーストコンテナに適用する props */
+  /** Props to apply to the toast container */
   regionProps: {
     role: "status";
     "aria-live": "polite";
     "aria-label": string;
   };
-  /** 各トーストの props を取得 */
+  /** Get props for each toast */
   getToastProps: (id: string) => {
     role: "alert";
     "aria-atomic": true;
   };
-  /** トーストを追加 */
+  /** Add a toast */
   add: (message: string, variant?: ToastVariant, duration?: number) => string;
-  /** トーストを削除 */
+  /** Remove a toast */
   dismiss: (id: string) => void;
-  /** 全削除 */
+  /** Remove all */
   dismissAll: () => void;
-  /** 現在のトースト一覧 */
+  /** Current toast list */
   toasts: Toast[];
 }
 
 export interface CreateToastOptions {
-  /** デフォルト表示時間 (ms) */
+  /** Default display duration (ms) */
   defaultDuration?: number;
-  /** 最大表示数 */
+  /** Maximum number of toasts */
   maxCount?: number;
-  /** 変更コールバック */
+  /** Change callback */
   onChange?: (toasts: Toast[]) => void;
 }
 
@@ -102,7 +102,7 @@ export function createToastManager(options: CreateToastOptions = {}): ToastApi {
     regionProps: {
       role: "status" as const,
       "aria-live": "polite" as const,
-      "aria-label": "通知",
+      "aria-label": "Notifications",
     },
     getToastProps: (_id: string) => ({
       role: "alert" as const,

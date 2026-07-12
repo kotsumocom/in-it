@@ -1,6 +1,6 @@
 /**
  * Aside (Callout)   Note, Tip, Caution, Danger
- * Starlight 参考、完全自前実装
+ * Inspired by Starlight, fully self-implemented
  */
 
 export type AsideVariant = "note" | "tip" | "caution" | "danger";

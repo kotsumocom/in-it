@@ -1,5 +1,5 @@
 /**
- * WAI-ARIA Accordion パターン
+ * WAI-ARIA Accordion pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/accordion/
  *
  * : Arrow, Home, End, Enter/Space
@@ -35,11 +35,11 @@ export interface AccordionApi {
 
 export interface CreateAccordionOptions {
   items: AccordionItem[];
-  /** 複数パネルを同時に開けるか */
+  /** Allow multiple panels open simultaneously */
   multiple?: boolean;
-  /** 初期展開 */
+  /** Initially expanded panels */
   defaultExpanded?: string[];
-  /** 変更コールバック */
+  /** Change callback */
   onExpandedChange?: (expanded: string[]) => void;
   id?: string;
 }

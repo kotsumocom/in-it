@@ -3,7 +3,7 @@ name: Update Sponsors
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *' # 毎日 UTC 0:00（JST 9:00）
+    - cron: '0 0 * * *' # Daily at UTC 0:00 (JST 9:00)
 
 jobs:
   sponsors:
@@ -43,5 +43,5 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'chore: スポンサー一覧を更新'
+          commit_message: 'chore: update sponsor list'
           file_pattern: 'SPONSORS.md .github/sponsors/*'

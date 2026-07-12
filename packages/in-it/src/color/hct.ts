@@ -1,34 +1,34 @@
 /**
- * HCT Color System — ゼロ依存の自前実装
- * Google material-color-utilities (Apache 2.0) のアルゴリズムを参考に再実装
+ * HCT Color System - Zero-dependency implementation
+ * Re-implemented based on the Google material-color-utilities (Apache 2.0) algorithm
  *
  * HCT = Hue (CAM16) + Chroma (CAM16) + Tone (CIELAB L*)
  */
 
 // ==================== sRGB ↔ Linear RGB ====================
 
-/** sRGB 0-255 → linear 0-1（ガンマ展開） */
+/** sRGB 0-255 to linear 0-1 (gamma expansion) */
 function srgbToLinear(c: number): number {
   const s = c / 255;
   return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
 }
 
-/** linear 0-1 → sRGB 0-255（ガンマ圧縮） */
+/** linear 0-1 to sRGB 0-255 (gamma compression) */
 function linearToSrgb(c: number): number {
   const s = c <= 0.0031308 ? c * 12.92 : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
   return Math.round(Math.max(0, Math.min(255, s * 255)));
 }
 
-// ==================== XYZ 変換 ====================
+// ==================== XYZ Conversion ====================
 
-// sRGB → XYZ (D65) 行列
+// sRGB to XYZ (D65) matrix
 const SRGB_TO_XYZ = [
   [0.4124564, 0.3575761, 0.1804375],
   [0.2126729, 0.7151522, 0.0721750],
   [0.0193339, 0.1191920, 0.9503041],
 ];
 
-// XYZ (D65) → sRGB 行列
+// XYZ (D65) to sRGB matrix
 const XYZ_TO_SRGB = [
   [3.2404542, -1.5371385, -0.4985314],
   [-0.9692660, 1.8760108, 0.0415560],
@@ -72,7 +72,7 @@ function xyzToLStar(x: number, y: number, z: number): number {
   return 116 * fy - 16;
 }
 
-/** L* → Y (XYZ の Y 成分) */
+/** L* to Y (XYZ Y component) */
 function lStarToY(lStar: number): number {
   const fy = (lStar + 16) / 116;
   return D65_WHITE[1] * labFInv(fy);
@@ -80,7 +80,7 @@ function lStarToY(lStar: number): number {
 
 // ==================== CAM16 ====================
 
-// CAM16 viewing condition (sRGB 標準: D65, 200 cd/m², 背景 Y=18.42)
+// CAM16 viewing condition (sRGB standard: D65, 200 cd/m2, background Y=18.42)
 const CAM16_C = 0.69;    // impact of surround
 const CAM16_NC = 1.0;    // chromatic induction factor
 const CAM16_FL = 0.3884;  // luminance adaptation factor
@@ -91,7 +91,7 @@ const CAM16_AW = 29.981;  // achromatic response for white
 const CAM16_D = 0.8450;  // degree of adaptation
 const CAM16_Z = 1.9090;  // base exponential nonlinearity
 
-// M16 行列 (XYZ → CAM16 LMS)
+// M16 matrix (XYZ to CAM16 LMS)
 const M16 = [
   [0.401288, 0.650173, -0.051461],
   [-0.250268, 1.204414, 0.045854],
@@ -104,7 +104,7 @@ const M16_INV = [
   [-0.0158415, -0.0344317, 1.0502732],
 ];
 
-// D65 白色点の adapted RGB
+// D65 white point adapted RGB
 const CAM16_RGB_W = matMul3(M16, D65_WHITE);
 const CAM16_D_RGB = CAM16_RGB_W.map(c => CAM16_D * (D65_WHITE[1] / c) + 1 - CAM16_D) as [number, number, number];
 
@@ -224,37 +224,37 @@ function isInGamut(r: number, g: number, b: number): boolean {
 }
 
 /**
- * HCT ソルバー: 目標の (H, C, T) に最も近い sRGB を二分探索で見つける
+ * HCT Solver: Find the closest sRGB to target (H, C, T) via binary search
  *
- * T (Tone = L*) は Y を介して XYZ に直結。
- * H, C は CAM16 で計算される。
- * 目標の T から Y を求め、CAM16 逆変換で XYZ を取得、
- * sRGB gamut に収まるように Chroma を調整。
+ * T (Tone = L*) maps directly to XYZ via Y.
+ * H, C are computed via CAM16.
+ * Compute Y from target T, get XYZ via inverse CAM16,
+ * then adjust Chroma to fit within sRGB gamut.
  */
 function solveHctToRgb(hue: number, chroma: number, tone: number): [number, number, number] {
   if (tone <= 0) return [0, 0, 0];
   if (tone >= 100) return [255, 255, 255];
   if (chroma < 0.5) {
-    // ほぼ無彩色 → グレー
+    // Nearly achromatic - return gray
     const g = Math.round((tone / 100) * 255);
     return [g, g, g];
   }
 
-  // 目標の Y
+  // Target Y
   const y = lStarToY(tone);
 
-  // Chroma を下げながら gamut 内の解を探索
+  // Search for solution within gamut by reducing Chroma
   let lo = 0;
   let hi = chroma;
   let bestRgb: [number, number, number] = [0, 0, 0];
 
   for (let i = 0; i < 50; i++) {
     const mid = (lo + hi) / 2;
-    // J を tone から推定（CAM16 の J と L* は近似的に対応）
+    // Estimate J from tone (CAM16 J approximately corresponds to L*)
     const J = tone; // : J  L*
 
     const [x, yc, z] = cam16ToXyz(hue, mid, J);
-    // Y を目標に合わせてスケール
+    // Scale Y to match target
     const scale = yc > 0 ? y / yc : 1;
     const [r, g, b] = xyzToRgb(x * scale, y, z * scale);
 
@@ -269,7 +269,7 @@ function solveHctToRgb(hue: number, chroma: number, tone: number): [number, numb
   return bestRgb;
 }
 
-/** HCT カラークラス */
+/** HCT Color class */
 export class HctColor {
   readonly hue: number;
   readonly chroma: number;
@@ -281,7 +281,7 @@ export class HctColor {
     this.tone = Math.max(0, Math.min(100, tone));
   }
 
-  /** hex (#RRGGBB) から HCT を生成 */
+  /** Create HCT from hex (#RRGGBB) */
   static fromHex(hex: string): HctColor {
     const [r, g, b] = hexToRgb(hex);
     const [x, y, z] = rgbToXyz(r, g, b);
@@ -290,28 +290,28 @@ export class HctColor {
     return new HctColor(cam.h, cam.C, tone);
   }
 
-  /** H, C, T から直接生成 */
+  /** Create directly from H, C, T */
   static from(hue: number, chroma: number, tone: number): HctColor {
     return new HctColor(hue, chroma, tone);
   }
 
-  /** HCT → hex 変換 */
+  /** Convert HCT to hex */
   toHex(): string {
     const [r, g, b] = solveHctToRgb(this.hue, this.chroma, this.tone);
     return rgbToHex(r, g, b);
   }
 
-  /** Tone を変更した新しい HctColor を返す */
+  /** Return a new HctColor with modified Tone */
   withTone(tone: number): HctColor {
     return new HctColor(this.hue, this.chroma, tone);
   }
 
-  /** Chroma を変更した新しい HctColor を返す */
+  /** Return a new HctColor with modified Chroma */
   withChroma(chroma: number): HctColor {
     return new HctColor(this.hue, chroma, this.tone);
   }
 
-  /** Hue を変更した新しい HctColor を返す */
+  /** Return a new HctColor with modified Hue */
   withHue(hue: number): HctColor {
     return new HctColor(hue, this.chroma, this.tone);
   }

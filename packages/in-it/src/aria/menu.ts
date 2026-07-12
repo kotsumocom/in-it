@@ -1,5 +1,5 @@
 /**
- * WAI-ARIA Menu Button パターン
+ * WAI-ARIA Menu Button pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/
  *
  * Arrow, Home, End, Escape
@@ -9,12 +9,12 @@ export interface MenuItem {
   id: string;
   label: string;
   disabled?: boolean;
-  /** 区切り線の後に表示 */
+  /** Show after separator */
   separator?: boolean;
 }
 
 export interface MenuApi {
-  /** トリガーボタンに適用する props */
+  /** Props to apply to the trigger button */
   triggerProps: {
     "aria-haspopup": "menu";
     "aria-expanded": boolean;
@@ -22,7 +22,7 @@ export interface MenuApi {
     onClick: () => void;
     onKeyDown: (e: KeyboardEvent) => void;
   };
-  /** メニューコンテナに適用する props */
+  /** Props to apply to the menu container */
   menuProps: {
     id: string;
     role: "menu";
@@ -30,7 +30,7 @@ export interface MenuApi {
     tabIndex: -1;
     onKeyDown: (e: KeyboardEvent) => void;
   };
-  /** 各メニュー項目の props を取得 */
+  /** Get props for each menu item */
   getItemProps: (id: string) => {
     role: "menuitem";
     id: string;
@@ -39,26 +39,26 @@ export interface MenuApi {
     onClick: () => void;
     onMouseEnter: () => void;
   };
-  /** 開いているか */
+  /** Whether the dialog is open */
   isOpen: boolean;
-  /** フォーカス中の項目 ID */
+  /** Currently focused item ID */
   focusedId: string | null;
-  /** 開く */
+  /** Open the dialog */
   open: () => void;
-  /** 閉じる */
+  /** Close */
   close: () => void;
-  /** トグル */
+  /** Toggle */
   toggle: () => void;
 }
 
 export interface CreateMenuOptions {
-  /** メニュー項目 */
+  /** Menu items */
   items: MenuItem[];
-  /** 項目選択時コールバック */
+  /** Item selection callback */
   onSelect?: (id: string) => void;
-  /** 開閉コールバック */
+  /** Open/close callback */
   onOpenChange?: (open: boolean) => void;
-  /** ID プレフィックス */
+  /** ID prefix */
   id?: string;
 }
 

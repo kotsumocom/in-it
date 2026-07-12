@@ -1,5 +1,5 @@
 /**
- * DocsShell — ドキュメントレイアウト（サイドバー + コンテンツ + TOC）
+ * DocsShell — Documentation layout (Sidebar + Content + TOC)
  */
 
 export interface DocsSidebarItem {

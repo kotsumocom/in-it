@@ -1,5 +1,5 @@
 /**
- * Landing Page コンポーネント群
+ * Landing Page components
  */
 
 // --- LandingHeader ---

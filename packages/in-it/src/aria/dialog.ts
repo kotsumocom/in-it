@@ -1,12 +1,12 @@
 /**
- * WAI-ARIA Dialog (Modal) パターン
+ * WAI-ARIA Dialog (Modal) pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/
  *
- * フォーカストラップ、Escape キーで閉じる、背景の inert 化を管理。
+ * Manages focus trap, Escape key close, and background inert.
  */
 
 export interface DialogApi {
-  /** Dialog 要素に適用する props */
+  /** Props to apply to the Dialog element */
   contentProps: {
     role: "dialog";
     "aria-modal": boolean;
@@ -15,40 +15,40 @@ export interface DialogApi {
     tabIndex: -1;
     onKeyDown: (e: KeyboardEvent) => void;
   };
-  /** タイトル要素に適用する props */
+  /** Props to apply to the title element */
   titleProps: { id: string };
-  /** 説明要素に適用する props */
+  /** Props to apply to the description element */
   descriptionProps: { id: string };
-  /** バックドロップに適用する props */
+  /** Props to apply to the backdrop */
   backdropProps: {
     onClick: (e: MouseEvent) => void;
   };
-  /** トリガーに適用する props */
+  /** Props to apply to the trigger */
   triggerProps: {
     onClick: () => void;
     "aria-haspopup": "dialog";
     "aria-expanded": boolean;
   };
-  /** 開く */
+  /** Open the dialog */
   open: () => void;
-  /** 閉じる */
+  /** Close */
   close: () => void;
-  /** 開いているか */
+  /** Whether the dialog is open */
   isOpen: boolean;
 }
 
 export interface CreateDialogOptions {
-  /** 開いた状態で初期化 */
+  /** Initialize in open state */
   open?: boolean;
-  /** 閉じる時のコールバック */
+  /** Callback on close */
   onClose?: () => void;
-  /** 開く時のコールバック */
+  /** Callback on open */
   onOpen?: () => void;
-  /** ID プレフィックス */
+  /** ID prefix */
   id?: string;
-  /** バックドロップクリックで閉じる */
+  /** Close on backdrop click */
   closeOnBackdrop?: boolean;
-  /** Escape キーで閉じる */
+  /** Close on Escape key */
   closeOnEscape?: boolean;
 }
 
@@ -80,7 +80,7 @@ export function createDialog(options: CreateDialogOptions = {}): DialogApi {
       e.preventDefault();
       close();
     }
-    // フォーカストラップはコンポーネント側で管理
+    // Focus trap is managed by the component
   }
 
   function handleBackdropClick(e: MouseEvent) {

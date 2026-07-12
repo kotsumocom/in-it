@@ -1,12 +1,12 @@
 /**
- * WAI-ARIA Tooltip パターン
+ * WAI-ARIA Tooltip pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/
  *
- * ホバー/フォーカスで表示、Escape で非表示。
+ * Show on hover/focus, hide on Escape.
  */
 
 export interface TooltipApi {
-  /** トリガー要素に適用する props */
+  /** Props to apply to the trigger element */
   triggerProps: {
     "aria-describedby": string;
     onMouseEnter: () => void;
@@ -15,25 +15,25 @@ export interface TooltipApi {
     onBlur: () => void;
     onKeyDown: (e: KeyboardEvent) => void;
   };
-  /** ツールチップ要素に適用する props */
+  /** Props to apply to the tooltip element */
   tooltipProps: {
     id: string;
     role: "tooltip";
   };
-  /** 表示中か */
+  /** Whether visible */
   isOpen: boolean;
-  /** 開く */
+  /** Open the dialog */
   open: () => void;
-  /** 閉じる */
+  /** Close */
   close: () => void;
 }
 
 export interface CreateTooltipOptions {
-  /** 表示遅延 (ms) */
+  /** Show delay (ms) */
   delay?: number;
-  /** ID プレフィックス */
+  /** ID prefix */
   id?: string;
-  /** 開閉コールバック */
+  /** Open/close callback */
   onOpenChange?: (open: boolean) => void;
 }
 

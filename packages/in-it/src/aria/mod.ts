@@ -1,8 +1,8 @@
 /**
  * @module aria
- * WAI-ARIA APG 準拠のアクセシビリティヘルパー。
- * フレームワーク非依存。W3C APG を参照して自前実装。
- * Zag.js のソースコードは一切参照していない。
+ * WAI-ARIA APG compliant accessibility helpers.
+ * Framework-agnostic. Self-implemented following W3C APG.
+ * No reference to Zag.js source code.
  */
 
 export { createSwitch } from "./switch.ts";

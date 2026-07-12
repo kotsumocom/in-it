@@ -1,7 +1,7 @@
 /**
- * Markdown パーサー（自前実装、ゼロ外部依存）
- * JSON Frontmatter + GFM サブセット + TOC 生成
- * Deno/Bun 両対応
+ * Markdown parser (self-implemented, zero dependencies)
+ * JSON Frontmatter + GFM subset + TOC generation
+ * Deno/Bun compatible
  */
 
 export interface MarkdownMeta {
@@ -24,7 +24,7 @@ export interface ParsedMarkdown {
   toc: TocItem[];
 }
 
-/** JSON Frontmatter をパース */
+/** Parse JSON Frontmatter */
 function parseFrontmatter(content: string): { meta: MarkdownMeta; body: string } {
   const jsonMatch = content.match(/^---json\s*\n([\s\S]*?)\n---\s*\n/);
   if (jsonMatch) {
@@ -35,7 +35,7 @@ function parseFrontmatter(content: string): { meta: MarkdownMeta; body: string }
       return { meta: {}, body: content };
     }
   }
-  // 通常の --- YAML 風（key: value のみサポート）
+  // Standard --- YAML-like (key: value only)
   const yamlMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
   if (yamlMatch) {
     const meta: MarkdownMeta = {};
@@ -51,7 +51,7 @@ function parseFrontmatter(content: string): { meta: MarkdownMeta; body: string }
   return { meta: {}, body: content };
 }
 
-/** テキストを slug 化 */
+/** Slugify text */
 function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -61,7 +61,7 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
-/** HTML 特殊文字エスケープ */
+/** Escape HTML special characters */
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, "&amp;")
@@ -70,18 +70,18 @@ function escapeHtml(text: string): string {
     .replace(/"/g, "&quot;");
 }
 
-/** インラインマークダウンをパース */
+/** Parse inline markdown */
 function parseInline(text: string): string {
   let result = escapeHtml(text);
-  // コードスパン
+  // Code span
   result = result.replace(/`([^`]+)`/g, '<code>$1</code>');
-  // 太字
+  // Bold
   result = result.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  // 斜体
+  // Italic
   result = result.replace(/\*(.+?)\*/g, '<em>$1</em>');
-  // リンク
+  // Link
   result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-  // 画像
+  // Image
   result = result.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
   return result;
 }
@@ -114,7 +114,7 @@ export function parseMarkdown(content: string): ParsedMarkdown {
   while (i < lines.length) {
     const line = lines[i];
 
-    // コードブロック
+    // Code block
     const codeMatch = line.match(/^```(\w*)\s*(title="([^"]*)")?\s*$/);
     if (codeMatch) {
       closeList(); closeTable();
@@ -153,7 +153,7 @@ export function parseMarkdown(content: string): ParsedMarkdown {
       continue;
     }
 
-    // 見出し
+    // Heading
     const headingMatch = line.match(/^(#{1,6})\s+(.+)$/);
     if (headingMatch) {
       closeList(); closeTable();
@@ -168,11 +168,11 @@ export function parseMarkdown(content: string): ParsedMarkdown {
       continue;
     }
 
-    // テーブル
+    // Table
     if (line.includes("|") && line.trim().startsWith("|")) {
       if (!inTable) {
         closeList();
-        // ヘッダー行
+        // Header row
         const headers = line.split("|").filter(c => c.trim()).map(c => c.trim());
         i++; // separator row
         if (i < lines.length && lines[i].match(/^\|[\s:-]+\|/)) i++;
@@ -192,7 +192,7 @@ export function parseMarkdown(content: string): ParsedMarkdown {
       closeTable();
     }
 
-    // リスト（ul）
+    // Unordered list
     const ulMatch = line.match(/^(\s*)[-*]\s+(.+)$/);
     if (ulMatch) {
       closeTable();
@@ -207,7 +207,7 @@ export function parseMarkdown(content: string): ParsedMarkdown {
       continue;
     }
 
-    // リスト（ol）
+    // Ordered list
     const olMatch = line.match(/^(\s*)\d+\.\s+(.+)$/);
     if (olMatch) {
       closeTable();
@@ -224,20 +224,20 @@ export function parseMarkdown(content: string): ParsedMarkdown {
 
     closeList();
 
-    // 水平線
+    // Horizontal rule
     if (line.match(/^(-{3,}|\*{3,}|_{3,})\s*$/)) {
       htmlParts.push("<hr>");
       i++;
       continue;
     }
 
-    // 空行
+    // Empty line
     if (line.trim() === "") {
       i++;
       continue;
     }
 
-    // パラグラフ
+    // Paragraph
     const paraLines: string[] = [line];
     i++;
     while (i < lines.length && lines[i].trim() !== "" && !lines[i].match(/^#{1,6}\s/) && !lines[i].startsWith("```") && !lines[i].match(/^[-*]\s/) && !lines[i].match(/^\d+\.\s/)) {
@@ -253,7 +253,7 @@ export function parseMarkdown(content: string): ParsedMarkdown {
   return { meta, html: htmlParts.join("\n"), toc };
 }
 
-/** TOC アイテムを DocsTocItem 形式に変換 */
+/** Convert TOC items to DocsTocItem format */
 export function tocToDocsFormat(toc: TocItem[]): { id: string; text: string; level: 2 | 3 }[] {
   return toc;
 }

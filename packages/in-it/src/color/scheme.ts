@@ -1,10 +1,10 @@
 /**
- * MD3 カラースキーム生成
- * HCT → Material Design 3 互換のトーンマッピング
+ * MD3 Color Scheme Generation
+ * HCT to Material Design 3 compatible tone mapping
  */
 import { HctColor } from "./hct.ts";
 
-/** カラースキームのトークン */
+/** Color scheme tokens */
 export interface ColorScheme {
   primary: string;
   onPrimary: string;
@@ -34,25 +34,25 @@ export interface ColorScheme {
   shadow: string;
 }
 
-/** ソースカラーからライト/ダークスキームを生成 */
+/** Generate light/dark scheme from source color */
 export function generateScheme(sourceHex: string): { light: ColorScheme; dark: ColorScheme } {
   const source = HctColor.fromHex(sourceHex);
   const h = source.hue;
   const c = source.chroma;
 
-  // Secondary: 彩度を下げた同系色
+  // Secondary: desaturated analogous color
   const secH = h;
   const secC = Math.max(c * 0.33, 6);
 
-  // Tertiary: 色相を60度回転
+  // Tertiary: hue rotated 60 degrees
   const terH = (h + 60) % 360;
   const terC = Math.max(c * 0.5, 12);
 
-  // Error: 赤系固定
+  // Error: fixed red
   const errH = 25;
   const errC = 84;
 
-  // Neutral: ほぼ無彩色
+  // Neutral: nearly achromatic
   const neuC = Math.min(c * 0.08, 4);
   const neuVarC = Math.min(c * 0.16, 8);
 
@@ -117,7 +117,7 @@ export function generateScheme(sourceHex: string): { light: ColorScheme; dark: C
   return { light, dark };
 }
 
-/** スキームを CSS 変数文字列に変換 */
+/** Convert scheme to CSS variable string */
 export function schemeToCss(scheme: ColorScheme, prefix = "--ii"): string {
   const entries: [string, string][] = [
     ["primary", scheme.primary],
@@ -150,7 +150,7 @@ export function schemeToCss(scheme: ColorScheme, prefix = "--ii"): string {
   return entries.map(([k, v]) => `  ${prefix}-${k}: ${v};`).join("\n");
 }
 
-/** ライト/ダークの完全な CSS を生成 */
+/** Generate complete light/dark CSS */
 export function generateCss(sourceHex: string): string {
   const { light, dark } = generateScheme(sourceHex);
   return `:root {\n${schemeToCss(light)}\n}\n\n[data-theme="dark"] {\n${schemeToCss(dark)}\n}\n`;

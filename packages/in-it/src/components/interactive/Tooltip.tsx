@@ -1,5 +1,5 @@
 /**
- * Tooltip — ツールチップコンポーネント
+ * Tooltip — Tooltip component
  */
 import { useState, useRef } from "hono/jsx";
 

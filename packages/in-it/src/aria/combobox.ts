@@ -1,8 +1,8 @@
 /**
- * WAI-ARIA Combobox パターン
+ * WAI-ARIA Combobox pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/combobox/
  *
- * テキスト入力 + フィルタリング可能なリストボックス。
+ * Text input + filterable listbox.
  * : Arrow, Home, End, Enter, Escape
  */
 
@@ -54,7 +54,7 @@ export interface CreateComboboxOptions {
   defaultValue?: string;
   onSelect?: (value: string) => void;
   onInputChange?: (value: string) => void;
-  /** カスタムフィルター */
+  /** Custom filter function */
   filter?: (option: ComboboxOption, query: string) => boolean;
   id?: string;
 }
@@ -181,7 +181,7 @@ export function createCombobox(opts: CreateComboboxOptions): ComboboxApi {
     listboxProps: {
       id: listboxId,
       role: "listbox" as const,
-      "aria-label": "候補",
+      "aria-label": "Suggestions",
     },
     getOptionProps: (value: string) => {
       const opt = allOptions.find((o) => o.value === value);

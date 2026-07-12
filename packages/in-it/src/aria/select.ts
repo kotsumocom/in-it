@@ -1,5 +1,5 @@
 /**
- * WAI-ARIA Listbox パターン（Select）
+ * WAI-ARIA Listbox pattern (Select)
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
  *
  *  Listbox: Arrow, Home, End, Enter, Escape, 

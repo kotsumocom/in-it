@@ -1,8 +1,8 @@
 /**
- * WAI-ARIA Tabs パターン
+ * WAI-ARIA Tabs pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/tabs/
  *
- * Roving tabindex + Arrow キーナビゲーション。
+ * Roving tabindex + Arrow key navigation.
  */
 
 export interface TabItem {
@@ -12,12 +12,12 @@ export interface TabItem {
 }
 
 export interface TabsApi {
-  /** tablist コンテナに適用する props */
+  /** Props to apply to the tablist container */
   listProps: {
     role: "tablist";
     "aria-orientation": "horizontal" | "vertical";
   };
-  /** 各タブに適用する props を取得 */
+  /** Get props for each tab */
   getTabProps: (value: string) => {
     role: "tab";
     id: string;
@@ -28,7 +28,7 @@ export interface TabsApi {
     onClick: () => void;
     onKeyDown: (e: KeyboardEvent) => void;
   };
-  /** 各パネルに適用する props を取得 */
+  /** Get props for each panel */
   getPanelProps: (value: string) => {
     role: "tabpanel";
     id: string;
@@ -36,22 +36,22 @@ export interface TabsApi {
     tabIndex: 0;
     hidden: boolean;
   };
-  /** アクティブなタブ */
+  /** Active tab */
   activeTab: string;
-  /** タブを選択 */
+  /** Select a tab */
   select: (value: string) => void;
 }
 
 export interface CreateTabsOptions {
-  /** タブ項目 */
+  /** Tab items */
   items: TabItem[];
-  /** 初期アクティブ */
+  /** Initially active tab */
   defaultValue?: string;
-  /** 変更コールバック */
+  /** Change callback */
   onChange?: (value: string) => void;
-  /** 向き */
+  /** Orientation */
   orientation?: "horizontal" | "vertical";
-  /** ID プレフィックス */
+  /** ID prefix */
   id?: string;
 }
 

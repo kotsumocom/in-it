@@ -1,8 +1,8 @@
 /**
- * WAI-ARIA Switch パターン
+ * WAI-ARIA Switch pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/switch/
  *
- * フレームワーク非依存。純粋な TypeScript で ARIA 属性とキーボード操作を管理。
+ * Framework-agnostic. Manages ARIA attributes and keyboard interactions in pure TypeScript.
  */
 
 export interface SwitchState {
@@ -21,26 +21,26 @@ export interface SwitchRootProps {
 }
 
 export interface SwitchApi {
-  /** Switch ルート要素に適用する props */
+  /** Props to apply to the Switch root element */
   rootProps: SwitchRootProps;
-  /** ラベル要素に適用する props */
+  /** Props to apply to the label element */
   labelProps: { id: string };
-  /** 現在の checked 状態 */
+  /** Current checked state */
   checked: boolean;
-  /** 状態をトグルする */
+  /** Toggle the state */
   toggle: () => void;
-  /** 状態を直接設定する */
+  /** Set the state directly */
   setChecked: (checked: boolean) => void;
 }
 
 export interface CreateSwitchOptions {
-  /** 初期値 */
+  /** Initial value */
   checked?: boolean;
-  /** 無効状態 */
+  /** Disabled state */
   disabled?: boolean;
-  /** 変更時コールバック */
+  /** Change callback */
   onChange?: (checked: boolean) => void;
-  /** ID（省略時は自動生成） */
+  /** ID (auto-generated if omitted) */
   id?: string;
 }
 
@@ -50,12 +50,12 @@ function uid(prefix: string): string {
 }
 
 /**
- * WAI-ARIA Switch パターンを作成する。
+ * Create a WAI-ARIA Switch pattern.
  *
  * @example
  * ```ts
  * const sw = createSwitch({ checked: false, onChange: console.log });
- * // sw.rootProps を <button> に、sw.labelProps を <label> に適用
+ * // Apply sw.rootProps to <button> and sw.labelProps to <label>
  * ```
  */
 export function createSwitch(options: CreateSwitchOptions = {}): SwitchApi {

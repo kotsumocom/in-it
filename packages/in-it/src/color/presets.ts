@@ -1,5 +1,5 @@
 /**
- * プリセットカラー — 事前計算済みテーマ
+ * Preset colors - pre-computed themes
  */
 import { generateScheme, generateCss, type ColorScheme } from "./scheme.ts";
 
@@ -22,7 +22,7 @@ const PRESET_SOURCES: { name: string; label: string; hex: string }[] = [
   { name: "indigo", label: "Indigo", hex: "#283593" },
 ];
 
-/** 全プリセットを事前計算 */
+/** Pre-compute all presets */
 function buildPresets(): PresetColor[] {
   return PRESET_SOURCES.map(({ name, label, hex }) => {
     const { light, dark } = generateScheme(hex);
@@ -30,22 +30,22 @@ function buildPresets(): PresetColor[] {
   });
 }
 
-// 事前計算済みプリセット（モジュール読み込み時に1回だけ計算）
+// Pre-computed presets (calculated once on module load)
 export const PRESETS: PresetColor[] = buildPresets();
 
-/** プリセット名から検索 */
+/** Lookup by preset name */
 export function getPreset(name: string): PresetColor | undefined {
   return PRESETS.find(p => p.name === name);
 }
 
-/** プリセット名から CSS 文字列を生成 */
+/** Generate CSS string from preset name */
 export function getPresetCss(name: string): string {
   const preset = getPreset(name);
   if (!preset) throw new Error(`Unknown preset: ${name}. Available: ${PRESETS.map(p => p.name).join(", ")}`);
   return generateCss(preset.hex);
 }
 
-/** 全プリセット名を取得 */
+/** Get all preset names */
 export function getPresetNames(): string[] {
   return PRESETS.map(p => p.name);
 }

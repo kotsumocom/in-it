@@ -1,5 +1,5 @@
 /**
- * WAI-ARIA Non-modal Dialog パターン（Popover）
+ * WAI-ARIA Non-modal Dialog pattern (Popover)
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/
  */
 

@@ -1,5 +1,5 @@
 /**
- * テーマ CSS 生成 CLI
+ * Theme CSS generation CLI
  *
  * Usage:
  *   deno run generate-theme.ts --preset=purple --output=theme.css
@@ -23,10 +23,10 @@ const args = parseArgs(typeof Deno !== "undefined" ? Deno.args : process.argv.sl
 if (!args.preset && !args.primary) {
   console.log("Usage:");
   console.log("  --preset=<name>    ");
-  console.log("  --primary=#RRGGBB  カスタムプライマリカラー");
+  console.log("  --primary=#RRGGBB  Custom primary color");
   console.log("  --output=<file>     stdout");
   console.log("");
-  console.log(`利用可能なプリセット: ${getPresetNames().join(", ")}`);
+  console.log(`Available presets: ${getPresetNames().join(", ")}`);
   if (typeof Deno !== "undefined") Deno.exit(0);
   else process.exit(0);
 }
@@ -35,10 +35,10 @@ let css: string;
 
 if (args.preset) {
   css = getPresetCss(args.preset);
-  console.log(`✅ プリセット「${args.preset}」のテーマを生成`);
+  console.log(`✅ Preset "${args.preset}" theme generated`);
 } else {
   css = generateCss(args.primary);
-  console.log(`✅ カスタムカラー ${args.primary} のテーマを生成`);
+  console.log(`✅ Custom color ${args.primary}  theme generated`);
 }
 
 if (args.output) {
@@ -48,7 +48,7 @@ if (args.output) {
     const fs = await import("node:fs");
     fs.writeFileSync(args.output, css);
   }
-  console.log(`📝 ${args.output} に書き出しました`);
+  console.log(`📝 ${args.output}  written`);
 } else {
   console.log(css);
 }
