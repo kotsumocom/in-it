@@ -125,3 +125,104 @@ export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>) {
     </div>
   );
 }
+
+/** テキストフィールド */
+export interface InputProps {
+  label?: string;
+  placeholder?: string;
+  value?: string;
+  type?: string;
+  helper?: string;
+  error?: string;
+  disabled?: boolean;
+  onInput?: (e: Event) => void;
+}
+
+export function Input({ label, placeholder, value, type = "text", helper, error, disabled, onInput }: InputProps) {
+  return (
+    <div class="sc-input">
+      {label && <label class="sc-input__label">{label}</label>}
+      <input
+        type={type}
+        class="sc-input__field"
+        placeholder={placeholder}
+        value={value}
+        disabled={disabled}
+        onInput={onInput}
+      />
+      {error && <span class="sc-input__error">{error}</span>}
+      {!error && helper && <span class="sc-input__helper">{helper}</span>}
+    </div>
+  );
+}
+
+/** アバター */
+export interface AvatarProps {
+  name?: string;
+  src?: string;
+  size?: "sm" | "md" | "lg";
+}
+
+export function Avatar({ name, src, size = "md" }: AvatarProps) {
+  const initials = name?.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() ?? "?";
+  return (
+    <div class={`sc-avatar sc-avatar--${size}`}>
+      {src ? <img src={src} alt={name ?? ""} /> : initials}
+    </div>
+  );
+}
+
+/** チップ / タグ */
+export interface ChipProps {
+  variant?: "default" | "primary" | "success" | "error";
+  onClose?: () => void;
+  children: any;
+}
+
+export function Chip({ variant = "default", onClose, children }: ChipProps) {
+  return (
+    <span class={`sc-chip${variant !== "default" ? ` sc-chip--${variant}` : ""}`}>
+      {children}
+      {onClose && (
+        <button type="button" class="sc-chip__close" aria-label="削除" onClick={onClose}>
+          ✕
+        </button>
+      )}
+    </span>
+  );
+}
+
+/** スケルトン */
+export interface SkeletonProps {
+  width?: string;
+  height?: string;
+  circle?: boolean;
+}
+
+export function Skeleton({ width = "100%", height = "1em", circle = false }: SkeletonProps) {
+  return (
+    <div
+      class={`sc-skeleton${circle ? " sc-skeleton--circle" : " sc-skeleton--text"}`}
+      style={{ width, height }}
+    />
+  );
+}
+
+/** 空状態 */
+export interface EmptyStateProps {
+  icon?: string;
+  title: string;
+  description?: string;
+  children?: any;
+}
+
+export function EmptyState({ icon = "📭", title, description, children }: EmptyStateProps) {
+  return (
+    <div class="sc-empty">
+      <div class="sc-empty__icon">{icon}</div>
+      <h3 class="sc-empty__title">{title}</h3>
+      {description && <p class="sc-empty__desc">{description}</p>}
+      {children}
+    </div>
+  );
+}
