@@ -1,0 +1,8 @@
+{
+  "name": "@kotsumo/create-in-it",
+  "version": "0.0.1",
+  "exports": "./create.ts",
+  "tasks": {
+    "start": "deno run -A create.ts"
+  }
+}
