@@ -31,3 +31,6 @@ export type { AccordionApi, AccordionItem, CreateAccordionOptions } from "./acco
 
 export { createPopover } from "./popover.ts";
 export type { PopoverApi, CreatePopoverOptions } from "./popover.ts";
+
+export { createCombobox } from "./combobox.ts";
+export type { ComboboxApi, ComboboxOption, CreateComboboxOptions } from "./combobox.ts";

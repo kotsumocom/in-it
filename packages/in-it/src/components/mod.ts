@@ -19,6 +19,10 @@ export { Accordion } from "./interactive/Accordion.tsx";
 export type { AccordionProps, AccordionItemDef } from "./interactive/Accordion.tsx";
 export { Popover } from "./interactive/Popover.tsx";
 export type { PopoverProps } from "./interactive/Popover.tsx";
+export { ThemeToggle } from "./interactive/ThemeToggle.tsx";
+export type { ThemeToggleProps, Theme } from "./interactive/ThemeToggle.tsx";
+export { Combobox } from "./interactive/Combobox.tsx";
+export type { ComboboxProps } from "./interactive/Combobox.tsx";
 
 // Admin
 export { AdminShell } from "./admin/AdminShell.tsx";

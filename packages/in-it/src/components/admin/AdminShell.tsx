@@ -3,6 +3,7 @@
  * Icon Rail + Header + Content エリア
  */
 import { useState, useCallback } from "hono/jsx";
+import { ThemeToggle } from "../interactive/ThemeToggle.tsx";
 
 /** ナビゲーション項目 */
 export interface NavItem {
@@ -73,6 +74,7 @@ export function AdminShell({
           <div class="sc-admin-header__actions">
             <button class="sc-btn sc-btn--text sc-btn--sm" type="button">🔍</button>
             <button class="sc-btn sc-btn--text sc-btn--sm" type="button">🔔</button>
+            <ThemeToggle simple />
             <button class="sc-btn sc-btn--text sc-btn--sm" type="button">👤</button>
           </div>
         </header>
