@@ -2,7 +2,7 @@
  * WAI-ARIA Accordion pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/accordion/
  *
- * : Arrow, Home, End, Enter/Space
+ * Keyboard: Arrow, Home, End, Enter/Space
  */
 
 export interface AccordionItem {

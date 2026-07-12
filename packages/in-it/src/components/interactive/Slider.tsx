@@ -1,5 +1,5 @@
 /**
- * Slider — Range slider component
+ * Range slider component
  */
 import { useState } from "hono/jsx";
 

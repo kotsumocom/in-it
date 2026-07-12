@@ -22,9 +22,9 @@ const args = parseArgs(typeof Deno !== "undefined" ? Deno.args : process.argv.sl
 
 if (!args.preset && !args.primary) {
   console.log("Usage:");
-  console.log("  --preset=<name>    ");
+  console.log("  --preset=<name>    Use a preset color");
   console.log("  --primary=#RRGGBB  Custom primary color");
-  console.log("  --output=<file>     stdout");
+  console.log("  --output=<file>    Output file (default: stdout)");
   console.log("");
   console.log(`Available presets: ${getPresetNames().join(", ")}`);
   if (typeof Deno !== "undefined") Deno.exit(0);

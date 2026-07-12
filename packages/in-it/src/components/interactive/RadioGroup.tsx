@@ -1,5 +1,6 @@
 /**
- * RadioGroup EE */
+ * RadioGroup component
+ */
 import { useState, useCallback } from "hono/jsx";
 
 export interface RadioOption { value: string; label: string; disabled?: boolean; }

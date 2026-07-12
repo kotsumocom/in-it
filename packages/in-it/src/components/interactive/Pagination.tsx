@@ -1,5 +1,5 @@
 /**
- * Pagination — Pagination component
+ * Pagination component
  */
 import { useState, useMemo } from "hono/jsx";
 

@@ -3,7 +3,7 @@
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/combobox/
  *
  * Text input + filterable listbox.
- * : Arrow, Home, End, Enter, Escape
+ * Keyboard: Arrow, Home, End, Enter, Escape
  */
 
 export interface ComboboxOption {

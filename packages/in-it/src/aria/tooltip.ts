@@ -22,7 +22,7 @@ export interface TooltipApi {
   };
   /** Whether visible */
   isOpen: boolean;
-  /** Open the dialog */
+  /** Open the tooltip */
   open: () => void;
   /** Close */
   close: () => void;

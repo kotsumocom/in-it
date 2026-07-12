@@ -2,7 +2,7 @@
  * WAI-ARIA Menu Button pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/
  *
- * Arrow, Home, End, Escape
+ * Keyboard: Arrow, Home, End, Escape
  */
 
 export interface MenuItem {
@@ -39,11 +39,11 @@ export interface MenuApi {
     onClick: () => void;
     onMouseEnter: () => void;
   };
-  /** Whether the dialog is open */
+  /** Whether the menu is open */
   isOpen: boolean;
   /** Currently focused item ID */
   focusedId: string | null;
-  /** Open the dialog */
+  /** Open the menu */
   open: () => void;
   /** Close */
   close: () => void;

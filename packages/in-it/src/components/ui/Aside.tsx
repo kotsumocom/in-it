@@ -1,5 +1,5 @@
 /**
- * Aside (Callout)   Note, Tip, Caution, Danger
+ * Aside (Callout) - Note, Tip, Caution, Danger variants
  * Inspired by Starlight, fully self-implemented
  */
 

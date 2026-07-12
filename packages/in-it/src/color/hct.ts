@@ -251,7 +251,7 @@ function solveHctToRgb(hue: number, chroma: number, tone: number): [number, numb
   for (let i = 0; i < 50; i++) {
     const mid = (lo + hi) / 2;
     // Estimate J from tone (CAM16 J approximately corresponds to L*)
-    const J = tone; // : J  L*
+    const J = tone; // Simplified: J is approximated as L*
 
     const [x, yc, z] = cam16ToXyz(hue, mid, J);
     // Scale Y to match target

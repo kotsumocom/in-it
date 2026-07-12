@@ -1,5 +1,5 @@
 /**
- * Steps — Step indicator component
+ * Step indicator component
  */
 
 export interface StepItem {

@@ -2,7 +2,7 @@
  * WAI-ARIA Listbox pattern (Select)
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
  *
- *  Listbox: Arrow, Home, End, Enter, Escape, 
+ * Keyboard: Arrow, Home, End, Enter, Escape, Type-ahead
  */
 
 export interface SelectOption {
