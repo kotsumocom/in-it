@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 
-const API_URL = "https://be.in-it.ooo";
+const API_URL = "https://be.init.dev";
 
 interface ProfileFormProps {
   accessToken: string;
@@ -74,17 +74,17 @@ export default function ProfileForm({
         </div>
       )}
 
-      {/* 表示名 */}
+      {/* 表示吁E*/}
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">
-          表示名 <span class="text-red-500">*</span>
+          表示吁E<span class="text-red-500">*</span>
         </label>
         <input
           type="text"
           value={displayName}
           onInput={(e) => setDisplayName((e.target as HTMLInputElement).value)}
           class="w-full px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
-          placeholder="例: 田中太郎"
+          placeholder="侁E 田中太郁E
           required
         />
       </div>
@@ -92,7 +92,7 @@ export default function ProfileForm({
       {/* アバター URL */}
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">
-          プロフィール画像 URL
+          プロフィール画僁EURL
         </label>
         <input
           type="url"
@@ -101,7 +101,7 @@ export default function ProfileForm({
           class="w-full px-4 py-2 border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
           placeholder="https://example.com/avatar.jpg"
         />
-        <p class="text-sm text-gray-500 mt-1">画像の URL を入力してください</p>
+        <p class="text-sm text-gray-500 mt-1">画像�E URL を�E力してください</p>
 
         {/* プレビュー */}
         {avatarUrl && (
@@ -119,14 +119,14 @@ export default function ProfileForm({
         )}
       </div>
 
-      {/* 保存ボタン */}
+      {/* 保存�Eタン */}
       <div class="pt-4">
         <button
           type="submit"
           disabled={isSubmitting}
           class="px-6 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? "保存中..." : "変更を保存"}
+          {isSubmitting ? "保存中..." : "変更を保孁E}
         </button>
       </div>
     </form>

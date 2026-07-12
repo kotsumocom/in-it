@@ -18,7 +18,7 @@ export default function FeedbackFAB({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
-  const API_URL = "https://be.in-it.ooo";
+  const API_URL = "https://be.init.dev";
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
@@ -66,9 +66,9 @@ export default function FeedbackFAB({
   };
 
   const categoryLabels = {
-    bug: "🐛 バグ報告",
-    feature: "💡 機能リクエスト",
-    question: "❓ 質問・その他",
+    bug: "🐛 バグ報呁E,
+    feature: "💡 機�EリクエスチE,
+    question: "❁E質問�Eそ�E仁E,
   };
 
   return (
@@ -78,7 +78,7 @@ export default function FeedbackFAB({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-105"
-        aria-label="フィードバックを送る"
+        aria-label="フィードバチE��を送る"
       >
         {isOpen ? (
           <svg
@@ -115,17 +115,17 @@ export default function FeedbackFAB({
       {isOpen && (
         <div class="fixed bottom-24 right-6 z-50 w-80 bg-white rounded-lg shadow-xl border border-gray-200">
           <div class="p-4 border-b border-gray-200">
-            <h3 class="font-bold text-gray-900">フィードバックを送る</h3>
+            <h3 class="font-bold text-gray-900">フィードバチE��を送る</h3>
             <p class="text-sm text-gray-500">
-              ご意見・ご要望をお聞かせください
+              ご意見�Eご要望をお聞かせください
             </p>
           </div>
 
           {submitted ? (
             <div class="p-6 text-center">
-              <div class="text-4xl mb-2">✅</div>
-              <p class="text-gray-700 font-medium">送信しました！</p>
-              <p class="text-sm text-gray-500">ご協力ありがとうございます</p>
+              <div class="text-4xl mb-2">✁E/div>
+              <p class="text-gray-700 font-medium">送信しました�E�E/p>
+              <p class="text-sm text-gray-500">ご協力ありがとぁE��ざいまぁE/p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} class="p-4 space-y-4">
@@ -157,7 +157,7 @@ export default function FeedbackFAB({
                 onInput={(e) =>
                   setMessage((e.target as HTMLTextAreaElement).value)
                 }
-                placeholder="メッセージを入力..."
+                placeholder="メチE��ージを�E劁E.."
                 class="w-full h-24 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
                 required
               />

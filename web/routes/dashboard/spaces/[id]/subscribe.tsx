@@ -14,7 +14,7 @@ interface SubscribeData {
 }
 
 const API_URL = Deno.env.get("API_URL") || "http://localhost:3001";
-const APP_URL = Deno.env.get("APP_URL") || "https://in-it.ooo";
+const APP_URL = Deno.env.get("APP_URL") || "https://init.dev";
 
 export const handler: Handlers<SubscribeData, State> = {
   async GET(_req, ctx) {

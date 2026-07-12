@@ -129,7 +129,7 @@ export default function MentorPage({ data }: PageProps<MentorPageData>) {
           {/* SNS共有ボタン */}
           <div class="mt-4">
             <ShareButtons
-              url={`https://in-it.ooo/mentors/${mentor.id}`}
+              url={`https://init.dev/mentors/${mentor.id}`}
               title={mentor.display_name}
             />
           </div>
