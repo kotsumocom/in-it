@@ -1,0 +1,10 @@
+{
+  "name": "@kotsumo/in-it",
+  "version": "0.0.1",
+  "exports": {
+    ".": "./src/mod.ts",
+    "./aria": "./src/aria/mod.ts",
+    "./components": "./src/components/mod.ts",
+    "./css": "./src/css/main.css"
+  }
+}

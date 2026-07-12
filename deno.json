@@ -1,18 +1,22 @@
 {
-  "workspace": ["./backend", "./web"],
-  "nodeModulesDir": "auto",
+  "workspace": [
+    "./packages/in-it"
+  ],
   "tasks": {
-    "start:backend": "deno run --watch -A ./backend/main.ts",
-    "start:web": "deno task --cwd ./web start"
+    "dev": "deno run -A --watch server/main.ts",
+    "dev:client": "deno run -A npm:vite",
+    "build": "deno run -A npm:vite build",
+    "check": "deno check server/main.ts client/main.tsx"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx"
   },
   "imports": {
-    "preact": "https://esm.sh/preact@10.22.0",
-    "preact/": "https://esm.sh/preact@10.22.0/",
-    "preact/hooks": "https://esm.sh/preact@10.22.0/hooks",
-    "@preact/signals": "https://esm.sh/@preact/signals@1.2.2",
-    "@preact/signals-core": "https://esm.sh/@preact/signals-core@1.5.1",
-    "tailwindcss": "npm:tailwindcss@3.4.1",
-    "tailwindcss/": "npm:/tailwindcss@3.4.1/",
-    "tailwindcss/plugin": "npm:/tailwindcss@3.4.1/plugin.js"
-  }
+    "hono": "npm:hono@^4",
+    "hono/jsx": "npm:hono@^4/jsx",
+    "hono/jsx/dom": "npm:hono@^4/jsx/dom",
+    "@in-it/": "./packages/in-it/src/"
+  },
+  "nodeModulesDir": "auto"
 }
