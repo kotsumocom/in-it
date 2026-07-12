@@ -5,6 +5,7 @@
     ".": "./src/mod.ts",
     "./aria": "./src/aria/mod.ts",
     "./components": "./src/components/mod.ts",
-    "./css": "./src/css/main.css"
+    "./css": "./src/css/main.css",
+    "./router": "./src/router.tsx"
   }
 }

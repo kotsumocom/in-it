@@ -1,6 +1,6 @@
 import { render } from "hono/jsx/dom";
 import { AdminShell, Menu, ToastContainer } from "@in-it/components/mod.ts";
-import { Route, Switch, useLocation } from "./router.tsx";
+import { Route, Switch, useLocation } from "@in-it/router.tsx";
 import { DashboardPage } from "./pages/Dashboard.tsx";
 import { SettingsPage } from "./pages/Settings.tsx";
 import type { NavItem } from "@in-it/components/admin/AdminShell.tsx";
