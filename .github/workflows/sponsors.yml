@@ -1,0 +1,47 @@
+name: Update Sponsors
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # 毎日 UTC 0:00（JST 9:00）
+
+jobs:
+  sponsors:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate sponsor assets
+        run: npx sponsorkit@latest --output-dir=.github/sponsors
+        env:
+          SPONSORKIT_GITHUB_TOKEN: ${{ secrets.SPONSORS_PAT }}
+          SPONSORKIT_GITHUB_LOGIN: kotsumocom
+          SPONSORKIT_GITHUB_TYPE: organization
+
+      - name: Generate SPONSORS.md
+        run: |
+          cat > SPONSORS.md << 'EOF'
+          # Sponsors
+
+          Thank you to all our sponsors! ❤️
+
+          <p align="center">
+            <img src=".github/sponsors/sponsors.svg" />
+          </p>
+
+          ## Become a Sponsor
+
+          [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?style=for-the-badge)](https://github.com/sponsors/kotsumocom)
+          EOF
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: スポンサー一覧を更新'
+          file_pattern: 'SPONSORS.md .github/sponsors/*'

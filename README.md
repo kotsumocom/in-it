@@ -108,3 +108,9 @@ const lighter = color.withTone(80); // Tone 80 に変更
 ## 📄 ライセンス
 
 [MIT](./LICENSE)
+
+## ❤️ Sponsors
+
+[See our sponsors →](./SPONSORS.md)
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?style=for-the-badge)](https://github.com/sponsors/kotsumocom)
