@@ -1,6 +1,5 @@
 /**
- * Menu コンポーネント（hono/jsx/dom）
- * WAI-ARIA Menu Button パターン準拠
+ * Menu コンポ�Eネント！Eono/jsx/dom�E�E * WAI-ARIA Menu Button パターン準拠
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
@@ -13,11 +12,11 @@ export interface MenuItemDef {
 }
 
 export interface MenuProps {
-  /** メニュー項目 */
+  /** メニュー頁E�� */
   items: MenuItemDef[];
-  /** 項目選択コールバック */
+  /** 頁E��選択コールバック */
   onSelect?: (id: string) => void;
-  /** トリガーの内容 */
+  /** トリガーの冁E�� */
   trigger: any;
   /** 位置 */
   align?: "left" | "right";
@@ -30,8 +29,7 @@ export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps) {
 
   const enabledItems = items.filter((i) => !i.disabled);
 
-  // 外側クリックで閉じる
-  useEffect(() => {
+  // 外�EクリチE��で閉じめE  useEffect(() => {
     if (!open) return;
     const handler = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -96,10 +94,10 @@ export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps) {
   );
 
   return (
-    <div class="sc-menu" ref={menuRef} onKeyDown={handleKeyDown}>
+    <div class="ii-menu" ref={menuRef} onKeyDown={handleKeyDown}>
       <button
         type="button"
-        class="sc-menu__trigger"
+        class="ii-menu__trigger"
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={handleTriggerClick}
@@ -108,16 +106,16 @@ export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps) {
       </button>
 
       {open && (
-        <div class={`sc-menu__dropdown sc-menu__dropdown--${align}`} role="menu">
+        <div class={`ii-menu__dropdown ii-menu__dropdown--${align}`} role="menu">
           {items.map((item, i) => {
             const enabledIdx = enabledItems.findIndex((e) => e.id === item.id);
             return (
               <div key={item.id}>
-                {item.separator && <div class="sc-menu__separator" />}
+                {item.separator && <div class="ii-menu__separator" />}
                 <button
                   type="button"
                   role="menuitem"
-                  class={`sc-menu__item${enabledIdx === focusedIdx ? " sc-menu__item--focused" : ""}${item.disabled ? " sc-menu__item--disabled" : ""}`}
+                  class={`ii-menu__item${enabledIdx === focusedIdx ? " ii-menu__item--focused" : ""}${item.disabled ? " ii-menu__item--disabled" : ""}`}
                   aria-disabled={item.disabled || undefined}
                   tabIndex={enabledIdx === focusedIdx ? 0 : -1}
                   onClick={() => {
@@ -130,7 +128,7 @@ export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps) {
                     if (!item.disabled) setFocusedIdx(enabledIdx);
                   }}
                 >
-                  {item.icon && <span class="sc-menu__icon">{item.icon}</span>}
+                  {item.icon && <span class="ii-menu__icon">{item.icon}</span>}
                   {item.label}
                 </button>
               </div>
@@ -141,3 +139,4 @@ export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps) {
     </div>
   );
 }
+

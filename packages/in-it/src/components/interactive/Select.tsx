@@ -1,6 +1,5 @@
 /**
- * Select コンポーネント（hono/jsx/dom）
- * WAI-ARIA Listbox パターン準拠
+ * Select コンポ�Eネント！Eono/jsx/dom�E�E * WAI-ARIA Listbox パターン準拠
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
@@ -33,7 +32,7 @@ export function Select({
   const enabledOptions = options.filter((o) => !o.disabled);
   const selectedOption = options.find((o) => o.value === selected);
 
-  // 外側クリック
+  // 外�EクリチE��
   useEffect(() => {
     if (!open) return;
     const handler = (e: MouseEvent) => {
@@ -92,38 +91,38 @@ export function Select({
   }, [open, highlighted, enabledOptions, handleSelect]);
 
   return (
-    <div class="sc-select" ref={containerRef} onKeyDown={handleKeyDown}>
-      {label && <label class="sc-select__label">{label}</label>}
+    <div class="ii-select" ref={containerRef} onKeyDown={handleKeyDown}>
+      {label && <label class="ii-select__label">{label}</label>}
       <button
         type="button"
-        class="sc-select__trigger"
+        class="ii-select__trigger"
         role="combobox"
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => { setOpen((v) => !v); if (!open) setHighlighted(0); }}
       >
-        <span class={`sc-select__value${!selectedOption ? " sc-select__value--placeholder" : ""}`}>
+        <span class={`ii-select__value${!selectedOption ? " ii-select__value--placeholder" : ""}`}>
           {selectedOption?.label ?? placeholder}
         </span>
-        <span class="sc-select__arrow">{open ? "▲" : "▼"}</span>
+        <span class="ii-select__arrow">{open ? "▲" : "▼"}</span>
       </button>
 
       {open && (
-        <div class="sc-select__dropdown" role="listbox">
+        <div class="ii-select__dropdown" role="listbox">
           {options.map((opt) => {
             const enabledIdx = enabledOptions.findIndex((e) => e.value === opt.value);
             return (
               <div
                 key={opt.value}
                 role="option"
-                class={`sc-select__option${enabledIdx === highlighted ? " sc-select__option--highlighted" : ""}${selected === opt.value ? " sc-select__option--selected" : ""}${opt.disabled ? " sc-select__option--disabled" : ""}`}
+                class={`ii-select__option${enabledIdx === highlighted ? " ii-select__option--highlighted" : ""}${selected === opt.value ? " ii-select__option--selected" : ""}${opt.disabled ? " ii-select__option--disabled" : ""}`}
                 aria-selected={selected === opt.value}
                 aria-disabled={opt.disabled || undefined}
                 onClick={() => !opt.disabled && handleSelect(opt.value)}
                 onMouseEnter={() => !opt.disabled && setHighlighted(enabledIdx)}
               >
                 {opt.label}
-                {selected === opt.value && <span class="sc-select__check">✓</span>}
+                {selected === opt.value && <span class="ii-select__check">✁E/span>}
               </div>
             );
           })}
@@ -132,3 +131,4 @@ export function Select({
     </div>
   );
 }
+

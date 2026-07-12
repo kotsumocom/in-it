@@ -1,6 +1,5 @@
 /**
- * Checkbox コンポーネント
- */
+ * Checkbox コンポ�EネンチE */
 import { useState, useCallback } from "hono/jsx";
 
 export interface CheckboxProps {
@@ -23,12 +22,13 @@ export function Checkbox({ checked: controlledChecked, indeterminate, disabled, 
   }, [checked, disabled, onChange]);
 
   return (
-    <label class={`sc-checkbox${disabled ? " sc-checkbox--disabled" : ""}`}>
-      <input type="checkbox" class="sc-checkbox__input" checked={checked} disabled={disabled} onChange={toggle} />
-      <span class={`sc-checkbox__control${checked ? " sc-checkbox__control--checked" : ""}${indeterminate ? " sc-checkbox__control--indeterminate" : ""}`}>
-        <span class="sc-checkbox__indicator">{checked ? "✓" : indeterminate ? "−" : ""}</span>
+    <label class={`ii-checkbox${disabled ? " ii-checkbox--disabled" : ""}`}>
+      <input type="checkbox" class="ii-checkbox__input" checked={checked} disabled={disabled} onChange={toggle} />
+      <span class={`ii-checkbox__control${checked ? " ii-checkbox__control--checked" : ""}${indeterminate ? " ii-checkbox__control--indeterminate" : ""}`}>
+        <span class="ii-checkbox__indicator">{checked ? "✁E : indeterminate ? "∁E : ""}</span>
       </span>
-      {label && <span class="sc-checkbox__label">{label}</span>}
+      {label && <span class="ii-checkbox__label">{label}</span>}
     </label>
   );
 }
+
