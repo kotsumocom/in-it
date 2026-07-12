@@ -67,7 +67,7 @@ export function DocsShell({ brand, brandHref = "/", navLinks = [], sidebarGroups
         </main>
         {tocItems.length > 0 && (
           <nav class="ii-docs-toc">
-            <div class="ii-docs-toc__title">目次</div>
+            <div class="ii-docs-toc__title"></div>
             {tocItems.map(item => (
               <a key={item.id} href={`#${item.id}`}
                 class={`ii-docs-toc__link${item.level === 3 ? " ii-docs-toc__link--h3" : ""}`}>

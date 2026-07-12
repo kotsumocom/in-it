@@ -1,53 +1,38 @@
 /**
- * Popover 繧ｳ繝ｳ繝昴・繝阪Φ繝茨ｼ・ono/jsx/dom・・ * WAI-ARIA Non-modal Dialog 繝代ち繝ｼ繝ｳ
+ * Popover component (hono/jsx/dom)
+ * WAI-ARIA Dialog (Non-modal) pattern
  */
 import { useState, useEffect, useRef } from "hono/jsx";
 
 export interface PopoverProps {
   trigger: any;
   children: any;
-  align?: "left" | "right" | "center";
+  position?: "top" | "bottom" | "left" | "right";
 }
 
-export function Popover({ trigger, children, align = "left" }: PopoverProps) {
+export function Popover({ trigger, children, position = "bottom" }: PopoverProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) return;
     const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    const keyHandler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
     document.addEventListener("mousedown", handler);
-    document.addEventListener("keydown", keyHandler);
-    return () => {
-      document.removeEventListener("mousedown", handler);
-      document.removeEventListener("keydown", keyHandler);
-    };
+    return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
   return (
     <div class="ii-popover" ref={ref}>
-      <button
-        type="button"
-        class="ii-popover__trigger"
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
-      >
+      <div class="ii-popover__trigger" onClick={() => setOpen((v) => !v)}>
         {trigger}
-      </button>
+      </div>
       {open && (
-        <div class={`ii-popover__content ii-popover__content--${align}`} role="dialog" aria-modal={false}>
+        <div class={`ii-popover__content ii-popover__content--${position}`} role="dialog">
           {children}
         </div>
       )}
     </div>
   );
 }
-

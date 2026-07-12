@@ -1,69 +1,62 @@
 /**
- * Toast 繧ｳ繝ｳ繝昴・繝阪Φ繝茨ｼ・ono/jsx/dom・・ * WAI-ARIA Alert + Live Region 貅匁侠
+ * Toast component (hono/jsx/dom)
+ * WAI-ARIA Alert + Live Region
  */
-import { useState, useCallback } from "hono/jsx";
-import type { ToastVariant } from "../../aria/toast.ts";
+import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
 export interface ToastItem {
-  id: string;
+  id: number;
   message: string;
-  variant: ToastVariant;
+  variant?: "info" | "success" | "warning" | "error";
+  duration?: number;
+}
+
+let toastIdCounter = 0;
+let globalAddToast: ((t: ToastItem) => void) | null = null;
+
+export function toast(message: string, variant: ToastItem["variant"] = "info", duration = 4000) {
+  if (globalAddToast) {
+    globalAddToast({ id: ++toastIdCounter, message, variant, duration });
+  }
 }
 
 export interface ToastContainerProps {
   position?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
 }
 
-// 繧ｰ繝ｭ繝ｼ繝舌Ν縺ｪ繝医・繧ｹ繝育ｮ｡逅・let toastIdCounter = 0;
-let globalSetToasts: ((fn: (prev: ToastItem[]) => ToastItem[]) => void) | null = null;
-
-/** 繝医・繧ｹ繝医ｒ陦ｨ遉ｺ縺吶ｋ・医げ繝ｭ繝ｼ繝舌Ν髢｢謨ｰ・・*/
-export function toast(message: string, variant: ToastVariant = "info", duration = 5000) {
-  const id = `toast-${++toastIdCounter}`;
-  const item: ToastItem = { id, message, variant };
-
-  globalSetToasts?.((prev) => [...prev, item].slice(-5));
-
-  if (duration > 0) {
-    setTimeout(() => {
-      globalSetToasts?.((prev) => prev.filter((t) => t.id !== id));
-    }, duration);
-  }
-
-  return id;
-}
-
 export function ToastContainer({ position = "top-right" }: ToastContainerProps) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
-  globalSetToasts = setToasts;
 
-  const dismiss = useCallback((id: string) => {
+  useEffect(() => {
+    globalAddToast = (t) => setToasts((prev) => [...prev, t]);
+    return () => { globalAddToast = null; };
+  }, []);
+
+  const remove = useCallback((id: number) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  if (toasts.length === 0) return null;
+  useEffect(() => {
+    const timers = toasts.map((t) =>
+      setTimeout(() => remove(t.id), t.duration ?? 4000)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [toasts, remove]);
 
   return (
-    <div class={`ii-toast-container ii-toast-container--${position}`} role="status" aria-live="polite">
+    <div class={`ii-toast-container ii-toast-container--${position}`} aria-live="polite">
       {toasts.map((t) => (
-        <div key={t.id} class={`ii-toast ii-toast--${t.variant}`} role="alert" aria-atomic={true}>
+        <div key={t.id} class={`ii-toast ii-toast--${t.variant ?? "info"}`} role="alert">
           <span class="ii-toast__icon">
-            {t.variant === "success" && "笨・}
-            {t.variant === "error" && "笨・}
-            {t.variant === "warning" && "笞"}
-            {t.variant === "info" && "邃ｹ"}
+            {t.variant === "success" && "ok"}
+            {t.variant === "error" && "x"}
+            {t.variant === "warning" && "!"}
+            {(!t.variant || t.variant === "info") && "i"}
           </span>
-          <span class="ii-toast__message">{t.message}</span>
-          <button
-            type="button"
-            class="ii-toast__close"
-            aria-label="髢峨§繧・
-            onClick={() => dismiss(t.id)}
-          >
-            笨・          </button>
+          <span class="ii-toast__msg">{t.message}</span>
+          <button class="ii-toast__close" onClick={() => remove(t.id)} aria-label="Close">x</button>
         </div>
       ))}
     </div>
   );
 }
-

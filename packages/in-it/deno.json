@@ -10,15 +10,22 @@
     "./color/scheme": "./src/color/scheme.ts",
     "./color/presets": "./src/color/presets.ts",
     "./docs": "./src/docs/markdown.ts",
-    "./css": "./src/css/main.css",
     "./router": "./src/router.tsx"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
+    "jsxImportSource": "hono/jsx",
+    "lib": ["deno.window", "dom", "dom.iterable"]
   },
   "imports": {
+    "hono": "npm:hono@^4",
     "hono/jsx": "npm:hono@^4/jsx",
-    "hono/jsx/dom": "npm:hono@^4/jsx/dom"
+    "hono/jsx/dom": "npm:hono@^4/jsx/dom",
+    "hono/jsx/jsx-runtime": "npm:hono@^4/jsx/jsx-runtime",
+    "hono/jsx/jsx-dev-runtime": "npm:hono@^4/jsx/jsx-dev-runtime"
+  },
+  "publish": {
+    "include": ["src/", "LICENSE", "README.md"],
+    "exclude": ["src/css/"]
   }
 }

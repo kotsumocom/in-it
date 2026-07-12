@@ -1,98 +1,94 @@
 /**
- * Tabs 繧ｳ繝ｳ繝昴・繝阪Φ繝茨ｼ・ono/jsx/dom・・ * WAI-ARIA Tabs 繝代ち繝ｼ繝ｳ貅匁侠
+ * Tabs component (hono/jsx/dom)
+ * WAI-ARIA Tabs pattern
  */
-import { useState, useCallback } from "hono/jsx";
+import { useState, useCallback, useRef } from "hono/jsx";
 
 export interface TabItem {
-  value: string;
+  id: string;
   label: string;
+  content: any;
   disabled?: boolean;
 }
 
 export interface TabsProps {
-  /** 繧ｿ繝夜・岼 */
   items: TabItem[];
-  /** 蛻晄悄繧｢繧ｯ繝・ぅ繝・*/
-  defaultValue?: string;
-  /** 螟画峩繧ｳ繝ｼ繝ｫ繝舌ャ繧ｯ */
-  onChange?: (value: string) => void;
-  /** 蜷・ヱ繝阪Ν縺ｮ繧ｳ繝ｳ繝・Φ繝・*/
-  children: any;
+  defaultTab?: string;
+  onChange?: (id: string) => void;
 }
 
-export function Tabs({ items, defaultValue, onChange, children }: TabsProps) {
-  const [active, setActive] = useState(defaultValue ?? items[0]?.value ?? "");
+export function Tabs({ items, defaultTab, onChange }: TabsProps) {
+  const [activeId, setActiveId] = useState(defaultTab ?? items[0]?.id ?? "");
+  const tabListRef = useRef<HTMLDivElement>(null);
 
-  const handleSelect = useCallback(
-    (value: string) => {
-      setActive(value);
-      onChange?.(value);
-    },
-    [onChange],
-  );
+  const enabledItems = items.filter((t) => !t.disabled);
 
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent, index: number) => {
-      const enabledItems = items.filter((i) => !i.disabled);
-      const currentIdx = enabledItems.findIndex((i) => i.value === items[index].value);
+  const activate = useCallback((id: string) => {
+    setActiveId(id);
+    onChange?.(id);
+  }, [onChange]);
 
-      let nextIdx = currentIdx;
-      if (e.key === "ArrowRight") {
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    const currentIdx = enabledItems.findIndex((t) => t.id === activeId);
+    let nextIdx = currentIdx;
+
+    switch (e.key) {
+      case "ArrowRight":
         e.preventDefault();
         nextIdx = (currentIdx + 1) % enabledItems.length;
-      } else if (e.key === "ArrowLeft") {
+        break;
+      case "ArrowLeft":
         e.preventDefault();
         nextIdx = (currentIdx - 1 + enabledItems.length) % enabledItems.length;
-      } else if (e.key === "Home") {
+        break;
+      case "Home":
         e.preventDefault();
         nextIdx = 0;
-      } else if (e.key === "End") {
+        break;
+      case "End":
         e.preventDefault();
         nextIdx = enabledItems.length - 1;
-      } else {
+        break;
+      default:
         return;
-      }
-      handleSelect(enabledItems[nextIdx].value);
-    },
-    [items, handleSelect],
-  );
+    }
 
-  // children 繧帝・蛻怜喧縺励※ active 縺ｫ蟇ｾ蠢懊☆繧九ｂ縺ｮ縺縺題｡ｨ遉ｺ
-  const panels = Array.isArray(children) ? children : [children];
+    activate(enabledItems[nextIdx].id);
+  }, [activeId, enabledItems, activate]);
+
+  const activeItem = items.find((t) => t.id === activeId);
 
   return (
     <div class="ii-tabs">
-      <div class="ii-tabs__list" role="tablist">
-        {items.map((item, i) => (
+      <div class="ii-tabs__list" role="tablist" ref={tabListRef} onKeyDown={handleKeyDown}>
+        {items.map((tab) => (
           <button
-            key={item.value}
+            key={tab.id}
             type="button"
             role="tab"
-            class={`ii-tabs__tab${active === item.value ? " ii-tabs__tab--active" : ""}`}
-            aria-selected={active === item.value}
-            aria-disabled={item.disabled || undefined}
-            tabIndex={active === item.value ? 0 : -1}
-            disabled={item.disabled}
-            onClick={() => !item.disabled && handleSelect(item.value)}
-            onKeyDown={(e: KeyboardEvent) => handleKeyDown(e, i)}
+            id={`tab-${tab.id}`}
+            aria-selected={tab.id === activeId}
+            aria-controls={`panel-${tab.id}`}
+            aria-disabled={tab.disabled}
+            class={`ii-tabs__tab${tab.id === activeId ? " ii-tabs__tab--active" : ""}${tab.disabled ? " ii-tabs__tab--disabled" : ""}`}
+            tabIndex={tab.id === activeId ? 0 : -1}
+            onClick={() => { if (!tab.disabled) activate(tab.id); }}
           >
-            {item.label}
+            {tab.label}
           </button>
         ))}
       </div>
-      <div class="ii-tabs__panels">
-        {panels.map((panel: any, i: number) => (
-          <div
-            key={items[i]?.value ?? i}
-            role="tabpanel"
-            class="ii-tabs__panel"
-            hidden={items[i]?.value !== active}
-          >
-            {panel}
-          </div>
-        ))}
-      </div>
+      {activeItem && (
+        <div
+          class="ii-tabs__panel"
+          role="tabpanel"
+          id={`panel-${activeItem.id}`}
+          aria-labelledby={`tab-${activeItem.id}`}
+          tabIndex={0}
+        >
+          {activeItem.content}
+        </div>
+      )}
     </div>
   );
 }
-

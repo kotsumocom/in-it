@@ -1,5 +1,6 @@
 /**
- * Menu 繧ｳ繝ｳ繝昴・繝阪Φ繝茨ｼ・ono/jsx/dom・・ * WAI-ARIA Menu Button 繝代ち繝ｼ繝ｳ貅匁侠
+ * Menu component (hono/jsx/dom)
+ * WAI-ARIA Menu Button pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
@@ -12,13 +13,9 @@ export interface MenuItemDef {
 }
 
 export interface MenuProps {
-  /** 繝｡繝九Η繝ｼ鬆・岼 */
   items: MenuItemDef[];
-  /** 鬆・岼驕ｸ謚槭さ繝ｼ繝ｫ繝舌ャ繧ｯ */
   onSelect?: (id: string) => void;
-  /** 繝医Μ繧ｬ繝ｼ縺ｮ蜀・ｮｹ */
   trigger: any;
-  /** 菴咲ｽｮ */
   align?: "left" | "right";
 }
 
@@ -29,7 +26,8 @@ export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps) {
 
   const enabledItems = items.filter((i) => !i.disabled);
 
-  // 螟門・繧ｯ繝ｪ繝・け縺ｧ髢峨§繧・  useEffect(() => {
+  // Close on outside click
+  useEffect(() => {
     if (!open) return;
     const handler = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -139,4 +137,3 @@ export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps) {
     </div>
   );
 }
-

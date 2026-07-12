@@ -1,5 +1,6 @@
 /**
- * Select 繧ｳ繝ｳ繝昴・繝阪Φ繝茨ｼ・ono/jsx/dom・・ * WAI-ARIA Listbox 繝代ち繝ｼ繝ｳ貅匁侠
+ * Select component (hono/jsx/dom)
+ * WAI-ARIA Listbox pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
@@ -14,29 +15,24 @@ export interface SelectProps {
   value?: string;
   placeholder?: string;
   label?: string;
+  disabled?: boolean;
   onChange?: (value: string) => void;
 }
 
-export function Select({
-  options,
-  value: controlledValue,
-  placeholder = "驕ｸ謚槭＠縺ｦ縺上□縺輔＞",
-  label,
-  onChange,
-}: SelectProps) {
+export function Select({ options, value, placeholder = "Select...", label, disabled, onChange }: SelectProps) {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(controlledValue ?? "");
-  const [highlighted, setHighlighted] = useState(-1);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [selected, setSelected] = useState(value ?? "");
+  const [focusedIdx, setFocusedIdx] = useState(-1);
+  const ref = useRef<HTMLDivElement>(null);
 
   const enabledOptions = options.filter((o) => !o.disabled);
-  const selectedOption = options.find((o) => o.value === selected);
+  const selectedLabel = options.find((o) => o.value === selected)?.label ?? placeholder;
 
-  // 螟門・繧ｯ繝ｪ繝・け
+  // Close on outside click
   useEffect(() => {
     if (!open) return;
     const handler = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
       }
     };
@@ -44,10 +40,10 @@ export function Select({
     return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
-  const handleSelect = useCallback((value: string) => {
-    setSelected(value);
+  const handleSelect = useCallback((val: string) => {
+    setSelected(val);
     setOpen(false);
-    onChange?.(value);
+    onChange?.(val);
   }, [onChange]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -55,7 +51,7 @@ export function Select({
       if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         setOpen(true);
-        setHighlighted(0);
+        setFocusedIdx(0);
       }
       return;
     }
@@ -63,66 +59,61 @@ export function Select({
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        setHighlighted((i) => (i + 1) % enabledOptions.length);
+        setFocusedIdx((i) => Math.min(i + 1, enabledOptions.length - 1));
         break;
       case "ArrowUp":
         e.preventDefault();
-        setHighlighted((i) => (i - 1 + enabledOptions.length) % enabledOptions.length);
+        setFocusedIdx((i) => Math.max(i - 1, 0));
         break;
       case "Home":
         e.preventDefault();
-        setHighlighted(0);
+        setFocusedIdx(0);
         break;
       case "End":
         e.preventDefault();
-        setHighlighted(enabledOptions.length - 1);
+        setFocusedIdx(enabledOptions.length - 1);
         break;
       case "Enter":
       case " ":
         e.preventDefault();
-        if (highlighted >= 0) handleSelect(enabledOptions[highlighted].value);
+        if (focusedIdx >= 0) handleSelect(enabledOptions[focusedIdx].value);
         break;
       case "Escape":
-      case "Tab":
         e.preventDefault();
         setOpen(false);
         break;
     }
-  }, [open, highlighted, enabledOptions, handleSelect]);
+  }, [open, focusedIdx, enabledOptions, handleSelect]);
 
   return (
-    <div class="ii-select" ref={containerRef} onKeyDown={handleKeyDown}>
+    <div class={`ii-select${disabled ? " ii-select--disabled" : ""}`} ref={ref} onKeyDown={handleKeyDown}>
       {label && <label class="ii-select__label">{label}</label>}
       <button
         type="button"
-        class="ii-select__trigger"
-        role="combobox"
+        class={`ii-select__trigger${open ? " ii-select__trigger--open" : ""}`}
         aria-haspopup="listbox"
         aria-expanded={open}
-        onClick={() => { setOpen((v) => !v); if (!open) setHighlighted(0); }}
+        disabled={disabled}
+        onClick={() => { if (!disabled) setOpen((v) => !v); }}
       >
-        <span class={`ii-select__value${!selectedOption ? " ii-select__value--placeholder" : ""}`}>
-          {selectedOption?.label ?? placeholder}
-        </span>
-        <span class="ii-select__arrow">{open ? "笆ｲ" : "笆ｼ"}</span>
+        <span class="ii-select__value">{selectedLabel}</span>
+        <span class="ii-select__arrow">{open ? "^" : "v"}</span>
       </button>
-
       {open && (
         <div class="ii-select__dropdown" role="listbox">
-          {options.map((opt) => {
+          {options.map((opt, i) => {
             const enabledIdx = enabledOptions.findIndex((e) => e.value === opt.value);
             return (
               <div
                 key={opt.value}
                 role="option"
-                class={`ii-select__option${enabledIdx === highlighted ? " ii-select__option--highlighted" : ""}${selected === opt.value ? " ii-select__option--selected" : ""}${opt.disabled ? " ii-select__option--disabled" : ""}`}
-                aria-selected={selected === opt.value}
-                aria-disabled={opt.disabled || undefined}
-                onClick={() => !opt.disabled && handleSelect(opt.value)}
-                onMouseEnter={() => !opt.disabled && setHighlighted(enabledIdx)}
+                class={`ii-select__option${enabledIdx === focusedIdx ? " ii-select__option--focused" : ""}${opt.value === selected ? " ii-select__option--selected" : ""}${opt.disabled ? " ii-select__option--disabled" : ""}`}
+                aria-selected={opt.value === selected}
+                aria-disabled={opt.disabled}
+                onClick={() => { if (!opt.disabled) handleSelect(opt.value); }}
+                onMouseEnter={() => { if (!opt.disabled) setFocusedIdx(enabledIdx); }}
               >
                 {opt.label}
-                {selected === opt.value && <span class="ii-select__check">笨・/span>}
               </div>
             );
           })}
@@ -131,4 +122,3 @@ export function Select({
     </div>
   );
 }
-

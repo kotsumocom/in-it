@@ -22,9 +22,9 @@ const args = parseArgs(typeof Deno !== "undefined" ? Deno.args : process.argv.sl
 
 if (!args.preset && !args.primary) {
   console.log("Usage:");
-  console.log("  --preset=<name>    プリセットカラー名");
+  console.log("  --preset=<name>    ");
   console.log("  --primary=#RRGGBB  カスタムプライマリカラー");
-  console.log("  --output=<file>    出力ファイル（省略時は stdout）");
+  console.log("  --output=<file>     stdout");
   console.log("");
   console.log(`利用可能なプリセット: ${getPresetNames().join(", ")}`);
   if (typeof Deno !== "undefined") Deno.exit(0);

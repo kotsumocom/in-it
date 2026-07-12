@@ -1,109 +1,69 @@
 /**
- * Accordion 繧ｳ繝ｳ繝昴・繝阪Φ繝茨ｼ・ono/jsx/dom・・ * WAI-ARIA Accordion 繝代ち繝ｼ繝ｳ貅匁侠
+ * Accordion component (hono/jsx/dom)
+ * WAI-ARIA Accordion pattern
  */
 import { useState, useCallback } from "hono/jsx";
 
 export interface AccordionItemDef {
-  value: string;
+  id: string;
   title: string;
+  content: any;
   disabled?: boolean;
-  children: any;
 }
 
 export interface AccordionProps {
   items: AccordionItemDef[];
-  /** 隍・焚繝代ロ繝ｫ繧貞酔譎ゅ↓髢九￠繧九° */
   multiple?: boolean;
-  /** 蛻晄悄螻暮幕 */
-  defaultExpanded?: string[];
+  defaultOpen?: string[];
 }
 
-export function Accordion({ items, multiple = false, defaultExpanded = [] }: AccordionProps) {
-  const [expanded, setExpanded] = useState<Set<string>>(new Set(defaultExpanded));
+export function Accordion({ items, multiple = false, defaultOpen = [] }: AccordionProps) {
+  const [openIds, setOpenIds] = useState<Set<string>>(new Set(defaultOpen));
 
-  const toggle = useCallback(
-    (value: string) => {
-      setExpanded((prev) => {
-        const next = new Set(prev);
-        if (next.has(value)) {
-          next.delete(value);
-        } else {
-          if (!multiple) next.clear();
-          next.add(value);
-        }
-        return next;
-      });
-    },
-    [multiple],
-  );
-
-  const enabledItems = items.filter((i) => !i.disabled);
-
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent, index: number) => {
-      let nextIdx = -1;
-      switch (e.key) {
-        case "ArrowDown":
-          e.preventDefault();
-          nextIdx = (index + 1) % enabledItems.length;
-          break;
-        case "ArrowUp":
-          e.preventDefault();
-          nextIdx = (index - 1 + enabledItems.length) % enabledItems.length;
-          break;
-        case "Home":
-          e.preventDefault();
-          nextIdx = 0;
-          break;
-        case "End":
-          e.preventDefault();
-          nextIdx = enabledItems.length - 1;
-          break;
+  const toggle = useCallback((id: string) => {
+    setOpenIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        if (!multiple) next.clear();
+        next.add(id);
       }
-      if (nextIdx >= 0) {
-        const el = document.getElementById(`accordion-header-${enabledItems[nextIdx].value}`);
-        el?.focus();
-      }
-    },
-    [enabledItems],
-  );
+      return next;
+    });
+  }, [multiple]);
 
   return (
     <div class="ii-accordion">
       {items.map((item) => {
-        const isOpen = expanded.has(item.value);
-        const enabledIdx = enabledItems.findIndex((e) => e.value === item.value);
+        const isOpen = openIds.has(item.id);
         return (
-          <div key={item.value} class={`ii-accordion__item${isOpen ? " ii-accordion__item--open" : ""}`}>
+          <div key={item.id} class={`ii-accordion__item${isOpen ? " ii-accordion__item--open" : ""}`}>
             <button
               type="button"
-              id={`accordion-header-${item.value}`}
-              class="ii-accordion__header"
+              class="ii-accordion__trigger"
               aria-expanded={isOpen}
-              aria-controls={`accordion-panel-${item.value}`}
-              aria-disabled={item.disabled || undefined}
+              aria-controls={`accordion-panel-${item.id}`}
+              id={`accordion-header-${item.id}`}
               disabled={item.disabled}
-              onClick={() => !item.disabled && toggle(item.value)}
-              onKeyDown={(e: KeyboardEvent) => handleKeyDown(e, enabledIdx)}
+              onClick={() => { if (!item.disabled) toggle(item.id); }}
             >
               <span class="ii-accordion__title">{item.title}</span>
-              <span class={`ii-accordion__chevron${isOpen ? " ii-accordion__chevron--open" : ""}`}>
-                笆ｼ
-              </span>
+              <span class="ii-accordion__icon">{isOpen ? "-" : "+"}</span>
             </button>
-            <div
-              id={`accordion-panel-${item.value}`}
-              role="region"
-              aria-labelledby={`accordion-header-${item.value}`}
-              class={`ii-accordion__panel${isOpen ? " ii-accordion__panel--open" : ""}`}
-              hidden={!isOpen}
-            >
-              <div class="ii-accordion__content">{item.children}</div>
-            </div>
+            {isOpen && (
+              <div
+                class="ii-accordion__panel"
+                role="region"
+                id={`accordion-panel-${item.id}`}
+                aria-labelledby={`accordion-header-${item.id}`}
+              >
+                {item.content}
+              </div>
+            )}
           </div>
         );
       })}
     </div>
   );
 }
-

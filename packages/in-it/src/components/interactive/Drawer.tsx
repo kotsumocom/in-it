@@ -1,40 +1,43 @@
 /**
- * Drawer 繧ｳ繝ｳ繝昴・繝阪Φ繝茨ｼ医せ繝ｩ繧､繝峨ヱ繝阪Ν・・ */
-import { useEffect, useRef } from "hono/jsx";
+ * Drawer component - slide panel
+ */
+import { useState, useEffect, useCallback } from "hono/jsx";
 
 export interface DrawerProps {
   open: boolean;
   onClose: () => void;
+  position?: "left" | "right";
   title?: string;
-  side?: "left" | "right" | "top" | "bottom";
+  width?: string;
   children: any;
-  footer?: any;
 }
 
-export function Drawer({ open, onClose, title, side = "right", children, footer }: DrawerProps) {
-  const drawerRef = useRef<HTMLDivElement>(null);
-
+export function Drawer({ open, onClose, position = "right", title, width = "320px", children }: DrawerProps) {
   useEffect(() => {
     if (!open) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [open, onClose]);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   if (!open) return null;
 
   return (
-    <>
-      <div class="ii-drawer-overlay" onClick={onClose} />
-      <div class={`ii-drawer ii-drawer--${side}`} ref={drawerRef} role="dialog" aria-modal={true}>
+    <div class="ii-drawer__backdrop" onClick={(e: Event) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div class={`ii-drawer ii-drawer--${position}`} role="dialog" aria-modal={true} style={{ width }}>
         <div class="ii-drawer__header">
-          <span class="ii-drawer__title">{title}</span>
-          <button type="button" class="ii-drawer__close" aria-label="髢峨§繧・ onClick={onClose}>笨・/button>
+          {title && <h2 class="ii-drawer__title">{title}</h2>}
+          <button type="button" class="ii-drawer__close" aria-label="Close" onClick={onClose}>x</button>
         </div>
         <div class="ii-drawer__body">{children}</div>
-        {footer && <div class="ii-drawer__footer">{footer}</div>}
       </div>
-    </>
+    </div>
   );
 }
-

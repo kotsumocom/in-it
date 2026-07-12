@@ -1,4 +1,4 @@
-/** スチE�Eタスバッジ */
+/** Badge */
 export interface BadgeProps {
   variant?: "success" | "error" | "warning" | "info" | "neutral";
   children: any;
@@ -12,7 +12,7 @@ export function Badge({ variant = "neutral", children }: BadgeProps) {
   );
 }
 
-/** カーチE*/
+/** Card */
 export interface CardProps {
   outlined?: boolean;
   children: any;
@@ -27,7 +27,7 @@ export function Card({ outlined = false, children, class: cls }: CardProps) {
   );
 }
 
-/** ボタン */
+/** Button */
 export interface ButtonProps {
   variant?: "filled" | "outlined" | "text";
   size?: "sm" | "md" | "lg";
@@ -59,7 +59,7 @@ export function Button({
   );
 }
 
-/** 統計カーチE*/
+/** StatCard */
 export interface StatCardProps {
   label: string;
   value: string;
@@ -81,7 +81,7 @@ export function StatCard({ label, value, trend, trendUp }: StatCardProps) {
   );
 }
 
-/** チE�EタチE�Eブル */
+/** DataTable */
 export interface DataTableColumn<T> {
   key: keyof T & string;
   header?: string;
@@ -126,7 +126,7 @@ export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>) {
   );
 }
 
-/** チE��ストフィールチE*/
+/** Input */
 export interface InputProps {
   label?: string;
   placeholder?: string;
@@ -156,7 +156,7 @@ export function Input({ label, placeholder, value, type = "text", helper, error,
   );
 }
 
-/** アバター */
+/** Avatar */
 export interface AvatarProps {
   name?: string;
   src?: string;
@@ -172,7 +172,7 @@ export function Avatar({ name, src, size = "md" }: AvatarProps) {
   );
 }
 
-/** チッチE/ タグ */
+/** Chip */
 export interface ChipProps {
   variant?: "default" | "primary" | "success" | "error";
   onClose?: () => void;
@@ -184,14 +184,15 @@ export function Chip({ variant = "default", onClose, children }: ChipProps) {
     <span class={`ii-chip${variant !== "default" ? ` ii-chip--${variant}` : ""}`}>
       {children}
       {onClose && (
-        <button type="button" class="ii-chip__close" aria-label="削除" onClick={onClose}>
-          ✁E        </button>
+        <button type="button" class="ii-chip__close" aria-label="Remove" onClick={onClose}>
+          x
+        </button>
       )}
     </span>
   );
 }
 
-/** スケルトン */
+/** Skeleton */
 export interface SkeletonProps {
   width?: string;
   height?: string;
@@ -207,7 +208,7 @@ export function Skeleton({ width = "100%", height = "1em", circle = false }: Ske
   );
 }
 
-/** 空状慁E*/
+/** EmptyState */
 export interface EmptyStateProps {
   icon?: string;
   title: string;
@@ -215,7 +216,7 @@ export interface EmptyStateProps {
   children?: any;
 }
 
-export function EmptyState({ icon = "📭", title, description, children }: EmptyStateProps) {
+export function EmptyState({ icon = "", title, description, children }: EmptyStateProps) {
   return (
     <div class="ii-empty">
       <div class="ii-empty__icon">{icon}</div>
@@ -225,4 +226,3 @@ export function EmptyState({ icon = "📭", title, description, children }: Empt
     </div>
   );
 }
-

@@ -148,7 +148,7 @@ export function parseMarkdown(content: string): ParsedMarkdown {
         i++;
       }
       const asideContent = asideLines.map(parseInline).join("<br>");
-      const icons: Record<string, string> = { note: "📝", tip: "💡", caution: "⚠️", danger: "🚨" };
+      const icons: Record<string, string> = { note: "", tip: "", caution: "", danger: "" };
       htmlParts.push(`<div class="ii-aside ii-aside--${variant}"><div class="ii-aside__title"><span>${icons[variant]}</span><span>${variant.charAt(0).toUpperCase() + variant.slice(1)}</span></div><div class="ii-aside__body">${asideContent}</div></div>`);
       continue;
     }

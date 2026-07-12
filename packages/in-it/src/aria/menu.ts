@@ -2,7 +2,7 @@
  * WAI-ARIA Menu Button パターン
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/
  *
- * メニューの開閉、キーボードナビゲーション（Arrow, Home, End, Escape）を管理。
+ * Arrow, Home, End, Escape
  */
 
 export interface MenuItem {

@@ -2,7 +2,7 @@
  * WAI-ARIA Accordion パターン
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/accordion/
  *
- * 複数パネルの開閉管理。キーボード: Arrow, Home, End, Enter/Space。
+ * : Arrow, Home, End, Enter/Space
  */
 
 export interface AccordionItem {

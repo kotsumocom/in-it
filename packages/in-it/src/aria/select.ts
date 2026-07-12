@@ -2,7 +2,7 @@
  * WAI-ARIA Listbox パターン（Select）
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
  *
- * 単一選択の Listbox。キーボード: Arrow, Home, End, Enter, Escape, 文字検索。
+ *  Listbox: Arrow, Home, End, Enter, Escape, 
  */
 
 export interface SelectOption {

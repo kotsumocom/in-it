@@ -251,7 +251,7 @@ function solveHctToRgb(hue: number, chroma: number, tone: number): [number, numb
   for (let i = 0; i < 50; i++) {
     const mid = (lo + hi) / 2;
     // J を tone から推定（CAM16 の J と L* は近似的に対応）
-    const J = tone; // 簡易: J ≈ L*
+    const J = tone; // : J  L*
 
     const [x, yc, z] = cam16ToXyz(hue, mid, J);
     // Y を目標に合わせてスケール

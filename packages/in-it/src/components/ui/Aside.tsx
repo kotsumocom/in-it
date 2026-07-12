@@ -1,5 +1,5 @@
 /**
- * Aside (Callout) コンポーネント — Note, Tip, Caution, Danger
+ * Aside (Callout)   Note, Tip, Caution, Danger
  * Starlight 参考、完全自前実装
  */
 
@@ -12,7 +12,7 @@ export interface AsideProps {
 }
 
 const ICONS: Record<AsideVariant, string> = {
-  note: "📝",
+  note: "",
   tip: "💡",
   caution: "⚠️",
   danger: "🚨",
