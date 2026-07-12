@@ -1,34 +1,21 @@
-Copyright (c) 2025 Kotsumo
+MIT License
 
-本ソフトウェアおよび関連ドキュメント（以下「本ソフトウェア」）の著作権は、
-Kotsumo（以下「著作権者」）に帰属します。
+Copyright (c) 2026 kotsumo
 
-## 使用許諾
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-本ソフトウェアの使用、複製、改変、配布は、著作権者からの明示的な
-書面による許可がない限り、禁止されています。
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-## 許可される行為
-
-著作権者から書面による許可を得た個人または法人のみが、
-許可された範囲内で本ソフトウェアを使用できます。
-
-## 禁止事項
-
-- 無断での複製、配布、再配布
-- 無断での改変、派生物の作成
-- 無断での商用利用
-- リバースエンジニアリング
-
-## 免責事項
-
-本ソフトウェアは「現状のまま」提供され、明示または黙示を問わず、
-いかなる保証もありません。著作権者は、本ソフトウェアの使用から
-生じるいかなる損害についても責任を負いません。
-
-## お問い合わせ
-
-使用許諾に関するお問い合わせは、著作権者までご連絡ください。
-
-Kotsumo
-https://kotsumo.com
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
