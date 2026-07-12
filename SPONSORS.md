@@ -3,8 +3,7 @@
 Thank you to all our sponsors! ❤️
 
 <p align="center">
-  <!-- This section is auto-updated by GitHub Actions via SponsorKit -->
-  <em>No sponsors yet. Be the first!</em>
+  <img src=".github/sponsors/sponsors.svg" />
 </p>
 
 ## Become a Sponsor
