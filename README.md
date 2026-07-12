@@ -3,6 +3,7 @@
 > **Everything is in it.** — SaaS を最速で立ち上げるための統合フレームワーク
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?style=flat)](https://github.com/sponsors/kotsumocom)
 
 ## 🚀 クイックスタート
 
