@@ -1,4 +1,10 @@
 /* --- Reset --- */
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: var(--ii-font-family);
@@ -7,5 +13,9 @@ body {
   background: var(--ii-surface);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+}
+/* Offset for fixed headers when scrolling to anchors */
+[id] {
+  scroll-margin-top: var(--ii-scroll-offset, 80px);
 }
 

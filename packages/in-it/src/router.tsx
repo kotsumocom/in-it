@@ -29,6 +29,29 @@ function notify() {
   for (const fn of listeners) fn();
 }
 
+/** Scroll to a hash target with smooth behavior */
+function scrollToHash(hash: string): void {
+  if (!hash) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+  const id = hash.replace(/^#/, "");
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+/** Parse href into pathname and hash */
+function parseHref(href: string): { pathname: string; hash: string } {
+  const hashIndex = href.indexOf("#");
+  if (hashIndex === -1) return { pathname: href, hash: "" };
+  return {
+    pathname: href.slice(0, hashIndex) || window.location.pathname,
+    hash: href.slice(hashIndex),
+  };
+}
+
 /** Hook to get current path and navigate */
 export function useLocation(): [string, (to: string) => void] {
   const [path, setPath] = useState(
@@ -46,12 +69,32 @@ export function useLocation(): [string, (to: string) => void] {
   }, []);
 
   const navigate = useCallback((to: string) => {
-    window.history.pushState(null, "", to);
-    notify();
+    const { pathname, hash } = parseHref(to);
+    const currentPath = window.location.pathname;
+
+    if (pathname === currentPath && hash) {
+      // Same page, just scroll to hash
+      window.history.pushState(null, "", to);
+      scrollToHash(hash);
+    } else {
+      // Different page
+      window.history.pushState(null, "", to);
+      notify();
+      if (hash) {
+        // Wait for render, then scroll to hash
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => scrollToHash(hash));
+        });
+      } else {
+        // Scroll to top on page change
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
   }, []);
 
   return [path, navigate];
 }
+
 
 /** Path matching (simple pattern support) */
 function matchPath(pattern: string, path: string): Record<string, string> | null {
