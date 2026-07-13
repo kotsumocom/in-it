@@ -3,11 +3,7 @@
     "./packages/in-it"
   ],
   "tasks": {
-    "dev": "deno run -A npm:vite",
-    "dev:server": "deno run -A --watch server/main.ts",
-    "build": "deno run -A npm:vite build",
-    "serve": "deno serve -A server/main.ts",
-    "check": "deno check server/main.ts client/main.tsx"
+    "check": "deno check packages/in-it/src/mod.ts"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
@@ -16,8 +12,7 @@
   "imports": {
     "hono": "npm:hono@^4",
     "hono/jsx": "npm:hono@^4/jsx",
-    "hono/jsx/dom": "npm:hono@^4/jsx/dom",
-    "@in-it/": "./packages/in-it/src/"
+    "hono/jsx/dom": "npm:hono@^4/jsx/dom"
   },
   "nodeModulesDir": "auto"
 }
