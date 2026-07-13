@@ -63,6 +63,18 @@ export { Steps } from "./interactive/Steps.tsx";
 export type { StepsProps, StepItem } from "./interactive/Steps.tsx";
 export { Tooltip } from "./interactive/Tooltip.tsx";
 export type { TooltipProps } from "./interactive/Tooltip.tsx";
+export { AuthForm } from "./interactive/AuthForm.tsx";
+export type { AuthFormProps, AuthFormData, AuthMode, AuthProvider } from "./interactive/AuthForm.tsx";
+export { UserMenu } from "./interactive/UserMenu.tsx";
+export type { UserMenuProps, UserMenuItem } from "./interactive/UserMenu.tsx";
+
+// UI
+export { PricingCard } from "./ui/PricingCard.tsx";
+export type { PricingCardProps } from "./ui/PricingCard.tsx";
+export { SettingsSection } from "./ui/SettingsSection.tsx";
+export type { SettingsSectionProps } from "./ui/SettingsSection.tsx";
+export { ErrorPage } from "./ui/ErrorPage.tsx";
+export type { ErrorPageProps } from "./ui/ErrorPage.tsx";
 
 // Layout
 export { AdminShell } from "./admin/AdminShell.tsx";
@@ -71,3 +83,4 @@ export { DocsShell } from "./layout/DocsShell.tsx";
 export type { DocsShellProps, DocsSidebarGroup, DocsSidebarItem, DocsTocItem } from "./layout/DocsShell.tsx";
 export { LandingHeader, LandingHero, LandingFeatures, LandingSection, LandingFooter } from "./layout/Landing.tsx";
 export type { LandingHeaderProps, LandingHeroProps, FeatureCard, LandingFeaturesProps, LandingSectionProps, LandingFooterProps } from "./layout/Landing.tsx";
+

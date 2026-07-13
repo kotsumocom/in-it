@@ -1540,4 +1540,432 @@ body {
   .ii-docs-sidebar { display: none; }
   .ii-lp-hero__headline { font-size: 2rem; }
   .ii-lp-features__grid { grid-template-columns: 1fr; }
+  .ii-admin-rail { display: none; }
+  .ii-admin-header__hamburger { display: flex; }
+  .ii-pricing-grid { grid-template-columns: 1fr; }
+}
+
+/* --- AdminShell Mobile --- */
+.ii-admin-header__hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  color: var(--ii-on-surface);
+  cursor: pointer;
+  border-radius: var(--ii-shape-sm);
+}
+.ii-admin-header__hamburger:hover {
+  background: var(--ii-surface-container-high);
+}
+.ii-admin-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 99;
+}
+.ii-admin-overlay--open { display: block; }
+@media (max-width: 768px) {
+  .ii-admin-rail--mobile-open {
+    display: flex;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+    z-index: 100;
+    box-shadow: var(--ii-shadow-lg);
+  }
+  .ii-admin-rail--mobile-open .ii-admin-rail__label { opacity: 1; }
+}
+
+/* --- Input Validation States --- */
+.ii-input--error .ii-input__field,
+.ii-input__field[aria-invalid="true"] {
+  border-color: var(--ii-error);
+}
+.ii-input--error .ii-input__field:focus,
+.ii-input__field[aria-invalid="true"]:focus {
+  outline-color: var(--ii-error);
+}
+.ii-input--success .ii-input__field {
+  border-color: var(--ii-success);
+}
+.ii-input--success .ii-input__field:focus {
+  outline-color: var(--ii-success);
+}
+/* Also support bare input elements using ii-input class */
+input.ii-input, select.ii-input, textarea.ii-input {
+  padding: 10px 12px;
+  background: var(--ii-surface);
+  border: 1px solid var(--ii-outline-variant);
+  border-radius: var(--ii-shape-md);
+  font-family: inherit;
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface);
+  transition: border-color var(--ii-transition);
+  width: 100%;
+  box-sizing: border-box;
+}
+input.ii-input:hover, select.ii-input:hover, textarea.ii-input:hover {
+  border-color: var(--ii-outline);
+}
+input.ii-input:focus, select.ii-input:focus, textarea.ii-input:focus {
+  outline: 2px solid var(--ii-primary);
+  outline-offset: 2px;
+  border-color: var(--ii-primary);
+}
+input.ii-input::placeholder, textarea.ii-input::placeholder {
+  color: var(--ii-on-surface-variant);
+}
+.ii-input-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ii-spacing-1);
+}
+.ii-input-field__label {
+  font-size: var(--ii-font-sm);
+  font-weight: 500;
+  color: var(--ii-on-surface-variant);
+}
+
+/* --- PricingCard --- */
+.ii-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--ii-spacing-6);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.ii-pricing-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--ii-spacing-6);
+  background: var(--ii-surface);
+  border: 1px solid var(--ii-outline-variant);
+  border-radius: var(--ii-shape-lg);
+  transition: box-shadow var(--ii-transition), border-color var(--ii-transition);
+}
+.ii-pricing-card:hover {
+  box-shadow: var(--ii-shadow-md);
+}
+.ii-pricing-card--highlighted {
+  border-color: var(--ii-primary);
+  box-shadow: var(--ii-shadow-md);
+}
+.ii-pricing-card__badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 16px;
+  background: var(--ii-primary);
+  color: var(--ii-on-primary);
+  font-size: var(--ii-font-sm);
+  font-weight: 600;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.ii-pricing-card__name {
+  font-size: var(--ii-font-lg);
+  font-weight: 600;
+  color: var(--ii-on-surface);
+  margin: 0 0 var(--ii-spacing-2);
+}
+.ii-pricing-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: var(--ii-spacing-2);
+}
+.ii-pricing-card__amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--ii-on-surface);
+  line-height: 1;
+}
+.ii-pricing-card__period {
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface-variant);
+}
+.ii-pricing-card__desc {
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface-variant);
+  margin: 0 0 var(--ii-spacing-4);
+}
+.ii-pricing-card__features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--ii-spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ii-spacing-2);
+  flex: 1;
+}
+.ii-pricing-card__feature {
+  display: flex;
+  align-items: center;
+  gap: var(--ii-spacing-2);
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface);
+}
+.ii-pricing-card__feature .ii-icon {
+  color: var(--ii-success);
+  flex-shrink: 0;
+}
+
+/* --- AuthForm --- */
+.ii-auth-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: var(--ii-spacing-6);
+}
+.ii-auth-form__title {
+  font-size: var(--ii-font-xl);
+  font-weight: 700;
+  color: var(--ii-on-surface);
+  margin: 0 0 var(--ii-spacing-6);
+  text-align: center;
+}
+.ii-auth-form__providers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ii-spacing-2);
+  margin-bottom: var(--ii-spacing-4);
+}
+.ii-auth-form__provider-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ii-spacing-2);
+  padding: 10px 16px;
+  background: var(--ii-surface);
+  border: 1px solid var(--ii-outline-variant);
+  border-radius: var(--ii-shape-md);
+  font-family: inherit;
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface);
+  cursor: pointer;
+  transition: background var(--ii-transition), border-color var(--ii-transition);
+}
+.ii-auth-form__provider-btn:hover {
+  background: var(--ii-surface-container);
+  border-color: var(--ii-outline);
+}
+.ii-auth-form__provider-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.ii-auth-form__divider {
+  display: flex;
+  align-items: center;
+  gap: var(--ii-spacing-3);
+  margin: var(--ii-spacing-3) 0;
+  color: var(--ii-on-surface-variant);
+  font-size: var(--ii-font-sm);
+}
+.ii-auth-form__divider::before,
+.ii-auth-form__divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--ii-outline-variant);
+}
+.ii-auth-form form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ii-spacing-4);
+}
+.ii-auth-form__error {
+  padding: var(--ii-spacing-3);
+  background: color-mix(in srgb, var(--ii-error) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ii-error) 30%, transparent);
+  border-radius: var(--ii-shape-sm);
+  color: var(--ii-error);
+  font-size: var(--ii-font-sm);
+}
+.ii-auth-form__submit {
+  width: 100%;
+  margin-top: var(--ii-spacing-2);
+}
+.ii-auth-form__switch {
+  text-align: center;
+  margin-top: var(--ii-spacing-4);
+  font-size: var(--ii-font-sm);
+  color: var(--ii-on-surface-variant);
+}
+.ii-auth-form__switch-btn {
+  background: none;
+  border: none;
+  color: var(--ii-primary);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0;
+}
+.ii-auth-form__switch-btn:hover {
+  text-decoration: underline;
+}
+
+/* --- SettingsSection --- */
+.ii-settings-section {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--ii-spacing-6);
+  padding: var(--ii-spacing-6) 0;
+  border-bottom: 1px solid var(--ii-outline-variant);
+}
+.ii-settings-section:last-child {
+  border-bottom: none;
+}
+.ii-settings-section__title {
+  font-size: var(--ii-font-lg);
+  font-weight: 600;
+  color: var(--ii-on-surface);
+  margin: 0 0 var(--ii-spacing-1);
+}
+.ii-settings-section__desc {
+  font-size: var(--ii-font-sm);
+  color: var(--ii-on-surface-variant);
+  margin: 0;
+}
+.ii-settings-section__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ii-spacing-4);
+}
+@media (max-width: 768px) {
+  .ii-settings-section {
+    grid-template-columns: 1fr;
+    gap: var(--ii-spacing-3);
+  }
+}
+
+/* --- ErrorPage --- */
+.ii-error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--ii-spacing-6);
+  background: var(--ii-surface);
+}
+.ii-error-page__inner {
+  text-align: center;
+  max-width: 480px;
+}
+.ii-error-page__code {
+  font-size: 6rem;
+  font-weight: 800;
+  color: var(--ii-primary);
+  line-height: 1;
+  opacity: 0.3;
+}
+.ii-error-page__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ii-on-surface);
+  margin: var(--ii-spacing-2) 0;
+}
+.ii-error-page__desc {
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface-variant);
+  margin: 0 0 var(--ii-spacing-6);
+}
+
+/* --- UserMenu --- */
+.ii-user-menu {
+  position: relative;
+}
+.ii-user-menu__trigger {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 50%;
+  transition: box-shadow var(--ii-transition);
+}
+.ii-user-menu__trigger:hover {
+  box-shadow: 0 0 0 2px var(--ii-outline-variant);
+}
+.ii-user-menu__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.ii-user-menu__avatar--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ii-primary-container);
+  color: var(--ii-on-primary-container);
+  font-size: var(--ii-font-sm);
+  font-weight: 600;
+}
+.ii-user-menu__dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 220px;
+  background: var(--ii-surface);
+  border: 1px solid var(--ii-outline-variant);
+  border-radius: var(--ii-shape-md);
+  box-shadow: var(--ii-shadow-lg);
+  padding: var(--ii-spacing-1) 0;
+  z-index: 50;
+  animation: ii-fade-in 0.15s ease;
+}
+.ii-user-menu__info {
+  padding: var(--ii-spacing-3) var(--ii-spacing-4);
+  border-bottom: 1px solid var(--ii-outline-variant);
+}
+.ii-user-menu__name {
+  display: block;
+  font-size: var(--ii-font-base);
+  font-weight: 600;
+  color: var(--ii-on-surface);
+}
+.ii-user-menu__email {
+  display: block;
+  font-size: var(--ii-font-sm);
+  color: var(--ii-on-surface-variant);
+  margin-top: 2px;
+}
+.ii-user-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ii-spacing-2);
+  width: 100%;
+  padding: var(--ii-spacing-2) var(--ii-spacing-4);
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--ii-transition);
+}
+.ii-user-menu__item:hover {
+  background: var(--ii-surface-container-high);
+}
+.ii-user-menu__divider {
+  margin: var(--ii-spacing-1) 0;
+  border: none;
+  border-top: 1px solid var(--ii-outline-variant);
+}
+
+/* --- Utility: Fade In --- */
+@keyframes ii-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
