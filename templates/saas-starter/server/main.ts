@@ -1,5 +1,5 @@
 /**
- * My SaaS — Hono サーバー
+ * My SaaS — Hono server
  */
 import { Hono } from "hono";
 import { serveStatic } from "hono/deno";
@@ -15,7 +15,7 @@ app.use("/assets/*", serveStatic({ root: "./dist" }));
 // SPA fallback
 app.get("/admin/*", (c) => {
   return c.html(`<!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">

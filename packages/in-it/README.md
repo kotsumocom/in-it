@@ -1,6 +1,10 @@
-# in-it
+<p align="center">
+  <img src="../../assets/logo.svg" alt="in-it" width="400" />
+</p>
 
-> Everything is in it. — Zero-dependency SaaS starter framework for Hono + Deno/Bun.
+<p align="center">
+  <strong>Everything is in it.</strong> — Zero-dependency SaaS starter framework for Hono + Deno/Bun.
+</p>
 
 [![JSR](https://jsr.io/badges/@kotsumo/in-it)](https://jsr.io/@kotsumo/in-it)
 

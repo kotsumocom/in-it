@@ -1,6 +1,6 @@
 /**
- * in-it  EHono サーバ�E
- * 管琁E��面 SPA + SSR ペ�Eジ + API
+ * in-it Hono server
+ * Admin SPA + SSR landing page + API
  */
 import { Hono } from "hono";
 import { serveStatic } from "hono/deno";
@@ -12,7 +12,7 @@ app.get("/api/health", (c) => c.json({ status: "ok", timestamp: new Date().toISO
 
 app.get("/api/stats", (c) =>
   c.json({
-    mrr: 1234567,
+    mrr: 12345,
     users: 3847,
     churnRate: 1.8,
     nps: 72,
@@ -21,23 +21,23 @@ app.get("/api/stats", (c) =>
 
 app.get("/api/users", (c) =>
   c.json([
-    { id: "1", name: "田中 太郁E, email: "tanaka@example.com", plan: "Pro", status: "アクチE��チE },
-    { id: "2", name: "佐藤 花孁E, email: "sato@example.com", plan: "Starter", status: "アクチE��チE },
-    { id: "3", name: "鈴木 一郁E, email: "suzuki@example.com", plan: "Free", status: "無効" },
-    { id: "4", name: "高橁E美咲", email: "takahashi@example.com", plan: "Pro", status: "アクチE��チE },
-    { id: "5", name: "伊藤 健太", email: "ito@example.com", plan: "Starter", status: "アクチE��チE },
+    { id: "1", name: "Alice Johnson", email: "alice@example.com", plan: "Pro", status: "Active" },
+    { id: "2", name: "Bob Smith", email: "bob@example.com", plan: "Starter", status: "Active" },
+    { id: "3", name: "Charlie Brown", email: "charlie@example.com", plan: "Free", status: "Inactive" },
+    { id: "4", name: "Diana Lee", email: "diana@example.com", plan: "Pro", status: "Active" },
+    { id: "5", name: "Eric Davis", email: "eric@example.com", plan: "Starter", status: "Active" },
   ]),
 );
 
-// --- SSR: LP ---
+// --- SSR: Landing Page ---
 app.get("/", (c) => {
   const html = `<!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>in-it  ESaaS Starter Kit</title>
-  <meta name="description" content="in-it をインスト�Eルするだけで SaaS を始める�Eに忁E��なも�Eが揃ぁE��Everything is in it." />
+  <title>in-it — SaaS Starter Kit</title>
+  <meta name="description" content="Install in-it and get everything you need to launch a SaaS. Everything is in it." />
   <style>
     :root {
       --primary: #6750a4;
@@ -138,14 +138,15 @@ app.get("/", (c) => {
 </head>
 <body>
   <section class="hero">
-    <span class="hero__badge">🚀 v0.1  EAlpha</span>
+    <span class="hero__badge">\ud83d\ude80 v0.1 — Alpha</span>
     <h1 class="hero__title">Everything is <span>in it</span>.</h1>
     <p class="hero__desc">
-      Hono + hono/jsx/dom + Deno、Ebr>
-      SaaS に忁E��なも�E全部入り。管琁E��面、認証、決済、LP、ドキュメント、E    </p>
+      Hono + hono/jsx/dom + Deno.<br>
+      Everything you need for a SaaS — admin dashboard, auth, payments, landing page, docs.
+    </p>
     <div class="hero__actions">
-      <a href="/admin" class="btn btn--primary">管琁E��面チE�� ↁE/a>
-      <a href="https://jsr.io/@kotsumo/in-it" class="btn btn--outline">jsr.io で見る</a>
+      <a href="/admin" class="btn btn--primary">Admin Demo \u2192</a>
+      <a href="https://jsr.io/@kotsumo/in-it" class="btn btn--outline">View on jsr.io</a>
     </div>
     <p style="margin-top: 32px; color: var(--on-surface-variant)">
       <code class="code">deno add @kotsumo/in-it</code>
@@ -154,39 +155,39 @@ app.get("/", (c) => {
 
   <section class="features">
     <div class="feature">
-      <div class="feature__icon">⚡</div>
-      <h3 class="feature__title">ワンスタチE��</h3>
-      <p class="feature__desc">Hono 1 つでサーバ�Eもクライアントも。技術スタチE��の統一で認知負荷を最小化、E/p>
+      <div class="feature__icon">\u26a1</div>
+      <h3 class="feature__title">One Stack</h3>
+      <p class="feature__desc">Hono handles both server and client. A unified tech stack minimizes cognitive overhead.</p>
     </div>
     <div class="feature">
-      <div class="feature__icon">♿</div>
-      <h3 class="feature__title">アクセシビリチE��</h3>
-      <p class="feature__desc">WAI-ARIA APG 準拠。Switch, Dialog, Tabs, Menu, Select  E全コンポ�Eネントがキーボ�Eド操作対応、E/p>
+      <div class="feature__icon">\u267f</div>
+      <h3 class="feature__title">Accessibility</h3>
+      <p class="feature__desc">WAI-ARIA APG compliant. Switch, Dialog, Tabs, Menu, Select — all components support full keyboard navigation.</p>
     </div>
     <div class="feature">
-      <div class="feature__icon">🤁E/div>
-      <h3 class="feature__title">AI/LLM ネイチE��チE/h3>
-      <p class="feature__desc">シンプルなメンタルモチE��、Eeno のパ�EミッションモチE��で安�E、EI がコード生成しめE��ぁE��計、E/p>
+      <div class="feature__icon">\ud83e\udd16</div>
+      <h3 class="feature__title">AI/LLM Native</h3>
+      <p class="feature__desc">Simple mental model and Deno's permission model make it safe for AI code generation.</p>
     </div>
     <div class="feature">
-      <div class="feature__icon">🎨</div>
-      <h3 class="feature__title">CSS 変数設訁E/h3>
-      <p class="feature__desc">Sawtooth ベ�EスのチE��イント�Eクン。テーマ�E替もダークモードも CSS 変数で完結、E/p>
+      <div class="feature__icon">\ud83c\udfa8</div>
+      <h3 class="feature__title">CSS Variables</h3>
+      <p class="feature__desc">Sawtooth-based design tokens. Theme switching and dark mode are handled entirely through CSS variables.</p>
     </div>
     <div class="feature">
-      <div class="feature__icon">📦</div>
-      <h3 class="feature__title">ゼロ外部依孁E/h3>
-      <p class="feature__desc">ARIA 実裁E��ルーター、コンポ�EネンチE E全て自前、Eono 以外�E外部依存なし、E/p>
+      <div class="feature__icon">\ud83d\udce6</div>
+      <h3 class="feature__title">Zero External Dependencies</h3>
+      <p class="feature__desc">ARIA implementation, router, components — all built from scratch. No external dependencies beyond Hono.</p>
     </div>
     <div class="feature">
-      <div class="feature__icon">🌐</div>
-      <h3 class="feature__title">チE��アルランタイム</h3>
-      <p class="feature__desc">Deno でめEBun でも動く、Eeno Deploy で 1 コマンドデプロイ、E/p>
+      <div class="feature__icon">\ud83c\udf10</div>
+      <h3 class="feature__title">Dual Runtime</h3>
+      <p class="feature__desc">Runs on both Deno and Bun. Deploy to Deno Deploy with a single command.</p>
     </div>
   </section>
 
   <footer>
-    <p>© 2026 kotsumo  Ein-it.dev</p>
+    <p>\u00a9 2026 kotsumo — in-it.dev</p>
   </footer>
 </body>
 </html>`;
@@ -199,11 +200,11 @@ app.use("/assets/*", serveStatic({ root: "./dist" }));
 // --- SPA fallback: /admin/* ---
 app.get("/admin/*", (c) => {
   const html = `<!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>in-it  ESaaS Starter Kit</title>
+  <title>in-it — SaaS Starter Kit</title>
   <link rel="stylesheet" href="/packages/in-it/src/css/main.css" />
 </head>
 <body>

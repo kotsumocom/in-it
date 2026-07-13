@@ -1,17 +1,17 @@
 /**
- * 軽量 SPA ルーター（hono/jsx/dom 用）
- * History API ベース、約 60 行。
+ * Lightweight SPA router for hono/jsx/dom.
+ * History API based, ~60 lines.
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
 
-// グローバルなナビゲーションイベント
+// Global navigation event listeners
 const listeners = new Set<() => void>();
 
 function notify() {
   for (const fn of listeners) fn();
 }
 
-/** 現在のパスを取得・ナビゲーションする Hook */
+/** Hook to get the current path and navigate programmatically */
 export function useLocation(): [string, (to: string) => void] {
   const [path, setPath] = useState(
     typeof window !== "undefined" ? window.location.pathname : "/",
@@ -35,12 +35,12 @@ export function useLocation(): [string, (to: string) => void] {
   return [path, navigate];
 }
 
-/** パスマッチング（簡易パターン対応） */
+/** Path matching with simple parameter pattern support */
 function matchPath(pattern: string, path: string): Record<string, string> | null {
-  // 完全一致
+  // Exact match
   if (pattern === path) return {};
 
-  // パラメータ付きパターン（:param）
+  // Parameterized pattern (:param)
   const patternParts = pattern.split("/");
   const pathParts = path.split("/");
   if (patternParts.length !== pathParts.length) return null;
@@ -56,7 +56,7 @@ function matchPath(pattern: string, path: string): Record<string, string> | null
   return params;
 }
 
-/** Route コンポーネント */
+/** Route component */
 export function Route({
   path,
   component: Component,
@@ -70,7 +70,7 @@ export function Route({
   return <Component params={match} />;
 }
 
-/** Switch — 最初にマッチした Route だけを表示 */
+/** Switch — renders only the first matching Route */
 export function Switch({ children }: { children: any }) {
   const [current] = useLocation();
   const routes = Array.isArray(children) ? children : [children];
@@ -87,7 +87,7 @@ export function Switch({ children }: { children: any }) {
   return null;
 }
 
-/** Link コンポーネント（SPA ナビゲーション） */
+/** Link component for SPA navigation */
 export function Link({
   href,
   children,

@@ -1,8 +1,8 @@
 #!/usr/bin/env -S deno run -A
 /**
- * create-in-it  ESaaS プロジェクト生戁ECLI
+ * create-in-it — SaaS project scaffolding CLI
  *
- * 使ぁE��:
+ * Usage:
  *   deno run jsr:@kotsumo/create-in-it my-saas
  *   deno run jsr:@kotsumo/create-in-it ./my-saas --template saas-starter
  */
@@ -10,7 +10,7 @@
 const TEMPLATES = {
   "saas-starter": {
     name: "SaaS Starter",
-    description: "管琁E��面 + LP + API  ESaaS に忁E��なも�E全部入めE,
+    description: "Admin dashboard + landing page + API — everything you need for a SaaS",
   },
 };
 
@@ -29,18 +29,18 @@ function log(msg: string) {
 }
 
 function success(msg: string) {
-  console.log(`${COLORS.green}✁E{COLORS.reset} ${msg}`);
+  console.log(`${COLORS.green}\u2713${COLORS.reset} ${msg}`);
 }
 
 function info(msg: string) {
-  console.log(`${COLORS.cyan}ℹ${COLORS.reset} ${msg}`);
+  console.log(`${COLORS.cyan}\u2139${COLORS.reset} ${msg}`);
 }
 
 function banner() {
   log("");
-  log(`${COLORS.bold}${COLORS.magenta}  ╦╔╗╁E  ╦╔╦╁E{COLORS.reset}`);
-  log(`${COLORS.bold}${COLORS.magenta}  ║║║║───╁E╁E${COLORS.reset}`);
-  log(`${COLORS.bold}${COLORS.magenta}  ╩╝╚╁E  ╩ ╩ ${COLORS.reset}`);
+  log(`${COLORS.bold}${COLORS.magenta}  \u2566\u2554\u2557\u2550  \u2566\u2554\u2566\u2550${COLORS.reset}`);
+  log(`${COLORS.bold}${COLORS.magenta}  \u2551\u2551\u2551\u2551\u2500\u2500\u2500\u2550 \u2550${COLORS.reset}`);
+  log(`${COLORS.bold}${COLORS.magenta}  \u2569\u255d\u255a\u2550  \u2569 \u2569 ${COLORS.reset}`);
   log(`${COLORS.dim}  Everything is in it.${COLORS.reset}`);
   log("");
 }
@@ -74,24 +74,26 @@ function parseArgs(args: string[]): CliArgs {
 
 function showHelp() {
   log(`
-${COLORS.bold}create-in-it${COLORS.reset}  ESaaS プロジェクトを生�E
+${COLORS.bold}create-in-it${COLORS.reset} — Generate a SaaS project
 
-${COLORS.bold}使ぁE��:${COLORS.reset}
+${COLORS.bold}Usage:${COLORS.reset}
   deno run jsr:@kotsumo/create-in-it <project-dir> [options]
 
-${COLORS.bold}オプション:${COLORS.reset}
-  -t, --template <name>  チE��プレートを持E��E(チE��ォルチE saas-starter)
-  -h, --help             ヘルプを表示
+${COLORS.bold}Options:${COLORS.reset}
+  -t, --template <name>  Template to use (default: saas-starter)
+  -h, --help             Show help
 
-${COLORS.bold}チE��プレーチE${COLORS.reset}
-  saas-starter           管琁E��面 + LP + API�E�デフォルト！E
-${COLORS.bold}侁E${COLORS.reset}
+${COLORS.bold}Templates:${COLORS.reset}
+  saas-starter           Admin dashboard + landing page + API (default)
+
+${COLORS.bold}Examples:${COLORS.reset}
   deno run jsr:@kotsumo/create-in-it my-saas
   deno run jsr:@kotsumo/create-in-it ./my-app --template saas-starter
 `);
 }
 
-// チE��プレートファイルの冁E���E�インライン�E�Efunction getTemplateFiles(): Record<string, string> {
+// Template files (inline content)
+function getTemplateFiles(): Record<string, string> {
   return {
     "deno.json": JSON.stringify(
       {
@@ -143,7 +145,7 @@ export default defineConfig({
 `,
 
     "index.html": `<!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -161,12 +163,12 @@ export default defineConfig({
 function App() {
   return (
     <div style={{ fontFamily: "system-ui", padding: "60px 40px", textAlign: "center" }}>
-      <h1>🚀 Welcome to <span style={{ color: "#6750a4" }}>in-it</span></h1>
+      <h1>\ud83d\ude80 Welcome to <span style={{ color: "#6750a4" }}>in-it</span></h1>
       <p style={{ color: "#666", marginTop: "8px" }}>
         Edit <code>client/main.tsx</code> to get started.
       </p>
       <p style={{ marginTop: "24px" }}>
-        <a href="https://in-it.dev" style={{ color: "#6750a4" }}>ドキュメンチE/a>
+        <a href="https://in-it.dev" style={{ color: "#6750a4" }}>Documentation</a>
       </p>
     </div>
   );
@@ -188,10 +190,13 @@ export default app;
 
 > Built with [in-it](https://in-it.dev)
 
-## 開発
+## Development
 
 \`\`\`bash
-deno task dev     # 開発サーバ�E�E�EMR�E�Edeno task build   # 本番ビルチEdeno task serve   # サーバ�E起勁E\`\`\`
+deno task dev     # Dev server with HMR
+deno task build   # Production build
+deno task serve   # Start server
+\`\`\`
 `,
   };
 }
@@ -203,16 +208,16 @@ async function createProject(projectDir: string, _template: string) {
 
   const dirName = absPath.split(/[/\\]/).pop() ?? projectDir;
 
-  info(`プロジェクト、E{dirName}」を作�E中...`);
+  info(`Creating project "${dirName}"...`);
 
-  // チE��レクトリ作�E
+  // Create directory
   try {
     await Deno.mkdir(absPath, { recursive: true });
   } catch (e) {
     if (!(e instanceof Deno.errors.AlreadyExists)) throw e;
   }
 
-  // ファイル書き込み
+  // Write files
   const files = getTemplateFiles();
   for (const [path, content] of Object.entries(files)) {
     const fullPath = `${absPath}/${path}`;
@@ -222,7 +227,8 @@ async function createProject(projectDir: string, _template: string) {
     success(`${path}`);
   }
 
-  // Git 初期匁E  try {
+  // Initialize git
+  try {
     const git = new Deno.Command("git", {
       args: ["init"],
       cwd: absPath,
@@ -230,18 +236,18 @@ async function createProject(projectDir: string, _template: string) {
       stderr: "null",
     });
     await git.output();
-    success("Git リポジトリを�E期化");
+    success("Initialized Git repository");
   } catch {
-    // git が無ぁE��合�EスキチE�E
+    // Skip if git is not available
   }
 
   log("");
-  log(`${COLORS.bold}${COLORS.green}✨ 完亁E��E{COLORS.reset}`);
+  log(`${COLORS.bold}${COLORS.green}\u2728 Done!${COLORS.reset}`);
   log("");
   log(`  ${COLORS.cyan}cd ${dirName}${COLORS.reset}`);
   log(`  ${COLORS.cyan}deno task dev${COLORS.reset}`);
   log("");
-  log(`${COLORS.dim}📖 https://in-it.dev${COLORS.reset}`);
+  log(`${COLORS.dim}\ud83d\udcd6 https://in-it.dev${COLORS.reset}`);
   log("");
 }
 
@@ -257,12 +263,13 @@ async function main() {
   banner();
 
   if (!args.projectDir) {
-    // インタラクチE��ブモーチE    const dir = prompt(`${COLORS.cyan}?${COLORS.reset} プロジェクト名:`) ?? "my-saas";
+    // Interactive mode
+    const dir = prompt(`${COLORS.cyan}?${COLORS.reset} Project name:`) ?? "my-saas";
     args.projectDir = dir;
   }
 
   if (!(args.template in TEMPLATES)) {
-    log(`${COLORS.yellow}⚠${COLORS.reset} チE��プレート、E{args.template}」が見つかりません。saas-starter を使用します。`);
+    log(`${COLORS.yellow}\u26a0${COLORS.reset} Template "${args.template}" not found. Using saas-starter.`);
     args.template = "saas-starter";
   }
 

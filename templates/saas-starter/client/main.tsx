@@ -5,15 +5,15 @@ import { useLocation } from "@kotsumo/in-it/router";
 function Dashboard() {
   return (
     <div>
-      <h2 class="sc-page__title">ダッシュボード</h2>
-      <p class="sc-page__desc">ここから SaaS を構築しましょう</p>
+      <h2 class="sc-page__title">Dashboard</h2>
+      <p class="sc-page__desc">Start building your SaaS from here</p>
     </div>
   );
 }
 
 const NAV = [
-  { icon: "📊", label: "概要", href: "/admin" },
-  { icon: "⚙️", label: "設定", href: "/admin/settings" },
+  { icon: "📊", label: "Overview", href: "/admin" },
+  { icon: "⚙️", label: "Settings", href: "/admin/settings" },
 ];
 
 function App() {

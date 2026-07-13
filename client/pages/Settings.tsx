@@ -3,18 +3,18 @@ import { Switch, Tabs, Dialog, Button, toast } from "@in-it/components/mod.ts";
 import type { TabItem } from "@in-it/components/interactive/Tabs.tsx";
 
 const TABS: TabItem[] = [
-  { value: "general", label: "一般" },
-  { value: "security", label: "セキュリティ" },
-  { value: "notifications", label: "通知" },
+  { value: "general", label: "General" },
+  { value: "security", label: "Security" },
+  { value: "notifications", label: "Notifications" },
 ];
 
 function GeneralTab() {
   return (
     <div>
-      <Switch label="メンテナンスモード" description="管理者以外のアクセスを制限" />
-      <Switch label="監査ログ" description="すべての操作を記録・保存" checked={true} />
-      <Switch label="自動バックアップ" description="毎日 AM 3:00 にデータをバックアップ" checked={true} />
-      <Switch label="API レート制限" description="1 分あたり 100 リクエストに制限" />
+      <Switch label="Maintenance Mode" description="Restrict access to admins only" />
+      <Switch label="Audit Log" description="Record and store all operations" checked={true} />
+      <Switch label="Auto Backup" description="Back up data daily at 3:00 AM" checked={true} />
+      <Switch label="API Rate Limit" description="Limit to 100 requests per minute" />
     </div>
   );
 }
@@ -22,10 +22,10 @@ function GeneralTab() {
 function SecurityTab() {
   return (
     <div>
-      <Switch label="二要素認証" description="ログイン時に認証コードを要求" checked={true} />
-      <Switch label="IP ホワイトリスト" description="許可された IP アドレスからのみアクセス" />
-      <Switch label="セッションタイムアウト" description="30 分間操作がない場合に自動ログアウト" checked={true} />
-      <Switch label="パスワードポリシー" description="8 文字以上、大文字・小文字・数字を含む" checked={true} />
+      <Switch label="Two-Factor Authentication" description="Require verification code on login" checked={true} />
+      <Switch label="IP Allowlist" description="Allow access only from approved IP addresses" />
+      <Switch label="Session Timeout" description="Auto logout after 30 minutes of inactivity" checked={true} />
+      <Switch label="Password Policy" description="Require 8+ characters with uppercase, lowercase, and numbers" checked={true} />
     </div>
   );
 }
@@ -33,10 +33,10 @@ function SecurityTab() {
 function NotificationsTab() {
   return (
     <div>
-      <Switch label="メール通知" description="重要な変更をメールで通知" checked={true} />
-      <Switch label="Slack 連携" description="チャンネルに通知を送信" />
-      <Switch label="ブラウザ通知" description="ブラウザのプッシュ通知を有効化" />
-      <Switch label="週次レポート" description="毎週月曜日にサマリーを送信" checked={true} />
+      <Switch label="Email Notifications" description="Get notified about important changes via email" checked={true} />
+      <Switch label="Slack Integration" description="Send notifications to a Slack channel" />
+      <Switch label="Browser Notifications" description="Enable browser push notifications" />
+      <Switch label="Weekly Report" description="Send a summary every Monday" checked={true} />
     </div>
   );
 }
@@ -45,7 +45,7 @@ export function SettingsPage() {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const handleSave = () => {
-    toast("設定を保存しました", "success");
+    toast("Settings saved", "success");
   };
 
   const handleReset = () => {
@@ -54,19 +54,19 @@ export function SettingsPage() {
 
   const handleConfirmReset = () => {
     setConfirmOpen(false);
-    toast("設定をリセットしました", "warning");
+    toast("Settings have been reset", "warning");
   };
 
   return (
     <div>
       <div class="sc-page__header">
         <div>
-          <h2 class="sc-page__title">設定</h2>
-          <p class="sc-page__desc">アプリケーションの設定を管理</p>
+          <h2 class="sc-page__title">Settings</h2>
+          <p class="sc-page__desc">Manage application settings</p>
         </div>
         <div style={{ display: "flex", gap: "8px" }}>
-          <Button variant="outlined" onClick={handleReset}>リセット</Button>
-          <Button variant="filled" onClick={handleSave}>設定を保存</Button>
+          <Button variant="outlined" onClick={handleReset}>Reset</Button>
+          <Button variant="filled" onClick={handleSave}>Save Settings</Button>
         </div>
       </div>
 
@@ -79,12 +79,12 @@ export function SettingsPage() {
       <Dialog
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}
-        title="設定をリセット"
-        description="すべての設定をデフォルトに戻します。この操作は取り消せません。"
+        title="Reset Settings"
+        description="All settings will be restored to defaults. This action cannot be undone."
       >
         <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginTop: "16px" }}>
-          <Button variant="outlined" onClick={() => setConfirmOpen(false)}>キャンセル</Button>
-          <Button variant="filled" onClick={handleConfirmReset}>リセット</Button>
+          <Button variant="outlined" onClick={() => setConfirmOpen(false)}>Cancel</Button>
+          <Button variant="filled" onClick={handleConfirmReset}>Reset</Button>
         </div>
       </Dialog>
     </div>

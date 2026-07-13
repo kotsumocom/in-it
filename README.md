@@ -1,13 +1,22 @@
-# in-it
+<p align="center">
+  <img src="./assets/logo.svg" alt="in-it" width="400" />
+</p>
 
-> **Everything is in it.** — SaaS を最速で立ち上げるための統合フレームワーク
+<p align="center">
+  <strong>Everything is in it.</strong> — Zero-dependency SaaS starter framework
+</p>
 
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?style=flat)](https://github.com/sponsors/kotsumocom)
+<p align="center">
+  <a href="https://jsr.io/@kotsumo/in-it"><img src="https://jsr.io/badges/@kotsumo/in-it" alt="JSR" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License" /></a>
+  <a href="https://github.com/sponsors/kotsumocom"><img src="https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?style=flat" alt="Sponsor" /></a>
+</p>
 
-🌐 [公式サイト](https://in-it.dev) · 📖 [ドキュメント](https://in-it.dev/docs) · 🎨 [カラープレビュー](https://in-it.dev/colors)
+<p align="center">
+  🌐 <a href="https://in-it.dev">Website</a> · 📖 <a href="https://in-it.dev/docs">Docs</a> · 🎨 <a href="https://in-it.dev/colors">Color Preview</a>
+</p>
 
-## 🚀 クイックスタート
+## 🚀 Quick Start
 
 ```bash
 deno add @kotsumo/in-it
@@ -21,42 +30,42 @@ import { Button, Card, ThemeToggle, Dialog } from "@kotsumo/in-it";
 <link rel="stylesheet" href="@kotsumo/in-it/src/css/main.css" />
 ```
 
-## ✨ 特徴
+## ✨ Features
 
-| | 特徴 | 説明 |
+| | Feature | Description |
 |---|---|---|
-| ⚡ | **ワンスタック** | Hono 1 つでサーバーもクライアントも |
-| 🚫 | **ゼロ外部依存** | ARIA、ルーター、HCT カラー、Markdown パーサー全て自前 |
-| 🧩 | **50+ コンポーネント** | フォーム、フィードバック、ナビゲーション、レイアウト |
-| 🎨 | **HCT カラー** | Material Design 3 互換、プリセット 1 つでライト/ダーク対応 |
-| ♿ | **ARIA 準拠** | WAI-ARIA APG 準拠のインタラクティブコンポーネント |
-| 🔄 | **デュアルランタイム** | Deno でも Bun でも動作 |
+| ⚡ | **One Stack** | Hono handles both server and client |
+| 🚫 | **Zero External Dependencies** | ARIA, router, HCT color, Markdown parser — all built from scratch |
+| 🧩 | **50+ Components** | Forms, feedback, navigation, layouts |
+| 🎨 | **HCT Color System** | Material Design 3 compatible, light/dark themes from a single preset |
+| ♿ | **ARIA Compliant** | WAI-ARIA APG compliant interactive components |
+| 🔄 | **Dual Runtime** | Works on both Deno and Bun |
 
-## 🧩 コンポーネント
+## 🧩 Components
 
-### インタラクティブ（WAI-ARIA 準拠）
+### Interactive (WAI-ARIA Compliant)
 
-| コンポーネント | ARIA パターン | 説明 |
+| Component | ARIA Pattern | Description |
 |---|---|---|
-| Switch | Switch | トグルスイッチ |
-| Dialog | Dialog (Modal) | モーダルダイアログ、フォーカストラップ |
-| Tabs | Tabs | タブ切替、矢印キー操作 |
-| Menu | Menu Button | ドロップダウンメニュー |
-| Select | Listbox | セレクトボックス |
-| Combobox | Combobox | 検索付きセレクト |
-| Accordion | Accordion | 折りたたみパネル |
-| Popover | Dialog (Non-modal) | ポップオーバー |
-| Toast | Alert / Live Region | 通知トースト |
-| Checkbox | Checkbox | チェックボックス |
-| RadioGroup | Radio Group | ラジオボタングループ |
-| Drawer | Dialog (Non-modal) | サイドドロワー |
-| ThemeToggle | Switch | ライト/ダーク切替 |
-| Tooltip | Tooltip | ツールチップ |
-| Slider | Slider | レンジスライダー |
-| Pagination | — | ページネーション |
-| Steps | — | ステップインジケーター |
+| Switch | Switch | Toggle switch |
+| Dialog | Dialog (Modal) | Modal dialog with focus trapping |
+| Tabs | Tabs | Tab switching with arrow key navigation |
+| Menu | Menu Button | Dropdown menu |
+| Select | Listbox | Select listbox |
+| Combobox | Combobox | Searchable select |
+| Accordion | Accordion | Collapsible panels |
+| Popover | Dialog (Non-modal) | Popover |
+| Toast | Alert / Live Region | Notification toasts |
+| Checkbox | Checkbox | Checkbox input |
+| RadioGroup | Radio Group | Radio button group |
+| Drawer | Dialog (Non-modal) | Side drawer |
+| ThemeToggle | Switch | Light/dark theme toggle |
+| Tooltip | Tooltip | Tooltip |
+| Slider | Slider | Range slider |
+| Pagination | — | Pagination |
+| Steps | — | Step indicator |
 
-### フォーム
+### Form
 
 Input, Textarea, NumberInput, PasswordInput, TagsInput, FileUpload, Slider, RatingGroup, Editable, Toggle, PinInput
 
@@ -64,54 +73,54 @@ Input, Textarea, NumberInput, PasswordInput, TagsInput, FileUpload, Slider, Rati
 
 Button, Badge, Card, StatCard, DataTable, Avatar, Chip, Skeleton, EmptyState, Divider, Kbd, Alert, Progress, ProgressCircular, Breadcrumb, Aside
 
-### レイアウト
+### Layout
 
-| コンポーネント | 用途 |
+| Component | Usage |
 |---|---|
-| AdminShell | サイドバー + ツールバー + コンテンツの管理画面 |
-| DocsShell | サイドバー + コンテンツ + TOC のドキュメントサイト |
-| LandingHeader / Hero / Features / Section / Footer | LP 構築用パーツ |
+| AdminShell | Admin dashboard with sidebar, toolbar, and content area |
+| DocsShell | Documentation site with sidebar, content, and table of contents |
+| LandingHeader / Hero / Features / Section / Footer | Landing page building blocks |
 
-## 🎨 HCT カラーシステム
+## 🎨 HCT Color System
 
-Material Design 3 互換の HCT (Hue-Chroma-Tone) カラーシステムを**ゼロ外部依存**で自前実装。
+Material Design 3 compatible HCT (Hue-Chroma-Tone) color system, implemented from scratch with **zero external dependencies**.
 
 ```typescript
 import { HctColor, generateScheme, getPresetCss } from "@kotsumo/in-it";
 
-// プリセットで簡単に
+// Easy setup with presets
 const css = getPresetCss("teal");
 
-// カスタムカラーでスキーム生成
+// Generate a scheme from a custom color
 const { light, dark } = generateScheme("#6750a4");
 
-// HCT で直接色操作
+// Manipulate colors directly with HCT
 const color = HctColor.fromHex("#1565c0");
 const lighter = color.withTone(80).toHex();
 ```
 
-### プリセットカラー
+### Color Presets
 
-| プリセット | Hex | 用途 |
+| Preset | Hex | Suited For |
 |---|---|---|
-| `purple` | `#6750a4` | デフォルト。落ち着いた印象 |
-| `blue` | `#1565c0` | ビジネス系 |
-| `teal` | `#00695c` | ヘルスケア、環境系 |
-| `green` | `#2e7d32` | 成功、成長系 |
-| `orange` | `#e65100` | エネルギッシュ |
-| `pink` | `#c2185b` | クリエイティブ系 |
-| `red` | `#c62828` | アラート、緊急系 |
-| `indigo` | `#283593` | テクノロジー系 |
+| `purple` | `#6750a4` | Default. Calm and professional |
+| `blue` | `#1565c0` | Business applications |
+| `teal` | `#00695c` | Healthcare, sustainability |
+| `green` | `#2e7d32` | Growth, success |
+| `orange` | `#e65100` | Energetic, creative |
+| `pink` | `#c2185b` | Creative, lifestyle |
+| `red` | `#c62828` | Alerts, urgency |
+| `indigo` | `#283593` | Technology, fintech |
 
-## 📖 ドキュメントシステム
+## 📖 Documentation System
 
-自前 Markdown パーサー搭載（JSON Frontmatter、TOC 自動生成、Aside/Callout 対応）:
+Built-in Markdown parser with JSON frontmatter, auto-generated TOC, and Aside/Callout support:
 
 ```markdown
 ---json
 {
   "title": "Button",
-  "description": "ボタンコンポーネント",
+  "description": "Button component",
   "sidebar_label": "Button",
   "sidebar_position": 1
 }
@@ -120,20 +129,20 @@ const lighter = color.withTone(80).toHex();
 # Button
 
 > [!TIP]
-> in-it は Deno と Bun の両方で動作します。
+> in-it works on both Deno and Bun.
 ```
 
-## 🛠 技術スタック
+## 🛠 Tech Stack
 
-| 技術 | 役割 |
+| Technology | Role |
 |---|---|
-| [Hono](https://hono.dev) | Web フレームワーク（サーバー + クライアント JSX） |
-| [Deno](https://deno.com) / [Bun](https://bun.sh) | ランタイム |
-| [Vite](https://vitejs.dev) | 開発時 HMR |
+| [Hono](https://hono.dev) | Web framework (server + client JSX) |
+| [Deno](https://deno.com) / [Bun](https://bun.sh) | Runtime |
+| [Vite](https://vitejs.dev) | HMR during development |
 
-## 📦 CSS クラス命名規則
+## 📦 CSS Class Naming
 
-全クラスは `ii-` プレフィックスで BEM に準拠:
+All classes use the `ii-` prefix with BEM convention:
 
 ```css
 .ii-button          /* Block */
@@ -141,13 +150,13 @@ const lighter = color.withTone(80).toHex();
 .ii-button--filled  /* Modifier */
 ```
 
-## 📄 ライセンス
+## 📄 License
 
 [MIT](./LICENSE)
 
 ## ❤️ Sponsors
 
-in-it の開発を応援していただける方を募集しています！
+We welcome sponsors to support the development of in-it!
 
 [See our sponsors →](./SPONSORS.md)
 

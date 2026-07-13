@@ -1,24 +1,31 @@
 # My SaaS
 
-> [in-it](https://in-it.dev) で構築された SaaS アプリケーション、E
-## 開発
+> A SaaS application built with [in-it](https://in-it.dev)
+
+## Development
 
 ```bash
-# 開発サーバ�E起動！EMR 付き�E�Edeno task dev
+# Start dev server with HMR
+deno task dev
 
-# 本番ビルチEdeno task build
+# Production build
+deno task build
 
-# サーバ�E起勁Edeno task serve
+# Start server
+deno task serve
 ```
 
-## 構�E
+## Structure
 
 ```
-├── client/          # 管琁E��面 SPA�E�Eono/jsx/dom�E�E├── server/          # Hono API サーバ�E
-├── deno.json        # 設宁E└── vite.config.ts   # Vite 設定！EMR�E�E```
+├── client/          # Admin dashboard SPA (hono/jsx/dom)
+├── server/          # Hono API server
+├── deno.json        # Configuration
+└── vite.config.ts   # Vite config (HMR)
+```
 
-## 技術スタチE��
+## Tech Stack
 
-- **[in-it](https://in-it.dev)**  ESaaS スターターキチE��
-- **[Hono](https://hono.dev)**  EWeb フレームワーク
-- **[Deno](https://deno.com)**  Eランタイム
+- **[in-it](https://in-it.dev)** — SaaS starter kit
+- **[Hono](https://hono.dev)** — Web framework
+- **[Deno](https://deno.com)** — Runtime

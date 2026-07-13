@@ -7,18 +7,18 @@ import { UsersPage } from "./pages/Users.tsx";
 import type { NavItem } from "@in-it/components/admin/AdminShell.tsx";
 
 const NAV_ITEMS: NavItem[] = [
-  { icon: "📊", label: "概要", href: "/admin" },
-  { icon: "👥", label: "ユーザー", href: "/admin/users" },
-  { icon: "📁", label: "プロジェクト", href: "/admin/projects" },
-  { icon: "⚙️", label: "設定", href: "/admin/settings" },
+  { icon: "📊", label: "Overview", href: "/admin" },
+  { icon: "👥", label: "Users", href: "/admin/users" },
+  { icon: "📁", label: "Projects", href: "/admin/projects" },
+  { icon: "⚙️", label: "Settings", href: "/admin/settings" },
 ];
 
 function NotFound() {
   return (
     <div style={{ textAlign: "center", padding: "60px 20px" }}>
-      <h2 class="sc-page__title">ページが見つかりません</h2>
+      <h2 class="sc-page__title">Page Not Found</h2>
       <p class="sc-page__desc" style={{ marginTop: "8px" }}>
-        このページは準備中です。
+        This page is under construction.
       </p>
     </div>
   );
