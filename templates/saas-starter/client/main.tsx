@@ -10,6 +10,9 @@ import { TermsPage } from "./pages/terms.tsx";
 import { PrivacyPage } from "./pages/privacy.tsx";
 import { NotFoundPage } from "./pages/not-found.tsx";
 import { AdminApp } from "./pages/admin/dashboard.tsx";
+import { BlogIndexPage } from "./pages/blog/index.tsx";
+import { BlogPostPage } from "./pages/blog/post.tsx";
+import { DocsPage } from "./pages/docs.tsx";
 
 function App() {
   const [path] = useLocation();
@@ -24,6 +27,19 @@ function App() {
     );
   }
 
+  // Docs routes use their own shell
+  if (path.startsWith("/docs")) {
+    return (
+      <>
+        <DocsPage />
+        <ToastContainer />
+      </>
+    );
+  }
+
+  // Extract blog slug
+  const blogMatch = path.match(/^\/blog\/(.+)/);
+
   return (
     <>
       <Switch>
@@ -32,6 +48,8 @@ function App() {
         <Route path="/signup" component={() => <AuthPage mode="signup" />} />
         <Route path="/terms" component={TermsPage} />
         <Route path="/privacy" component={PrivacyPage} />
+        <Route path="/blog" component={BlogIndexPage} />
+        <Route path="/blog/*" component={() => <BlogPostPage slug={blogMatch?.[1] ?? ""} />} />
         <Route path="*" component={NotFoundPage} />
       </Switch>
       <ToastContainer />
