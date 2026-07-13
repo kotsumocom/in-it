@@ -15,7 +15,7 @@
 - **WAI-ARIA Components** — Accessible interactive components (Switch, Dialog, Tabs, Menu, Toast, etc.)
 - **UI Components** — Button, Card, Badge, Input, Avatar, DataTable, and more
 - **Layout Components** — AdminShell, DocsShell, Landing page components
-- **Built-in Icons** — 46 Lucide-derived SVG icons, bundled with no extra dependencies
+- **Built-in Icons** — 1,995 Lucide-derived SVG icons, bundled with no extra dependencies
 - **SPA Router** — Lightweight History API-based router for hono/jsx/dom
 - **Markdown Parser** — Self-implemented parser with frontmatter, GFM, and TOC generation
 

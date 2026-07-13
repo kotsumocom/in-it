@@ -39,7 +39,7 @@ import { Button, Card, ThemeToggle, Dialog } from "@kotsumo/in-it";
 | 🧩 | **50+ Components** | Forms, feedback, navigation, layouts |
 | 🎨 | **HCT Color System** | Material Design 3 compatible, light/dark themes from a single preset |
 | ♿ | **ARIA Compliant** | WAI-ARIA APG compliant interactive components |
-| 📎 | **Built-in Icons** | 46 Lucide-derived SVG icons, no extra dependencies |
+| 📎 | **Built-in Icons** | 1,995 Lucide-derived SVG icons, no extra dependencies |
 | 🔄 | **Dual Runtime** | Works on both Deno and Bun |
 
 ## 🧩 Components
