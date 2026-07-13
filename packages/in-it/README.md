@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../../assets/logo.svg" alt="in-it" width="400" />
+  <img src="https://raw.githubusercontent.com/kotsumocom/in-it/main/assets/logo.svg" alt="in-it" width="400" />
 </p>
 
 <p align="center">

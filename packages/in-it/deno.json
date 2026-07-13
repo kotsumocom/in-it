@@ -1,6 +1,6 @@
 {
   "name": "@kotsumo/in-it",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Hono-only dependency SaaS starter framework for Deno/Bun. HCT color system, WAI-ARIA components, MD3 theming, built-in icons, SPA router, and markdown parser -- everything is in it.",
   "license": "MIT",
   "exports": {
