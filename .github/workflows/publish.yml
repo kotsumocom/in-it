@@ -18,9 +18,13 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Publish to JSR
+      - name: Publish in-it to JSR
         run: deno publish
         working-directory: packages/in-it
+
+      - name: Publish create-in-it to JSR
+        run: deno publish
+        working-directory: create-in-it
 
       - name: Create GitHub Release
         env:
