@@ -22,7 +22,7 @@ function applyTheme(theme: Theme) {
   document.documentElement.setAttribute("data-theme", resolved);
 }
 
-export function ThemeToggle({ defaultTheme = "system", compact = false, onChange }: ThemeToggleProps) {
+export function ThemeToggle({ defaultTheme = "system", compact = false, onChange }: ThemeToggleProps): any {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 
   useEffect(() => {

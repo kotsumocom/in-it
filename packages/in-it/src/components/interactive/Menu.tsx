@@ -19,7 +19,7 @@ export interface MenuProps {
   align?: "left" | "right";
 }
 
-export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps) {
+export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps): any {
   const [open, setOpen] = useState(false);
   const [focusedIdx, setFocusedIdx] = useState(-1);
   const menuRef = useRef<HTMLDivElement>(null);

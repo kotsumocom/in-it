@@ -11,7 +11,7 @@ export interface CheckboxProps {
   onChange?: (checked: boolean) => void;
 }
 
-export function Checkbox({ label, defaultChecked = false, indeterminate = false, disabled, onChange }: CheckboxProps) {
+export function Checkbox({ label, defaultChecked = false, indeterminate = false, disabled, onChange }: CheckboxProps): any {
   const [checked, setChecked] = useState(defaultChecked);
 
   const toggle = () => {

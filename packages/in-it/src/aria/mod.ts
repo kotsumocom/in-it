@@ -3,6 +3,17 @@
  * WAI-ARIA APG compliant accessibility helpers.
  * Framework-agnostic. Self-implemented following W3C APG.
  * No reference to Zag.js source code.
+ *
+ * @example
+ * ```ts
+ * import { createSwitch, createDialog } from "@kotsumo/in-it/aria";
+ *
+ * const sw = createSwitch({ checked: false, onChange: console.log });
+ * // Apply sw.rootProps to <button> and sw.labelProps to <label>
+ *
+ * const dialog = createDialog({ onClose: () => console.log("closed") });
+ * // Apply dialog.contentProps to <div role="dialog">
+ * ```
  */
 
 export { createSwitch } from "./switch.ts";

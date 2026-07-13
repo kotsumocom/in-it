@@ -9,7 +9,7 @@ export interface TooltipProps {
   children: any;
 }
 
-export function Tooltip({ content, position = "top", children }: TooltipProps) {
+export function Tooltip({ content, position = "top", children }: TooltipProps): any {
   const [visible, setVisible] = useState(false);
 
   return (

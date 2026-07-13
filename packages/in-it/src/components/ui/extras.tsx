@@ -6,7 +6,7 @@ export interface TextareaProps {
   label?: string; placeholder?: string; rows?: number; helper?: string; error?: string;
   value?: string; onInput?: (e: Event) => void;
 }
-export function Textarea({ label, placeholder, rows = 3, helper, error, value, onInput }: TextareaProps) {
+export function Textarea({ label, placeholder, rows = 3, helper, error, value, onInput }: TextareaProps): any {
   return (
     <div class={`ii-input${error ? " ii-input--error" : ""}`}>
       {label && <label class="ii-input__label">{label}</label>}
@@ -21,7 +21,7 @@ export interface AlertProps {
   variant?: "info" | "success" | "warning" | "error";
   title?: string; icon?: string; closable?: boolean; onClose?: () => void; children: any;
 }
-export function Alert({ variant = "info", title, icon, closable, onClose, children }: AlertProps) {
+export function Alert({ variant = "info", title, icon, closable, onClose, children }: AlertProps): any {
   const icons: Record<string, string> = { info: "i", success: "ok", warning: "!", error: "x" };
   return (
     <div class={`ii-alert ii-alert--${variant}`} role="alert">
@@ -38,7 +38,7 @@ export function Alert({ variant = "info", title, icon, closable, onClose, childr
 }
 
 export interface ProgressProps { value?: number; max?: number; label?: string; }
-export function Progress({ value = 0, max = 100, label }: ProgressProps) {
+export function Progress({ value = 0, max = 100, label }: ProgressProps): any {
   const pct = Math.round((value / max) * 100);
   return (
     <div class="ii-progress" role="progressbar" aria-valuenow={value} aria-valuemax={max}>
@@ -51,7 +51,7 @@ export function Progress({ value = 0, max = 100, label }: ProgressProps) {
 }
 
 export interface ProgressCircularProps { value?: number; size?: number; strokeWidth?: number; }
-export function ProgressCircular({ value = 0, size = 48, strokeWidth = 4 }: ProgressCircularProps) {
+export function ProgressCircular({ value = 0, size = 48, strokeWidth = 4 }: ProgressCircularProps): any {
   const r = (size - strokeWidth) / 2;
   const c = 2 * Math.PI * r;
   const offset = c - (value / 100) * c;
@@ -70,7 +70,7 @@ export function ProgressCircular({ value = 0, size = 48, strokeWidth = 4 }: Prog
 
 export interface BreadcrumbItem { label: string; href?: string; }
 export interface BreadcrumbProps { items: BreadcrumbItem[]; separator?: string; }
-export function Breadcrumb({ items, separator = "/" }: BreadcrumbProps) {
+export function Breadcrumb({ items, separator = "/" }: BreadcrumbProps): any {
   return (
     <nav class="ii-breadcrumb" aria-label="Breadcrumb">
       <ol class="ii-breadcrumb__list">
@@ -88,7 +88,7 @@ export function Breadcrumb({ items, separator = "/" }: BreadcrumbProps) {
 }
 
 export interface DividerProps { label?: string; }
-export function Divider({ label }: DividerProps) {
+export function Divider({ label }: DividerProps): any {
   if (label) {
     return <div class="ii-divider ii-divider--label"><span>{label}</span></div>;
   }
@@ -96,6 +96,6 @@ export function Divider({ label }: DividerProps) {
 }
 
 export interface KbdProps { children: any; }
-export function Kbd({ children }: KbdProps) {
+export function Kbd({ children }: KbdProps): any {
   return <kbd class="ii-kbd">{children}</kbd>;
 }

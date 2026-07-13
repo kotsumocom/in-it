@@ -10,7 +10,7 @@ export interface LandingHeaderProps {
   themeToggle?: any;
 }
 
-export function LandingHeader({ brand, brandHref = "/", navLinks = [], themeToggle }: LandingHeaderProps) {
+export function LandingHeader({ brand, brandHref = "/", navLinks = [], themeToggle }: LandingHeaderProps): any {
   return (
     <header class="ii-lp-header">
       <div class="ii-lp-header__inner">
@@ -35,7 +35,7 @@ export interface LandingHeroProps {
   install?: string;
 }
 
-export function LandingHero({ badge, headline, subhead, actions, install }: LandingHeroProps) {
+export function LandingHero({ badge, headline, subhead, actions, install }: LandingHeroProps): any {
   return (
     <section class="ii-lp-hero">
       <div class="ii-lp-hero__inner">
@@ -60,7 +60,7 @@ export interface LandingFeaturesProps {
   features: FeatureCard[];
 }
 
-export function LandingFeatures({ features }: LandingFeaturesProps) {
+export function LandingFeatures({ features }: LandingFeaturesProps): any {
   return (
     <section class="ii-lp-features">
       <div class="ii-lp-features__inner">
@@ -85,7 +85,7 @@ export interface LandingSectionProps {
   children: any;
 }
 
-export function LandingSection({ title, subtitle, children }: LandingSectionProps) {
+export function LandingSection({ title, subtitle, children }: LandingSectionProps): any {
   return (
     <section class="ii-lp-section">
       <div class="ii-lp-section__inner">
@@ -102,7 +102,7 @@ export interface LandingFooterProps {
   children: any;
 }
 
-export function LandingFooter({ children }: LandingFooterProps) {
+export function LandingFooter({ children }: LandingFooterProps): any {
   return (
     <footer class="ii-lp-footer">
       <div class="ii-lp-footer__inner">{children}</div>

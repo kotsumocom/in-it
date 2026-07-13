@@ -12,7 +12,7 @@ export interface ComboboxProps {
   onChange?: (value: string) => void;
 }
 
-export function Combobox({ options, value = "", placeholder = "Search...", label, onChange }: ComboboxProps) {
+export function Combobox({ options, value = "", placeholder = "Search...", label, onChange }: ComboboxProps): any {
   const [query, setQuery] = useState(value);
   const [open, setOpen] = useState(false);
   const [focusedIdx, setFocusedIdx] = useState(-1);

@@ -10,7 +10,7 @@ export interface PopoverProps {
   position?: "top" | "bottom" | "left" | "right";
 }
 
-export function Popover({ trigger, children, position = "bottom" }: PopoverProps) {
+export function Popover({ trigger, children, position = "bottom" }: PopoverProps): any {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 

@@ -13,7 +13,7 @@ export interface StepsProps {
   orientation?: "horizontal" | "vertical";
 }
 
-export function Steps({ items, current = 0, orientation = "horizontal" }: StepsProps) {
+export function Steps({ items, current = 0, orientation = "horizontal" }: StepsProps): any {
   return (
     <div class={`ii-steps ii-steps--${orientation}`} role="list">
       {items.map((item, i) => {

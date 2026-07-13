@@ -11,7 +11,7 @@ export interface SwitchProps {
   onChange?: (checked: boolean) => void;
 }
 
-export function Switch({ defaultChecked = false, label, disabled, onChange }: SwitchProps) {
+export function Switch({ defaultChecked = false, label, disabled, onChange }: SwitchProps): any {
   const [checked, setChecked] = useState(defaultChecked);
 
   const toggle = () => {

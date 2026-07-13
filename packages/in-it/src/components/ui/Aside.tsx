@@ -25,7 +25,7 @@ const TITLES: Record<AsideVariant, string> = {
   danger: "Danger",
 };
 
-export function Aside({ variant = "note", title, children }: AsideProps) {
+export function Aside({ variant = "note", title, children }: AsideProps): any {
   return (
     <div class={`ii-aside ii-aside--${variant}`} role="note">
       <div class="ii-aside__title">

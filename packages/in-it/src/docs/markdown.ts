@@ -1,7 +1,23 @@
 /**
- * Markdown parser (self-implemented, zero dependencies)
- * JSON Frontmatter + GFM subset + TOC generation
- * Deno/Bun compatible
+ * @module docs
+ * Markdown parser (self-implemented, zero dependencies).
+ * JSON Frontmatter + GFM subset + TOC generation.
+ * Deno/Bun compatible.
+ *
+ * @example
+ * ```ts
+ * import { parseMarkdown } from "@kotsumo/in-it/docs";
+ *
+ * const result = parseMarkdown(`---
+ * title: Hello
+ * ---
+ * # Heading
+ * Some **bold** text.
+ * `);
+ * console.log(result.meta.title); // "Hello"
+ * console.log(result.html);       // "<h1>...</h1><p>...</p>"
+ * console.log(result.toc);        // [{ id, text, level }]
+ * ```
  */
 
 export interface MarkdownMeta {

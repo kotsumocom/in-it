@@ -17,7 +17,7 @@ export interface TabsProps {
   onChange?: (id: string) => void;
 }
 
-export function Tabs({ items, defaultTab, onChange }: TabsProps) {
+export function Tabs({ items, defaultTab, onChange }: TabsProps): any {
   const [activeId, setActiveId] = useState(defaultTab ?? items[0]?.id ?? "");
   const tabListRef = useRef<HTMLDivElement>(null);
 

@@ -29,7 +29,7 @@ export interface DocsShellProps {
   themeToggle?: any;
 }
 
-export function DocsShell({ brand, brandHref = "/", navLinks = [], sidebarGroups, tocItems = [], children, themeToggle }: DocsShellProps) {
+export function DocsShell({ brand, brandHref = "/", navLinks = [], sidebarGroups, tocItems = [], children, themeToggle }: DocsShellProps): any {
   return (
     <div class="ii-docs-shell">
       <header class="ii-docs-header">

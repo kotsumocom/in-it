@@ -11,7 +11,7 @@ export interface PaginationProps {
   onChange?: (page: number) => void;
 }
 
-export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount = 1, onChange }: PaginationProps) {
+export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount = 1, onChange }: PaginationProps): any {
   const [current, setCurrent] = useState(defaultPage);
   const totalPages = Math.ceil(total / pageSize);
 

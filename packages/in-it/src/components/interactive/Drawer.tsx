@@ -12,7 +12,7 @@ export interface DrawerProps {
   children: any;
 }
 
-export function Drawer({ open, onClose, position = "right", title, width = "320px", children }: DrawerProps) {
+export function Drawer({ open, onClose, position = "right", title, width = "320px", children }: DrawerProps): any {
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {

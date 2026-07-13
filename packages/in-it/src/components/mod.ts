@@ -1,3 +1,23 @@
+/**
+ * @module components
+ * UI and interactive components built with hono/jsx.
+ * All components use the `ii-` CSS class prefix.
+ *
+ * @example
+ * ```tsx
+ * import { Button, Card, Switch, ThemeToggle } from "@kotsumo/in-it/components";
+ *
+ * function App() {
+ *   return (
+ *     <Card>
+ *       <Button variant="filled">Click me</Button>
+ *       <ThemeToggle />
+ *     </Card>
+ *   );
+ * }
+ * ```
+ */
+
 // UI
 export { Badge, Card, Button, StatCard, DataTable, Input, Avatar, Chip, Skeleton, EmptyState } from "./ui/mod.tsx";
 export type { BadgeProps, CardProps, ButtonProps, StatCardProps, DataTableColumn, DataTableProps, InputProps, AvatarProps, ChipProps, SkeletonProps, EmptyStateProps } from "./ui/mod.tsx";

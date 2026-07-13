@@ -20,7 +20,7 @@ export function Dialog({
   description,
   closeOnBackdrop = true,
   children,
-}: DialogProps) {
+}: DialogProps): any {
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

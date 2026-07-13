@@ -1,3 +1,23 @@
+/**
+ * @module
+ * in-it — Zero-dependency SaaS starter framework for Hono + Deno/Bun.
+ *
+ * Provides HCT color system, WAI-ARIA accessible components,
+ * MD3 theming, SPA router, and markdown parser.
+ *
+ * @example Basic usage
+ * ```ts
+ * import { HctColor, generateScheme, Button, Card } from "@kotsumo/in-it";
+ *
+ * // Generate a color scheme from a hex color
+ * const { light, dark } = generateScheme("#6750a4");
+ *
+ * // Use HCT color directly
+ * const color = HctColor.fromHex("#6750a4");
+ * console.log(color.withTone(80).toHex());
+ * ```
+ */
+
 export * from "./components/mod.ts";
 export * from "./color/hct.ts";
 export * from "./color/scheme.ts";

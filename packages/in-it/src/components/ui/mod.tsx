@@ -4,7 +4,7 @@ export interface BadgeProps {
   children: any;
 }
 
-export function Badge({ variant = "neutral", children }: BadgeProps) {
+export function Badge({ variant = "neutral", children }: BadgeProps): any {
   return (
     <span class={`ii-badge ii-badge--${variant}`}>
       {children}
@@ -19,7 +19,7 @@ export interface CardProps {
   class?: string;
 }
 
-export function Card({ outlined = false, children, class: cls }: CardProps) {
+export function Card({ outlined = false, children, class: cls }: CardProps): any {
   return (
     <div class={`ii-card${outlined ? " ii-card--outlined" : ""}${cls ? ` ${cls}` : ""}`}>
       {children}
@@ -46,7 +46,7 @@ export function Button({
   onClick,
   children,
   class: cls,
-}: ButtonProps) {
+}: ButtonProps): any {
   return (
     <button
       type={type}
@@ -67,7 +67,7 @@ export interface StatCardProps {
   trendUp?: boolean;
 }
 
-export function StatCard({ label, value, trend, trendUp }: StatCardProps) {
+export function StatCard({ label, value, trend, trendUp }: StatCardProps): any {
   return (
     <div class="ii-stat-card">
       <div class="ii-stat-card__label">{label}</div>
@@ -96,7 +96,7 @@ export interface DataTableProps<T> {
   rowKey?: (row: T) => string;
 }
 
-export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>) {
+export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>): any {
   const getKey = rowKey ?? ((_row: T, i: number) => String(i));
   return (
     <div class="ii-data-table-wrap">
@@ -138,7 +138,7 @@ export interface InputProps {
   onInput?: (e: Event) => void;
 }
 
-export function Input({ label, placeholder, value, type = "text", helper, error, disabled, onInput }: InputProps) {
+export function Input({ label, placeholder, value, type = "text", helper, error, disabled, onInput }: InputProps): any {
   return (
     <div class="ii-input">
       {label && <label class="ii-input__label">{label}</label>}
@@ -163,7 +163,7 @@ export interface AvatarProps {
   size?: "sm" | "md" | "lg";
 }
 
-export function Avatar({ name, src, size = "md" }: AvatarProps) {
+export function Avatar({ name, src, size = "md" }: AvatarProps): any {
   const initials = name?.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() ?? "?";
   return (
     <div class={`ii-avatar ii-avatar--${size}`}>
@@ -179,7 +179,7 @@ export interface ChipProps {
   children: any;
 }
 
-export function Chip({ variant = "default", onClose, children }: ChipProps) {
+export function Chip({ variant = "default", onClose, children }: ChipProps): any {
   return (
     <span class={`ii-chip${variant !== "default" ? ` ii-chip--${variant}` : ""}`}>
       {children}
@@ -199,7 +199,7 @@ export interface SkeletonProps {
   circle?: boolean;
 }
 
-export function Skeleton({ width = "100%", height = "1em", circle = false }: SkeletonProps) {
+export function Skeleton({ width = "100%", height = "1em", circle = false }: SkeletonProps): any {
   return (
     <div
       class={`ii-skeleton${circle ? " ii-skeleton--circle" : " ii-skeleton--text"}`}
@@ -216,7 +216,7 @@ export interface EmptyStateProps {
   children?: any;
 }
 
-export function EmptyState({ icon = "", title, description, children }: EmptyStateProps) {
+export function EmptyState({ icon = "", title, description, children }: EmptyStateProps): any {
   return (
     <div class="ii-empty">
       <div class="ii-empty__icon">{icon}</div>

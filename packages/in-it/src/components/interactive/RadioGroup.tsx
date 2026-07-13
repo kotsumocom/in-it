@@ -13,7 +13,7 @@ export interface RadioGroupProps {
   onChange?: (value: string) => void;
 }
 
-export function RadioGroup({ name, options, value: controlledValue, orientation = "vertical", onChange }: RadioGroupProps) {
+export function RadioGroup({ name, options, value: controlledValue, orientation = "vertical", onChange }: RadioGroupProps): any {
   const [internalValue, setInternalValue] = useState(controlledValue ?? "");
   const value = controlledValue ?? internalValue;
 

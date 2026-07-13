@@ -17,7 +17,7 @@ export interface AccordionProps {
   defaultOpen?: string[];
 }
 
-export function Accordion({ items, multiple = false, defaultOpen = [] }: AccordionProps) {
+export function Accordion({ items, multiple = false, defaultOpen = [] }: AccordionProps): any {
   const [openIds, setOpenIds] = useState<Set<string>>(new Set(defaultOpen));
 
   const toggle = useCallback((id: string) => {

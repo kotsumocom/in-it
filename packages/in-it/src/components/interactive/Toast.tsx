@@ -14,7 +14,7 @@ export interface ToastItem {
 let toastIdCounter = 0;
 let globalAddToast: ((t: ToastItem) => void) | null = null;
 
-export function toast(message: string, variant: ToastItem["variant"] = "info", duration = 4000) {
+export function toast(message: string, variant: ToastItem["variant"] = "info", duration = 4000): any {
   if (globalAddToast) {
     globalAddToast({ id: ++toastIdCounter, message, variant, duration });
   }
@@ -24,7 +24,7 @@ export interface ToastContainerProps {
   position?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
 }
 
-export function ToastContainer({ position = "top-right" }: ToastContainerProps) {
+export function ToastContainer({ position = "top-right" }: ToastContainerProps): any {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
   useEffect(() => {

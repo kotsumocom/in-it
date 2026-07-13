@@ -19,7 +19,7 @@ export interface SelectProps {
   onChange?: (value: string) => void;
 }
 
-export function Select({ options, value, placeholder = "Select...", label, disabled, onChange }: SelectProps) {
+export function Select({ options, value, placeholder = "Select...", label, disabled, onChange }: SelectProps): any {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(value ?? "");
   const [focusedIdx, setFocusedIdx] = useState(-1);

@@ -1,8 +1,21 @@
 /**
- * HCT Color System - Zero-dependency implementation
- * Re-implemented based on the Google material-color-utilities (Apache 2.0) algorithm
+ * @module color
+ * HCT Color System - Zero-dependency implementation.
+ * Re-implemented based on the Google material-color-utilities (Apache 2.0) algorithm.
  *
  * HCT = Hue (CAM16) + Chroma (CAM16) + Tone (CIELAB L*)
+ *
+ * @example
+ * ```ts
+ * import { HctColor } from "@kotsumo/in-it/color";
+ *
+ * const color = HctColor.fromHex("#6750a4");
+ * console.log(color.hue, color.chroma, color.tone);
+ *
+ * // Adjust tone for light/dark variants
+ * const light = color.withTone(80).toHex();
+ * const dark = color.withTone(20).toHex();
+ * ```
  */
 
 // ==================== sRGB ↔ Linear RGB ====================

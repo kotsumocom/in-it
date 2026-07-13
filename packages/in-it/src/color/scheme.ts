@@ -1,6 +1,18 @@
 /**
- * MD3 Color Scheme Generation
- * HCT to Material Design 3 compatible tone mapping
+ * @module color/scheme
+ * MD3 Color Scheme Generation.
+ * Maps HCT colors to Material Design 3 compatible tone tokens.
+ *
+ * @example
+ * ```ts
+ * import { generateScheme, generateCss } from "@kotsumo/in-it/color/scheme";
+ *
+ * const { light, dark } = generateScheme("#6750a4");
+ * console.log(light.primary); // hex color
+ *
+ * // Generate CSS custom properties
+ * const css = generateCss("#6750a4");
+ * ```
  */
 import { HctColor } from "./hct.ts";
 

@@ -1,6 +1,24 @@
 /**
- * Lightweight SPA router (for hono/jsx/dom)
- * History API based, ~60 lines.
+ * @module router
+ * Lightweight SPA router for hono/jsx/dom.
+ * History API based, minimal footprint.
+ *
+ * @example
+ * ```tsx
+ * import { Route, Switch, Link, useLocation } from "@kotsumo/in-it/router";
+ *
+ * function App() {
+ *   return (
+ *     <div>
+ *       <Link href="/about">About</Link>
+ *       <Switch>
+ *         <Route path="/" component={Home} />
+ *         <Route path="/about" component={About} />
+ *       </Switch>
+ *     </div>
+ *   );
+ * }
+ * ```
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
 
@@ -63,7 +81,7 @@ export function Route({
 }: {
   path: string;
   component: (props: { params: Record<string, string> }) => any;
-}) {
+}): any {
   const [current] = useLocation();
   const match = matchPath(path, current);
   if (!match) return null;
@@ -71,7 +89,7 @@ export function Route({
 }
 
 /** Switch - render only the first matching Route */
-export function Switch({ children }: { children: any }) {
+export function Switch({ children }: { children: any }): any {
   const [current] = useLocation();
   const routes = Array.isArray(children) ? children : [children];
 
@@ -98,7 +116,7 @@ export function Link({
   children: any;
   class?: string;
   [key: string]: any;
-}) {
+}): any {
   const [, navigate] = useLocation();
 
   const handleClick = (e: Event) => {

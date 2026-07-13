@@ -25,7 +25,7 @@ export function AdminShell({
   currentPath = "/",
   onNavigate,
   children,
-}: AdminShellProps) {
+}: AdminShellProps): any {
   const [railExpanded, setRailExpanded] = useState(false);
 
   const handleNavClick = useCallback(

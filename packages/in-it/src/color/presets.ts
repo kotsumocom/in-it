@@ -1,5 +1,17 @@
 /**
- * Preset colors - pre-computed themes
+ * @module color/presets
+ * Preset colors with pre-computed MD3 themes.
+ *
+ * @example
+ * ```ts
+ * import { getPreset, getPresetCss, PRESETS } from "@kotsumo/in-it/color/presets";
+ *
+ * // List all preset names
+ * console.log(PRESETS.map(p => p.name));
+ *
+ * // Get CSS for a preset
+ * const css = getPresetCss("purple");
+ * ```
  */
 import { generateScheme, generateCss, type ColorScheme } from "./scheme.ts";
 
