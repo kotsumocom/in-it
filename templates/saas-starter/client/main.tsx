@@ -1,7 +1,10 @@
 import { render } from "hono/jsx/dom";
 import { Route, Switch, useLocation } from "@kotsumo/in-it/router";
 import { ToastContainer } from "~/components.ts";
-import "@kotsumo/in-it/css/main.css";
+import { injectStyles } from "@kotsumo/in-it/styles";
+
+// Inject all in-it CSS at startup
+injectStyles();
 
 // Pages
 import { LandingPage } from "./pages/landing.tsx";

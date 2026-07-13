@@ -3,7 +3,8 @@
     "./packages/in-it"
   ],
   "tasks": {
-    "check": "deno check packages/in-it/src/mod.ts"
+    "check": "deno check packages/in-it/src/mod.ts",
+    "build:styles": "deno run -A scripts/build-styles.ts"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
