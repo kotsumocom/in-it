@@ -53,7 +53,7 @@ export function ThemeToggle({ defaultTheme = "system", compact = false, onChange
       <button type="button" class="ii-theme-toggle" onClick={cycle} aria-label={`Theme: ${theme}`}>
         {theme === "light" && <Icon name="sun" size={18} />}
         {theme === "dark" && <Icon name="moon" size={18} />}
-        {theme === "system" && <Icon name="monitor" size={18} />}
+        {theme === "system" && <Icon name="device-desktop" size={18} />}
       </button>
     );
   }
@@ -76,7 +76,7 @@ export function ThemeToggle({ defaultTheme = "system", compact = false, onChange
         >
           {t === "light" && <><Icon name="sun" size={16} /> Light</>}
           {t === "dark" && <><Icon name="moon" size={16} /> Dark</>}
-          {t === "system" && <><Icon name="monitor" size={16} /> System</>}
+          {t === "system" && <><Icon name="device-desktop" size={16} /> System</>}
         </button>
       ))}
     </div>

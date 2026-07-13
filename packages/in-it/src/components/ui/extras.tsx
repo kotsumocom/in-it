@@ -28,7 +28,7 @@ export interface AlertProps {
 /** Inline alert banner with icon, title, and dismissible option. */
 export function Alert({ variant = "info", title, icon, closable, onClose, children }: AlertProps): any {
   const defaultIcons: Record<string, any> = {
-    info: <Icon name="info" size={18} />,
+    info: <Icon name="info-circle" size={18} />,
     success: <Icon name="circle-check" size={18} />,
     warning: <Icon name="alert-triangle" size={18} />,
     error: <Icon name="circle-x" size={18} />,

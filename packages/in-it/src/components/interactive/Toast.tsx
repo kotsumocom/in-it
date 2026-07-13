@@ -56,7 +56,7 @@ export function ToastContainer({ position = "top-right" }: ToastContainerProps):
             {t.variant === "success" && <Icon name="circle-check" size={18} />}
             {t.variant === "error" && <Icon name="circle-x" size={18} />}
             {t.variant === "warning" && <Icon name="alert-triangle" size={18} />}
-            {(!t.variant || t.variant === "info") && <Icon name="info" size={18} />}
+            {(!t.variant || t.variant === "info") && <Icon name="info-circle" size={18} />}
           </span>
           <span class="ii-toast__msg">{t.message}</span>
           <button class="ii-toast__close" onClick={() => remove(t.id)} aria-label="Close"><Icon name="x" size={16} /></button>

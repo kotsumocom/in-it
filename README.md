@@ -39,7 +39,7 @@ import { Button, Card, ThemeToggle, Dialog } from "@kotsumo/in-it";
 | 🧩 | **50+ Components** | Forms, feedback, navigation, layouts |
 | 🎨 | **HCT Color System** | Material Design 3 compatible, light/dark themes from a single preset |
 | ♿ | **ARIA Compliant** | WAI-ARIA APG compliant interactive components |
-| 📎 | **Built-in Icons** | 1,995 Lucide-derived SVG icons, no extra dependencies |
+| 📎 | **Built-in Icons** | 5,093 Tabler-derived SVG icons (+ 1,053 filled), tree-shakeable |
 | 🔄 | **Dual Runtime** | Works on both Deno and Bun |
 
 ## 🧩 Components
@@ -157,8 +157,9 @@ All classes use the `ii-` prefix with BEM convention:
 
 ## Icons
 
-Built-in icons are derived from [Lucide Icons](https://lucide.dev) (ISC License).
-SVG path data is bundled directly — no runtime dependency on the Lucide package.
+Built-in icons are derived from [Tabler Icons](https://tabler.io/icons) (MIT License).
+SVG path data is bundled directly — no runtime dependency on the Tabler package.
+Tree-shakeable individual imports are available for bundle-size-conscious users.
 
 We're exploring the development of a custom icon set for in-it.
 If you're a designer interested in contributing, please reach out via

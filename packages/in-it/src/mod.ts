@@ -3,7 +3,7 @@
  * in-it — Hono-only dependency SaaS starter framework for Deno/Bun.
  *
  * Provides HCT color system, WAI-ARIA accessible components,
- * MD3 theming, built-in icons (derived from Lucide), SPA router,
+ * MD3 theming, built-in icons (derived from Tabler Icons), SPA router,
  * and markdown parser.
  *
  * @example Basic usage
@@ -29,3 +29,4 @@ export { Route, Switch, Link, useLocation } from "./router.tsx";
 export { Icon, iconSvg } from "./icons/Icon.tsx";
 export type { IconProps } from "./icons/Icon.tsx";
 export { ICON_PATHS } from "./icons/paths.ts";
+export { FILLED_ICON_PATHS } from "./icons/filled.ts";
