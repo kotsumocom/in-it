@@ -3,18 +3,34 @@
  * create-in-it — SaaS project scaffolding CLI
  *
  * Usage:
- *   deno run jsr:@kotsumo/create-in-it my-saas
- *   deno run jsr:@kotsumo/create-in-it ./my-saas --template saas-starter
+ *   deno run -A jsr:@kotsumo/create-in-it my-saas
+ *   deno run -A jsr:@kotsumo/create-in-it my-saas --bundler esbuild
  */
 
-const TEMPLATES = {
-  "saas-starter": {
-    name: "SaaS Starter",
-    description: "Admin dashboard + landing page + API — everything you need for a SaaS",
-  },
-};
+import * as path from "node:path";
 
-const COLORS = {
+// ============================================================
+// Config
+// ============================================================
+
+const TEMPLATE_DIR = path.resolve(import.meta.dirname!, "templates/saas-starter");
+
+type Bundler = "vite" | "esbuild" | "none";
+
+const BUNDLER_CHOICES: { value: Bundler; label: string; default?: boolean }[] = [
+  { value: "vite", label: "Vite (recommended)", default: true },
+  { value: "esbuild", label: "esbuild" },
+  { value: "none", label: "None (manual setup)" },
+];
+
+// Files to skip copying (generated per-bundler or not needed)
+const SKIP_FILES = new Set(["deno.json", "vite.config.ts"]);
+
+// ============================================================
+// Colors & logging
+// ============================================================
+
+const C = {
   reset: "\x1b[0m",
   bold: "\x1b[1m",
   dim: "\x1b[2m",
@@ -22,212 +38,291 @@ const COLORS = {
   cyan: "\x1b[36m",
   yellow: "\x1b[33m",
   magenta: "\x1b[35m",
+  red: "\x1b[31m",
 };
 
-function log(msg: string) {
-  console.log(msg);
-}
-
-function success(msg: string) {
-  console.log(`${COLORS.green}\u2713${COLORS.reset} ${msg}`);
-}
-
-function info(msg: string) {
-  console.log(`${COLORS.cyan}\u2139${COLORS.reset} ${msg}`);
-}
+const log = (m: string) => console.log(m);
+const ok = (m: string) => console.log(`${C.green}✓${C.reset} ${m}`);
+const info = (m: string) => console.log(`${C.cyan}ℹ${C.reset} ${m}`);
+const warn = (m: string) => console.log(`${C.yellow}⚠${C.reset} ${m}`);
+const fail = (m: string) => {
+  console.error(`${C.red}✗${C.reset} ${m}`);
+  Deno.exit(1);
+};
 
 function banner() {
   log("");
-  log(`${COLORS.bold}${COLORS.magenta}  \u2566\u2554\u2557\u2550  \u2566\u2554\u2566\u2550${COLORS.reset}`);
-  log(`${COLORS.bold}${COLORS.magenta}  \u2551\u2551\u2551\u2551\u2500\u2500\u2500\u2550 \u2550${COLORS.reset}`);
-  log(`${COLORS.bold}${COLORS.magenta}  \u2569\u255d\u255a\u2550  \u2569 \u2569 ${COLORS.reset}`);
-  log(`${COLORS.dim}  Everything is in it.${COLORS.reset}`);
+  log(`${C.bold}${C.magenta}  ╦╔╗═  ╦╔╦═${C.reset}`);
+  log(`${C.bold}${C.magenta}  ║║║║───═ ═${C.reset}`);
+  log(`${C.bold}${C.magenta}  ╩╝╚═  ╩ ╩ ${C.reset}`);
+  log(`${C.dim}  Everything is in it.${C.reset}`);
   log("");
 }
 
-interface CliArgs {
+// ============================================================
+// CLI args
+// ============================================================
+
+interface Args {
   projectDir: string;
-  template: string;
+  bundler: Bundler;
   help: boolean;
 }
 
-function parseArgs(args: string[]): CliArgs {
-  const result: CliArgs = {
-    projectDir: "",
-    template: "saas-starter",
-    help: false,
-  };
-
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
-    if (arg === "--help" || arg === "-h") {
-      result.help = true;
-    } else if (arg === "--template" || arg === "-t") {
-      result.template = args[++i] ?? "saas-starter";
-    } else if (!arg.startsWith("-")) {
-      result.projectDir = arg;
-    }
+function parseArgs(raw: string[]): Args {
+  const args: Args = { projectDir: "", bundler: "vite", help: false };
+  for (let i = 0; i < raw.length; i++) {
+    const a = raw[i];
+    if (a === "-h" || a === "--help") args.help = true;
+    else if (a === "-b" || a === "--bundler") {
+      const v = raw[++i] as Bundler;
+      if (["vite", "esbuild", "none"].includes(v)) args.bundler = v;
+      else warn(`Unknown bundler "${v}", using vite.`);
+    } else if (!a.startsWith("-")) args.projectDir = a;
   }
-
-  return result;
+  return args;
 }
 
 function showHelp() {
   log(`
-${COLORS.bold}create-in-it${COLORS.reset} — Generate a SaaS project
+${C.bold}create-in-it${C.reset} — Generate a SaaS project
 
-${COLORS.bold}Usage:${COLORS.reset}
-  deno run jsr:@kotsumo/create-in-it <project-dir> [options]
+${C.bold}Usage:${C.reset}
+  deno run -A jsr:@kotsumo/create-in-it <project-dir> [options]
 
-${COLORS.bold}Options:${COLORS.reset}
-  -t, --template <name>  Template to use (default: saas-starter)
-  -h, --help             Show help
+${C.bold}Options:${C.reset}
+  -b, --bundler <name>  Build tool: vite (default), esbuild, none
+  -h, --help            Show help
 
-${COLORS.bold}Templates:${COLORS.reset}
-  saas-starter           Admin dashboard + landing page + API (default)
-
-${COLORS.bold}Examples:${COLORS.reset}
-  deno run jsr:@kotsumo/create-in-it my-saas
-  deno run jsr:@kotsumo/create-in-it ./my-app --template saas-starter
+${C.bold}Examples:${C.reset}
+  deno run -A jsr:@kotsumo/create-in-it my-saas
+  deno run -A jsr:@kotsumo/create-in-it ./my-app --bundler esbuild
 `);
 }
 
-// Template files (inline content)
-function getTemplateFiles(): Record<string, string> {
-  return {
-    "deno.json": JSON.stringify(
-      {
-        tasks: {
-          dev: "deno run -A npm:vite",
-          "dev:server": "deno run -A --watch server/main.ts",
-          build: "deno run -A npm:vite build",
-          serve: "deno serve -A server/main.ts",
-        },
-        compilerOptions: {
-          jsx: "react-jsx",
-          jsxImportSource: "hono/jsx",
-        },
-        imports: {
-          "@kotsumo/in-it": "jsr:@kotsumo/in-it@^0.1",
-          hono: "npm:hono@^4",
-          "hono/jsx": "npm:hono@^4/jsx",
-          "hono/jsx/dom": "npm:hono@^4/jsx/dom",
-        },
-        nodeModulesDir: "auto",
-      },
-      null,
-      2,
-    ),
+// ============================================================
+// Prompt helpers
+// ============================================================
 
-    ".gitignore": `node_modules/
-dist/
-.vite/
-.env
-.env.local
-.DS_Store
-*.log
-`,
-
-    "vite.config.ts": `import { defineConfig } from "npm:vite@^6";
-
-export default defineConfig({
-  root: ".",
-  esbuild: {
-    jsx: "automatic",
-    jsxImportSource: "hono/jsx/dom",
-  },
-  resolve: {
-    extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
-  },
-  server: { port: 3000 },
-  build: { outDir: "dist" },
-});
-`,
-
-    "index.html": `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My SaaS</title>
-</head>
-<body>
-  <div id="app"></div>
-  <script type="module" src="/client/main.tsx"></script>
-</body>
-</html>
-`,
-
-    "client/main.tsx": `import { render } from "hono/jsx/dom";
-
-function App() {
-  return (
-    <div style={{ fontFamily: "system-ui", padding: "60px 40px", textAlign: "center" }}>
-      <h1>\ud83d\ude80 Welcome to <span style={{ color: "#6750a4" }}>in-it</span></h1>
-      <p style={{ color: "#666", marginTop: "8px" }}>
-        Edit <code>client/main.tsx</code> to get started.
-      </p>
-      <p style={{ marginTop: "24px" }}>
-        <a href="https://in-it.dev" style={{ color: "#6750a4" }}>Documentation</a>
-      </p>
-    </div>
-  );
+function promptText(question: string, fallback: string): string {
+  const ans = prompt(`${C.cyan}?${C.reset} ${question} ${C.dim}(${fallback})${C.reset}`);
+  return ans?.trim() || fallback;
 }
 
-render(<App />, document.getElementById("app")!);
-`,
+function promptChoice<T extends string>(
+  question: string,
+  choices: { value: T; label: string; default?: boolean }[],
+): T {
+  log(`${C.cyan}?${C.reset} ${question}`);
+  for (let i = 0; i < choices.length; i++) {
+    const ch = choices[i];
+    const marker = ch.default ? `${C.green}❯${C.reset}` : " ";
+    log(`  ${marker} ${C.bold}${i + 1}${C.reset}) ${ch.label}`);
+  }
+  const defaultIdx = choices.findIndex((c) => c.default);
+  const ans = prompt(`  ${C.dim}Enter choice (1-${choices.length})${C.reset}`) ?? "";
+  const idx = parseInt(ans) - 1;
+  if (idx >= 0 && idx < choices.length) return choices[idx].value;
+  return choices[defaultIdx >= 0 ? defaultIdx : 0].value;
+}
 
-    "server/main.ts": `import { Hono } from "hono";
+// ============================================================
+// File copy (recursive)
+// ============================================================
 
-const app = new Hono();
+async function copyTemplateFiles(
+  srcDir: string,
+  destDir: string,
+): Promise<void> {
+  for await (const entry of Deno.readDir(srcDir)) {
+    const srcPath = path.join(srcDir, entry.name);
+    const destPath = path.join(destDir, entry.name);
 
-app.get("/api/health", (c) => c.json({ status: "ok" }));
+    if (entry.isDirectory) {
+      // Skip .agents directory (AI agent support — user can add later)
+      if (entry.name === ".agents") continue;
 
-export default app;
-`,
+      await Deno.mkdir(destPath, { recursive: true });
+      await copyTemplateFiles(srcPath, destPath);
+    } else if (entry.isFile) {
+      // Get relative path from template root for skip check
+      const rel = path.relative(TEMPLATE_DIR, srcPath).replace(/\\/g, "/");
+      if (SKIP_FILES.has(rel)) continue;
 
-    "README.md": `# My SaaS
+      await Deno.copyFile(srcPath, destPath);
+      ok(rel);
+    }
+  }
+}
 
-> Built with [in-it](https://in-it.dev)
+// ============================================================
+// Bundler-specific config generation
+// ============================================================
 
-## Development
-
-\`\`\`bash
-deno task dev     # Dev server with HMR
-deno task build   # Production build
-deno task serve   # Start server
-\`\`\`
-`,
+function generateDenoJson(bundler: Bundler): string {
+  const base: Record<string, unknown> = {
+    compilerOptions: {
+      jsx: "react-jsx",
+      jsxImportSource: "hono/jsx",
+    },
+    imports: {
+      "~/": "./client/",
+      "@kotsumo/in-it": "jsr:@kotsumo/in-it@^0.4",
+      "@kotsumo/in-it/components": "jsr:@kotsumo/in-it@^0.4/components",
+      "@kotsumo/in-it/charts": "jsr:@kotsumo/in-it@^0.4/charts",
+      "@kotsumo/in-it/icons": "jsr:@kotsumo/in-it@^0.4/icons",
+      "@kotsumo/in-it/router": "jsr:@kotsumo/in-it@^0.4/router",
+      "@kotsumo/in-it/styles": "jsr:@kotsumo/in-it@^0.4/styles",
+      hono: "npm:hono@^4",
+      "hono/jsx": "npm:hono@^4/jsx",
+      "hono/jsx/dom": "npm:hono@^4/jsx/dom",
+    },
+    nodeModulesDir: "auto",
   };
+
+  switch (bundler) {
+    case "vite":
+      base.imports = {
+        ...(base.imports as Record<string, string>),
+        vite: "npm:vite@^7",
+        "@deno/vite-plugin": "npm:@deno/vite-plugin",
+      };
+      base.tasks = {
+        dev: "deno run -A npm:vite",
+        "dev:server": "deno run -A --watch server/main.ts",
+        build: "deno run -A npm:vite build",
+        serve: "deno serve -A server/main.ts",
+      };
+      break;
+
+    case "esbuild":
+      base.imports = {
+        ...(base.imports as Record<string, string>),
+        esbuild: "npm:esbuild@^0.24",
+      };
+      base.tasks = {
+        dev: "deno run -A build.ts --watch",
+        "dev:server": "deno run -A --watch server/main.ts",
+        build: "deno run -A build.ts",
+        serve: "deno serve -A server/main.ts",
+      };
+      break;
+
+    case "none":
+      base.tasks = {
+        "dev:server": "deno run -A --watch server/main.ts",
+        serve: "deno serve -A server/main.ts",
+      };
+      break;
+  }
+
+  return JSON.stringify(base, null, 2) + "\n";
 }
 
-async function createProject(projectDir: string, _template: string) {
+function generateEsbuildConfig(): string {
+  return `import * as esbuild from "esbuild";
+
+const isWatch = Deno.args.includes("--watch");
+
+const config: esbuild.BuildOptions = {
+  entryPoints: ["client/main.tsx"],
+  bundle: true,
+  outdir: "dist/assets",
+  format: "esm",
+  splitting: true,
+  minify: !isWatch,
+  sourcemap: isWatch,
+  jsx: "automatic",
+  jsxImportSource: "hono/jsx/dom",
+  loader: { ".tsx": "tsx", ".ts": "ts" },
+  target: ["es2022"],
+  define: {
+    "import.meta.env.DEV": isWatch ? "true" : "false",
+  },
+};
+
+if (isWatch) {
+  const ctx = await esbuild.context(config);
+  await ctx.watch();
+  console.log("\\x1b[32m✓\\x1b[0m Watching for changes...");
+  await new Promise(() => {});
+} else {
+  await esbuild.build(config);
+  console.log("\\x1b[32m✓\\x1b[0m Build complete → dist/assets/");
+  Deno.exit(0);
+}
+`;
+}
+
+// ============================================================
+// Project creation
+// ============================================================
+
+async function createProject(
+  projectDir: string,
+  bundler: Bundler,
+) {
   const absPath = projectDir.startsWith("/") || projectDir.includes(":")
     ? projectDir
     : `${Deno.cwd()}/${projectDir}`;
-
   const dirName = absPath.split(/[/\\]/).pop() ?? projectDir;
 
-  info(`Creating project "${dirName}"...`);
-
-  // Create directory
+  // Check if directory exists and is non-empty
   try {
-    await Deno.mkdir(absPath, { recursive: true });
-  } catch (e) {
-    if (!(e instanceof Deno.errors.AlreadyExists)) throw e;
+    const entries = [];
+    for await (const e of Deno.readDir(absPath)) entries.push(e);
+    if (entries.length > 0) {
+      warn(`Directory "${dirName}" is not empty.`);
+      const cont = prompt(`${C.cyan}?${C.reset} Continue anyway? (y/N)`);
+      if (cont?.toLowerCase() !== "y") Deno.exit(0);
+    }
+  } catch {
+    // Directory doesn't exist — will create
   }
 
-  // Write files
-  const files = getTemplateFiles();
-  for (const [path, content] of Object.entries(files)) {
-    const fullPath = `${absPath}/${path}`;
-    const dir = fullPath.substring(0, fullPath.lastIndexOf("/"));
-    await Deno.mkdir(dir, { recursive: true });
-    await Deno.writeTextFile(fullPath, content);
-    success(`${path}`);
+  info(`Creating project "${dirName}" with ${bundler}...`);
+  log("");
+
+  await Deno.mkdir(absPath, { recursive: true });
+
+  // 1. Copy template files (excludes deno.json, vite.config.ts, .agents/)
+  await copyTemplateFiles(TEMPLATE_DIR, absPath);
+  log("");
+
+  // 2. Generate deno.json for selected bundler
+  await Deno.writeTextFile(
+    path.join(absPath, "deno.json"),
+    generateDenoJson(bundler),
+  );
+  ok(`deno.json (${bundler})`);
+
+  // 3. Bundler-specific files
+  switch (bundler) {
+    case "vite": {
+      // Copy vite.config.ts from template (includes @deno/vite-plugin patch)
+      await Deno.copyFile(
+        path.join(TEMPLATE_DIR, "vite.config.ts"),
+        path.join(absPath, "vite.config.ts"),
+      );
+      ok("vite.config.ts");
+      break;
+    }
+
+    case "esbuild": {
+      await Deno.writeTextFile(
+        path.join(absPath, "build.ts"),
+        generateEsbuildConfig(),
+      );
+      ok("build.ts");
+      break;
+    }
+
+    case "none":
+      info("No build tool configured. Set up your preferred bundler manually.");
+      break;
   }
 
-  // Initialize git
+  // 4. Git init
   try {
     const git = new Deno.Command("git", {
       args: ["init"],
@@ -236,22 +331,48 @@ async function createProject(projectDir: string, _template: string) {
       stderr: "null",
     });
     await git.output();
-    success("Initialized Git repository");
+    ok("Initialized Git repository");
   } catch {
-    // Skip if git is not available
+    // git not available
   }
 
+  // 5. Install dependencies
   log("");
-  log(`${COLORS.bold}${COLORS.green}\u2728 Done!${COLORS.reset}`);
+  info("Installing dependencies...");
+  try {
+    const install = new Deno.Command("deno", {
+      args: ["install"],
+      cwd: absPath,
+      stdout: "inherit",
+      stderr: "inherit",
+    });
+    const result = await install.output();
+    if (result.success) {
+      ok("Dependencies installed");
+    } else {
+      warn("deno install failed. Run manually: deno install");
+    }
+  } catch {
+    warn("Could not run deno install. Run manually: deno install");
+  }
+
+  // Done!
   log("");
-  log(`  ${COLORS.cyan}cd ${dirName}${COLORS.reset}`);
-  log(`  ${COLORS.cyan}deno task dev${COLORS.reset}`);
+  log(`${C.bold}${C.green}✨ Done!${C.reset}`);
   log("");
-  log(`${COLORS.dim}\ud83d\udcd6 https://in-it.dev${COLORS.reset}`);
+  log(`  ${C.cyan}cd ${dirName}${C.reset}`);
+  if (bundler !== "none") {
+    log(`  ${C.cyan}deno task dev${C.reset}`);
+  }
+  log("");
+  log(`${C.dim}📖 https://in-it.dev${C.reset}`);
   log("");
 }
 
-// --- Main ---
+// ============================================================
+// Main
+// ============================================================
+
 async function main() {
   const args = parseArgs(Deno.args);
 
@@ -262,18 +383,18 @@ async function main() {
 
   banner();
 
+  // Project name
   if (!args.projectDir) {
-    // Interactive mode
-    const dir = prompt(`${COLORS.cyan}?${COLORS.reset} Project name:`) ?? "my-saas";
-    args.projectDir = dir;
+    args.projectDir = promptText("Project name:", "my-saas");
   }
 
-  if (!(args.template in TEMPLATES)) {
-    log(`${COLORS.yellow}\u26a0${COLORS.reset} Template "${args.template}" not found. Using saas-starter.`);
-    args.template = "saas-starter";
+  // Bundler (interactive if not specified via flag)
+  if (!Deno.args.some((a) => a === "-b" || a === "--bundler")) {
+    args.bundler = promptChoice("Build tool:", BUNDLER_CHOICES);
   }
 
-  await createProject(args.projectDir, args.template);
+  log("");
+  await createProject(args.projectDir, args.bundler);
 }
 
 main().catch((e) => {

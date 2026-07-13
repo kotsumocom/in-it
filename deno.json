@@ -1,6 +1,7 @@
 {
   "workspace": [
-    "./packages/in-it"
+    "./packages/in-it",
+    "./create-in-it"
   ],
   "tasks": {
     "check": "deno check packages/in-it/src/mod.ts",

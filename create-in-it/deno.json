@@ -1,7 +1,14 @@
 {
   "name": "@kotsumo/create-in-it",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "exports": "./create.ts",
+  "publish": {
+    "include": [
+      "create.ts",
+      "deno.json",
+      "templates/**/*"
+    ]
+  },
   "tasks": {
     "start": "deno run -A create.ts"
   }
