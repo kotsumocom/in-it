@@ -1,31 +1,66 @@
 # My SaaS
 
-> A SaaS application built with [in-it](https://in-it.dev)
+> Built with [in-it](https://in-it.dev)
 
-## Development
+## Getting Started
 
 ```bash
-# Start dev server with HMR
-deno task dev
-
-# Production build
-deno task build
-
-# Start server
-deno task serve
+deno task dev     # Dev server with HMR (http://localhost:5173)
+deno task build   # Production build
+deno task serve   # Start production server
 ```
 
-## Structure
+## Project Structure
 
 ```
-├── client/          # Admin dashboard SPA (hono/jsx/dom)
-├── server/          # Hono API server
-├── deno.json        # Configuration
-└── vite.config.ts   # Vite config (HMR)
+├── client/              # Frontend (hono/jsx + in-it components)
+│   ├── main.tsx         # Entry point with router
+│   └── pages/
+│       ├── landing.tsx  # Landing page
+│       ├── auth.tsx     # Login / Signup
+│       ├── terms.tsx    # Terms of Service
+│       ├── privacy.tsx  # Privacy Policy
+│       ├── not-found.tsx
+│       └── admin/
+│           ├── dashboard.tsx
+│           ├── settings.tsx
+│           ├── users.tsx
+│           └── billing.tsx
+├── server/              # Backend (Hono)
+│   ├── main.ts          # Server entry
+│   ├── middleware/
+│   │   ├── auth.ts      # Auth middleware (plug in your provider)
+│   │   └── security.ts  # CSP, CSRF headers
+│   ├── routes/
+│   │   └── api.ts       # API endpoints
+│   └── db/
+│       ├── types.ts     # Repository interfaces
+│       └── memory.ts    # In-memory implementation (replace with your DB)
+├── deno.json
+├── vite.config.ts
+└── index.html
 ```
 
-## Tech Stack
+## Authentication
 
-- **[in-it](https://in-it.dev)** — SaaS starter kit
-- **[Hono](https://hono.dev)** — Web framework
-- **[Deno](https://deno.com)** — Runtime
+The auth UI is ready to use. To connect it to a real auth provider:
+
+1. Install your provider (e.g. `@supabase/supabase-js`)
+2. Update `server/middleware/auth.ts` with your auth logic
+3. Update `client/pages/auth.tsx` to call your provider's API
+
+See the [in-it docs](https://in-it.dev) for more details.
+
+## Database
+
+The template uses a Repository pattern with an in-memory implementation.
+To switch to a real database:
+
+1. Implement the interfaces in `server/db/types.ts`
+2. Replace the import in `server/routes/api.ts`
+
+## Documentation
+
+- [in-it Docs](https://in-it.dev)
+- [Hono](https://hono.dev)
+- [Deno](https://deno.land)
