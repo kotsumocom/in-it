@@ -1,0 +1,34 @@
+/* --- SettingsSection --- */
+.ii-settings-section {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--ii-spacing-6);
+  padding: var(--ii-spacing-6) 0;
+  border-bottom: 1px solid var(--ii-outline-variant);
+}
+.ii-settings-section:last-child {
+  border-bottom: none;
+}
+.ii-settings-section__title {
+  font-size: var(--ii-font-lg);
+  font-weight: 600;
+  color: var(--ii-on-surface);
+  margin: 0 0 var(--ii-spacing-1);
+}
+.ii-settings-section__desc {
+  font-size: var(--ii-font-sm);
+  color: var(--ii-on-surface-variant);
+  margin: 0;
+}
+.ii-settings-section__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ii-spacing-4);
+}
+@media (max-width: 768px) {
+  .ii-settings-section {
+    grid-template-columns: 1fr;
+    gap: var(--ii-spacing-3);
+  }
+}
+

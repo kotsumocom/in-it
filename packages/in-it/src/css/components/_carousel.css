@@ -1,0 +1,21 @@
+/* --- Carousel --- */
+.ii-carousel { position: relative; overflow: hidden; border-radius: var(--ii-shape-lg); }
+.ii-carousel__track { display: flex; transition: transform 300ms ease; }
+.ii-carousel__slide { min-width: 100%; flex-shrink: 0; }
+.ii-carousel__btn {
+  position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px;
+  border-radius: 50%; background: color-mix(in srgb, var(--ii-surface) 90%, transparent);
+  border: 1px solid var(--ii-outline-variant); cursor: pointer; display: flex;
+  align-items: center; justify-content: center; font-size: 1rem; z-index: 2;
+  backdrop-filter: blur(8px); transition: all var(--ii-transition);
+}
+.ii-carousel__btn:hover { background: var(--ii-surface); box-shadow: var(--ii-shadow-md); }
+.ii-carousel__btn--prev { left: 12px; }
+.ii-carousel__btn--next { right: 12px; }
+.ii-carousel__dots { display: flex; justify-content: center; gap: 6px; padding: 12px; }
+.ii-carousel__dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--ii-outline-variant);
+  border: none; cursor: pointer; transition: all var(--ii-transition);
+}
+.ii-carousel__dot--active { background: var(--ii-primary); width: 24px; border-radius: 4px; }
+

@@ -1,0 +1,11 @@
+/* --- Reset --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--ii-font-family);
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface);
+  background: var(--ii-surface);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+

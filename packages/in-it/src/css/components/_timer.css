@@ -1,0 +1,11 @@
+/* --- Timer --- */
+.ii-timer { display: inline-flex; gap: 8px; align-items: center; }
+.ii-timer__segment {
+  display: flex; flex-direction: column; align-items: center; padding: 8px 12px;
+  background: var(--ii-surface-container); border-radius: var(--ii-shape-md);
+  min-width: 56px;
+}
+.ii-timer__value { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ii-timer__label { font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); }
+.ii-timer__sep { font-size: 1.5rem; font-weight: 700; color: var(--ii-on-surface-variant); }
+

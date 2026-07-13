@@ -1,0 +1,4 @@
+/* --- Divider --- */
+.ii-divider { border: none; border-top: 1px solid var(--ii-outline-variant); margin: var(--ii-spacing-4) 0; }
+.ii-divider--vertical { border-top: none; border-left: 1px solid var(--ii-outline-variant); margin: 0 var(--ii-spacing-4); height: auto; align-self: stretch; }
+

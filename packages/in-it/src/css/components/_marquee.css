@@ -1,0 +1,6 @@
+/* --- Marquee --- */
+.ii-marquee { overflow: hidden; width: 100%; }
+.ii-marquee__track { display: flex; animation: ii-marquee-scroll 20s linear infinite; width: max-content; }
+.ii-marquee__track:hover { animation-play-state: paused; }
+@keyframes ii-marquee-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+

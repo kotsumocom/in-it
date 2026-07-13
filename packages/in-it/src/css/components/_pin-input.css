@@ -1,0 +1,9 @@
+/* --- Pin Input --- */
+.ii-pin-input { display: inline-flex; gap: 8px; }
+.ii-pin-input__field {
+  width: 42px; height: 48px; text-align: center; font-size: 1.25rem; font-weight: 600;
+  border: 1px solid var(--ii-outline-variant); border-radius: var(--ii-shape-md);
+  background: var(--ii-surface); color: var(--ii-on-surface); transition: border-color var(--ii-transition);
+}
+.ii-pin-input__field:focus { outline: 2px solid var(--ii-primary); outline-offset: 2px; border-color: var(--ii-primary); }
+

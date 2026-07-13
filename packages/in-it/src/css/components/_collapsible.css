@@ -1,0 +1,12 @@
+/* --- Collapsible --- */
+.ii-collapsible {}
+.ii-collapsible__trigger {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  padding: 12px 0; background: none; border: none; cursor: pointer; font-family: inherit;
+  font-size: var(--ii-font-base); font-weight: 500; color: var(--ii-on-surface); text-align: left;
+}
+.ii-collapsible__chevron { font-size: 0.7rem; color: var(--ii-on-surface-variant); transition: transform 200ms ease; }
+.ii-collapsible__chevron--open { transform: rotate(180deg); }
+.ii-collapsible__content { overflow: hidden; transition: max-height 200ms ease; }
+.ii-collapsible__content[hidden] { display: none; }
+

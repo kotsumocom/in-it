@@ -1,0 +1,7 @@
+/* --- Breadcrumb --- */
+.ii-breadcrumb { display: flex; align-items: center; gap: 8px; font-size: var(--ii-font-sm); }
+.ii-breadcrumb__item { color: var(--ii-on-surface-variant); text-decoration: none; }
+.ii-breadcrumb__item:hover { color: var(--ii-primary); }
+.ii-breadcrumb__item--current { color: var(--ii-on-surface); font-weight: 500; }
+.ii-breadcrumb__sep { color: var(--ii-outline); font-size: 0.7rem; }
+

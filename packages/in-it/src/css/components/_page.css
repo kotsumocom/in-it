@@ -1,0 +1,18 @@
+/* --- Page --- */
+.ii-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--ii-spacing-6);
+}
+.ii-page__title {
+  font-size: var(--ii-font-2xl);
+  font-weight: 700;
+  color: var(--ii-on-surface);
+}
+.ii-page__desc {
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface-variant);
+  margin-top: var(--ii-spacing-1);
+}
+

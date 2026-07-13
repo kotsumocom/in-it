@@ -1,0 +1,14 @@
+/* --- Clipboard --- */
+.ii-clipboard { display: inline-flex; align-items: center; gap: 8px; }
+.ii-clipboard__text {
+  padding: 8px 12px; background: var(--ii-surface-container); border-radius: var(--ii-shape-sm);
+  font-family: 'Fira Code', monospace; font-size: var(--ii-font-sm); color: var(--ii-on-surface);
+  user-select: all;
+}
+.ii-clipboard__btn {
+  display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;
+  border: 1px solid var(--ii-outline-variant); border-radius: var(--ii-shape-sm);
+  background: var(--ii-surface); cursor: pointer; transition: all var(--ii-transition);
+}
+.ii-clipboard__btn:hover { background: var(--ii-surface-container-high); }
+

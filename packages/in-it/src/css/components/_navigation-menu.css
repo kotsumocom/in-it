@@ -1,0 +1,21 @@
+/* --- NavigationMenu --- */
+.ii-nav-menu { display: flex; align-items: center; gap: 4px; }
+.ii-nav-menu__item {
+  padding: 8px 16px; border-radius: var(--ii-shape-sm); background: none; border: none;
+  cursor: pointer; font-family: inherit; font-size: var(--ii-font-base); font-weight: 500;
+  color: var(--ii-on-surface-variant); transition: all var(--ii-transition); text-decoration: none;
+}
+.ii-nav-menu__item:hover { background: var(--ii-surface-container); color: var(--ii-on-surface); }
+.ii-nav-menu__item--active { color: var(--ii-primary); background: color-mix(in srgb, var(--ii-primary) 8%, transparent); }
+.ii-nav-menu__dropdown {
+  position: absolute; top: 100%; left: 0; margin-top: 4px; background: var(--ii-surface);
+  border: 1px solid var(--ii-outline-variant); border-radius: var(--ii-shape-md);
+  box-shadow: var(--ii-shadow-md); padding: 4px; min-width: 200px; z-index: 50;
+}
+.ii-nav-menu__link {
+  display: block; padding: 8px 12px; border-radius: var(--ii-shape-sm);
+  color: var(--ii-on-surface); text-decoration: none; font-size: var(--ii-font-sm);
+  transition: background var(--ii-transition);
+}
+.ii-nav-menu__link:hover { background: var(--ii-surface-container-high); }
+

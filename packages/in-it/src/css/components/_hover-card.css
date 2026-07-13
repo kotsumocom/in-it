@@ -1,0 +1,9 @@
+/* --- HoverCard --- */
+.ii-hover-card { position: relative; display: inline-block; }
+.ii-hover-card__content {
+  position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+  margin-bottom: 8px; background: var(--ii-surface); border: 1px solid var(--ii-outline-variant);
+  border-radius: var(--ii-shape-lg); box-shadow: var(--ii-shadow-lg); padding: 16px;
+  min-width: 280px; z-index: 50; animation: ii-fade-in 100ms ease;
+}
+

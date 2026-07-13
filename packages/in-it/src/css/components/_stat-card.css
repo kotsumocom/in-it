@@ -1,0 +1,30 @@
+/* --- Stat Card --- */
+.ii-stat-card {
+  background: var(--ii-surface);
+  border: 1px solid var(--ii-outline-variant);
+  border-radius: var(--ii-shape-md);
+  padding: var(--ii-spacing-5);
+}
+.ii-stat-card__label {
+  font-size: var(--ii-font-sm);
+  color: var(--ii-on-surface-variant);
+}
+.ii-stat-card__value {
+  font-size: var(--ii-font-2xl);
+  font-weight: 700;
+  margin-top: var(--ii-spacing-1);
+}
+.ii-stat-card__trend {
+  font-size: var(--ii-font-sm);
+  margin-top: var(--ii-spacing-1);
+}
+.ii-stat-card__trend--up { color: var(--ii-success); }
+.ii-stat-card__trend--down { color: var(--ii-error); }
+
+/* --- Stats Grid --- */
+.ii-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--ii-spacing-4);
+}
+

@@ -1,0 +1,22 @@
+/* --- Progress Bar --- */
+.ii-progress { display: flex; flex-direction: column; gap: 6px; }
+.ii-progress__label { display: flex; justify-content: space-between; font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); }
+.ii-progress__track { height: 4px; background: var(--ii-outline-variant); border-radius: 2px; overflow: hidden; }
+.ii-progress__fill { height: 100%; background: var(--ii-primary); border-radius: 2px; transition: width 300ms ease; }
+.ii-progress__fill--indeterminate {
+  width: 40%; animation: ii-progress-indeterminate 1.5s infinite ease-in-out;
+}
+@keyframes ii-progress-indeterminate {
+  0% { transform: translateX(-100%); } 100% { transform: translateX(350%); }
+}
+
+/* --- Progress Circular --- */
+.ii-progress-circular { display: inline-flex; position: relative; }
+.ii-progress-circular__svg { transform: rotate(-90deg); }
+.ii-progress-circular__track { stroke: var(--ii-outline-variant); fill: none; }
+.ii-progress-circular__fill { stroke: var(--ii-primary); fill: none; stroke-linecap: round; transition: stroke-dashoffset 300ms ease; }
+.ii-progress-circular__label {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: var(--ii-font-sm); font-weight: 600; color: var(--ii-on-surface);
+}
+

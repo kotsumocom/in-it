@@ -1,0 +1,38 @@
+/* --- AdminShell Mobile --- */
+.ii-admin-header__hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  color: var(--ii-on-surface);
+  cursor: pointer;
+  border-radius: var(--ii-shape-sm);
+}
+.ii-admin-header__hamburger:hover {
+  background: var(--ii-surface-container-high);
+}
+.ii-admin-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 99;
+}
+.ii-admin-overlay--open { display: block; }
+@media (max-width: 768px) {
+  .ii-admin-rail--mobile-open {
+    display: flex;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+    z-index: 100;
+    box-shadow: var(--ii-shadow-lg);
+  }
+  .ii-admin-rail--mobile-open .ii-admin-rail__label { opacity: 1; }
+}
+

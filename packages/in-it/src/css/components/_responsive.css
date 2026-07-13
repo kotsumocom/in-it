@@ -1,0 +1,14 @@
+/* Responsive */
+@media (max-width: 1024px) {
+  .ii-docs-toc { display: none; }
+  .ii-docs-content { padding: 24px; max-width: 100%; }
+}
+@media (max-width: 768px) {
+  .ii-docs-sidebar { display: none; }
+  .ii-lp-hero__headline { font-size: 2rem; }
+  .ii-lp-features__grid { grid-template-columns: 1fr; }
+  .ii-admin-rail { display: none; }
+  .ii-admin-header__hamburger { display: flex; }
+  .ii-pricing-grid { grid-template-columns: 1fr; }
+}
+

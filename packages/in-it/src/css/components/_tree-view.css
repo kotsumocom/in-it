@@ -1,0 +1,14 @@
+/* --- TreeView --- */
+.ii-tree { list-style: none; padding: 0; }
+.ii-tree__item { }
+.ii-tree__node {
+  display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: var(--ii-shape-sm);
+  cursor: pointer; font-size: var(--ii-font-sm); color: var(--ii-on-surface);
+  transition: background var(--ii-transition);
+}
+.ii-tree__node:hover { background: var(--ii-surface-container); }
+.ii-tree__node--selected { background: color-mix(in srgb, var(--ii-primary) 12%, var(--ii-surface)); color: var(--ii-primary); }
+.ii-tree__toggle { background: none; border: none; cursor: pointer; font-size: 0.6rem; color: var(--ii-on-surface-variant); width: 16px; }
+.ii-tree__icon { font-size: 1rem; }
+.ii-tree__children { padding-left: 20px; }
+
