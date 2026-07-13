@@ -2,6 +2,7 @@
  * ThemeToggle - light/dark/system toggle
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
+import { Icon } from "../../icons/Icon.tsx";
 
 /** Available theme modes: light, dark, or system preference. */
 export type Theme = "light" | "dark" | "system";
@@ -50,9 +51,9 @@ export function ThemeToggle({ defaultTheme = "system", compact = false, onChange
   if (compact) {
     return (
       <button type="button" class="ii-theme-toggle" onClick={cycle} aria-label={`Theme: ${theme}`}>
-        {theme === "light" && "L"}
-        {theme === "dark" && "D"}
-        {theme === "system" && "S"}
+        {theme === "light" && <Icon name="sun" size={18} />}
+        {theme === "dark" && <Icon name="moon" size={18} />}
+        {theme === "system" && <Icon name="monitor" size={18} />}
       </button>
     );
   }
@@ -73,9 +74,9 @@ export function ThemeToggle({ defaultTheme = "system", compact = false, onChange
           class={`ii-theme-toggle-group__btn${theme === t ? " ii-theme-toggle-group__btn--active" : ""}`}
           onClick={() => setAndNotify(t)}
         >
-          {t === "light" && "Light"}
-          {t === "dark" && "Dark"}
-          {t === "system" && "System"}
+          {t === "light" && <><Icon name="sun" size={16} /> Light</>}
+          {t === "dark" && <><Icon name="moon" size={16} /> Dark</>}
+          {t === "system" && <><Icon name="monitor" size={16} /> System</>}
         </button>
       ))}
     </div>

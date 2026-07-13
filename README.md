@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <strong>Everything is in it.</strong> — Zero-dependency SaaS starter framework
+  <strong>Everything is in it.</strong> — Hono-only dependency SaaS starter framework
 </p>
 
 <p align="center">
@@ -35,10 +35,11 @@ import { Button, Card, ThemeToggle, Dialog } from "@kotsumo/in-it";
 | | Feature | Description |
 |---|---|---|
 | ⚡ | **One Stack** | Hono handles both server and client |
-| 🚫 | **Zero External Dependencies** | ARIA, router, HCT color, Markdown parser — all built from scratch |
+| 🛡️ | **Hono-Only Dependency** | ARIA, router, HCT color, icons, Markdown parser — all built from scratch |
 | 🧩 | **50+ Components** | Forms, feedback, navigation, layouts |
 | 🎨 | **HCT Color System** | Material Design 3 compatible, light/dark themes from a single preset |
 | ♿ | **ARIA Compliant** | WAI-ARIA APG compliant interactive components |
+| 📎 | **Built-in Icons** | 46 Lucide-derived SVG icons, no extra dependencies |
 | 🔄 | **Dual Runtime** | Works on both Deno and Bun |
 
 ## 🧩 Components
@@ -83,7 +84,7 @@ Button, Badge, Card, StatCard, DataTable, Avatar, Chip, Skeleton, EmptyState, Di
 
 ## 🎨 HCT Color System
 
-Material Design 3 compatible HCT (Hue-Chroma-Tone) color system, implemented from scratch with **zero external dependencies**.
+Material Design 3 compatible HCT (Hue-Chroma-Tone) color system, implemented from scratch with **no additional dependencies**.
 
 ```typescript
 import { HctColor, generateScheme, getPresetCss } from "@kotsumo/in-it";
@@ -153,6 +154,15 @@ All classes use the `ii-` prefix with BEM convention:
 ## 📄 License
 
 [MIT](./LICENSE)
+
+## Icons
+
+Built-in icons are derived from [Lucide Icons](https://lucide.dev) (ISC License).
+SVG path data is bundled directly — no runtime dependency on the Lucide package.
+
+We're exploring the development of a custom icon set for in-it.
+If you're a designer interested in contributing, please reach out via
+[GitHub Discussions](https://github.com/kotsumocom/in-it/discussions).
 
 ## ❤️ Sponsors
 

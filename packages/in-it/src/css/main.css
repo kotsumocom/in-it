@@ -90,6 +90,19 @@
   }
 }
 
+/* --- Icon --- */
+.ii-icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.ii-accordion__icon {
+  transition: transform 0.2s ease;
+}
+.ii-accordion__icon--open {
+  transform: rotate(180deg);
+}
+
 /* --- Reset --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {

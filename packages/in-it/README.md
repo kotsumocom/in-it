@@ -3,20 +3,21 @@
 </p>
 
 <p align="center">
-  <strong>Everything is in it.</strong> — Zero-dependency SaaS starter framework for Hono + Deno/Bun.
+  <strong>Everything is in it.</strong> — Hono-only dependency SaaS starter framework for Deno/Bun.
 </p>
 
 [![JSR](https://jsr.io/badges/@kotsumo/in-it)](https://jsr.io/@kotsumo/in-it)
 
 ## Features
 
-- **HCT Color System** — Zero-dependency CAM16/HCT implementation for perceptually uniform colors
+- **HCT Color System** — CAM16/HCT implementation for perceptually uniform colors
 - **MD3 Theming** — Material Design 3 color scheme generation from any source color
 - **WAI-ARIA Components** — Accessible interactive components (Switch, Dialog, Tabs, Menu, Toast, etc.)
 - **UI Components** — Button, Card, Badge, Input, Avatar, DataTable, and more
 - **Layout Components** — AdminShell, DocsShell, Landing page components
+- **Built-in Icons** — 46 Lucide-derived SVG icons, bundled with no extra dependencies
 - **SPA Router** — Lightweight History API-based router for hono/jsx/dom
-- **Markdown Parser** — Zero-dependency parser with frontmatter, GFM, and TOC generation
+- **Markdown Parser** — Self-implemented parser with frontmatter, GFM, and TOC generation
 
 ## Install
 

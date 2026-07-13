@@ -1,6 +1,7 @@
 /**
  * extras.tsx - Additional UI components
  */
+import { Icon } from "../../icons/Icon.tsx";
 
 /** Props for the Textarea component. */
 export interface TextareaProps {
@@ -22,20 +23,25 @@ export function Textarea({ label, placeholder, rows = 3, helper, error, value, o
 /** Props for the Alert component. */
 export interface AlertProps {
   variant?: "info" | "success" | "warning" | "error";
-  title?: string; icon?: string; closable?: boolean; onClose?: () => void; children: any;
+  title?: string; icon?: any; closable?: boolean; onClose?: () => void; children: any;
 }
 /** Inline alert banner with icon, title, and dismissible option. */
 export function Alert({ variant = "info", title, icon, closable, onClose, children }: AlertProps): any {
-  const icons: Record<string, string> = { info: "i", success: "ok", warning: "!", error: "x" };
+  const defaultIcons: Record<string, any> = {
+    info: <Icon name="info" size={18} />,
+    success: <Icon name="circle-check" size={18} />,
+    warning: <Icon name="alert-triangle" size={18} />,
+    error: <Icon name="circle-x" size={18} />,
+  };
   return (
     <div class={`ii-alert ii-alert--${variant}`} role="alert">
-      <span class="ii-alert__icon">{icon ?? icons[variant]}</span>
+      <span class="ii-alert__icon">{icon ?? defaultIcons[variant]}</span>
       <div class="ii-alert__body">
         {title && <div class="ii-alert__title">{title}</div>}
         <div class="ii-alert__desc">{children}</div>
       </div>
       {closable && (
-        <button class="ii-alert__close" onClick={onClose} aria-label="Close">x</button>
+        <button class="ii-alert__close" onClick={onClose} aria-label="Close"><Icon name="x" size={16} /></button>
       )}
     </div>
   );

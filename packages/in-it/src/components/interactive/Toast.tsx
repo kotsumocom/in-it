@@ -3,6 +3,7 @@
  * WAI-ARIA Alert + Live Region
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
+import { Icon } from "../../icons/Icon.tsx";
 
 /** A single toast notification with message, variant, and auto-dismiss duration. */
 export interface ToastItem {
@@ -52,13 +53,13 @@ export function ToastContainer({ position = "top-right" }: ToastContainerProps):
       {toasts.map((t) => (
         <div key={t.id} class={`ii-toast ii-toast--${t.variant ?? "info"}`} role="alert">
           <span class="ii-toast__icon">
-            {t.variant === "success" && "ok"}
-            {t.variant === "error" && "x"}
-            {t.variant === "warning" && "!"}
-            {(!t.variant || t.variant === "info") && "i"}
+            {t.variant === "success" && <Icon name="circle-check" size={18} />}
+            {t.variant === "error" && <Icon name="circle-x" size={18} />}
+            {t.variant === "warning" && <Icon name="alert-triangle" size={18} />}
+            {(!t.variant || t.variant === "info") && <Icon name="info" size={18} />}
           </span>
           <span class="ii-toast__msg">{t.message}</span>
-          <button class="ii-toast__close" onClick={() => remove(t.id)} aria-label="Close">x</button>
+          <button class="ii-toast__close" onClick={() => remove(t.id)} aria-label="Close"><Icon name="x" size={16} /></button>
         </div>
       ))}
     </div>

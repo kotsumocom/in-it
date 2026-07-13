@@ -1,9 +1,10 @@
 /**
  * @module
- * in-it — Zero-dependency SaaS starter framework for Hono + Deno/Bun.
+ * in-it — Hono-only dependency SaaS starter framework for Deno/Bun.
  *
  * Provides HCT color system, WAI-ARIA accessible components,
- * MD3 theming, SPA router, and markdown parser.
+ * MD3 theming, built-in icons (derived from Lucide), SPA router,
+ * and markdown parser.
  *
  * @example Basic usage
  * ```ts
@@ -25,3 +26,6 @@ export * from "./color/presets.ts";
 export { parseMarkdown, tocToDocsFormat } from "./docs/markdown.ts";
 export type { MarkdownMeta, TocItem, ParsedMarkdown } from "./docs/markdown.ts";
 export { Route, Switch, Link, useLocation } from "./router.tsx";
+export { Icon, iconSvg } from "./icons/Icon.tsx";
+export type { IconProps } from "./icons/Icon.tsx";
+export { ICON_PATHS } from "./icons/paths.ts";

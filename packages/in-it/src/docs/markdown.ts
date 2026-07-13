@@ -1,6 +1,6 @@
 /**
  * @module docs
- * Markdown parser (self-implemented, zero dependencies).
+ * Markdown parser (self-implemented, no additional dependencies).
  * JSON Frontmatter + GFM subset + TOC generation.
  * Deno/Bun compatible.
  *
@@ -167,8 +167,13 @@ export function parseMarkdown(content: string): ParsedMarkdown {
         i++;
       }
       const asideContent = asideLines.map(parseInline).join("<br>");
-      const icons: Record<string, string> = { note: "", tip: "", caution: "", danger: "" };
-      htmlParts.push(`<div class="ii-aside ii-aside--${variant}"><div class="ii-aside__title"><span>${icons[variant]}</span><span>${variant.charAt(0).toUpperCase() + variant.slice(1)}</span></div><div class="ii-aside__body">${asideContent}</div></div>`);
+      const iconMap: Record<string, string> = {
+        note: '<svg class="ii-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>',
+        tip: '<svg class="ii-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>',
+        caution: '<svg class="ii-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>',
+        danger: '<svg class="ii-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" /></svg>',
+      };
+      htmlParts.push(`<div class="ii-aside ii-aside--${variant}"><div class="ii-aside__title"><span>${iconMap[variant] ?? ""}</span><span>${variant.charAt(0).toUpperCase() + variant.slice(1)}</span></div><div class="ii-aside__body">${asideContent}</div></div>`);
       continue;
     }
 

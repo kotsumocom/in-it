@@ -3,6 +3,7 @@
  * WAI-ARIA Accordion pattern
  */
 import { useState, useCallback } from "hono/jsx";
+import { Icon } from "../../icons/Icon.tsx";
 
 /** Definition of a single accordion item for the component. */
 export interface AccordionItemDef {
@@ -52,7 +53,7 @@ export function Accordion({ items, multiple = false, defaultOpen = [] }: Accordi
               onClick={() => { if (!item.disabled) toggle(item.id); }}
             >
               <span class="ii-accordion__title">{item.title}</span>
-              <span class="ii-accordion__icon">{isOpen ? "-" : "+"}</span>
+              <span class={`ii-accordion__icon${isOpen ? " ii-accordion__icon--open" : ""}`}><Icon name="chevron-down" size={18} /></span>
             </button>
             {isOpen && (
               <div

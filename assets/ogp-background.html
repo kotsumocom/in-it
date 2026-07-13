@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OGP Background Generator</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #1a1a2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 24px;
+      padding: 40px;
+    }
+
+    /* --- OGP Canvas (1200x630) --- */
+    .ogp {
+      width: 1200px;
+      height: 630px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      /* Deep dark gradient background */
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 40%, rgba(25, 118, 210, 0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 50% at 80% 60%, rgba(0, 137, 123, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 50% 0%, rgba(25, 118, 210, 0.08) 0%, transparent 70%),
+        linear-gradient(160deg, #0a0e1a 0%, #0f1628 30%, #111d33 60%, #0d1a2a 100%);
+    }
+
+    /* Subtle grid pattern overlay */
+    .ogp::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 80%);
+    }
+
+    /* Glowing orb - top right */
+    .ogp::after {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      top: -200px;
+      right: -100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 137, 123, 0.08) 0%, transparent 70%);
+      filter: blur(60px);
+    }
+
+    /* Accent line at top */
+    .ogp-accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg,
+        transparent 5%,
+        #1976d2 20%,
+        #00897b 50%,
+        #1976d2 80%,
+        transparent 95%
+      );
+      opacity: 0.7;
+    }
+
+    /* Subtle corner decorations */
+    .ogp-corner {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      opacity: 0.06;
+    }
+    .ogp-corner--tl {
+      top: 40px; left: 40px;
+      border-top: 2px solid #1976d2;
+      border-left: 2px solid #1976d2;
+    }
+    .ogp-corner--br {
+      bottom: 40px; right: 40px;
+      border-bottom: 2px solid #00897b;
+      border-right: 2px solid #00897b;
+    }
+
+    /* Floating particles / dots */
+    .ogp-dots {
+      position: absolute;
+      inset: 0;
+    }
+    .ogp-dot {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255, 0.04);
+    }
+
+    /* Controls below */
+    .controls {
+      color: #ccc;
+      font-size: 14px;
+      text-align: center;
+    }
+    .controls code {
+      background: #2a2a4e;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+      color: #88aaff;
+    }
+    h2 { color: #fff; font-size: 18px; margin-bottom: 8px; }
+  </style>
+  <!-- Google Fonts for preview -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <h2>OGP Background — 1200×630</h2>
+
+  <div class="ogp" id="ogp-canvas">
+    <!-- Accent line -->
+    <div class="ogp-accent"></div>
+
+    <!-- Corner decorations -->
+    <div class="ogp-corner ogp-corner--tl"></div>
+    <div class="ogp-corner ogp-corner--br"></div>
+
+    <!-- Subtle dots -->
+    <div class="ogp-dots">
+      <div class="ogp-dot" style="width:4px;height:4px;top:15%;left:12%"></div>
+      <div class="ogp-dot" style="width:3px;height:3px;top:25%;left:75%"></div>
+      <div class="ogp-dot" style="width:5px;height:5px;top:65%;left:8%"></div>
+      <div class="ogp-dot" style="width:3px;height:3px;top:70%;left:88%"></div>
+      <div class="ogp-dot" style="width:4px;height:4px;top:40%;left:92%"></div>
+      <div class="ogp-dot" style="width:3px;height:3px;top:85%;left:30%"></div>
+      <div class="ogp-dot" style="width:4px;height:4px;top:10%;left:55%"></div>
+      <div class="ogp-dot" style="width:3px;height:3px;top:50%;left:20%"></div>
+    </div>
+
+    <!--
+      LOGO PLACEMENT GUIDE:
+      Place your logo image centered in this container.
+      Recommended: absolute position, centered, ~300-400px wide
+      Example:
+      <img src="logo.svg" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);width:360px" />
+      <div style="position:absolute;bottom:120px;left:50%;transform:translateX(-50%);color:#fff;font-size:48px;font-weight:700;font-family:Inter">in-it</div>
+      <div style="position:absolute;bottom:80px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.5);font-size:20px;font-family:Inter">Everything is in it.</div>
+    -->
+  </div>
+
+  <div class="controls">
+    <p>
+      HTML要素を画像として保存する方法：<br><br>
+      <strong>方法1: DevTools</strong><br>
+      要素を右クリック → 検証 → Elements パネルで <code>#ogp-canvas</code> を右クリック → <code>Capture node screenshot</code><br><br>
+      <strong>方法2: html2canvas (JS ライブラリ)</strong><br>
+      <code>&lt;script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"&gt;&lt;/script&gt;</code><br>
+      <code>html2canvas(document.getElementById('ogp-canvas')).then(c =&gt; { a = document.createElement('a'); a.download = 'ogp-bg.png'; a.href = c.toDataURL(); a.click(); });</code><br><br>
+      <strong>方法3: ブラウザ拡張</strong><br>
+      GoFullPage, FireShot 等で要素キャプチャ
+    </p>
+  </div>
+
+</body>
+</html>
