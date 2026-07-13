@@ -1,9 +1,10 @@
 {
   "name": "@kotsumo/create-in-it",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "exports": "./create.ts",
   "publish": {
     "include": [
+      "README.md",
       "create.ts",
       "deno.json",
       "templates/**/*"
