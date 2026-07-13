@@ -1,10 +1,13 @@
-﻿/** Badge */
+/** Props for the {@link Badge} component.
+ * @property variant - Visual style: success, error, warning, info, or neutral (default).
+ * @property children - Badge content.
+ */
 export interface BadgeProps {
   variant?: "success" | "error" | "warning" | "info" | "neutral";
   children: any;
 }
 
-/** Badge */
+/** Small inline status label rendered as a `<span>` with color-coded variants. */
 export function Badge({ variant = "neutral", children }: BadgeProps): any {
   return (
     <span class={`ii-badge ii-badge--${variant}`}>
@@ -13,14 +16,17 @@ export function Badge({ variant = "neutral", children }: BadgeProps): any {
   );
 }
 
-/** Card */
+/** Props for the {@link Card} component.
+ * @property outlined - If true, uses a border instead of elevation.
+ * @property class - Additional CSS class names.
+ */
 export interface CardProps {
   outlined?: boolean;
   children: any;
   class?: string;
 }
 
-/** Card */
+/** Surface container for grouping related content. Supports filled (default) and outlined styles. */
 export function Card({ outlined = false, children, class: cls }: CardProps): any {
   return (
     <div class={`ii-card${outlined ? " ii-card--outlined" : ""}${cls ? ` ${cls}` : ""}`}>
@@ -29,7 +35,10 @@ export function Card({ outlined = false, children, class: cls }: CardProps): any
   );
 }
 
-/** Button */
+/** Props for the {@link Button} component.
+ * @property variant - filled (elevated), outlined (bordered), or text (minimal).
+ * @property size - sm, md (default), or lg.
+ */
 export interface ButtonProps {
   variant?: "filled" | "outlined" | "text";
   size?: "sm" | "md" | "lg";
@@ -40,7 +49,7 @@ export interface ButtonProps {
   class?: string;
 }
 
-/** Button */
+/** Interactive button element with filled, outlined, or text variants and three size options. */
 export function Button({
   variant = "filled",
   size = "md",
@@ -62,7 +71,12 @@ export function Button({
   );
 }
 
-/** StatCard */
+/** Props for the {@link StatCard} component.
+ * @property label - Metric name displayed above the value.
+ * @property value - The main numeric or text value.
+ * @property trend - Optional trend text (e.g., "+12%").
+ * @property trendUp - If true, styles trend as positive; otherwise negative.
+ */
 export interface StatCardProps {
   label: string;
   value: string;
@@ -70,7 +84,7 @@ export interface StatCardProps {
   trendUp?: boolean;
 }
 
-/** StatCard */
+/** Dashboard metric card displaying a label, value, and optional up/down trend indicator. */
 export function StatCard({ label, value, trend, trendUp }: StatCardProps): any {
   return (
     <div class="ii-stat-card">
@@ -85,7 +99,12 @@ export function StatCard({ label, value, trend, trendUp }: StatCardProps): any {
   );
 }
 
-/** DataTable */
+/** Column definition for the {@link DataTable} component.
+ * @property key - Object property to read from each row.
+ * @property header - Column header text (falls back to label, then key).
+ * @property render - Custom cell renderer receiving the cell value and full row.
+ * @property align - Text alignment: left, center, or right.
+ */
 export interface DataTableColumn<T> {
   key: keyof T & string;
   header?: string;
@@ -94,14 +113,18 @@ export interface DataTableColumn<T> {
   align?: "left" | "center" | "right";
 }
 
-/** DataTableProps interface */
+/** Props for the {@link DataTable} component.
+ * @property columns - Column definitions.
+ * @property data - Array of row objects.
+ * @property rowKey - Function to derive a unique key for each row.
+ */
 export interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
   data: T[];
   rowKey?: (row: T) => string;
 }
 
-/** DataTable */
+/** Responsive HTML table with configurable columns, custom cell renderers, and column alignment. */
 export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>): any {
   const getKey = rowKey ?? ((_row: T, i: number) => String(i));
   return (
@@ -132,7 +155,11 @@ export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>): any 
   );
 }
 
-/** Input */
+/** Props for the {@link Input} component.
+ * @property label - Label text above the input field.
+ * @property helper - Hint text shown below the field (hidden when error is set).
+ * @property error - Error message shown below the field, overrides helper.
+ */
 export interface InputProps {
   label?: string;
   placeholder?: string;
@@ -144,7 +171,7 @@ export interface InputProps {
   onInput?: (e: Event) => void;
 }
 
-/** Input */
+/** Text input field with optional label, helper text, and error state. Error takes priority over helper. */
 export function Input({ label, placeholder, value, type = "text", helper, error, disabled, onInput }: InputProps): any {
   return (
     <div class="ii-input">
@@ -163,14 +190,18 @@ export function Input({ label, placeholder, value, type = "text", helper, error,
   );
 }
 
-/** Avatar */
+/** Props for the {@link Avatar} component.
+ * @property name - User's full name; initials are derived from the first letters of each word (max 2).
+ * @property src - Image URL. When provided, displays the image instead of initials.
+ * @property size - sm (small), md (default), or lg (large).
+ */
 export interface AvatarProps {
   name?: string;
   src?: string;
   size?: "sm" | "md" | "lg";
 }
 
-/** Avatar */
+/** Circular avatar displaying a user image or auto-generated initials from the user's name. */
 export function Avatar({ name, src, size = "md" }: AvatarProps): any {
   const initials = name?.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() ?? "?";
   return (
@@ -180,14 +211,17 @@ export function Avatar({ name, src, size = "md" }: AvatarProps): any {
   );
 }
 
-/** Chip */
+/** Props for the {@link Chip} component.
+ * @property variant - Color variant: default, primary, success, or error.
+ * @property onClose - When provided, renders a close button that calls this handler.
+ */
 export interface ChipProps {
   variant?: "default" | "primary" | "success" | "error";
   onClose?: () => void;
   children: any;
 }
 
-/** Chip */
+/** Compact label element for tags, filters, or selections. Supports an optional dismiss button. */
 export function Chip({ variant = "default", onClose, children }: ChipProps): any {
   return (
     <span class={`ii-chip${variant !== "default" ? ` ii-chip--${variant}` : ""}`}>
@@ -201,14 +235,18 @@ export function Chip({ variant = "default", onClose, children }: ChipProps): any
   );
 }
 
-/** Skeleton */
+/** Props for the {@link Skeleton} component.
+ * @property width - CSS width value (default: "100%").
+ * @property height - CSS height value (default: "1em").
+ * @property circle - If true, renders a circular skeleton instead of a text block.
+ */
 export interface SkeletonProps {
   width?: string;
   height?: string;
   circle?: boolean;
 }
 
-/** Skeleton */
+/** Animated placeholder block indicating content is loading. Supports text-line and circle shapes. */
 export function Skeleton({ width = "100%", height = "1em", circle = false }: SkeletonProps): any {
   return (
     <div
@@ -218,7 +256,12 @@ export function Skeleton({ width = "100%", height = "1em", circle = false }: Ske
   );
 }
 
-/** EmptyState */
+/** Props for the {@link EmptyState} component.
+ * @property icon - Emoji or icon string displayed above the title.
+ * @property title - Heading text.
+ * @property description - Optional body text below the title.
+ * @property children - Optional action elements (e.g., a button).
+ */
 export interface EmptyStateProps {
   icon?: string;
   title: string;
@@ -226,7 +269,7 @@ export interface EmptyStateProps {
   children?: any;
 }
 
-/** EmptyState */
+/** Centered placeholder for empty lists or search results, with icon, title, description, and optional actions. */
 export function EmptyState({ icon = "", title, description, children }: EmptyStateProps): any {
   return (
     <div class="ii-empty">

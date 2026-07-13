@@ -1,13 +1,13 @@
-﻿/**
+/**
  * extras.tsx - Additional UI components
  */
 
-/** TextareaProps interface */
+/** Props for the Textarea component. */
 export interface TextareaProps {
   label?: string; placeholder?: string; rows?: number; helper?: string; error?: string;
   value?: string; onInput?: (e: Event) => void;
 }
-/** Textarea */
+/** Multi-line text input with label and validation support. */
 export function Textarea({ label, placeholder, rows = 3, helper, error, value, onInput }: TextareaProps): any {
   return (
     <div class={`ii-input${error ? " ii-input--error" : ""}`}>
@@ -19,12 +19,12 @@ export function Textarea({ label, placeholder, rows = 3, helper, error, value, o
   );
 }
 
-/** AlertProps interface */
+/** Props for the Alert component. */
 export interface AlertProps {
   variant?: "info" | "success" | "warning" | "error";
   title?: string; icon?: string; closable?: boolean; onClose?: () => void; children: any;
 }
-/** Alert */
+/** Inline alert banner with icon, title, and dismissible option. */
 export function Alert({ variant = "info", title, icon, closable, onClose, children }: AlertProps): any {
   const icons: Record<string, string> = { info: "i", success: "ok", warning: "!", error: "x" };
   return (
@@ -41,9 +41,9 @@ export function Alert({ variant = "info", title, icon, closable, onClose, childr
   );
 }
 
-/** ProgressProps interface */
+/** Props for the Progress bar component. */
 export interface ProgressProps { value?: number; max?: number; label?: string; }
-/** Progress */
+/** Horizontal progress bar with optional label. */
 export function Progress({ value = 0, max = 100, label }: ProgressProps): any {
   const pct = Math.round((value / max) * 100);
   return (
@@ -56,9 +56,9 @@ export function Progress({ value = 0, max = 100, label }: ProgressProps): any {
   );
 }
 
-/** ProgressCircularProps interface */
+/** Props for the ProgressCircular component. */
 export interface ProgressCircularProps { value?: number; size?: number; strokeWidth?: number; }
-/** ProgressCircular */
+/** Circular/radial progress indicator with percentage display. */
 export function ProgressCircular({ value = 0, size = 48, strokeWidth = 4 }: ProgressCircularProps): any {
   const r = (size - strokeWidth) / 2;
   const c = 2 * Math.PI * r;
@@ -76,11 +76,11 @@ export function ProgressCircular({ value = 0, size = 48, strokeWidth = 4 }: Prog
   );
 }
 
-/** BreadcrumbItem interface */
+/** A single breadcrumb navigation item. */
 export interface BreadcrumbItem { label: string; href?: string; }
-/** BreadcrumbProps interface */
+/** Props for the Breadcrumb component. */
 export interface BreadcrumbProps { items: BreadcrumbItem[]; separator?: string; }
-/** Breadcrumb */
+/** Breadcrumb navigation trail with customizable separator. */
 export function Breadcrumb({ items, separator = "/" }: BreadcrumbProps): any {
   return (
     <nav class="ii-breadcrumb" aria-label="Breadcrumb">
@@ -98,9 +98,9 @@ export function Breadcrumb({ items, separator = "/" }: BreadcrumbProps): any {
   );
 }
 
-/** DividerProps interface */
+/** Props for the Divider component. */
 export interface DividerProps { label?: string; }
-/** Divider */
+/** Horizontal rule divider with optional label. */
 export function Divider({ label }: DividerProps): any {
   if (label) {
     return <div class="ii-divider ii-divider--label"><span>{label}</span></div>;
@@ -108,9 +108,9 @@ export function Divider({ label }: DividerProps): any {
   return <hr class="ii-divider" />;
 }
 
-/** KbdProps interface */
+/** Props for the Kbd component. */
 export interface KbdProps { children: any; }
-/** Kbd */
+/** Keyboard shortcut indicator styled as a key cap. */
 export function Kbd({ children }: KbdProps): any {
   return <kbd class="ii-kbd">{children}</kbd>;
 }

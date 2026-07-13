@@ -1,28 +1,28 @@
-﻿/**
+/**
  * DocsShell — Documentation layout (Sidebar + Content + TOC)
  */
 
-/** DocsSidebarItem interface */
+/** A single documentation sidebar link. */
 export interface DocsSidebarItem {
   href: string;
   label: string;
   active?: boolean;
 }
 
-/** DocsSidebarGroup interface */
+/** A labeled group of sidebar links. */
 export interface DocsSidebarGroup {
   group: string;
   items: DocsSidebarItem[];
 }
 
-/** DocsTocItem interface */
+/** A table-of-contents entry (h2 or h3 heading). */
 export interface DocsTocItem {
   id: string;
   text: string;
   level: 2 | 3;
 }
 
-/** DocsShellProps interface */
+/** Props for the DocsShell layout component. */
 export interface DocsShellProps {
   brand: string;
   brandHref?: string;
@@ -33,7 +33,7 @@ export interface DocsShellProps {
   themeToggle?: any;
 }
 
-/** DocsShell */
+/** Documentation site layout with sidebar navigation, content area, and table of contents. */
 export function DocsShell({ brand, brandHref = "/", navLinks = [], sidebarGroups, tocItems = [], children, themeToggle }: DocsShellProps): any {
   return (
     <div class="ii-docs-shell">

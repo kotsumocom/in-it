@@ -1,4 +1,4 @@
-﻿/**
+/**
  * WAI-ARIA Combobox pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/combobox/
  *
@@ -6,14 +6,14 @@
  * Keyboard: Arrow, Home, End, Enter, Escape
  */
 
-/** ComboboxOption interface */
+/** A selectable option in the combobox dropdown list. */
 export interface ComboboxOption {
   value: string;
   label: string;
   disabled?: boolean;
 }
 
-/** ComboboxApi interface */
+/** API returned by {@link createCombobox} for managing combobox state and ARIA props. */
 export interface ComboboxApi {
   inputProps: {
     role: "combobox";
@@ -51,7 +51,7 @@ export interface ComboboxApi {
   setInputValue: (value: string) => void;
 }
 
-/** CreateComboboxOptions interface */
+/** Configuration options for creating a combobox instance. */
 export interface CreateComboboxOptions {
   options: ComboboxOption[];
   defaultValue?: string;
@@ -64,7 +64,7 @@ export interface CreateComboboxOptions {
 
 let comboboxCounter = 0;
 
-/** createCombobox */
+/** Creates a WAI-ARIA compliant combobox with text filtering and keyboard navigation. */
 export function createCombobox(opts: CreateComboboxOptions): ComboboxApi {
   const prefix = opts.id ?? `combobox-${++comboboxCounter}`;
   const listboxId = `${prefix}-listbox`;

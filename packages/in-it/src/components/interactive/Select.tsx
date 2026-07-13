@@ -1,17 +1,17 @@
-﻿/**
+/**
  * Select component (hono/jsx/dom)
  * WAI-ARIA Listbox pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
-/** SelectOption interface */
+/** A single option in the select dropdown. */
 export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
 }
 
-/** SelectProps interface */
+/** Props for the Select component. */
 export interface SelectProps {
   options: SelectOption[];
   value?: string;
@@ -21,7 +21,7 @@ export interface SelectProps {
   onChange?: (value: string) => void;
 }
 
-/** Select */
+/** Custom select dropdown with keyboard navigation and ARIA listbox pattern. */
 export function Select({ options, value, placeholder = "Select...", label, disabled, onChange }: SelectProps): any {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(value ?? "");

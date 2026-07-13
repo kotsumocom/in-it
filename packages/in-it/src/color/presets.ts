@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @module color/presets
  * Preset colors with pre-computed MD3 themes.
  *
@@ -15,7 +15,7 @@
  */
 import { generateScheme, generateCss, type ColorScheme } from "./scheme.ts";
 
-/** PresetColor interface */
+/** A preset color entry containing the source hex, display label, and pre-computed light/dark color schemes. */
 export interface PresetColor {
   name: string;
   label: string;
@@ -44,7 +44,7 @@ function buildPresets(): PresetColor[] {
 }
 
 // Pre-computed presets (calculated once on module load)
-/** PRESETS */
+/** All available preset color themes, pre-computed at module load time. Includes: purple, blue, teal, green, orange, pink, red, indigo. */
 export const PRESETS: PresetColor[] = buildPresets();
 
 /** Lookup by preset name */

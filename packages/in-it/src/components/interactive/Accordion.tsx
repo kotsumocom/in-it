@@ -1,10 +1,10 @@
-﻿/**
+/**
  * Accordion component (hono/jsx/dom)
  * WAI-ARIA Accordion pattern
  */
 import { useState, useCallback } from "hono/jsx";
 
-/** AccordionItemDef interface */
+/** Definition of a single accordion item for the component. */
 export interface AccordionItemDef {
   id: string;
   title: string;
@@ -12,14 +12,14 @@ export interface AccordionItemDef {
   disabled?: boolean;
 }
 
-/** AccordionProps interface */
+/** Props for the Accordion component. */
 export interface AccordionProps {
   items: AccordionItemDef[];
   multiple?: boolean;
   defaultOpen?: string[];
 }
 
-/** Accordion */
+/** Expandable/collapsible content panels with WAI-ARIA support. */
 export function Accordion({ items, multiple = false, defaultOpen = [] }: AccordionProps): any {
   const [openIds, setOpenIds] = useState<Set<string>>(new Set(defaultOpen));
 

@@ -1,12 +1,12 @@
-﻿/**
+/**
  * Aside (Callout) - Note, Tip, Caution, Danger variants
  * Inspired by Starlight, fully self-implemented
  */
 
-/** AsideVariant type */
+/** Aside callout variant: note, tip, caution, or danger. */
 export type AsideVariant = "note" | "tip" | "caution" | "danger";
 
-/** AsideProps interface */
+/** Props for the Aside callout component. */
 export interface AsideProps {
   variant?: AsideVariant;
   title?: string;
@@ -27,7 +27,7 @@ const TITLES: Record<AsideVariant, string> = {
   danger: "Danger",
 };
 
-/** Aside */
+/** Styled callout block for notes, tips, cautions, and danger warnings. */
 export function Aside({ variant = "note", title, children }: AsideProps): any {
   return (
     <div class={`ii-aside ii-aside--${variant}`} role="note">

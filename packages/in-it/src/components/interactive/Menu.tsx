@@ -1,10 +1,10 @@
-﻿/**
+/**
  * Menu component (hono/jsx/dom)
  * WAI-ARIA Menu Button pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
-/** MenuItemDef interface */
+/** Definition of a single menu item with optional icon and separator. */
 export interface MenuItemDef {
   id: string;
   label: string;
@@ -13,7 +13,7 @@ export interface MenuItemDef {
   separator?: boolean;
 }
 
-/** MenuProps interface */
+/** Props for the Menu component. */
 export interface MenuProps {
   items: MenuItemDef[];
   onSelect?: (id: string) => void;
@@ -21,7 +21,7 @@ export interface MenuProps {
   align?: "left" | "right";
 }
 
-/** Menu */
+/** Dropdown menu button with keyboard navigation and focus management. */
 export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps): any {
   const [open, setOpen] = useState(false);
   const [focusedIdx, setFocusedIdx] = useState(-1);

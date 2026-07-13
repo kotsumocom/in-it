@@ -1,18 +1,18 @@
-﻿/**
+/**
  * AdminShell - Admin layout
  * Icon Rail + Header + Content
  */
 import { useState, useCallback } from "hono/jsx";
 import { ThemeToggle } from "../interactive/ThemeToggle.tsx";
 
-/** NavItem interface */
+/** A navigation item for the admin sidebar rail. */
 export interface NavItem {
   icon: string;
   label: string;
   href: string;
 }
 
-/** AdminShellProps interface */
+/** Props for the AdminShell layout component. */
 export interface AdminShellProps {
   brand?: string;
   navItems?: NavItem[];
@@ -21,7 +21,7 @@ export interface AdminShellProps {
   children: any;
 }
 
-/** AdminShell */
+/** Admin dashboard layout with icon rail sidebar, header, and content area. */
 export function AdminShell({
   brand = "in-it",
   navItems = [],

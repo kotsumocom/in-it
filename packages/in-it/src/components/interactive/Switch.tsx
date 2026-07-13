@@ -1,10 +1,10 @@
-﻿/**
+/**
  * Switch component
  * WAI-ARIA Switch pattern
  */
 import { useState } from "hono/jsx";
 
-/** SwitchProps interface */
+/** Props for the Switch component. */
 export interface SwitchProps {
   defaultChecked?: boolean;
   label?: string;
@@ -12,7 +12,7 @@ export interface SwitchProps {
   onChange?: (checked: boolean) => void;
 }
 
-/** Switch */
+/** Toggle switch for boolean on/off states with ARIA switch pattern. */
 export function Switch({ defaultChecked = false, label, disabled, onChange }: SwitchProps): any {
   const [checked, setChecked] = useState(defaultChecked);
 

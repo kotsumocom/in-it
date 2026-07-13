@@ -1,11 +1,11 @@
-﻿/**
+/**
  * WAI-ARIA Menu Button pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/
  *
  * Keyboard: Arrow, Home, End, Escape
  */
 
-/** MenuItem interface */
+/** Represents a single menu item with optional disabled state and separator. */
 export interface MenuItem {
   id: string;
   label: string;
@@ -14,7 +14,7 @@ export interface MenuItem {
   separator?: boolean;
 }
 
-/** MenuApi interface */
+/** API returned by {@link createMenu} for managing menu button state and ARIA props. */
 export interface MenuApi {
   /** Props to apply to the trigger button */
   triggerProps: {
@@ -47,13 +47,13 @@ export interface MenuApi {
   focusedId: string | null;
   /** Open the menu */
   open: () => void;
-  /** Close */
+  /** Close the menu dropdown and return focus to the trigger */
   close: () => void;
-  /** Toggle */
+  /** Toggle the menu open/closed */
   toggle: () => void;
 }
 
-/** CreateMenuOptions interface */
+/** Configuration options for creating a menu button instance. */
 export interface CreateMenuOptions {
   /** Menu items */
   items: MenuItem[];
@@ -67,7 +67,7 @@ export interface CreateMenuOptions {
 
 let menuCounter = 0;
 
-/** createMenu */
+/** Creates a WAI-ARIA compliant menu button with keyboard navigation. */
 export function createMenu(options: CreateMenuOptions): MenuApi {
   const prefix = options.id ?? `menu-${++menuCounter}`;
   const triggerId = `${prefix}-trigger`;

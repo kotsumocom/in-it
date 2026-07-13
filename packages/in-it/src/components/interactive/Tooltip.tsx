@@ -1,16 +1,16 @@
-﻿/**
+/**
  * Tooltip component
  */
 import { useState, useRef } from "hono/jsx";
 
-/** TooltipProps interface */
+/** Props for the Tooltip component. */
 export interface TooltipProps {
   content: string;
   position?: "top" | "bottom" | "left" | "right";
   children: any;
 }
 
-/** Tooltip */
+/** Informational tooltip shown on hover/focus with configurable position. */
 export function Tooltip({ content, position = "top", children }: TooltipProps): any {
   const [visible, setVisible] = useState(false);
 

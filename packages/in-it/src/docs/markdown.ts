@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @module docs
  * Markdown parser (self-implemented, zero dependencies).
  * JSON Frontmatter + GFM subset + TOC generation.
@@ -20,7 +20,7 @@
  * ```
  */
 
-/** MarkdownMeta interface */
+/** Frontmatter metadata extracted from a markdown document. Supports arbitrary key-value pairs via index signature. */
 export interface MarkdownMeta {
   title?: string;
   description?: string;
@@ -29,14 +29,14 @@ export interface MarkdownMeta {
   [key: string]: unknown;
 }
 
-/** TocItem interface */
+/** A single table-of-contents entry generated from h2/h3 headings in the markdown. */
 export interface TocItem {
   id: string;
   text: string;
   level: 2 | 3;
 }
 
-/** ParsedMarkdown interface */
+/** Result of {@link parseMarkdown}: contains extracted metadata, rendered HTML, and table-of-contents entries. */
 export interface ParsedMarkdown {
   meta: MarkdownMeta;
   html: string;

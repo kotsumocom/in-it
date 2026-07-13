@@ -1,9 +1,9 @@
-﻿/**
+/**
  * Checkbox component
  */
 import { useState } from "hono/jsx";
 
-/** CheckboxProps interface */
+/** Props for the Checkbox component. */
 export interface CheckboxProps {
   label?: string;
   defaultChecked?: boolean;
@@ -12,7 +12,7 @@ export interface CheckboxProps {
   onChange?: (checked: boolean) => void;
 }
 
-/** Checkbox */
+/** A checkbox input with optional indeterminate state. */
 export function Checkbox({ label, defaultChecked = false, indeterminate = false, disabled, onChange }: CheckboxProps): any {
   const [checked, setChecked] = useState(defaultChecked);
 

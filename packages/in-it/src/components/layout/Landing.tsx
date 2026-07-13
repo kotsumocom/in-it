@@ -1,9 +1,9 @@
-﻿/**
+/**
  * Landing Page components
  */
 
 // --- LandingHeader ---
-/** LandingHeaderProps interface */
+/** Props for the LandingHeader component. */
 export interface LandingHeaderProps {
   brand: string;
   brandHref?: string;
@@ -11,7 +11,7 @@ export interface LandingHeaderProps {
   themeToggle?: any;
 }
 
-/** LandingHeader */
+/** Landing page top navigation bar with brand and nav links. */
 export function LandingHeader({ brand, brandHref = "/", navLinks = [], themeToggle }: LandingHeaderProps): any {
   return (
     <header class="ii-lp-header">
@@ -29,7 +29,7 @@ export function LandingHeader({ brand, brandHref = "/", navLinks = [], themeTogg
 }
 
 // --- LandingHero ---
-/** LandingHeroProps interface */
+/** Props for the LandingHero component. */
 export interface LandingHeroProps {
   badge?: string;
   headline: string;
@@ -38,7 +38,7 @@ export interface LandingHeroProps {
   install?: string;
 }
 
-/** LandingHero */
+/** Landing page hero section with headline, subhead, and call-to-action. */
 export function LandingHero({ badge, headline, subhead, actions, install }: LandingHeroProps): any {
   return (
     <section class="ii-lp-hero">
@@ -54,19 +54,19 @@ export function LandingHero({ badge, headline, subhead, actions, install }: Land
 }
 
 // --- LandingFeatures ---
-/** FeatureCard interface */
+/** A single feature card with icon, title, and description. */
 export interface FeatureCard {
   icon: string;
   title: string;
   description: string;
 }
 
-/** LandingFeaturesProps interface */
+/** Props for the LandingFeatures component. */
 export interface LandingFeaturesProps {
   features: FeatureCard[];
 }
 
-/** LandingFeatures */
+/** Grid of feature cards for the landing page. */
 export function LandingFeatures({ features }: LandingFeaturesProps): any {
   return (
     <section class="ii-lp-features">
@@ -86,14 +86,14 @@ export function LandingFeatures({ features }: LandingFeaturesProps): any {
 }
 
 // --- LandingSection ---
-/** LandingSectionProps interface */
+/** Props for the LandingSection component. */
 export interface LandingSectionProps {
   title?: string;
   subtitle?: string;
   children: any;
 }
 
-/** LandingSection */
+/** Generic content section for the landing page. */
 export function LandingSection({ title, subtitle, children }: LandingSectionProps): any {
   return (
     <section class="ii-lp-section">
@@ -107,12 +107,12 @@ export function LandingSection({ title, subtitle, children }: LandingSectionProp
 }
 
 // --- LandingFooter ---
-/** LandingFooterProps interface */
+/** Props for the LandingFooter component. */
 export interface LandingFooterProps {
   children: any;
 }
 
-/** LandingFooter */
+/** Landing page footer with custom content. */
 export function LandingFooter({ children }: LandingFooterProps): any {
   return (
     <footer class="ii-lp-footer">

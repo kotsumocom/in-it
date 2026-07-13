@@ -1,18 +1,18 @@
-﻿/**
+/**
  * WAI-ARIA Tabs pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/tabs/
  *
  * Roving tabindex + Arrow key navigation.
  */
 
-/** TabItem interface */
+/** Represents a single tab with its value and optional disabled state. */
 export interface TabItem {
   value: string;
   label: string;
   disabled?: boolean;
 }
 
-/** TabsApi interface */
+/** API returned by {@link createTabs} for managing tabbed interface state and ARIA props. */
 export interface TabsApi {
   /** Props to apply to the tablist container */
   listProps: {
@@ -44,7 +44,7 @@ export interface TabsApi {
   select: (value: string) => void;
 }
 
-/** CreateTabsOptions interface */
+/** Configuration options for creating a tabs instance. */
 export interface CreateTabsOptions {
   /** Tab items */
   items: TabItem[];
@@ -52,7 +52,7 @@ export interface CreateTabsOptions {
   defaultValue?: string;
   /** Change callback */
   onChange?: (value: string) => void;
-  /** Orientation */
+  /** Layout direction; controls whether Arrow Left/Right or Arrow Up/Down navigates tabs */
   orientation?: "horizontal" | "vertical";
   /** ID prefix */
   id?: string;
@@ -60,7 +60,7 @@ export interface CreateTabsOptions {
 
 let tabsCounter = 0;
 
-/** createTabs */
+/** Creates a WAI-ARIA compliant tabbed interface with keyboard navigation. */
 export function createTabs(options: CreateTabsOptions): TabsApi {
   const prefix = options.id ?? `tabs-${++tabsCounter}`;
   const orientation = options.orientation ?? "horizontal";

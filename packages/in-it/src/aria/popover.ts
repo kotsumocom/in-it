@@ -1,9 +1,9 @@
-﻿/**
+/**
  * WAI-ARIA Non-modal Dialog pattern (Popover)
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/
  */
 
-/** PopoverApi interface */
+/** API returned by {@link createPopover} for managing non-modal popover state. */
 export interface PopoverApi {
   triggerProps: {
     "aria-haspopup": "dialog";
@@ -25,7 +25,7 @@ export interface PopoverApi {
   toggle: () => void;
 }
 
-/** CreatePopoverOptions interface */
+/** Configuration options for creating a popover instance. */
 export interface CreatePopoverOptions {
   id?: string;
   onOpenChange?: (open: boolean) => void;
@@ -33,7 +33,7 @@ export interface CreatePopoverOptions {
 
 let popoverCounter = 0;
 
-/** createPopover */
+/** Creates a WAI-ARIA compliant non-modal popover with light-dismiss behavior. */
 export function createPopover(opts: CreatePopoverOptions = {}): PopoverApi {
   const prefix = opts.id ?? `popover-${++popoverCounter}`;
   const triggerId = `${prefix}-trigger`;

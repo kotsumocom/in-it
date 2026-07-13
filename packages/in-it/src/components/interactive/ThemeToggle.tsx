@@ -1,12 +1,12 @@
-﻿/**
+/**
  * ThemeToggle - light/dark/system toggle
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
 
-/** Theme type */
+/** Available theme modes: light, dark, or system preference. */
 export type Theme = "light" | "dark" | "system";
 
-/** ThemeToggleProps interface */
+/** Props for the ThemeToggle component. */
 export interface ThemeToggleProps {
   defaultTheme?: Theme;
   compact?: boolean;
@@ -24,7 +24,7 @@ function applyTheme(theme: Theme) {
   document.documentElement.setAttribute("data-theme", resolved);
 }
 
-/** ThemeToggle */
+/** Light/dark/system theme toggle with persistence via data-theme attribute. */
 export function ThemeToggle({ defaultTheme = "system", compact = false, onChange }: ThemeToggleProps): any {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 

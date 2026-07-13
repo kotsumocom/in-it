@@ -1,10 +1,10 @@
-﻿/**
+/**
  * Toast component (hono/jsx/dom)
  * WAI-ARIA Alert + Live Region
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
-/** ToastItem interface */
+/** A single toast notification with message, variant, and auto-dismiss duration. */
 export interface ToastItem {
   id: number;
   message: string;
@@ -15,19 +15,19 @@ export interface ToastItem {
 let toastIdCounter = 0;
 let globalAddToast: ((t: ToastItem) => void) | null = null;
 
-/** toast */
+/** Global toast function to show notifications from anywhere. */
 export function toast(message: string, variant: ToastItem["variant"] = "info", duration = 4000): any {
   if (globalAddToast) {
     globalAddToast({ id: ++toastIdCounter, message, variant, duration });
   }
 }
 
-/** ToastContainerProps interface */
+/** Props for the ToastContainer component. */
 export interface ToastContainerProps {
   position?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
 }
 
-/** ToastContainer */
+/** Container that renders active toast notifications with ARIA live region. */
 export function ToastContainer({ position = "top-right" }: ToastContainerProps): any {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 

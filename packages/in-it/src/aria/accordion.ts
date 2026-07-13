@@ -1,17 +1,17 @@
-﻿/**
+/**
  * WAI-ARIA Accordion pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/accordion/
  *
  * Keyboard: Arrow, Home, End, Enter/Space
  */
 
-/** AccordionItem interface */
+/** Represents a single item within the accordion. */
 export interface AccordionItem {
   value: string;
   disabled?: boolean;
 }
 
-/** AccordionApi interface */
+/** API returned by {@link createAccordion} for managing accordion state and ARIA props. */
 export interface AccordionApi {
   getHeaderProps: (value: string) => {
     id: string;
@@ -35,7 +35,7 @@ export interface AccordionApi {
   collapseAll: () => void;
 }
 
-/** CreateAccordionOptions interface */
+/** Configuration options for creating an accordion instance. */
 export interface CreateAccordionOptions {
   items: AccordionItem[];
   /** Allow multiple panels open simultaneously */
@@ -49,7 +49,7 @@ export interface CreateAccordionOptions {
 
 let accordionCounter = 0;
 
-/** createAccordion */
+/** Creates a WAI-ARIA compliant accordion with keyboard navigation and ARIA attributes. */
 export function createAccordion(opts: CreateAccordionOptions): AccordionApi {
   const prefix = opts.id ?? `accordion-${++accordionCounter}`;
   const items = opts.items;

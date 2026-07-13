@@ -1,21 +1,21 @@
-﻿/**
+/**
  * Step indicator component
  */
 
-/** StepItem interface */
+/** A single step with label and optional description. */
 export interface StepItem {
   label: string;
   description?: string;
 }
 
-/** StepsProps interface */
+/** Props for the Steps component. */
 export interface StepsProps {
   items: StepItem[];
   current?: number;
   orientation?: "horizontal" | "vertical";
 }
 
-/** Steps */
+/** Step indicator showing progress through a multi-step process. */
 export function Steps({ items, current = 0, orientation = "horizontal" }: StepsProps): any {
   return (
     <div class={`ii-steps ii-steps--${orientation}`} role="list">
