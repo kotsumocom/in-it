@@ -13,51 +13,63 @@ deno task serve   # Start production server
 ## Project Structure
 
 ```
-├── client/              # Frontend (hono/jsx + in-it components)
-│   ├── main.tsx         # Entry point with router
+├── client/                  # Frontend (hono/jsx + in-it)
+│   ├── main.tsx             # Entry point with router
+│   ├── components.ts        # Component barrel (override here)
 │   └── pages/
-│       ├── landing.tsx  # Landing page
-│       ├── auth.tsx     # Login / Signup
-│       ├── terms.tsx    # Terms of Service
-│       ├── privacy.tsx  # Privacy Policy
-│       ├── not-found.tsx
+│       ├── landing.tsx      # Landing page
+│       ├── auth.tsx         # Login / Signup
+│       ├── terms.tsx        # Terms of Service
+│       ├── privacy.tsx      # Privacy Policy
+│       ├── not-found.tsx    # 404
+│       ├── docs.tsx         # Documentation
+│       ├── blog/
+│       │   ├── index.tsx    # Blog listing
+│       │   ├── post.tsx     # Blog detail
+│       │   └── cms.ts       # CMS integration (Sanity/Contentful)
 │       └── admin/
-│           ├── dashboard.tsx
+│           ├── dashboard.tsx  # Dashboard with charts
 │           ├── settings.tsx
 │           ├── users.tsx
-│           └── billing.tsx
-├── server/              # Backend (Hono)
-│   ├── main.ts          # Server entry
+│           ├── billing.tsx
+│           └── notifications.tsx
+├── server/                  # Backend (Hono)
+│   ├── main.ts
 │   ├── middleware/
-│   │   ├── auth.ts      # Auth middleware (plug in your provider)
-│   │   └── security.ts  # CSP, CSRF headers
+│   │   ├── auth.ts          # Auth (plug in your provider)
+│   │   └── security.ts      # CSP, CSRF headers
 │   ├── routes/
-│   │   └── api.ts       # API endpoints
+│   │   └── api.ts
 │   └── db/
-│       ├── types.ts     # Repository interfaces
-│       └── memory.ts    # In-memory implementation (replace with your DB)
-├── deno.json
-├── vite.config.ts
-└── index.html
+│       ├── types.ts         # Repository interfaces
+│       └── memory.ts        # In-memory (replace with your DB)
+├── .agents/                 # AI assistant support
+│   ├── AGENTS.md
+│   └── skills/in-it/       # in-it component guide for AI
+└── deno.json
 ```
+
+## Component Override
+
+To replace any in-it component with your own version:
+
+1. Create your component in `client/overrides/`
+2. Edit `client/components.ts` to swap the import
+
+```ts
+// client/components.ts
+export { AdminShell } from "./overrides/AdminShell.tsx";
+export * from "@kotsumo/in-it/components";
+```
+
+## Blog (Headless CMS)
+
+The blog supports Sanity (recommended) and Contentful.
+Edit `client/pages/blog/cms.ts` to connect your CMS.
 
 ## Authentication
 
-The auth UI is ready to use. To connect it to a real auth provider:
-
-1. Install your provider (e.g. `@supabase/supabase-js`)
-2. Update `server/middleware/auth.ts` with your auth logic
-3. Update `client/pages/auth.tsx` to call your provider's API
-
-See the [in-it docs](https://in-it.dev) for more details.
-
-## Database
-
-The template uses a Repository pattern with an in-memory implementation.
-To switch to a real database:
-
-1. Implement the interfaces in `server/db/types.ts`
-2. Replace the import in `server/routes/api.ts`
+Edit `server/middleware/auth.ts` to connect Supabase Auth, Auth0, etc.
 
 ## Documentation
 
