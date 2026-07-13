@@ -16,8 +16,7 @@
     "./icons/paths": "./src/icons/paths.ts",
     "./icons/filled": "./src/icons/filled.ts",
     "./icons/individual": "./src/icons/individual.ts",
-    "./charts": "./src/components/charts/mod.ts",
-    "./css/main.css": "./src/css/main.css"
+    "./charts": "./src/components/charts/mod.ts"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
