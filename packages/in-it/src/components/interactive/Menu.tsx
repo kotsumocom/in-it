@@ -1,9 +1,10 @@
-/**
+﻿/**
  * Menu component (hono/jsx/dom)
  * WAI-ARIA Menu Button pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
+/** MenuItemDef interface */
 export interface MenuItemDef {
   id: string;
   label: string;
@@ -12,6 +13,7 @@ export interface MenuItemDef {
   separator?: boolean;
 }
 
+/** MenuProps interface */
 export interface MenuProps {
   items: MenuItemDef[];
   onSelect?: (id: string) => void;
@@ -19,6 +21,7 @@ export interface MenuProps {
   align?: "left" | "right";
 }
 
+/** Menu */
 export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps): any {
   const [open, setOpen] = useState(false);
   const [focusedIdx, setFocusedIdx] = useState(-1);

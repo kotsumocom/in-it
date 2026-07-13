@@ -1,9 +1,10 @@
-/**
+﻿/**
  * Combobox component (hono/jsx/dom)
  * WAI-ARIA Combobox pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
+/** ComboboxProps interface */
 export interface ComboboxProps {
   options: string[];
   value?: string;
@@ -12,6 +13,7 @@ export interface ComboboxProps {
   onChange?: (value: string) => void;
 }
 
+/** Combobox */
 export function Combobox({ options, value = "", placeholder = "Search...", label, onChange }: ComboboxProps): any {
   const [query, setQuery] = useState(value);
   const [open, setOpen] = useState(false);

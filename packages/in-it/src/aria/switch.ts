@@ -1,15 +1,17 @@
-/**
+﻿/**
  * WAI-ARIA Switch pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/switch/
  *
  * Framework-agnostic. Manages ARIA attributes and keyboard interactions in pure TypeScript.
  */
 
+/** SwitchState interface */
 export interface SwitchState {
   checked: boolean;
   disabled: boolean;
 }
 
+/** SwitchRootProps interface */
 export interface SwitchRootProps {
   role: "switch";
   "aria-checked": boolean;
@@ -20,6 +22,7 @@ export interface SwitchRootProps {
   onClick: () => void;
 }
 
+/** SwitchApi interface */
 export interface SwitchApi {
   /** Props to apply to the Switch root element */
   rootProps: SwitchRootProps;
@@ -33,6 +36,7 @@ export interface SwitchApi {
   setChecked: (checked: boolean) => void;
 }
 
+/** CreateSwitchOptions interface */
 export interface CreateSwitchOptions {
   /** Initial value */
   checked?: boolean;

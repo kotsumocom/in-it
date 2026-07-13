@@ -1,10 +1,11 @@
-/**
+﻿/**
  * WAI-ARIA Menu Button pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/
  *
  * Keyboard: Arrow, Home, End, Escape
  */
 
+/** MenuItem interface */
 export interface MenuItem {
   id: string;
   label: string;
@@ -13,6 +14,7 @@ export interface MenuItem {
   separator?: boolean;
 }
 
+/** MenuApi interface */
 export interface MenuApi {
   /** Props to apply to the trigger button */
   triggerProps: {
@@ -51,6 +53,7 @@ export interface MenuApi {
   toggle: () => void;
 }
 
+/** CreateMenuOptions interface */
 export interface CreateMenuOptions {
   /** Menu items */
   items: MenuItem[];
@@ -64,6 +67,7 @@ export interface CreateMenuOptions {
 
 let menuCounter = 0;
 
+/** createMenu */
 export function createMenu(options: CreateMenuOptions): MenuApi {
   const prefix = options.id ?? `menu-${++menuCounter}`;
   const triggerId = `${prefix}-trigger`;

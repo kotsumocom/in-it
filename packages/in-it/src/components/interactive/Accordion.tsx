@@ -1,9 +1,10 @@
-/**
+﻿/**
  * Accordion component (hono/jsx/dom)
  * WAI-ARIA Accordion pattern
  */
 import { useState, useCallback } from "hono/jsx";
 
+/** AccordionItemDef interface */
 export interface AccordionItemDef {
   id: string;
   title: string;
@@ -11,12 +12,14 @@ export interface AccordionItemDef {
   disabled?: boolean;
 }
 
+/** AccordionProps interface */
 export interface AccordionProps {
   items: AccordionItemDef[];
   multiple?: boolean;
   defaultOpen?: string[];
 }
 
+/** Accordion */
 export function Accordion({ items, multiple = false, defaultOpen = [] }: AccordionProps): any {
   const [openIds, setOpenIds] = useState<Set<string>>(new Set(defaultOpen));
 

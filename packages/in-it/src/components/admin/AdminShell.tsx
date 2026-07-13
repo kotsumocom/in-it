@@ -1,16 +1,18 @@
-/**
+﻿/**
  * AdminShell - Admin layout
  * Icon Rail + Header + Content
  */
 import { useState, useCallback } from "hono/jsx";
 import { ThemeToggle } from "../interactive/ThemeToggle.tsx";
 
+/** NavItem interface */
 export interface NavItem {
   icon: string;
   label: string;
   href: string;
 }
 
+/** AdminShellProps interface */
 export interface AdminShellProps {
   brand?: string;
   navItems?: NavItem[];
@@ -19,6 +21,7 @@ export interface AdminShellProps {
   children: any;
 }
 
+/** AdminShell */
 export function AdminShell({
   brand = "in-it",
   navItems = [],

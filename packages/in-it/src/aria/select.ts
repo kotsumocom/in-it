@@ -1,16 +1,18 @@
-/**
+﻿/**
  * WAI-ARIA Listbox pattern (Select)
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
  *
  * Keyboard: Arrow, Home, End, Enter, Escape, Type-ahead
  */
 
+/** SelectOption interface */
 export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
 }
 
+/** SelectApi interface */
 export interface SelectApi {
   triggerProps: {
     role: "combobox";
@@ -46,6 +48,7 @@ export interface SelectApi {
   select: (value: string) => void;
 }
 
+/** CreateSelectOptions interface */
 export interface CreateSelectOptions {
   options: SelectOption[];
   defaultValue?: string;
@@ -56,6 +59,7 @@ export interface CreateSelectOptions {
 
 let selectCounter = 0;
 
+/** createSelect */
 export function createSelect(opts: CreateSelectOptions): SelectApi {
   const prefix = opts.id ?? `select-${++selectCounter}`;
   const triggerId = `${prefix}-trigger`;

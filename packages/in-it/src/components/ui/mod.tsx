@@ -1,9 +1,10 @@
-/** Badge */
+﻿/** Badge */
 export interface BadgeProps {
   variant?: "success" | "error" | "warning" | "info" | "neutral";
   children: any;
 }
 
+/** Badge */
 export function Badge({ variant = "neutral", children }: BadgeProps): any {
   return (
     <span class={`ii-badge ii-badge--${variant}`}>
@@ -19,6 +20,7 @@ export interface CardProps {
   class?: string;
 }
 
+/** Card */
 export function Card({ outlined = false, children, class: cls }: CardProps): any {
   return (
     <div class={`ii-card${outlined ? " ii-card--outlined" : ""}${cls ? ` ${cls}` : ""}`}>
@@ -38,6 +40,7 @@ export interface ButtonProps {
   class?: string;
 }
 
+/** Button */
 export function Button({
   variant = "filled",
   size = "md",
@@ -67,6 +70,7 @@ export interface StatCardProps {
   trendUp?: boolean;
 }
 
+/** StatCard */
 export function StatCard({ label, value, trend, trendUp }: StatCardProps): any {
   return (
     <div class="ii-stat-card">
@@ -90,12 +94,14 @@ export interface DataTableColumn<T> {
   align?: "left" | "center" | "right";
 }
 
+/** DataTableProps interface */
 export interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
   data: T[];
   rowKey?: (row: T) => string;
 }
 
+/** DataTable */
 export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>): any {
   const getKey = rowKey ?? ((_row: T, i: number) => String(i));
   return (
@@ -138,6 +144,7 @@ export interface InputProps {
   onInput?: (e: Event) => void;
 }
 
+/** Input */
 export function Input({ label, placeholder, value, type = "text", helper, error, disabled, onInput }: InputProps): any {
   return (
     <div class="ii-input">
@@ -163,6 +170,7 @@ export interface AvatarProps {
   size?: "sm" | "md" | "lg";
 }
 
+/** Avatar */
 export function Avatar({ name, src, size = "md" }: AvatarProps): any {
   const initials = name?.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() ?? "?";
   return (
@@ -179,6 +187,7 @@ export interface ChipProps {
   children: any;
 }
 
+/** Chip */
 export function Chip({ variant = "default", onClose, children }: ChipProps): any {
   return (
     <span class={`ii-chip${variant !== "default" ? ` ii-chip--${variant}` : ""}`}>
@@ -199,6 +208,7 @@ export interface SkeletonProps {
   circle?: boolean;
 }
 
+/** Skeleton */
 export function Skeleton({ width = "100%", height = "1em", circle = false }: SkeletonProps): any {
   return (
     <div
@@ -216,6 +226,7 @@ export interface EmptyStateProps {
   children?: any;
 }
 
+/** EmptyState */
 export function EmptyState({ icon = "", title, description, children }: EmptyStateProps): any {
   return (
     <div class="ii-empty">

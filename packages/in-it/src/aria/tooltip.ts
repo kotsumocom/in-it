@@ -1,10 +1,11 @@
-/**
+﻿/**
  * WAI-ARIA Tooltip pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/
  *
  * Show on hover/focus, hide on Escape.
  */
 
+/** TooltipApi interface */
 export interface TooltipApi {
   /** Props to apply to the trigger element */
   triggerProps: {
@@ -28,6 +29,7 @@ export interface TooltipApi {
   close: () => void;
 }
 
+/** CreateTooltipOptions interface */
 export interface CreateTooltipOptions {
   /** Show delay (ms) */
   delay?: number;
@@ -39,6 +41,7 @@ export interface CreateTooltipOptions {
 
 let tooltipCounter = 0;
 
+/** createTooltip */
 export function createTooltip(options: CreateTooltipOptions = {}): TooltipApi {
   const tooltipId = options.id ?? `tooltip-${++tooltipCounter}`;
   let isOpen = false;

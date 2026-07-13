@@ -1,12 +1,14 @@
-/**
+﻿/**
  * WAI-ARIA Alert + Live Region pattern (Toast)
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/alert/
  *
  * Manages aria-live for screen reader notifications.
  */
 
+/** ToastVariant type */
 export type ToastVariant = "success" | "error" | "warning" | "info";
 
+/** Toast interface */
 export interface Toast {
   id: string;
   message: string;
@@ -15,6 +17,7 @@ export interface Toast {
   createdAt: number;
 }
 
+/** ToastApi interface */
 export interface ToastApi {
   /** Props to apply to the toast container */
   regionProps: {
@@ -37,6 +40,7 @@ export interface ToastApi {
   toasts: Toast[];
 }
 
+/** CreateToastOptions interface */
 export interface CreateToastOptions {
   /** Default display duration (ms) */
   defaultDuration?: number;
@@ -48,6 +52,7 @@ export interface CreateToastOptions {
 
 let toastIdCounter = 0;
 
+/** createToastManager */
 export function createToastManager(options: CreateToastOptions = {}): ToastApi {
   const defaultDuration = options.defaultDuration ?? 5000;
   const maxCount = options.maxCount ?? 5;

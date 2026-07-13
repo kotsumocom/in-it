@@ -1,0 +1,111 @@
+# in-it
+
+> Everything is in it. — Zero-dependency SaaS starter framework for Hono + Deno/Bun.
+
+[![JSR](https://jsr.io/badges/@kotsumo/in-it)](https://jsr.io/@kotsumo/in-it)
+
+## Features
+
+- **HCT Color System** — Zero-dependency CAM16/HCT implementation for perceptually uniform colors
+- **MD3 Theming** — Material Design 3 color scheme generation from any source color
+- **WAI-ARIA Components** — Accessible interactive components (Switch, Dialog, Tabs, Menu, Toast, etc.)
+- **UI Components** — Button, Card, Badge, Input, Avatar, DataTable, and more
+- **Layout Components** — AdminShell, DocsShell, Landing page components
+- **SPA Router** — Lightweight History API-based router for hono/jsx/dom
+- **Markdown Parser** — Zero-dependency parser with frontmatter, GFM, and TOC generation
+
+## Install
+
+```bash
+# Deno
+deno add jsr:@kotsumo/in-it
+
+# npm (via JSR)
+npx jsr add @kotsumo/in-it
+```
+
+## Quick Start
+
+```ts
+import { HctColor, generateScheme, Button, Card } from "@kotsumo/in-it";
+
+// Generate a color scheme from a hex color
+const { light, dark } = generateScheme("#6750a4");
+
+// Use HCT color directly
+const color = HctColor.fromHex("#6750a4");
+console.log(color.withTone(80).toHex());
+```
+
+### Components
+
+```tsx
+import { Button, Card, Switch, ThemeToggle } from "@kotsumo/in-it/components";
+
+function App() {
+  return (
+    <Card>
+      <Button variant="filled">Click me</Button>
+      <Switch label="Dark mode" />
+      <ThemeToggle />
+    </Card>
+  );
+}
+```
+
+### ARIA Helpers
+
+```ts
+import { createSwitch, createDialog } from "@kotsumo/in-it/aria";
+
+const sw = createSwitch({ checked: false, onChange: console.log });
+// Apply sw.rootProps to <button> and sw.labelProps to <label>
+```
+
+### Color Presets
+
+```ts
+import { getPresetCss, PRESETS } from "@kotsumo/in-it/color/presets";
+
+// List available presets
+console.log(PRESETS.map(p => p.name));
+// ["purple", "blue", "teal", "green", "orange", "pink", "red", "indigo"]
+
+// Generate CSS for a preset
+const css = getPresetCss("purple");
+```
+
+### Markdown
+
+```ts
+import { parseMarkdown } from "@kotsumo/in-it/docs";
+
+const { meta, html, toc } = parseMarkdown(`---
+title: Hello
+---
+# Heading
+Some **bold** text.
+`);
+```
+
+### Router
+
+```tsx
+import { Route, Switch, Link } from "@kotsumo/in-it/router";
+
+function App() {
+  return (
+    <div>
+      <Link href="/about">About</Link>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/about" component={About} />
+      </Switch>
+    </div>
+  );
+}
+```
+
+## License
+
+MIT

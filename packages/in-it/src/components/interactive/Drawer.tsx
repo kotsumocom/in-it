@@ -1,8 +1,9 @@
-/**
+﻿/**
  * Drawer component - slide panel
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
 
+/** DrawerProps interface */
 export interface DrawerProps {
   open: boolean;
   onClose: () => void;
@@ -12,6 +13,7 @@ export interface DrawerProps {
   children: any;
 }
 
+/** Drawer */
 export function Drawer({ open, onClose, position = "right", title, width = "320px", children }: DrawerProps): any {
   useEffect(() => {
     if (!open) return;

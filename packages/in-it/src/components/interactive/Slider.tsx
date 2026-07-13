@@ -1,8 +1,9 @@
-/**
+﻿/**
  * Range slider component
  */
 import { useState } from "hono/jsx";
 
+/** SliderProps interface */
 export interface SliderProps {
   min?: number;
   max?: number;
@@ -13,6 +14,7 @@ export interface SliderProps {
   onChange?: (value: number) => void;
 }
 
+/** Slider */
 export function Slider({ min = 0, max = 100, step = 1, defaultValue = 50, label, showValue = true, onChange }: SliderProps): any {
   const [value, setValue] = useState(defaultValue);
 

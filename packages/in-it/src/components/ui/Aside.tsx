@@ -1,10 +1,12 @@
-/**
+﻿/**
  * Aside (Callout) - Note, Tip, Caution, Danger variants
  * Inspired by Starlight, fully self-implemented
  */
 
+/** AsideVariant type */
 export type AsideVariant = "note" | "tip" | "caution" | "danger";
 
+/** AsideProps interface */
 export interface AsideProps {
   variant?: AsideVariant;
   title?: string;
@@ -25,6 +27,7 @@ const TITLES: Record<AsideVariant, string> = {
   danger: "Danger",
 };
 
+/** Aside */
 export function Aside({ variant = "note", title, children }: AsideProps): any {
   return (
     <div class={`ii-aside ii-aside--${variant}`} role="note">

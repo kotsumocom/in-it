@@ -1,10 +1,12 @@
-/**
+﻿/**
  * RadioGroup component
  */
 import { useState, useCallback } from "hono/jsx";
 
+/** RadioOption interface */
 export interface RadioOption { value: string; label: string; disabled?: boolean; }
 
+/** RadioGroupProps interface */
 export interface RadioGroupProps {
   name?: string;
   options: RadioOption[];
@@ -13,6 +15,7 @@ export interface RadioGroupProps {
   onChange?: (value: string) => void;
 }
 
+/** RadioGroup */
 export function RadioGroup({ name, options, value: controlledValue, orientation = "vertical", onChange }: RadioGroupProps): any {
   const [internalValue, setInternalValue] = useState(controlledValue ?? "");
   const value = controlledValue ?? internalValue;
@@ -33,4 +36,3 @@ export function RadioGroup({ name, options, value: controlledValue, orientation 
     </div>
   );
 }
-

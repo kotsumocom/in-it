@@ -1,18 +1,21 @@
-/**
+﻿/**
  * Step indicator component
  */
 
+/** StepItem interface */
 export interface StepItem {
   label: string;
   description?: string;
 }
 
+/** StepsProps interface */
 export interface StepsProps {
   items: StepItem[];
   current?: number;
   orientation?: "horizontal" | "vertical";
 }
 
+/** Steps */
 export function Steps({ items, current = 0, orientation = "horizontal" }: StepsProps): any {
   return (
     <div class={`ii-steps ii-steps--${orientation}`} role="list">

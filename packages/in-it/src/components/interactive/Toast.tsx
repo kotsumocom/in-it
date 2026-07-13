@@ -1,9 +1,10 @@
-/**
+﻿/**
  * Toast component (hono/jsx/dom)
  * WAI-ARIA Alert + Live Region
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
+/** ToastItem interface */
 export interface ToastItem {
   id: number;
   message: string;
@@ -14,16 +15,19 @@ export interface ToastItem {
 let toastIdCounter = 0;
 let globalAddToast: ((t: ToastItem) => void) | null = null;
 
+/** toast */
 export function toast(message: string, variant: ToastItem["variant"] = "info", duration = 4000): any {
   if (globalAddToast) {
     globalAddToast({ id: ++toastIdCounter, message, variant, duration });
   }
 }
 
+/** ToastContainerProps interface */
 export interface ToastContainerProps {
   position?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
 }
 
+/** ToastContainer */
 export function ToastContainer({ position = "top-right" }: ToastContainerProps): any {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 

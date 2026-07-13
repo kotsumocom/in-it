@@ -1,8 +1,9 @@
-/**
+﻿/**
  * Landing Page components
  */
 
 // --- LandingHeader ---
+/** LandingHeaderProps interface */
 export interface LandingHeaderProps {
   brand: string;
   brandHref?: string;
@@ -10,6 +11,7 @@ export interface LandingHeaderProps {
   themeToggle?: any;
 }
 
+/** LandingHeader */
 export function LandingHeader({ brand, brandHref = "/", navLinks = [], themeToggle }: LandingHeaderProps): any {
   return (
     <header class="ii-lp-header">
@@ -27,6 +29,7 @@ export function LandingHeader({ brand, brandHref = "/", navLinks = [], themeTogg
 }
 
 // --- LandingHero ---
+/** LandingHeroProps interface */
 export interface LandingHeroProps {
   badge?: string;
   headline: string;
@@ -35,6 +38,7 @@ export interface LandingHeroProps {
   install?: string;
 }
 
+/** LandingHero */
 export function LandingHero({ badge, headline, subhead, actions, install }: LandingHeroProps): any {
   return (
     <section class="ii-lp-hero">
@@ -50,16 +54,19 @@ export function LandingHero({ badge, headline, subhead, actions, install }: Land
 }
 
 // --- LandingFeatures ---
+/** FeatureCard interface */
 export interface FeatureCard {
   icon: string;
   title: string;
   description: string;
 }
 
+/** LandingFeaturesProps interface */
 export interface LandingFeaturesProps {
   features: FeatureCard[];
 }
 
+/** LandingFeatures */
 export function LandingFeatures({ features }: LandingFeaturesProps): any {
   return (
     <section class="ii-lp-features">
@@ -79,12 +86,14 @@ export function LandingFeatures({ features }: LandingFeaturesProps): any {
 }
 
 // --- LandingSection ---
+/** LandingSectionProps interface */
 export interface LandingSectionProps {
   title?: string;
   subtitle?: string;
   children: any;
 }
 
+/** LandingSection */
 export function LandingSection({ title, subtitle, children }: LandingSectionProps): any {
   return (
     <section class="ii-lp-section">
@@ -98,10 +107,12 @@ export function LandingSection({ title, subtitle, children }: LandingSectionProp
 }
 
 // --- LandingFooter ---
+/** LandingFooterProps interface */
 export interface LandingFooterProps {
   children: any;
 }
 
+/** LandingFooter */
 export function LandingFooter({ children }: LandingFooterProps): any {
   return (
     <footer class="ii-lp-footer">

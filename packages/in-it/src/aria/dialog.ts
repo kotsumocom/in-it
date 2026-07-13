@@ -1,10 +1,11 @@
-/**
+﻿/**
  * WAI-ARIA Dialog (Modal) pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/
  *
  * Manages focus trap, Escape key close, and background inert.
  */
 
+/** DialogApi interface */
 export interface DialogApi {
   /** Props to apply to the Dialog element */
   contentProps: {
@@ -37,6 +38,7 @@ export interface DialogApi {
   isOpen: boolean;
 }
 
+/** CreateDialogOptions interface */
 export interface CreateDialogOptions {
   /** Initialize in open state */
   open?: boolean;
@@ -57,6 +59,7 @@ function dialogUid(): string {
   return `dialog-${++dialogCounter}`;
 }
 
+/** createDialog */
 export function createDialog(options: CreateDialogOptions = {}): DialogApi {
   const prefix = options.id ?? dialogUid();
   const titleId = `${prefix}-title`;

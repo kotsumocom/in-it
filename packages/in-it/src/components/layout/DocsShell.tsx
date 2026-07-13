@@ -1,24 +1,28 @@
-/**
+﻿/**
  * DocsShell — Documentation layout (Sidebar + Content + TOC)
  */
 
+/** DocsSidebarItem interface */
 export interface DocsSidebarItem {
   href: string;
   label: string;
   active?: boolean;
 }
 
+/** DocsSidebarGroup interface */
 export interface DocsSidebarGroup {
   group: string;
   items: DocsSidebarItem[];
 }
 
+/** DocsTocItem interface */
 export interface DocsTocItem {
   id: string;
   text: string;
   level: 2 | 3;
 }
 
+/** DocsShellProps interface */
 export interface DocsShellProps {
   brand: string;
   brandHref?: string;
@@ -29,6 +33,7 @@ export interface DocsShellProps {
   themeToggle?: any;
 }
 
+/** DocsShell */
 export function DocsShell({ brand, brandHref = "/", navLinks = [], sidebarGroups, tocItems = [], children, themeToggle }: DocsShellProps): any {
   return (
     <div class="ii-docs-shell">

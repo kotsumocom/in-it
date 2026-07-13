@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @module docs
  * Markdown parser (self-implemented, zero dependencies).
  * JSON Frontmatter + GFM subset + TOC generation.
@@ -20,6 +20,7 @@
  * ```
  */
 
+/** MarkdownMeta interface */
 export interface MarkdownMeta {
   title?: string;
   description?: string;
@@ -28,12 +29,14 @@ export interface MarkdownMeta {
   [key: string]: unknown;
 }
 
+/** TocItem interface */
 export interface TocItem {
   id: string;
   text: string;
   level: 2 | 3;
 }
 
+/** ParsedMarkdown interface */
 export interface ParsedMarkdown {
   meta: MarkdownMeta;
   html: string;

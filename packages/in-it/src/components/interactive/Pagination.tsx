@@ -1,8 +1,9 @@
-/**
+﻿/**
  * Pagination component
  */
 import { useState, useMemo } from "hono/jsx";
 
+/** PaginationProps interface */
 export interface PaginationProps {
   total: number;
   pageSize?: number;
@@ -11,6 +12,7 @@ export interface PaginationProps {
   onChange?: (page: number) => void;
 }
 
+/** Pagination */
 export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount = 1, onChange }: PaginationProps): any {
   const [current, setCurrent] = useState(defaultPage);
   const totalPages = Math.ceil(total / pageSize);

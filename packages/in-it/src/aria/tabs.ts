@@ -1,16 +1,18 @@
-/**
+﻿/**
  * WAI-ARIA Tabs pattern
  * @see https://www.w3.org/WAI/ARIA/apg/patterns/tabs/
  *
  * Roving tabindex + Arrow key navigation.
  */
 
+/** TabItem interface */
 export interface TabItem {
   value: string;
   label: string;
   disabled?: boolean;
 }
 
+/** TabsApi interface */
 export interface TabsApi {
   /** Props to apply to the tablist container */
   listProps: {
@@ -42,6 +44,7 @@ export interface TabsApi {
   select: (value: string) => void;
 }
 
+/** CreateTabsOptions interface */
 export interface CreateTabsOptions {
   /** Tab items */
   items: TabItem[];
@@ -57,6 +60,7 @@ export interface CreateTabsOptions {
 
 let tabsCounter = 0;
 
+/** createTabs */
 export function createTabs(options: CreateTabsOptions): TabsApi {
   const prefix = options.id ?? `tabs-${++tabsCounter}`;
   const orientation = options.orientation ?? "horizontal";

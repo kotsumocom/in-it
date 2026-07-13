@@ -1,11 +1,13 @@
-/**
+﻿/**
  * extras.tsx - Additional UI components
  */
 
+/** TextareaProps interface */
 export interface TextareaProps {
   label?: string; placeholder?: string; rows?: number; helper?: string; error?: string;
   value?: string; onInput?: (e: Event) => void;
 }
+/** Textarea */
 export function Textarea({ label, placeholder, rows = 3, helper, error, value, onInput }: TextareaProps): any {
   return (
     <div class={`ii-input${error ? " ii-input--error" : ""}`}>
@@ -17,10 +19,12 @@ export function Textarea({ label, placeholder, rows = 3, helper, error, value, o
   );
 }
 
+/** AlertProps interface */
 export interface AlertProps {
   variant?: "info" | "success" | "warning" | "error";
   title?: string; icon?: string; closable?: boolean; onClose?: () => void; children: any;
 }
+/** Alert */
 export function Alert({ variant = "info", title, icon, closable, onClose, children }: AlertProps): any {
   const icons: Record<string, string> = { info: "i", success: "ok", warning: "!", error: "x" };
   return (
@@ -37,7 +41,9 @@ export function Alert({ variant = "info", title, icon, closable, onClose, childr
   );
 }
 
+/** ProgressProps interface */
 export interface ProgressProps { value?: number; max?: number; label?: string; }
+/** Progress */
 export function Progress({ value = 0, max = 100, label }: ProgressProps): any {
   const pct = Math.round((value / max) * 100);
   return (
@@ -50,7 +56,9 @@ export function Progress({ value = 0, max = 100, label }: ProgressProps): any {
   );
 }
 
+/** ProgressCircularProps interface */
 export interface ProgressCircularProps { value?: number; size?: number; strokeWidth?: number; }
+/** ProgressCircular */
 export function ProgressCircular({ value = 0, size = 48, strokeWidth = 4 }: ProgressCircularProps): any {
   const r = (size - strokeWidth) / 2;
   const c = 2 * Math.PI * r;
@@ -68,8 +76,11 @@ export function ProgressCircular({ value = 0, size = 48, strokeWidth = 4 }: Prog
   );
 }
 
+/** BreadcrumbItem interface */
 export interface BreadcrumbItem { label: string; href?: string; }
+/** BreadcrumbProps interface */
 export interface BreadcrumbProps { items: BreadcrumbItem[]; separator?: string; }
+/** Breadcrumb */
 export function Breadcrumb({ items, separator = "/" }: BreadcrumbProps): any {
   return (
     <nav class="ii-breadcrumb" aria-label="Breadcrumb">
@@ -87,7 +98,9 @@ export function Breadcrumb({ items, separator = "/" }: BreadcrumbProps): any {
   );
 }
 
+/** DividerProps interface */
 export interface DividerProps { label?: string; }
+/** Divider */
 export function Divider({ label }: DividerProps): any {
   if (label) {
     return <div class="ii-divider ii-divider--label"><span>{label}</span></div>;
@@ -95,7 +108,9 @@ export function Divider({ label }: DividerProps): any {
   return <hr class="ii-divider" />;
 }
 
+/** KbdProps interface */
 export interface KbdProps { children: any; }
+/** Kbd */
 export function Kbd({ children }: KbdProps): any {
   return <kbd class="ii-kbd">{children}</kbd>;
 }

@@ -1,9 +1,10 @@
-/**
+﻿/**
  * Dialog component (hono/jsx/dom)
  * WAI-ARIA Dialog (Modal) pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 
+/** DialogProps interface */
 export interface DialogProps {
   open: boolean;
   onClose: () => void;
@@ -13,6 +14,7 @@ export interface DialogProps {
   children: any;
 }
 
+/** Dialog */
 export function Dialog({
   open,
   onClose,

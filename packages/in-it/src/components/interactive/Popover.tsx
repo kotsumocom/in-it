@@ -1,15 +1,17 @@
-/**
+﻿/**
  * Popover component (hono/jsx/dom)
  * WAI-ARIA Dialog (Non-modal) pattern
  */
 import { useState, useEffect, useRef } from "hono/jsx";
 
+/** PopoverProps interface */
 export interface PopoverProps {
   trigger: any;
   children: any;
   position?: "top" | "bottom" | "left" | "right";
 }
 
+/** Popover */
 export function Popover({ trigger, children, position = "bottom" }: PopoverProps): any {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
