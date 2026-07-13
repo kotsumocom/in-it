@@ -19,10 +19,12 @@ jobs:
           deno-version: v2.x
 
       - name: Publish in-it to JSR
+        continue-on-error: true
         run: deno publish
         working-directory: packages/in-it
 
       - name: Publish create-in-it to JSR
+        continue-on-error: true
         run: deno publish
         working-directory: create-in-it
 
