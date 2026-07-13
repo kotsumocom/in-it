@@ -2,12 +2,19 @@
 /**
  * create-in-it — SaaS project scaffolding CLI
  *
+ * Works with Deno and Bun.
+ *
  * Usage:
  *   deno run -A jsr:@kotsumo/create-in-it my-saas
- *   deno run -A jsr:@kotsumo/create-in-it my-saas --bundler esbuild
+ *   bunx jsr:@kotsumo/create-in-it my-saas
  */
 
+import * as fs from "node:fs/promises";
 import * as path from "node:path";
+import { existsSync } from "node:fs";
+import { execSync } from "node:child_process";
+import { createInterface } from "node:readline/promises";
+import { stdin, stdout } from "node:process";
 
 // ============================================================
 // Config
@@ -23,7 +30,7 @@ const BUNDLER_CHOICES: { value: Bundler; label: string; default?: boolean }[] = 
   { value: "none", label: "None (manual setup)" },
 ];
 
-// Files to skip copying (generated per-bundler or not needed)
+// Files to skip copying (generated per-bundler)
 const SKIP_FILES = new Set(["deno.json", "vite.config.ts"]);
 
 // ============================================================
@@ -47,7 +54,7 @@ const info = (m: string) => console.log(`${C.cyan}ℹ${C.reset} ${m}`);
 const warn = (m: string) => console.log(`${C.yellow}⚠${C.reset} ${m}`);
 const fail = (m: string) => {
   console.error(`${C.red}✗${C.reset} ${m}`);
-  Deno.exit(1);
+  process.exit(1);
 };
 
 function banner() {
@@ -89,6 +96,7 @@ ${C.bold}create-in-it${C.reset} — Generate a SaaS project
 
 ${C.bold}Usage:${C.reset}
   deno run -A jsr:@kotsumo/create-in-it <project-dir> [options]
+  bunx jsr:@kotsumo/create-in-it <project-dir> [options]
 
 ${C.bold}Options:${C.reset}
   -b, --bundler <name>  Build tool: vite (default), esbuild, none
@@ -101,18 +109,48 @@ ${C.bold}Examples:${C.reset}
 }
 
 // ============================================================
-// Prompt helpers
+// Cross-runtime helpers
 // ============================================================
 
-function promptText(question: string, fallback: string): string {
-  const ans = prompt(`${C.cyan}?${C.reset} ${question} ${C.dim}(${fallback})${C.reset}`);
-  return ans?.trim() || fallback;
+function getCliArgs(): string[] {
+  // Deno: Deno.args, Bun/Node: process.argv.slice(2)
+  if (typeof globalThis.Deno !== "undefined") return globalThis.Deno.args;
+  return process.argv.slice(2);
 }
 
-function promptChoice<T extends string>(
+function getCwd(): string {
+  if (typeof globalThis.Deno !== "undefined") return globalThis.Deno.cwd();
+  return process.cwd();
+}
+
+// ============================================================
+// Prompt helpers (cross-runtime)
+// ============================================================
+
+let rl: ReturnType<typeof createInterface> | null = null;
+
+function getRL() {
+  if (!rl) rl = createInterface({ input: stdin, output: stdout });
+  return rl;
+}
+
+function closeRL() {
+  if (rl) { rl.close(); rl = null; }
+}
+
+async function ask(question: string): Promise<string> {
+  return await getRL().question(question);
+}
+
+async function promptText(question: string, fallback: string): Promise<string> {
+  const ans = await ask(`${C.cyan}?${C.reset} ${question} ${C.dim}(${fallback})${C.reset} `);
+  return ans.trim() || fallback;
+}
+
+async function promptChoice<T extends string>(
   question: string,
   choices: { value: T; label: string; default?: boolean }[],
-): T {
+): Promise<T> {
   log(`${C.cyan}?${C.reset} ${question}`);
   for (let i = 0; i < choices.length; i++) {
     const ch = choices[i];
@@ -120,7 +158,7 @@ function promptChoice<T extends string>(
     log(`  ${marker} ${C.bold}${i + 1}${C.reset}) ${ch.label}`);
   }
   const defaultIdx = choices.findIndex((c) => c.default);
-  const ans = prompt(`  ${C.dim}Enter choice (1-${choices.length})${C.reset}`) ?? "";
+  const ans = await ask(`  ${C.dim}Enter choice (1-${choices.length})${C.reset} `);
   const idx = parseInt(ans) - 1;
   if (idx >= 0 && idx < choices.length) return choices[idx].value;
   return choices[defaultIdx >= 0 ? defaultIdx : 0].value;
@@ -134,22 +172,23 @@ async function copyTemplateFiles(
   srcDir: string,
   destDir: string,
 ): Promise<void> {
-  for await (const entry of Deno.readDir(srcDir)) {
+  const entries = await fs.readdir(srcDir, { withFileTypes: true });
+
+  for (const entry of entries) {
     const srcPath = path.join(srcDir, entry.name);
     const destPath = path.join(destDir, entry.name);
 
-    if (entry.isDirectory) {
-      // Skip .agents directory (AI agent support — user can add later)
+    if (entry.isDirectory()) {
+      // Skip .agents directory
       if (entry.name === ".agents") continue;
 
-      await Deno.mkdir(destPath, { recursive: true });
+      await fs.mkdir(destPath, { recursive: true });
       await copyTemplateFiles(srcPath, destPath);
-    } else if (entry.isFile) {
-      // Get relative path from template root for skip check
+    } else if (entry.isFile()) {
       const rel = path.relative(TEMPLATE_DIR, srcPath).replace(/\\/g, "/");
       if (SKIP_FILES.has(rel)) continue;
 
-      await Deno.copyFile(srcPath, destPath);
+      await fs.copyFile(srcPath, destPath);
       ok(rel);
     }
   }
@@ -249,7 +288,7 @@ if (isWatch) {
 } else {
   await esbuild.build(config);
   console.log("\\x1b[32m✓\\x1b[0m Build complete → dist/assets/");
-  Deno.exit(0);
+  process.exit(0);
 }
 `;
 }
@@ -262,35 +301,32 @@ async function createProject(
   projectDir: string,
   bundler: Bundler,
 ) {
-  const absPath = projectDir.startsWith("/") || projectDir.includes(":")
+  const absPath = path.isAbsolute(projectDir)
     ? projectDir
-    : `${Deno.cwd()}/${projectDir}`;
-  const dirName = absPath.split(/[/\\]/).pop() ?? projectDir;
+    : path.resolve(getCwd(), projectDir);
+  const dirName = path.basename(absPath);
 
   // Check if directory exists and is non-empty
-  try {
-    const entries = [];
-    for await (const e of Deno.readDir(absPath)) entries.push(e);
+  if (existsSync(absPath)) {
+    const entries = await fs.readdir(absPath);
     if (entries.length > 0) {
       warn(`Directory "${dirName}" is not empty.`);
-      const cont = prompt(`${C.cyan}?${C.reset} Continue anyway? (y/N)`);
-      if (cont?.toLowerCase() !== "y") Deno.exit(0);
+      const cont = await ask(`${C.cyan}?${C.reset} Continue anyway? (y/N) `);
+      if (cont.toLowerCase() !== "y") process.exit(0);
     }
-  } catch {
-    // Directory doesn't exist — will create
   }
 
   info(`Creating project "${dirName}" with ${bundler}...`);
   log("");
 
-  await Deno.mkdir(absPath, { recursive: true });
+  await fs.mkdir(absPath, { recursive: true });
 
   // 1. Copy template files (excludes deno.json, vite.config.ts, .agents/)
   await copyTemplateFiles(TEMPLATE_DIR, absPath);
   log("");
 
   // 2. Generate deno.json for selected bundler
-  await Deno.writeTextFile(
+  await fs.writeFile(
     path.join(absPath, "deno.json"),
     generateDenoJson(bundler),
   );
@@ -299,8 +335,7 @@ async function createProject(
   // 3. Bundler-specific files
   switch (bundler) {
     case "vite": {
-      // Copy vite.config.ts from template (includes @deno/vite-plugin patch)
-      await Deno.copyFile(
+      await fs.copyFile(
         path.join(TEMPLATE_DIR, "vite.config.ts"),
         path.join(absPath, "vite.config.ts"),
       );
@@ -309,7 +344,7 @@ async function createProject(
     }
 
     case "esbuild": {
-      await Deno.writeTextFile(
+      await fs.writeFile(
         path.join(absPath, "build.ts"),
         generateEsbuildConfig(),
       );
@@ -324,13 +359,7 @@ async function createProject(
 
   // 4. Git init
   try {
-    const git = new Deno.Command("git", {
-      args: ["init"],
-      cwd: absPath,
-      stdout: "null",
-      stderr: "null",
-    });
-    await git.output();
+    execSync("git init", { cwd: absPath, stdio: "ignore" });
     ok("Initialized Git repository");
   } catch {
     // git not available
@@ -339,21 +368,12 @@ async function createProject(
   // 5. Install dependencies
   log("");
   info("Installing dependencies...");
+  const runtime = typeof globalThis.Deno !== "undefined" ? "deno" : "bun";
   try {
-    const install = new Deno.Command("deno", {
-      args: ["install"],
-      cwd: absPath,
-      stdout: "inherit",
-      stderr: "inherit",
-    });
-    const result = await install.output();
-    if (result.success) {
-      ok("Dependencies installed");
-    } else {
-      warn("deno install failed. Run manually: deno install");
-    }
+    execSync(`${runtime} install`, { cwd: absPath, stdio: "inherit" });
+    ok("Dependencies installed");
   } catch {
-    warn("Could not run deno install. Run manually: deno install");
+    warn(`${runtime} install failed. Run manually: ${runtime} install`);
   }
 
   // Done!
@@ -362,7 +382,7 @@ async function createProject(
   log("");
   log(`  ${C.cyan}cd ${dirName}${C.reset}`);
   if (bundler !== "none") {
-    log(`  ${C.cyan}deno task dev${C.reset}`);
+    log(`  ${C.cyan}${runtime} task dev${C.reset}`);
   }
   log("");
   log(`${C.dim}📖 https://in-it.dev${C.reset}`);
@@ -374,30 +394,31 @@ async function createProject(
 // ============================================================
 
 async function main() {
-  const args = parseArgs(Deno.args);
+  const args = parseArgs(getCliArgs());
 
   if (args.help) {
     showHelp();
-    Deno.exit(0);
+    process.exit(0);
   }
 
   banner();
 
   // Project name
   if (!args.projectDir) {
-    args.projectDir = promptText("Project name:", "my-saas");
+    args.projectDir = await promptText("Project name:", "my-saas");
   }
 
   // Bundler (interactive if not specified via flag)
-  if (!Deno.args.some((a) => a === "-b" || a === "--bundler")) {
-    args.bundler = promptChoice("Build tool:", BUNDLER_CHOICES);
+  if (!getCliArgs().some((a) => a === "-b" || a === "--bundler")) {
+    args.bundler = await promptChoice("Build tool:", BUNDLER_CHOICES);
   }
 
   log("");
   await createProject(args.projectDir, args.bundler);
+  closeRL();
 }
 
 main().catch((e) => {
   console.error(e);
-  Deno.exit(1);
+  process.exit(1);
 });
