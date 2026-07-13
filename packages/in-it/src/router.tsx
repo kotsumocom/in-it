@@ -96,10 +96,22 @@ export function useLocation(): [string, (to: string) => void] {
 }
 
 
-/** Path matching (simple pattern support) */
+/** Path matching (simple pattern support with wildcards) */
 function matchPath(pattern: string, path: string): Record<string, string> | null {
   // Exact match
   if (pattern === path) return {};
+
+  // Catch-all wildcard
+  if (pattern === "*") return {};
+
+  // Pattern ending with /* (prefix match)
+  if (pattern.endsWith("/*")) {
+    const prefix = pattern.slice(0, -2);
+    if (path === prefix || path.startsWith(prefix + "/")) {
+      return { "*": path.slice(prefix.length + 1) };
+    }
+    return null;
+  }
 
   // Pattern with parameters (:param)
   const patternParts = pattern.split("/");
@@ -108,7 +120,9 @@ function matchPath(pattern: string, path: string): Record<string, string> | null
 
   const params: Record<string, string> = {};
   for (let i = 0; i < patternParts.length; i++) {
-    if (patternParts[i].startsWith(":")) {
+    if (patternParts[i] === "*") {
+      params["*"] = pathParts[i];
+    } else if (patternParts[i].startsWith(":")) {
       params[patternParts[i].slice(1)] = pathParts[i];
     } else if (patternParts[i] !== pathParts[i]) {
       return null;
