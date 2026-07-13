@@ -1,0 +1,16 @@
+/* --- Auth Page --- */
+.ii-auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ii-spacing-6);
+}
+.ii-auth-page__brand {
+  margin-bottom: var(--ii-spacing-6);
+  font-size: var(--ii-font-2xl);
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--ii-primary);
+}

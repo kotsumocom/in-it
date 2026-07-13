@@ -67,14 +67,17 @@
 @import "./components/_settings-section.css";
 @import "./components/_error-page.css";
 @import "./components/_user-menu.css";
+@import "./components/_chart.css";
+@import "./components/_blog-notifications.css";
 
 /* Layouts */
 @import "./components/_page.css";
 @import "./components/_admin-shell.css";
 @import "./components/_admin-shell-mobile.css";
+@import "./components/_auth-page.css";
+@import "./components/_legal-page.css";
 @import "./components/_landing.css";
 @import "./components/_docs.css";
 
 /* Responsive */
 @import "./components/_responsive.css";
-

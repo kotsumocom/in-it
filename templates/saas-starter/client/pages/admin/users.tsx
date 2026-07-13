@@ -1,4 +1,4 @@
-import { DataTable, Badge, Button } from "@kotsumo/in-it/components";
+import { DataTable, Badge, Button } from "~/components.ts";
 import { Icon } from "@kotsumo/in-it/icons";
 import type { DataTableColumn } from "@kotsumo/in-it/components";
 
@@ -38,14 +38,16 @@ const COLUMNS: DataTableColumn<User>[] = [
 export function UsersPage() {
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
-        <div>
-          <h2 style={{ margin: 0, fontSize: "1.25rem", fontWeight: 600 }}>Users</h2>
-          <p style={{ margin: "4px 0 0", color: "var(--ii-on-surface-variant)" }}>{SAMPLE_USERS.length} total users</p>
+      <div class="ii-admin-page__header">
+        <div class="ii-admin-page__header-left">
+          <h2 class="ii-admin-page__title">Users</h2>
+          <p class="ii-admin-page__desc">{SAMPLE_USERS.length} total users</p>
         </div>
-        <Button variant="filled">
-          <Icon name="plus" size={16} /> Add User
-        </Button>
+        <div class="ii-admin-page__actions">
+          <Button variant="filled">
+            <Icon name="plus" size={16} /> Add User
+          </Button>
+        </div>
       </div>
 
       <DataTable data={SAMPLE_USERS} columns={COLUMNS} />

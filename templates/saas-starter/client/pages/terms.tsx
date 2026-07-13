@@ -1,14 +1,13 @@
 export function TermsPage() {
   return (
-    <div style={{ maxWidth: "720px", margin: "0 auto", padding: "60px 24px" }}>
+    <div class="ii-legal-page">
       <h1>Terms of Service</h1>
-      <p style={{ color: "var(--ii-on-surface-variant)", marginBottom: "32px" }}>Last updated: {new Date().toLocaleDateString()}</p>
+      <p class="ii-legal-page__date">Last updated: {new Date().toLocaleDateString()}</p>
 
       <h2>1. Acceptance of Terms</h2>
       <p>
         By accessing and using this service ("Service"), you accept and agree to be bound by
-        the terms and provision of this agreement. If you do not agree to these terms, please
-        do not use the Service.
+        the terms and provision of this agreement.
       </p>
 
       <h2>2. Description of Service</h2>
@@ -20,8 +19,7 @@ export function TermsPage() {
       <h2>3. User Accounts</h2>
       <p>
         You are responsible for maintaining the confidentiality of your account credentials
-        and for all activities that occur under your account. You agree to notify us
-        immediately of any unauthorized use of your account.
+        and for all activities that occur under your account.
       </p>
 
       <h2>4. Acceptable Use</h2>
@@ -35,15 +33,14 @@ export function TermsPage() {
 
       <h2>5. Intellectual Property</h2>
       <p>
-        The Service and its original content, features, and functionality are owned by
-        [Your Company] and are protected by international copyright, trademark, and other
-        intellectual property laws.
+        The Service and its original content are owned by [Your Company] and are protected by
+        international copyright, trademark, and other intellectual property laws.
       </p>
 
       <h2>6. Limitation of Liability</h2>
       <p>
         In no event shall [Your Company] be liable for any indirect, incidental, special,
-        consequential, or punitive damages arising out of your use of the Service.
+        consequential, or punitive damages.
       </p>
 
       <h2>7. Changes to Terms</h2>

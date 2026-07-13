@@ -10,6 +10,7 @@
     "jsxImportSource": "hono/jsx"
   },
   "imports": {
+    "~/": "./client/",
     "@kotsumo/in-it": "jsr:@kotsumo/in-it@^0.3",
     "hono": "npm:hono@^4",
     "hono/jsx": "npm:hono@^4/jsx",

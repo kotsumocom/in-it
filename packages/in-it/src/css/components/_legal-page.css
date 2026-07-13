@@ -1,0 +1,34 @@
+/* --- Legal Page --- */
+.ii-legal-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 60px var(--ii-spacing-6);
+}
+.ii-legal-page h1 {
+  font-size: var(--ii-font-2xl);
+  font-weight: 700;
+  margin-bottom: var(--ii-spacing-2);
+}
+.ii-legal-page__date {
+  color: var(--ii-on-surface-variant);
+  margin-bottom: var(--ii-spacing-6);
+}
+.ii-legal-page h2 {
+  font-size: var(--ii-font-lg);
+  font-weight: 600;
+  margin: var(--ii-spacing-6) 0 var(--ii-spacing-2);
+}
+.ii-legal-page p {
+  margin-bottom: var(--ii-spacing-3);
+  line-height: 1.7;
+}
+.ii-legal-page ul {
+  padding-left: var(--ii-spacing-6);
+  margin-bottom: var(--ii-spacing-3);
+}
+.ii-legal-page li {
+  margin-bottom: var(--ii-spacing-1);
+}
+.ii-legal-page a {
+  color: var(--ii-primary);
+}

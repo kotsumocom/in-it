@@ -1,6 +1,6 @@
 import { render } from "hono/jsx/dom";
 import { Route, Switch, useLocation } from "@kotsumo/in-it/router";
-import { ToastContainer } from "@kotsumo/in-it/components";
+import { ToastContainer } from "~/components.ts";
 import "@kotsumo/in-it/css/main.css";
 
 // Pages

@@ -1,7 +1,7 @@
 import {
   LandingHeader, LandingHero, LandingFeatures, LandingSection,
   LandingFooter, PricingCard, Button, ThemeToggle,
-} from "@kotsumo/in-it/components";
+} from "~/components.ts";
 import { Icon } from "@kotsumo/in-it/icons";
 import { Link } from "@kotsumo/in-it/router";
 
@@ -90,9 +90,9 @@ export function LandingPage() {
       </div>
 
       <LandingFooter>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
+        <div class="ii-lp-footer__row">
           <span>&copy; {new Date().getFullYear()} My SaaS. All rights reserved.</span>
-          <nav style={{ display: "flex", gap: "16px" }}>
+          <nav class="ii-lp-footer__nav">
             <Link href="/terms">Terms</Link>
             <Link href="/privacy">Privacy</Link>
           </nav>

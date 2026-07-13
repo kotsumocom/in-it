@@ -1,4 +1,4 @@
-import { PricingCard, Badge, Button } from "@kotsumo/in-it/components";
+import { PricingCard, Badge, Button } from "~/components.ts";
 import { Icon } from "@kotsumo/in-it/icons";
 
 const PLANS = [
@@ -32,25 +32,25 @@ const INVOICES = [
 export function BillingPage() {
   return (
     <>
-      <h2 style={{ margin: "0 0 8px", fontSize: "1.25rem", fontWeight: 600 }}>Billing</h2>
-      <p style={{ margin: "0 0 24px", color: "var(--ii-on-surface-variant)" }}>Manage your plan and payment method.</p>
-
-      {/* Current Plan */}
-      <div style={{ marginBottom: "32px" }}>
-        <h3 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "16px" }}>Change Plan</h3>
-        <div class="ii-pricing-grid">
-          {PLANS.map(plan => (
-            <PricingCard
-              key={plan.name}
-              {...plan}
-              cta={plan.highlighted ? "Current Plan" : "Switch"}
-            />
-          ))}
+      <div class="ii-admin-page__header">
+        <div class="ii-admin-page__header-left">
+          <h2 class="ii-admin-page__title">Billing</h2>
+          <p class="ii-admin-page__desc">Manage your plan and payment method.</p>
         </div>
       </div>
 
-      {/* Invoices */}
-      <h3 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "16px" }}>Invoice History</h3>
+      <h3 class="ii-admin-page__title">Change Plan</h3>
+      <div class="ii-pricing-grid">
+        {PLANS.map(plan => (
+          <PricingCard
+            key={plan.name}
+            {...plan}
+            cta={plan.highlighted ? "Current Plan" : "Switch"}
+          />
+        ))}
+      </div>
+
+      <h3 class="ii-admin-page__title">Invoice History</h3>
       <table class="ii-data-table">
         <thead>
           <tr>

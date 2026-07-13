@@ -1,4 +1,4 @@
-import { ErrorPage } from "@kotsumo/in-it/components";
+import { ErrorPage } from "~/components.ts";
 
 export function NotFoundPage() {
   return (

@@ -1,5 +1,5 @@
 import { useState } from "hono/jsx";
-import { AuthForm } from "@kotsumo/in-it/components";
+import { AuthForm } from "~/components.ts";
 import type { AuthMode, AuthFormData } from "@kotsumo/in-it/components";
 import { Link } from "@kotsumo/in-it/router";
 
@@ -13,13 +13,8 @@ export function AuthPage({ mode: initialMode = "login" }: { mode?: AuthMode }) {
     setError("");
     try {
       // TODO: Replace with your auth provider (e.g. Supabase Auth)
-      // const { error } = await supabase.auth.signInWithPassword(data);
       console.log(`${mode}:`, data);
-
-      // Simulate API call
       await new Promise(r => setTimeout(r, 1000));
-
-      // Redirect to admin on success
       window.location.href = "/admin";
     } catch (e) {
       setError(e instanceof Error ? e.message : "An error occurred");
@@ -30,15 +25,12 @@ export function AuthPage({ mode: initialMode = "login" }: { mode?: AuthMode }) {
 
   const handleProviderClick = (providerId: string) => {
     // TODO: Replace with your OAuth provider
-    // await supabase.auth.signInWithOAuth({ provider: providerId });
     console.log("OAuth:", providerId);
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px" }}>
-      <Link href="/" style={{ marginBottom: "24px", fontSize: "1.5rem", fontWeight: 700, textDecoration: "none", color: "var(--ii-primary)" }}>
-        My SaaS
-      </Link>
+    <div class="ii-auth-page">
+      <Link href="/" class="ii-auth-page__brand">My SaaS</Link>
       <AuthForm
         mode={mode}
         onSubmit={handleSubmit}

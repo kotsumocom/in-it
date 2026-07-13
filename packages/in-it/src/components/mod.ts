@@ -84,3 +84,12 @@ export type { DocsShellProps, DocsSidebarGroup, DocsSidebarItem, DocsTocItem } f
 export { LandingHeader, LandingHero, LandingFeatures, LandingSection, LandingFooter } from "./layout/Landing.tsx";
 export type { LandingHeaderProps, LandingHeroProps, FeatureCard, LandingFeaturesProps, LandingSectionProps, LandingFooterProps } from "./layout/Landing.tsx";
 
+// Charts
+export { BarChart } from "./charts/BarChart.tsx";
+export type { BarChartProps } from "./charts/BarChart.tsx";
+export { LineChart } from "./charts/LineChart.tsx";
+export type { LineChartProps } from "./charts/LineChart.tsx";
+export { DonutChart } from "./charts/DonutChart.tsx";
+export type { DonutChartProps, DonutSegment } from "./charts/DonutChart.tsx";
+export { SparkLine } from "./charts/SparkLine.tsx";
+export type { SparkLineProps } from "./charts/SparkLine.tsx";
