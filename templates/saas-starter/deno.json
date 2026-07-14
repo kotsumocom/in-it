@@ -1,8 +1,9 @@
 {
   "tasks": {
-    "dev": "deno run -A npm:vite",
+    "gen": "deno run -A scripts/gen.ts",
+    "dev": "deno task gen && deno run -A npm:vite",
     "dev:server": "deno run -A --watch server/main.ts",
-    "build": "deno run -A npm:vite build",
+    "build": "deno task gen && deno run -A npm:vite build",
     "serve": "deno serve -A server/main.ts"
   },
   "compilerOptions": {
@@ -19,6 +20,8 @@
     "@kotsumo/in-it/icons": "jsr:@kotsumo/in-it@^0.4/icons",
     "@kotsumo/in-it/router": "jsr:@kotsumo/in-it@^0.4/router",
     "@kotsumo/in-it/styles": "jsr:@kotsumo/in-it@^0.4/styles",
+    "@kotsumo/in-it/config": "jsr:@kotsumo/in-it@^0.4/config",
+    "@kotsumo/in-it/gen": "jsr:@kotsumo/in-it@^0.4/gen",
     "hono": "npm:hono@^4",
     "hono/jsx": "npm:hono@^4/jsx",
     "hono/jsx/dom": "npm:hono@^4/jsx/dom"

@@ -54,13 +54,23 @@ deno task serve   # Start production server
 To replace any in-it component with your own version:
 
 1. Create your component in `client/overrides/`
-2. Edit `client/components.ts` to swap the import
+2. Add it to `in-it.config.ts`
 
 ```ts
-// client/components.ts
-export { AdminShell } from "./overrides/AdminShell.tsx";
-export * from "@kotsumo/in-it/components";
+// in-it.config.ts
+import { defineConfig } from "@kotsumo/in-it/config";
+
+export default defineConfig({
+  overrides: {
+    AdminShell: "./client/overrides/AdminShell.tsx",
+    Button: "./client/overrides/Button.tsx",
+  },
+});
 ```
+
+3. Run `deno task gen` (or `deno task dev`, which runs it automatically)
+
+`client/components.ts` is auto-generated — do not edit it directly.
 
 ## Blog (Headless CMS)
 
