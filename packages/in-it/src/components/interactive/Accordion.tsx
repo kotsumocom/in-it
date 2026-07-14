@@ -4,7 +4,6 @@
  */
 import { useState, useCallback } from "hono/jsx";
 import { Icon } from "../../icons/Icon.tsx";
-import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Accordion — co-located for self-containment. */
 export const ACCORDION_CSS = `/* --- Accordion --- */
@@ -85,7 +84,6 @@ export interface AccordionProps {
 
 /** Expandable/collapsible content panels with WAI-ARIA support. */
 export function Accordion({ items, multiple = false, defaultOpen = [] }: AccordionProps): any {
-  injectCSS("ii-accordion", ACCORDION_CSS);
   const [openIds, setOpenIds] = useState<Set<string>>(new Set(defaultOpen));
 
   const toggle = useCallback((id: string) => {

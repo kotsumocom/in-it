@@ -9,8 +9,30 @@
  * />
  */
 import { useState } from "hono/jsx";
-import { CHART_CSS } from "../../css.ts";
-import { injectCSS } from "../../inject.ts";
+
+/** @internal CSS for BarChart — co-located for self-containment. */
+export const BAR_CHART_CSS = `/* --- Bar Chart --- */
+.ii-chart-bar__bar {
+  fill: var(--ii-primary);
+  transition: opacity var(--ii-transition);
+  animation: ii-chart-grow-up 0.6s ease forwards;
+  transform-origin: bottom;
+}
+.ii-chart-bar__bar:hover {
+  opacity: 0.8;
+}
+.ii-chart-bar__label {
+  font-size: 11px;
+  fill: var(--ii-on-surface-variant);
+  text-anchor: middle;
+}
+.ii-chart-bar__value {
+  font-size: 11px;
+  fill: var(--ii-on-surface);
+  text-anchor: middle;
+  font-weight: 500;
+}
+`;
 
 export interface BarChartProps {
   data: number[];
@@ -29,7 +51,6 @@ export function BarChart({
   showValues = true,
   class: cls,
 }: BarChartProps): any {
-  injectCSS("ii-chart", CHART_CSS);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; value: string } | null>(null);
   const max = Math.max(...data, 1);
   const padding = { top: 20, right: 16, bottom: labels ? 28 : 8, left: 16 };

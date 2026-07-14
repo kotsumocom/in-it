@@ -1,4 +1,3 @@
-import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for EmptyState — co-located for self-containment. */
 export const EMPTY_STATE_CSS = `/* --- Empty State --- */
@@ -37,7 +36,6 @@ export interface EmptyStateProps {
 
 /** Centered placeholder for empty lists or search results, with icon, title, description, and optional actions. */
 export function EmptyState({ icon = "", title, description, children }: EmptyStateProps): any {
-  injectCSS("ii-empty", EMPTY_STATE_CSS);
   return (
     <div class="ii-empty">
       <div class="ii-empty__icon">{icon}</div>

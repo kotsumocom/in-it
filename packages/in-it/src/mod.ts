@@ -32,4 +32,4 @@ export { ICON_PATHS } from "./icons/paths.ts";
 export { FILLED_ICON_PATHS } from "./icons/filled.ts";
 export { BarChart, LineChart, DonutChart, SparkLine } from "./components/charts/mod.ts";
 export type { BarChartProps, LineChartProps, DonutChartProps, DonutSegment, SparkLineProps } from "./components/charts/mod.ts";
-export { injectStyles, StyleSheet, CSS } from "./styles.ts";
+export { injectStyles, StyleSheet, CSS } from "./styles.tsx";

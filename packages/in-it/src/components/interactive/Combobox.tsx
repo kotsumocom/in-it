@@ -3,7 +3,6 @@
  * WAI-ARIA Combobox pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
-import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
 
 /** @internal CSS for Combobox — co-located for self-containment. */
@@ -88,7 +87,6 @@ export interface ComboboxProps {
 
 /** Autocomplete text input with filterable dropdown options. */
 export function Combobox({ options, value = "", placeholder, label, onChange }: ComboboxProps): any {
-  injectCSS("ii-combobox", COMBOBOX_CSS);
   const resolvedPlaceholder = placeholder ?? t("search");
   const [query, setQuery] = useState(value);
   const [open, setOpen] = useState(false);

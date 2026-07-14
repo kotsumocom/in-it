@@ -7,9 +7,49 @@
  *   </SettingsSection>
  */
 
+/** @internal CSS for SettingsSection — co-located for self-containment. */
+export const SETTINGS_SECTION_CSS = `/* --- SettingsSection --- */
+.ii-settings-section {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--ii-spacing-6);
+  padding: var(--ii-spacing-6) 0;
+  border-bottom: 1px solid var(--ii-outline-variant);
+}
+.ii-settings-section:last-child {
+  border-bottom: none;
+}
+.ii-settings-section__title {
+  font-size: var(--ii-font-lg);
+  font-weight: 600;
+  color: var(--ii-on-surface);
+  margin: 0 0 var(--ii-spacing-1);
+}
+.ii-settings-section__desc {
+  font-size: var(--ii-font-sm);
+  color: var(--ii-on-surface-variant);
+  margin: 0;
+}
+.ii-settings-section__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ii-spacing-4);
+}
+.ii-settings-section__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ii-spacing-4);
+}
+@media (max-width: 768px) {
+  .ii-settings-section {
+    grid-template-columns: 1fr;
+    gap: var(--ii-spacing-3);
+  }
+}
+`;
+
 /** Props for SettingsSection. */
-import { SETTINGS_SECTION_CSS } from "../../css.ts";
-import { injectCSS } from "../../inject.ts";
 export interface SettingsSectionProps {
   /** Section title. */
   title: string;
@@ -28,7 +68,6 @@ export function SettingsSection({
   children,
   class: cls,
 }: SettingsSectionProps): any {
-  injectCSS("ii-settings", SETTINGS_SECTION_CSS);
   return (
     <section class={`ii-settings-section${cls ? ` ${cls}` : ""}`}>
       <div class="ii-settings-section__header">

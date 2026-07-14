@@ -3,7 +3,6 @@
  * WAI-ARIA Switch pattern
  */
 import { useState } from "hono/jsx";
-import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Switch — co-located for self-containment. */
 export const SWITCH_CSS = `/* --- Switch --- */
@@ -71,7 +70,6 @@ export interface SwitchProps {
 
 /** Toggle switch for boolean on/off states with ARIA switch pattern. */
 export function Switch({ defaultChecked = false, label, disabled, onChange }: SwitchProps): any {
-  injectCSS("ii-switch", SWITCH_CSS);
   const [checked, setChecked] = useState(defaultChecked);
 
   const toggle = () => {

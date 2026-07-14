@@ -133,6 +133,10 @@ let currentLocale: Locale = "en";
 /** Set the active locale. */
 export function setLocale(locale: Locale): void {
   currentLocale = locale;
+  // Sync HTML lang attribute for CSS :lang() selectors and browser i18n
+  if (typeof document !== "undefined") {
+    document.documentElement.setAttribute("lang", locale);
+  }
 }
 
 /** Get the current locale. */

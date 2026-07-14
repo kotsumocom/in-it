@@ -1,8 +1,0 @@
-/* --- Kbd --- */
-.ii-kbd {
-  display: inline-flex; align-items: center; padding: 2px 6px; border: 1px solid var(--ii-outline-variant);
-  border-radius: 4px; background: var(--ii-surface-container); font-family: 'Fira Code', monospace;
-  font-size: 0.75rem; font-weight: 500; color: var(--ii-on-surface);
-  box-shadow: 0 1px 0 var(--ii-outline-variant);
-}
-

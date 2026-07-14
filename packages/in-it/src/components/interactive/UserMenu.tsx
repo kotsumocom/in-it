@@ -13,7 +13,6 @@
  *   />
  */
 import { useState, useCallback, useRef, useEffect } from "hono/jsx";
-import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for UserMenu — co-located for self-containment. */
 export const USER_MENU_CSS = `/* --- UserMenu --- */
@@ -142,7 +141,6 @@ export function UserMenu({
   items = [],
   class: cls,
 }: UserMenuProps): any {
-  injectCSS("ii-user-menu", USER_MENU_CSS);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 

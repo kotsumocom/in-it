@@ -1,4 +1,3 @@
-import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Button — co-located for self-containment. */
 export const BUTTON_CSS = `/* --- Button (MD3) --- */
@@ -137,7 +136,6 @@ export function Button({
   children,
   class: cls,
 }: ButtonProps): any {
-  injectCSS("ii-btn", BUTTON_CSS);
   const mods = [
     `ii-btn--${variant}`,
     `ii-btn--${size}`,

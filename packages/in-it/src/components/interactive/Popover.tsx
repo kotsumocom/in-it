@@ -3,7 +3,6 @@
  * WAI-ARIA Dialog (Non-modal) pattern
  */
 import { useState, useEffect, useRef } from "hono/jsx";
-import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Popover — co-located for self-containment. */
 export const POPOVER_CSS = `/* --- Popover --- */
@@ -45,7 +44,6 @@ export interface PopoverProps {
 
 /** Non-modal floating content triggered by a button click. */
 export function Popover({ trigger, children, position = "bottom" }: PopoverProps): any {
-  injectCSS("ii-popover", POPOVER_CSS);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 

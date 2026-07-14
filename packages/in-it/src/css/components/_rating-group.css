@@ -1,9 +1,0 @@
-/* --- Rating Group --- */
-.ii-rating { display: inline-flex; gap: 4px; }
-.ii-rating__star {
-  font-size: 1.5rem; cursor: pointer; color: var(--ii-outline-variant);
-  transition: color var(--ii-transition), transform 100ms ease;
-}
-.ii-rating__star--filled { color: #f59e0b; }
-.ii-rating__star:hover { transform: scale(1.2); }
-

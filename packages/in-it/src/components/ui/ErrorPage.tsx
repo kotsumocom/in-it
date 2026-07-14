@@ -6,11 +6,44 @@
  *   <ErrorPage code={500} title="Server Error" description="Something went wrong." />
  */
 
-/** Props for ErrorPage. */
-import { ERROR_PAGE_CSS } from "../../css.ts";
-import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
 import { Button } from "./mod.tsx";
+
+/** @internal CSS for ErrorPage — co-located for self-containment. */
+export const ERROR_PAGE_CSS = `/* --- ErrorPage --- */
+.ii-error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--ii-spacing-6);
+  background: var(--ii-surface);
+}
+.ii-error-page__inner {
+  text-align: center;
+  max-width: 480px;
+}
+.ii-error-page__code {
+  font-size: 6rem;
+  font-weight: 800;
+  color: var(--ii-primary);
+  line-height: 1;
+  opacity: 0.3;
+}
+.ii-error-page__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ii-on-surface);
+  margin: var(--ii-spacing-2) 0;
+}
+.ii-error-page__desc {
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface-variant);
+  margin: 0 0 var(--ii-spacing-6);
+}
+`;
+
+/** Props for ErrorPage. */
 export interface ErrorPageProps {
   /** HTTP status code to display. */
   code: number;
@@ -35,7 +68,6 @@ export function ErrorPage({
   onAction,
   class: cls,
 }: ErrorPageProps): any {
-  injectCSS("ii-error-page", ERROR_PAGE_CSS);
   return (
     <div class={`ii-error-page${cls ? ` ${cls}` : ""}`}>
       <div class="ii-error-page__inner">

@@ -2,7 +2,6 @@
  * Range slider component
  */
 import { useState } from "hono/jsx";
-import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Slider — co-located for self-containment. */
 export const SLIDER_CSS = `/* --- Slider --- */
@@ -32,7 +31,6 @@ export interface SliderProps {
 
 /** Range slider input with optional label and value display. */
 export function Slider({ min = 0, max = 100, step = 1, defaultValue = 50, label, showValue = true, onChange }: SliderProps): any {
-  injectCSS("ii-slider", SLIDER_CSS);
   const [value, setValue] = useState(defaultValue);
 
   const handleInput = (e: Event) => {

@@ -12,11 +12,98 @@
  *   />
  */
 
-/** Props for PricingCard. */
-import { PRICING_CARD_CSS } from "../../css.ts";
-import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
 import { Button } from "./mod.tsx";
+
+/** @internal CSS for PricingCard — co-located for self-containment. */
+export const PRICING_CARD_CSS = `/* --- PricingCard --- */
+.ii-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--ii-spacing-6);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.ii-pricing-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--ii-spacing-6);
+  background: var(--ii-surface);
+  border: 1px solid var(--ii-outline-variant);
+  border-radius: var(--ii-shape-lg);
+  transition: box-shadow var(--ii-transition), border-color var(--ii-transition);
+}
+.ii-pricing-card:hover {
+  box-shadow: var(--ii-shadow-md);
+}
+.ii-pricing-card--highlighted {
+  border-color: var(--ii-primary);
+  box-shadow: var(--ii-shadow-md);
+}
+.ii-pricing-card__badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 16px;
+  background: var(--ii-primary);
+  color: var(--ii-on-primary);
+  font-size: var(--ii-font-sm);
+  font-weight: 600;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.ii-pricing-card__name {
+  font-size: var(--ii-font-lg);
+  font-weight: 600;
+  color: var(--ii-on-surface);
+  margin: 0 0 var(--ii-spacing-2);
+}
+.ii-pricing-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: var(--ii-spacing-2);
+}
+.ii-pricing-card__amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--ii-on-surface);
+  line-height: 1;
+}
+.ii-pricing-card__period {
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface-variant);
+}
+.ii-pricing-card__desc {
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface-variant);
+  margin: 0 0 var(--ii-spacing-4);
+}
+.ii-pricing-card__features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--ii-spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ii-spacing-2);
+  flex: 1;
+}
+.ii-pricing-card__feature {
+  display: flex;
+  align-items: center;
+  gap: var(--ii-spacing-2);
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface);
+}
+.ii-pricing-card__feature .ii-icon {
+  color: var(--ii-success);
+  flex-shrink: 0;
+}
+`;
+
+/** Props for PricingCard. */
 export interface PricingCardProps {
   /** Plan name (e.g. "Free", "Pro", "Enterprise"). */
   name: string;
@@ -53,7 +140,6 @@ export function PricingCard({
   badge,
   class: cls,
 }: PricingCardProps): any {
-  injectCSS("ii-pricing", PRICING_CARD_CSS);
   return (
     <div class={`ii-pricing-card${highlighted ? " ii-pricing-card--highlighted" : ""}${cls ? ` ${cls}` : ""}`}>
       {badge && <span class="ii-pricing-card__badge">{badge}</span>}

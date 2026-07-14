@@ -5,8 +5,22 @@
  * <SparkLine data={[10, 25, 18, 32, 28, 40]} width={80} height={24} />
  */
 
-import { CHART_CSS } from "../../css.ts";
-import { injectCSS } from "../../inject.ts";
+/** @internal CSS for SparkLine — co-located for self-containment. */
+export const SPARK_LINE_CSS = `/* --- SparkLine --- */
+.ii-sparkline {
+  display: inline-block;
+}
+.ii-sparkline__line {
+  fill: none;
+  stroke: var(--ii-primary);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ii-sparkline--success .ii-sparkline__line { stroke: var(--ii-success); }
+.ii-sparkline--error .ii-sparkline__line { stroke: var(--ii-error); }
+`;
+
 export interface SparkLineProps {
   data: number[];
   width?: number;
@@ -24,7 +38,6 @@ export function SparkLine({
   variant = "default",
   class: cls,
 }: SparkLineProps): any {
-  injectCSS("ii-chart", CHART_CSS);
   if (data.length < 2) return null;
 
   const max = Math.max(...data);

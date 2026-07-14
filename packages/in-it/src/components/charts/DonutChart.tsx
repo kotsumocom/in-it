@@ -13,8 +13,50 @@
  * />
  */
 
-import { CHART_CSS } from "../../css.ts";
-import { injectCSS } from "../../inject.ts";
+/** @internal CSS for DonutChart — co-located for self-containment. */
+export const DONUT_CHART_CSS = `/* --- Donut Chart --- */
+.ii-chart-donut__segment {
+  transition: opacity var(--ii-transition);
+  animation: ii-chart-donut-draw 0.8s ease forwards;
+  stroke-dashoffset: var(--ii-donut-offset, 0);
+}
+.ii-chart-donut__segment:hover {
+  opacity: 0.8;
+}
+.ii-chart-donut__center-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  fill: var(--ii-on-surface);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.ii-chart-donut__center-label {
+  font-size: 0.75rem;
+  fill: var(--ii-on-surface-variant);
+  text-anchor: middle;
+}
+.ii-chart-donut__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ii-spacing-3);
+  margin-top: var(--ii-spacing-3);
+  justify-content: center;
+}
+.ii-chart-donut__legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ii-spacing-1);
+  font-size: var(--ii-font-sm);
+  color: var(--ii-on-surface-variant);
+}
+.ii-chart-donut__legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+`;
+
 export interface DonutSegment {
   label: string;
   value: number;
@@ -51,7 +93,6 @@ export function DonutChart({
   showLegend = true,
   class: cls,
 }: DonutChartProps): any {
-  injectCSS("ii-chart", CHART_CSS);
   const total = data.reduce((s, d) => s + d.value, 0) || 1;
   const r = (size - thickness) / 2;
   const circumference = 2 * Math.PI * r;

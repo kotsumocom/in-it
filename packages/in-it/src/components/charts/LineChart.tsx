@@ -10,8 +10,39 @@
  * />
  */
 import { useState } from "hono/jsx";
-import { CHART_CSS } from "../../css.ts";
-import { injectCSS } from "../../inject.ts";
+
+/** @internal CSS for LineChart — co-located for self-containment. */
+export const LINE_CHART_CSS = `/* --- Line Chart --- */
+.ii-chart-line__line {
+  fill: none;
+  stroke: var(--ii-primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ii-chart-line__area {
+  fill: var(--ii-primary);
+  opacity: 0.1;
+}
+.ii-chart-line__dot {
+  fill: var(--ii-primary);
+  stroke: var(--ii-surface);
+  stroke-width: 2;
+  transition: r var(--ii-transition);
+}
+.ii-chart-line__dot:hover {
+  r: 6;
+}
+.ii-chart-line__grid {
+  stroke: var(--ii-outline-variant);
+  stroke-width: 0.5;
+  stroke-dasharray: 4 4;
+}
+.ii-chart-line__axis-label {
+  font-size: 11px;
+  fill: var(--ii-on-surface-variant);
+}
+`;
 
 export interface LineChartProps {
   data: number[];
@@ -34,7 +65,6 @@ export function LineChart({
   showGrid = true,
   class: cls,
 }: LineChartProps): any {
-  injectCSS("ii-chart", CHART_CSS);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; value: string } | null>(null);
 
   const vw = 400;

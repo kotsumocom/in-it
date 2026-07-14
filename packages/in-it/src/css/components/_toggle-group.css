@@ -1,5 +1,0 @@
-/* --- Toggle Group --- */
-.ii-toggle-group { display: inline-flex; border-radius: var(--ii-shape-md); overflow: hidden; border: 1px solid var(--ii-outline-variant); }
-.ii-toggle-group .ii-toggle { border-radius: 0; border: none; border-right: 1px solid var(--ii-outline-variant); }
-.ii-toggle-group .ii-toggle:last-child { border-right: none; }
-

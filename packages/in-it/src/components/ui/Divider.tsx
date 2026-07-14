@@ -1,4 +1,3 @@
-import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Divider — co-located for self-containment. */
 export const DIVIDER_CSS = `/* --- Divider --- */
@@ -13,7 +12,6 @@ export interface DividerProps {
 
 /** Horizontal rule divider with optional label. */
 export function Divider({ label }: DividerProps): any {
-  injectCSS("ii-divider", DIVIDER_CSS);
   if (label) {
     return <div class="ii-divider ii-divider--label"><span>{label}</span></div>;
   }

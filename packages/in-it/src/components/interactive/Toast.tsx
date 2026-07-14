@@ -4,7 +4,6 @@
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
 import { Icon } from "../../icons/Icon.tsx";
-import { injectCSS } from "../../inject.ts";
 import { t as tr } from "../../locale.ts";
 
 /** @internal CSS for Toast — co-located for self-containment. */
@@ -62,7 +61,6 @@ let globalAddToast: ((t: ToastItem) => void) | null = null;
 
 /** Global toast function to show notifications from anywhere. */
 export function toast(message: string, variant: ToastItem["variant"] = "info", duration = 4000): any {
-  injectCSS("ii-toast", TOAST_CSS);
   if (globalAddToast) {
     globalAddToast({ id: ++toastIdCounter, message, variant, duration });
   }

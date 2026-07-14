@@ -114,6 +114,15 @@ export function setConfig(config: InItConfig): void {
     site: { ...defaults.site, ...config.site },
     theme: { ...defaults.theme, ...config.theme },
   };
+
+  // Apply theme immediately to prevent flash
+  if (typeof document !== "undefined") {
+    const mode = activeConfig.theme?.defaultMode ?? "system";
+    const resolved = mode === "system"
+      ? (matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light")
+      : mode;
+    document.documentElement.setAttribute("data-theme", resolved);
+  }
 }
 
 /** Get the currently active configuration. */

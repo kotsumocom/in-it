@@ -1,4 +1,3 @@
-import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for DataTable — co-located for self-containment. */
 export const DATA_TABLE_CSS = `/* --- Data Table --- */
@@ -53,7 +52,6 @@ export interface DataTableProps<T> {
 
 /** Responsive HTML table with configurable columns, custom cell renderers, and column alignment. */
 export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>): any {
-  injectCSS("ii-table", DATA_TABLE_CSS);
   const getKey = rowKey ?? ((_row: T, i: number) => String(i));
   return (
     <div class="ii-data-table-wrap">

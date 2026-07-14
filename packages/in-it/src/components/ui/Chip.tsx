@@ -1,4 +1,3 @@
-import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
 
 /** @internal CSS for Chip — co-located for self-containment. */
@@ -45,7 +44,6 @@ export interface ChipProps {
 
 /** Compact label element for tags, filters, or selections. Supports an optional dismiss button. */
 export function Chip({ variant = "default", size = "md", onClose, children }: ChipProps): any {
-  injectCSS("ii-chip", CHIP_CSS);
   const mods = `ii-chip${variant !== "default" ? ` ii-chip--${variant}` : ""}${size !== "md" ? ` ii-chip--${size}` : ""}`;
   return (
     <span class={mods}>

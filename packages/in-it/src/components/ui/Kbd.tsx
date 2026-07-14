@@ -1,4 +1,3 @@
-import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Kbd — co-located for self-containment. */
 export const KBD_CSS = `/* --- Kbd --- */
@@ -17,6 +16,5 @@ export interface KbdProps {
 
 /** Keyboard shortcut indicator styled as a key cap. */
 export function Kbd({ children }: KbdProps): any {
-  injectCSS("ii-kbd", KBD_CSS);
   return <kbd class="ii-kbd">{children}</kbd>;
 }

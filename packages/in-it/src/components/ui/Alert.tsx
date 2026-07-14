@@ -1,5 +1,4 @@
 import { Icon } from "../../icons/Icon.tsx";
-import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
 
 /** @internal CSS for Alert — co-located for self-containment. */
@@ -31,7 +30,6 @@ export interface AlertProps {
 
 /** Inline alert banner with icon, title, and dismissible option. */
 export function Alert({ variant = "info", title, icon, closable, onClose, children }: AlertProps): any {
-  injectCSS("ii-alert", ALERT_CSS);
   const defaultIcons: Record<string, any> = {
     info: <Icon name="info-circle" size={18} />,
     success: <Icon name="circle-check" size={18} />,
