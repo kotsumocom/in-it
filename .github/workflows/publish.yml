@@ -6,31 +6,77 @@ on:
       - 'v*'
 
 jobs:
-  publish:
+  publish-in-it:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v4
-
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
-
       - name: Publish in-it to JSR
-        continue-on-error: true
         run: deno publish
         working-directory: packages/in-it
 
+  publish-create-in-it:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
       - name: Publish create-in-it to JSR
-        continue-on-error: true
         run: deno publish
         working-directory: create-in-it
 
+  release:
+    needs: [publish-in-it, publish-create-in-it]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release delete ${{ github.ref_name }} --yes 2>/dev/null || true
           gh release create ${{ github.ref_name }} --generate-notes
+
+  notify-failure:
+    needs: [publish-in-it, publish-create-in-it]
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Issue on publish failure
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create \
+            --title "🚨 JSR パブリッシュ失敗: ${{ github.ref_name }}" \
+            --body "## JSR パブリッシュが失敗しました
+
+          **タグ:** \`${{ github.ref_name }}\`
+          **コミット:** [\`${GITHUB_SHA::7}\`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+          **実行者:** @${{ github.actor }}
+          **ワークフロー:** [Run #${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+          ### ジョブ結果
+          | パッケージ | 結果 |
+          |---|---|
+          | in-it | \`${{ needs.publish-in-it.result }}\` |
+          | create-in-it | \`${{ needs.publish-create-in-it.result }}\` |
+
+          ### 対処
+          1. 上記ワークフローのログを確認
+          2. \`deno publish --dry-run\` でローカル検証
+          3. 修正後、タグを打ち直してリトライ"
