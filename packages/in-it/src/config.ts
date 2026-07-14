@@ -18,6 +18,8 @@
  * ```
  */
 
+import type { Locale } from "./locale.ts";
+
 /** All overridable component names exported by in-it. */
 export type OverridableComponent =
   | "Badge" | "Card" | "Button" | "StatCard" | "DataTable" | "Input"
@@ -73,6 +75,13 @@ export interface InItConfig {
   icons?: "outlined" | "filled";
 
   /**
+   * UI locale for built-in component strings.
+   * "ja" enables Japanese UI, CJK font optimization, and adjusted typography.
+   * @default "en"
+   */
+  locale?: Locale;
+
+  /**
    * Auth provider declaration (metadata only — no code generated).
    * Serves as documentation for AI/LLM and developers.
    */
@@ -90,7 +99,8 @@ export const defaults = {
   site: { name: "My SaaS", lang: "ja", description: "" },
   theme: { primary: "#6750a4" },
   icons: "outlined" as const,
-} satisfies { site: Required<SiteConfig>; theme: Required<ThemeConfig>; icons: "outlined" | "filled" };
+  locale: "en" as Locale,
+} satisfies { site: Required<SiteConfig>; theme: Required<ThemeConfig>; icons: "outlined" | "filled"; locale: Locale };
 
 /** Type-safe config helper. */
 export function defineConfig(config: InItConfig): InItConfig {

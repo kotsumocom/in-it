@@ -24,6 +24,10 @@ export default defineConfig({
   // Icon style: "outlined" (default) or "filled"
   // icons: "outlined",
 
+  // UI locale: "en" (default) or "ja"
+  // "ja" enables Japanese UI strings, Noto Sans JP font, and CJK typography
+  // locale: "ja",
+
   // Auth provider (metadata only — no code generated)
   // auth: {
   //   provider: "supabase",

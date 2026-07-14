@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 import { Icon } from "../../icons/Icon.tsx";
 import { TOAST_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { t as tr } from "../../locale.ts";
 
 /** A single toast notification with message, variant, and auto-dismiss duration. */
 export interface ToastItem {
@@ -62,7 +63,7 @@ export function ToastContainer({ position = "top-right" }: ToastContainerProps):
             {(!t.variant || t.variant === "info") && <Icon name="info-circle" size={18} />}
           </span>
           <span class="ii-toast__msg">{t.message}</span>
-          <button class="ii-toast__close" onClick={() => remove(t.id)} aria-label="Close"><Icon name="x" size={16} /></button>
+          <button class="ii-toast__close" onClick={() => remove(t.id)} aria-label={tr("close")}><Icon name="x" size={16} /></button>
         </div>
       ))}
     </div>

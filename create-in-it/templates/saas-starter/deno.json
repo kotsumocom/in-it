@@ -22,6 +22,7 @@
     "@kotsumo/in-it/styles": "jsr:@kotsumo/in-it@^0.4/styles",
     "@kotsumo/in-it/config": "jsr:@kotsumo/in-it@^0.4/config",
     "@kotsumo/in-it/gen": "jsr:@kotsumo/in-it@^0.4/gen",
+    "@kotsumo/in-it/locale": "jsr:@kotsumo/in-it@^0.4/locale",
     "hono": "npm:hono@^4",
     "hono/jsx": "npm:hono@^4/jsx",
     "hono/jsx/dom": "npm:hono@^4/jsx/dom"

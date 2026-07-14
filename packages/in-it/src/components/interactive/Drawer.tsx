@@ -4,6 +4,7 @@
 import { useState, useEffect, useCallback } from "hono/jsx";
 import { DRAWER_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { t } from "../../locale.ts";
 
 /** Props for the Drawer component. */
 export interface DrawerProps {
@@ -39,7 +40,7 @@ export function Drawer({ open, onClose, position = "right", title, width = "320p
       <div class={`ii-drawer ii-drawer--${position}`} role="dialog" aria-modal={true} style={{ width }}>
         <div class="ii-drawer__header">
           {title && <h2 class="ii-drawer__title">{title}</h2>}
-          <button type="button" class="ii-drawer__close" aria-label="Close" onClick={onClose}>x</button>
+          <button type="button" class="ii-drawer__close" aria-label={t("close")} onClick={onClose}>x</button>
         </div>
         <div class="ii-drawer__body">{children}</div>
       </div>

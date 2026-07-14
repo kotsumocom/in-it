@@ -4,6 +4,7 @@
  */
 import { BADGE_CSS, CARD_CSS, BUTTON_CSS, STAT_CARD_CSS, DATA_TABLE_CSS, INPUT_CSS, AVATAR_CSS, CHIP_CSS, SKELETON_CSS, EMPTY_STATE_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { t } from "../../locale.ts";
 export interface BadgeProps {
   variant?: "success" | "error" | "warning" | "info" | "neutral";
   children: any;
@@ -253,7 +254,7 @@ export function Chip({ variant = "default", onClose, children }: ChipProps): any
     <span class={`ii-chip${variant !== "default" ? ` ii-chip--${variant}` : ""}`}>
       {children}
       {onClose && (
-        <button type="button" class="ii-chip__close" aria-label="Remove" onClick={onClose}>
+        <button type="button" class="ii-chip__close" aria-label={t("remove")} onClick={onClose}>
           x
         </button>
       )}

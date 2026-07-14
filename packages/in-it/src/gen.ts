@@ -136,19 +136,20 @@ function genComponents(root: string, config: InItConfig): void {
  */
 function genTheme(root: string, config: InItConfig): void {
   const primary = config.theme?.primary ?? defaults.theme.primary;
+  const locale = config.locale ?? defaults.locale;
   const outPath = path.join(root, "client", "theme.css");
 
   const css = generateCss(primary);
-  const output = `/**
- * Theme CSS — auto-generated from in-it.config.ts.
- * DO NOT EDIT — run \`deno task gen\` to regenerate.
- *
- * Primary: ${primary}
- */
-${css}`;
+
+  // CJK typography optimizations
+  const cjkCss = locale === "ja"
+    ? `\n/* CJK typography optimizations (locale: ja) */\n:root {\n  --ii-font-family: 'Inter', 'Noto Sans JP', system-ui, sans-serif;\n  --ii-body-md: 1rem;\n  --ii-body-line-height: 1.7;\n}\nbody {\n  line-height: var(--ii-body-line-height);\n}\n`
+    : "";
+
+  const output = `/**\n * Theme CSS — auto-generated from in-it.config.ts.\n * DO NOT EDIT — run \\\`deno task gen\\\` to regenerate.\n *\n * Primary: ${primary}\n * Locale: ${locale}\n */\n${css}${cjkCss}`;
 
   fs.writeFileSync(outPath, output);
-  console.log(`✅ theme.css — primary: ${primary}`);
+  console.log(`✅ theme.css — primary: ${primary}, locale: ${locale}`);
 }
 
 /**
@@ -188,8 +189,38 @@ function genIndexHtml(root: string, config: InItConfig): void {
     }
   }
 
+  // Add Google Fonts link for Japanese locale
+  const locale = config.locale ?? defaults.locale;
+  if (locale === "ja" && !html.includes("Noto+Sans+JP")) {
+    const fontLink = `  <link rel="preconnect" href="https://fonts.googleapis.com" />\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />\n  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />`;
+    html = html.replace(
+      "</head>",
+      `${fontLink}\n</head>`,
+    );
+  }
+
   fs.writeFileSync(htmlPath, html);
   console.log(`✅ index.html — "${site.name}" (${site.lang})`);
+}
+
+/**
+ * Generate client/locale-init.ts from locale config.
+ */
+function genLocaleInit(root: string, config: InItConfig): void {
+  const locale = config.locale ?? defaults.locale;
+  const outPath = path.join(root, "client", "locale-init.ts");
+
+  const output = `/**
+ * Locale initialization — auto-generated from in-it.config.ts.
+ * DO NOT EDIT — run \`deno task gen\` to regenerate.
+ */
+import { setLocale } from "@kotsumo/in-it/locale";
+setLocale("${locale}");
+`;
+
+  fs.mkdirSync(path.dirname(outPath), { recursive: true });
+  fs.writeFileSync(outPath, output);
+  console.log(`✅ locale-init.ts — ${locale}`);
 }
 
 /**
@@ -207,6 +238,7 @@ export async function generateComponents(
   genComponents(root, config);
   genTheme(root, config);
   genIndexHtml(root, config);
+  genLocaleInit(root, config);
 
   console.log("\n✨ Done!");
 }

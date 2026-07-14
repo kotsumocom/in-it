@@ -17,6 +17,7 @@
 import { useState, useCallback } from "hono/jsx";
 import { AUTH_FORM_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { t } from "../../locale.ts";
 
 /** Auth form mode. */
 export type AuthMode = "login" | "signup";
@@ -98,15 +99,15 @@ export function AuthForm({
       const name = mode === "signup" ? sanitize((data.get("name") as string) ?? "").trim() : undefined;
 
       if (!EMAIL_RE.test(email)) {
-        setFormError("Please enter a valid email address.");
+        setFormError(t("invalidEmail"));
         return;
       }
       if (password.length < 8) {
-        setFormError("Password must be at least 8 characters.");
+        setFormError(t("passwordTooShort"));
         return;
       }
       if (mode === "signup" && (!name || name.length < 1)) {
-        setFormError("Please enter your name.");
+        setFormError(t("nameRequired"));
         return;
       }
 
@@ -125,7 +126,7 @@ export function AuthForm({
 
   return (
     <div class={`ii-auth-form${cls ? ` ${cls}` : ""}`}>
-      <h2 class="ii-auth-form__title">{isLogin ? "Sign In" : "Create Account"}</h2>
+      <h2 class="ii-auth-form__title">{isLogin ? t("signIn") : t("createAccount")}</h2>
 
       {resolvedProviders.length > 0 && (
         <div class="ii-auth-form__providers">
@@ -138,11 +139,11 @@ export function AuthForm({
               disabled={loading}
             >
               {p.icon ?? null}
-              <span>Continue with {p.label}</span>
+              <span>{t("continueWith").replace("{provider}", p.label)}</span>
             </button>
           ))}
           <div class="ii-auth-form__divider">
-            <span>or</span>
+            <span>{t("or")}</span>
           </div>
         </div>
       )}
@@ -150,13 +151,13 @@ export function AuthForm({
       <form onSubmit={handleSubmit} noValidate>
         {!isLogin && (
           <div class="ii-input-field">
-            <label class="ii-input-field__label" for="auth-name">Name</label>
+            <label class="ii-input-field__label" for="auth-name">{t("name")}</label>
             <input
               id="auth-name"
               name="name"
               type="text"
               class="ii-input"
-              placeholder="Your name"
+              placeholder={t("namePlaceholder")}
               required
               autocomplete="name"
               disabled={loading}
@@ -165,7 +166,7 @@ export function AuthForm({
         )}
 
         <div class="ii-input-field">
-          <label class="ii-input-field__label" for="auth-email">Email</label>
+          <label class="ii-input-field__label" for="auth-email">{t("email")}</label>
           <input
             id="auth-email"
             name="email"
@@ -179,13 +180,13 @@ export function AuthForm({
         </div>
 
         <div class="ii-input-field">
-          <label class="ii-input-field__label" for="auth-password">Password</label>
+          <label class="ii-input-field__label" for="auth-password">{t("password")}</label>
           <input
             id="auth-password"
             name="password"
             type="password"
             class="ii-input"
-            placeholder={isLogin ? "Your password" : "Min. 8 characters"}
+            placeholder={isLogin ? t("passwordPlaceholder") : t("passwordMinPlaceholder")}
             required
             minLength={8}
             autocomplete={isLogin ? "current-password" : "new-password"}
@@ -198,15 +199,15 @@ export function AuthForm({
         )}
 
         <button type="submit" class="ii-btn ii-btn--filled ii-auth-form__submit" disabled={loading}>
-          {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}
+          {loading ? t("loading") : isLogin ? t("signIn") : t("createAccount")}
         </button>
       </form>
 
       {onModeSwitch && (
         <p class="ii-auth-form__switch">
-          {isLogin ? "Don't have an account? " : "Already have an account? "}
+          {isLogin ? t("dontHaveAccount") : t("alreadyHaveAccount")}
           <button type="button" class="ii-auth-form__switch-btn" onClick={onModeSwitch}>
-            {isLogin ? "Sign Up" : "Sign In"}
+            {isLogin ? t("signUp") : t("signIn")}
           </button>
         </p>
       )}

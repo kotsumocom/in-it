@@ -4,6 +4,7 @@
 import { Icon } from "../../icons/Icon.tsx";
 import { TEXTAREA_CSS, ALERT_CSS, PROGRESS_CSS, BREADCRUMB_CSS, DIVIDER_CSS, KBD_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { t } from "../../locale.ts";
 
 /** Props for the Textarea component. */
 export interface TextareaProps {
@@ -45,7 +46,7 @@ export function Alert({ variant = "info", title, icon, closable, onClose, childr
         <div class="ii-alert__desc">{children}</div>
       </div>
       {closable && (
-        <button class="ii-alert__close" onClick={onClose} aria-label="Close"><Icon name="x" size={16} /></button>
+        <button class="ii-alert__close" onClick={onClose} aria-label={t("close")}><Icon name="x" size={16} /></button>
       )}
     </div>
   );
@@ -95,7 +96,7 @@ export interface BreadcrumbProps { items: BreadcrumbItem[]; separator?: string; 
 export function Breadcrumb({ items, separator = "/" }: BreadcrumbProps): any {
   injectCSS("ii-breadcrumb", BREADCRUMB_CSS);
   return (
-    <nav class="ii-breadcrumb" aria-label="Breadcrumb">
+    <nav class="ii-breadcrumb" aria-label={t("breadcrumb")}>
       <ol class="ii-breadcrumb__list">
         {items.map((item, i) => (
           <li key={i} class="ii-breadcrumb__item">

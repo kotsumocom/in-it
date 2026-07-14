@@ -19,6 +19,7 @@
     "./charts": "./src/components/charts/mod.ts",
     "./styles": "./src/styles.ts",
     "./config": "./src/config.ts",
+    "./locale": "./src/locale.ts",
     "./gen": "./src/gen.ts"
   },
   "compilerOptions": {

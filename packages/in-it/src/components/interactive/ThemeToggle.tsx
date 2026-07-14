@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback } from "hono/jsx";
 import { Icon } from "../../icons/Icon.tsx";
 import { THEME_TOGGLE_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { t } from "../../locale.ts";
 
 /** Available theme modes: light, dark, or system preference. */
 export type Theme = "light" | "dark" | "system";
@@ -67,7 +68,7 @@ export function ThemeToggle({ defaultTheme = "system", compact = false, onChange
   };
 
   return (
-    <div class="ii-theme-toggle-group" role="radiogroup" aria-label="Theme">
+    <div class="ii-theme-toggle-group" role="radiogroup" aria-label={t("theme")}>
       {(["light", "dark", "system"] as Theme[]).map((t) => (
         <button
           key={t}

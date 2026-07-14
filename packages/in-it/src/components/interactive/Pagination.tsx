@@ -4,6 +4,7 @@
 import { useState, useMemo } from "hono/jsx";
 import { PAGINATION_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { t } from "../../locale.ts";
 
 /** Props for the Pagination component. */
 export interface PaginationProps {
@@ -44,8 +45,8 @@ export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount
   };
 
   return (
-    <nav class="ii-pagination" aria-label="Pagination">
-      <button class="ii-pagination__btn" disabled={current === 1} onClick={() => go(current - 1)} aria-label="Previous page">
+    <nav class="ii-pagination" aria-label={t("pagination")}>
+      <button class="ii-pagination__btn" disabled={current === 1} onClick={() => go(current - 1)} aria-label={t("previousPage")}>
         ←
       </button>
       {pages.map((p, i) =>
@@ -58,7 +59,7 @@ export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount
           </button>
         )
       )}
-      <button class="ii-pagination__btn" disabled={current === totalPages} onClick={() => go(current + 1)} aria-label="Next page">
+      <button class="ii-pagination__btn" disabled={current === totalPages} onClick={() => go(current + 1)} aria-label={t("nextPage")}>
         →
       </button>
     </nav>

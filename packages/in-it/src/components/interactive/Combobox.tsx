@@ -5,6 +5,7 @@
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 import { COMBOBOX_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { t } from "../../locale.ts";
 
 /** Props for the Combobox component. */
 export interface ComboboxProps {
@@ -16,8 +17,9 @@ export interface ComboboxProps {
 }
 
 /** Autocomplete text input with filterable dropdown options. */
-export function Combobox({ options, value = "", placeholder = "Search...", label, onChange }: ComboboxProps): any {
+export function Combobox({ options, value = "", placeholder, label, onChange }: ComboboxProps): any {
   injectCSS("ii-combobox", COMBOBOX_CSS);
+  const resolvedPlaceholder = placeholder ?? t("search");
   const [query, setQuery] = useState(value);
   const [open, setOpen] = useState(false);
   const [focusedIdx, setFocusedIdx] = useState(-1);
@@ -62,7 +64,7 @@ export function Combobox({ options, value = "", placeholder = "Search...", label
         role="combobox"
         aria-expanded={open}
         aria-autocomplete="list"
-        placeholder={placeholder}
+        placeholder={resolvedPlaceholder}
         value={query}
         onInput={(e: Event) => { setQuery((e.target as HTMLInputElement).value); setOpen(true); setFocusedIdx(0); }}
         onFocus={() => setOpen(true)}

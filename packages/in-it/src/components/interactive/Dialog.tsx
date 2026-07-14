@@ -5,6 +5,7 @@
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 import { DIALOG_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { t } from "../../locale.ts";
 
 /** Props for the Dialog component. */
 export interface DialogProps {
@@ -73,7 +74,7 @@ export function Dialog({
         {title && (
           <div class="ii-dialog__header">
             <h2 id="dialog-title" class="ii-dialog__title">{title}</h2>
-            <button type="button" class="ii-dialog__close" aria-label="Close" onClick={onClose}>
+            <button type="button" class="ii-dialog__close" aria-label={t("close")} onClick={onClose}>
               x
             </button>
           </div>
