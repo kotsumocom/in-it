@@ -3,9 +3,43 @@
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
 import { Icon } from "../../icons/Icon.tsx";
-import { THEME_TOGGLE_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
+
+/** @internal CSS for ThemeToggle — co-located for self-containment. */
+export const THEME_TOGGLE_CSS = `/* --- Theme Toggle --- */
+.ii-theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: var(--ii-spacing-2);
+  border-radius: var(--ii-shape-sm);
+  transition: background var(--ii-transition);
+}
+.ii-theme-toggle:hover { background: var(--ii-surface-container-high); }
+.ii-theme-toggle-group {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--ii-surface-container);
+  border-radius: var(--ii-shape-md);
+}
+.ii-theme-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 6px 10px;
+  border-radius: var(--ii-shape-sm);
+  transition: background var(--ii-transition);
+}
+.ii-theme-toggle-btn:hover { background: var(--ii-surface-container-high); }
+.ii-theme-toggle-btn--active {
+  background: var(--ii-surface);
+  box-shadow: var(--ii-shadow-sm);
+}
+`;
 
 /** Available theme modes: light, dark, or system preference. */
 export type Theme = "light" | "dark" | "system";
@@ -75,7 +109,7 @@ export function ThemeToggle({ defaultTheme = "system", compact = false, onChange
           type="button"
           role="radio"
           aria-checked={theme === mode}
-          class={`ii-theme-toggle-group__btn${theme === mode ? " ii-theme-toggle-group__btn--active" : ""}`}
+          class={`ii-theme-toggle-btn${theme === mode ? " ii-theme-toggle-btn--active" : ""}`}
           onClick={() => setAndNotify(mode)}
         >
           {mode === "light" && <><Icon name="sun" size={16} /> {t("light")}</>}

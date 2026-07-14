@@ -3,8 +3,88 @@
  * WAI-ARIA Listbox pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
-import { SELECT_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+
+/** @internal CSS for Select — co-located for self-containment. */
+export const SELECT_CSS = `/* --- Select --- */
+.ii-select {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ii-spacing-1);
+  position: relative;
+}
+.ii-select__label {
+  font-size: var(--ii-font-sm);
+  font-weight: 500;
+  color: var(--ii-on-surface-variant);
+}
+.ii-select__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--ii-surface);
+  border: 1px solid var(--ii-outline-variant);
+  border-radius: var(--ii-shape-md);
+  font-family: inherit;
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface);
+  cursor: pointer;
+  transition: border-color var(--ii-transition);
+}
+.ii-select__trigger:hover { border-color: var(--ii-outline); }
+.ii-select__trigger:focus-visible {
+  outline: 2px solid var(--ii-primary);
+  outline-offset: 2px;
+}
+.ii-select__value--placeholder { color: var(--ii-on-surface-variant); }
+.ii-select__arrow {
+  font-size: 0.7rem;
+  color: var(--ii-on-surface-variant);
+  margin-left: var(--ii-spacing-2);
+}
+.ii-select__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: var(--ii-surface);
+  border: 1px solid var(--ii-outline-variant);
+  border-radius: var(--ii-shape-md);
+  box-shadow: var(--ii-shadow-md);
+  padding: 4px;
+  z-index: 50;
+  max-height: 240px;
+  overflow-y: auto;
+  animation: ii-fade-in 100ms ease;
+}
+.ii-select__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: var(--ii-shape-sm);
+  cursor: pointer;
+  font-size: var(--ii-font-base);
+  color: var(--ii-on-surface);
+}
+.ii-select__option:hover, .ii-select__option--highlighted {
+  background: var(--ii-surface-container-high);
+}
+.ii-select__option--selected {
+  color: var(--ii-primary);
+  font-weight: 500;
+}
+.ii-select__option--disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+.ii-select__check {
+  color: var(--ii-primary);
+  font-weight: 600;
+}
+`;
 
 /** A single option in the select dropdown. */
 export interface SelectOption {

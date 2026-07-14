@@ -346,60 +346,7 @@ export const STAT_CARD_CSS = `/* --- Stat Card --- */
 `;
 
 /** CSS for switch */
-export const SWITCH_CSS = `/* --- Switch --- */
-.ii-switch {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--ii-spacing-4);
-  padding: 14px 0;
-  border-bottom: 1px solid var(--ii-outline-variant);
-}
-.ii-switch__info { flex: 1; min-width: 0; }
-.ii-switch__label {
-  font-size: var(--ii-font-base);
-  font-weight: 500;
-  color: var(--ii-on-surface);
-  cursor: pointer;
-}
-.ii-switch__desc {
-  font-size: var(--ii-font-sm);
-  color: var(--ii-on-surface-variant);
-  margin-top: 2px;
-}
-.ii-switch__track {
-  width: 44px;
-  height: 24px;
-  border-radius: 12px;
-  background: var(--ii-outline);
-  position: relative;
-  cursor: pointer;
-  transition: background var(--ii-transition);
-  border: none;
-  padding: 0;
-  flex-shrink: 0;
-}
-.ii-switch__track:focus-visible {
-  outline: 2px solid var(--ii-primary);
-  outline-offset: 2px;
-}
-.ii-switch__track--checked { background: var(--ii-primary); }
-.ii-switch__track--disabled { opacity: 0.38; cursor: not-allowed; }
-.ii-switch__thumb {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: white;
-  transition: transform var(--ii-transition);
-  box-shadow: var(--ii-shadow-sm);
-}
-.ii-switch__track--checked .ii-switch__thumb {
-  transform: translateX(20px);
-}
-`;
+export { SWITCH_CSS } from "./components/interactive/Switch.tsx";
 
 /** CSS for data-table */
 export const DATA_TABLE_CSS = `/* --- Data Table --- */
@@ -443,169 +390,16 @@ export const SECTION_CSS = `/* --- Section --- */
 export { DIALOG_CSS } from "./components/interactive/Dialog.tsx";
 
 /** CSS for tabs */
-export const TABS_CSS = `/* --- Tabs --- */
-.ii-tabs { }
-.ii-tabs__list {
-  display: flex;
-  border-bottom: 1px solid var(--ii-outline-variant);
-  gap: 0;
-}
-.ii-tabs__tab {
-  min-height: 48px;
-  padding: var(--ii-spacing-3) var(--ii-spacing-5);
-  font-family: inherit;
-  font-size: var(--ii-font-base);
-  font-weight: 500;
-  color: var(--ii-on-surface-variant);
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  transition: color var(--ii-transition), border-color var(--ii-transition);
-}
-.ii-tabs__tab:hover { color: var(--ii-on-surface); }
-.ii-tabs__tab--active {
-  color: var(--ii-primary);
-  border-bottom-color: var(--ii-primary);
-}
-.ii-tabs__tab:disabled {
-  opacity: 0.38;
-  cursor: not-allowed;
-}
-.ii-tabs__tab:focus-visible {
-  outline: 2px solid var(--ii-primary);
-  outline-offset: -2px;
-}
-.ii-tabs__panels { padding-top: var(--ii-spacing-5); }
-.ii-tabs__panel { }
-.ii-tabs__panel[hidden] { display: none; }
-`;
+export { TABS_CSS } from "./components/interactive/Tabs.tsx";
 
 /** CSS for menu */
 export { MENU_CSS } from "./components/interactive/Menu.tsx";
 
 /** CSS for toast */
-export const TOAST_CSS = `/* --- Toast --- */
-.ii-toast-container {
-  position: fixed;
-  z-index: 200;
-  display: flex;
-  flex-direction: column;
-  gap: var(--ii-spacing-2);
-  max-width: 400px;
-  pointer-events: none;
-}
-.ii-toast-container--top-right { top: var(--ii-spacing-6); right: var(--ii-spacing-6); }
-.ii-toast-container--top-left { top: var(--ii-spacing-6); left: var(--ii-spacing-6); }
-.ii-toast-container--bottom-right { bottom: var(--ii-spacing-6); right: var(--ii-spacing-6); }
-.ii-toast-container--bottom-left { bottom: var(--ii-spacing-6); left: var(--ii-spacing-6); }
-.ii-toast {
-  display: flex;
-  align-items: center;
-  gap: var(--ii-spacing-3);
-  padding: var(--ii-spacing-3) var(--ii-spacing-4);
-  border-radius: var(--ii-shape-md);
-  box-shadow: var(--ii-shadow-md);
-  pointer-events: auto;
-  animation: ii-slide-up 200ms ease;
-  font-size: var(--ii-font-base);
-}
-.ii-toast--success { background: color-mix(in srgb, var(--ii-success) 12%, var(--ii-surface)); border-left: 3px solid var(--ii-success); }
-.ii-toast--error { background: color-mix(in srgb, var(--ii-error) 12%, var(--ii-surface)); border-left: 3px solid var(--ii-error); }
-.ii-toast--warning { background: color-mix(in srgb, var(--ii-warning) 12%, var(--ii-surface)); border-left: 3px solid var(--ii-warning); }
-.ii-toast--info { background: color-mix(in srgb, var(--ii-info) 12%, var(--ii-surface)); border-left: 3px solid var(--ii-info); }
-.ii-toast__icon { font-size: 1.1rem; flex-shrink: 0; }
-.ii-toast__message { flex: 1; }
-.ii-toast__close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--ii-on-surface-variant);
-  padding: 2px;
-  font-size: 0.85rem;
-}
-`;
+export { TOAST_CSS } from "./components/interactive/Toast.tsx";
 
 /** CSS for select */
-export const SELECT_CSS = `/* --- Select --- */
-.ii-select {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ii-spacing-1);
-  position: relative;
-}
-.ii-select__label {
-  font-size: var(--ii-font-sm);
-  font-weight: 500;
-  color: var(--ii-on-surface-variant);
-}
-.ii-select__trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px;
-  background: var(--ii-surface);
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md);
-  font-family: inherit;
-  font-size: var(--ii-font-base);
-  color: var(--ii-on-surface);
-  cursor: pointer;
-  transition: border-color var(--ii-transition);
-}
-.ii-select__trigger:hover { border-color: var(--ii-outline); }
-.ii-select__trigger:focus-visible {
-  outline: 2px solid var(--ii-primary);
-  outline-offset: 2px;
-}
-.ii-select__value--placeholder { color: var(--ii-on-surface-variant); }
-.ii-select__arrow {
-  font-size: 0.7rem;
-  color: var(--ii-on-surface-variant);
-  margin-left: var(--ii-spacing-2);
-}
-.ii-select__dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  margin-top: 4px;
-  background: var(--ii-surface);
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md);
-  box-shadow: var(--ii-shadow-md);
-  padding: 4px;
-  z-index: 50;
-  max-height: 240px;
-  overflow-y: auto;
-  animation: ii-fade-in 100ms ease;
-}
-.ii-select__option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  border-radius: var(--ii-shape-sm);
-  cursor: pointer;
-  font-size: var(--ii-font-base);
-  color: var(--ii-on-surface);
-}
-.ii-select__option:hover, .ii-select__option--highlighted {
-  background: var(--ii-surface-container-high);
-}
-.ii-select__option--selected {
-  color: var(--ii-primary);
-  font-weight: 500;
-}
-.ii-select__option--disabled {
-  opacity: 0.38;
-  cursor: not-allowed;
-}
-.ii-select__check {
-  color: var(--ii-primary);
-  font-weight: 600;
-}
-`;
+export { SELECT_CSS } from "./components/interactive/Select.tsx";
 
 /** CSS for accordion */
 export { ACCORDION_CSS } from "./components/interactive/Accordion.tsx";
@@ -790,39 +584,7 @@ export const EMPTY_STATE_CSS = `/* --- Empty State --- */
 `;
 
 /** CSS for theme-toggle */
-export const THEME_TOGGLE_CSS = `/* --- Theme Toggle --- */
-.ii-theme-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.25rem;
-  padding: var(--ii-spacing-2);
-  border-radius: var(--ii-shape-sm);
-  transition: background var(--ii-transition);
-}
-.ii-theme-toggle:hover { background: var(--ii-surface-container-high); }
-.ii-theme-toggle-group {
-  display: inline-flex;
-  gap: 2px;
-  padding: 2px;
-  background: var(--ii-surface-container);
-  border-radius: var(--ii-shape-md);
-}
-.ii-theme-toggle-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 6px 10px;
-  border-radius: var(--ii-shape-sm);
-  transition: background var(--ii-transition);
-}
-.ii-theme-toggle-btn:hover { background: var(--ii-surface-container-high); }
-.ii-theme-toggle-btn--active {
-  background: var(--ii-surface);
-  box-shadow: var(--ii-shadow-sm);
-}
-`;
+export { THEME_TOGGLE_CSS } from "./components/interactive/ThemeToggle.tsx";
 
 /** CSS for combobox */
 export { COMBOBOX_CSS } from "./components/interactive/Combobox.tsx";
@@ -849,19 +611,7 @@ export const TEXTAREA_CSS = `/* --- Textarea --- */
 `;
 
 /** CSS for slider */
-export const SLIDER_CSS = `/* --- Slider --- */
-.ii-slider { display: flex; flex-direction: column; gap: 8px; }
-.ii-slider__label { display: flex; justify-content: space-between; font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); }
-.ii-slider__track { position: relative; height: 4px; background: var(--ii-outline-variant); border-radius: 2px; cursor: pointer; }
-.ii-slider__fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--ii-primary); border-radius: 2px; }
-.ii-slider__thumb {
-  position: absolute; top: 50%; width: 20px; height: 20px; border-radius: 50%;
-  background: var(--ii-primary); transform: translate(-50%, -50%); cursor: grab;
-  box-shadow: var(--ii-shadow-sm); transition: box-shadow var(--ii-transition);
-}
-.ii-slider__thumb:hover { box-shadow: 0 0 0 8px color-mix(in srgb, var(--ii-primary) 12%, transparent); }
-.ii-slider__thumb:active { cursor: grabbing; }
-`;
+export { SLIDER_CSS } from "./components/interactive/Slider.tsx";
 
 /** CSS for number-input */
 export const NUMBER_INPUT_CSS = `/* --- Number Input --- */
@@ -987,24 +737,7 @@ export const PROGRESS_CSS = `/* --- Progress Bar --- */
 export { PAGINATION_CSS } from "./components/interactive/Pagination.tsx";
 
 /** CSS for steps */
-export const STEPS_CSS = `/* --- Steps --- */
-.ii-steps { display: flex; gap: 4px; }
-.ii-steps--vertical { flex-direction: column; }
-.ii-step { display: flex; align-items: center; gap: 8px; flex: 1; }
-.ii-step__indicator {
-  width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center;
-  justify-content: center; font-size: var(--ii-font-sm); font-weight: 600; flex-shrink: 0;
-  border: 2px solid var(--ii-outline-variant); background: var(--ii-surface); color: var(--ii-on-surface-variant);
-}
-.ii-step--active .ii-step__indicator { border-color: var(--ii-primary); background: var(--ii-primary); color: var(--ii-on-primary); }
-.ii-step--completed .ii-step__indicator { border-color: var(--ii-primary); background: var(--ii-primary); color: var(--ii-on-primary); }
-.ii-step__content { flex: 1; min-width: 0; }
-.ii-step__title { font-size: var(--ii-font-sm); font-weight: 600; }
-.ii-step__desc { font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); }
-.ii-step__separator { flex: 1; height: 2px; background: var(--ii-outline-variant); margin: 0 8px; }
-.ii-step--completed + .ii-step .ii-step__separator,
-.ii-step--active + .ii-step .ii-step__separator { background: var(--ii-primary); }
-`;
+export { STEPS_CSS } from "./components/interactive/Steps.tsx";
 
 /** CSS for segmented-control */
 export const SEGMENTED_CONTROL_CSS = `/* --- Segmented Control --- */
@@ -1421,91 +1154,7 @@ export const ERROR_PAGE_CSS = `/* --- ErrorPage --- */
 `;
 
 /** CSS for user-menu */
-export const USER_MENU_CSS = `/* --- UserMenu --- */
-.ii-user-menu {
-  position: relative;
-}
-.ii-user-menu__trigger {
-  display: flex;
-  align-items: center;
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 2px;
-  border-radius: 50%;
-  transition: box-shadow var(--ii-transition);
-}
-.ii-user-menu__trigger:hover {
-  box-shadow: 0 0 0 2px var(--ii-outline-variant);
-}
-.ii-user-menu__avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-.ii-user-menu__avatar--initials {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--ii-primary-container);
-  color: var(--ii-on-primary-container);
-  font-size: var(--ii-font-sm);
-  font-weight: 600;
-}
-.ii-user-menu__dropdown {
-  position: absolute;
-  top: calc(100% + 4px);
-  right: 0;
-  min-width: 220px;
-  background: var(--ii-surface);
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md);
-  box-shadow: var(--ii-shadow-lg);
-  padding: var(--ii-spacing-1) 0;
-  z-index: 50;
-  animation: ii-fade-in 0.15s ease;
-}
-.ii-user-menu__info {
-  padding: var(--ii-spacing-3) var(--ii-spacing-4);
-  border-bottom: 1px solid var(--ii-outline-variant);
-}
-.ii-user-menu__name {
-  display: block;
-  font-size: var(--ii-font-base);
-  font-weight: 600;
-  color: var(--ii-on-surface);
-}
-.ii-user-menu__email {
-  display: block;
-  font-size: var(--ii-font-sm);
-  color: var(--ii-on-surface-variant);
-  margin-top: 2px;
-}
-.ii-user-menu__item {
-  display: flex;
-  align-items: center;
-  gap: var(--ii-spacing-2);
-  width: 100%;
-  padding: var(--ii-spacing-2) var(--ii-spacing-4);
-  border: none;
-  background: none;
-  font-family: inherit;
-  font-size: var(--ii-font-base);
-  color: var(--ii-on-surface);
-  cursor: pointer;
-  text-align: left;
-  transition: background var(--ii-transition);
-}
-.ii-user-menu__item:hover {
-  background: var(--ii-surface-container-high);
-}
-.ii-user-menu__divider {
-  margin: var(--ii-spacing-1) 0;
-  border: none;
-  border-top: 1px solid var(--ii-outline-variant);
-}
-`;
+export { USER_MENU_CSS } from "./components/interactive/UserMenu.tsx";
 
 /** CSS for chart */
 export const CHART_CSS = `/* --- Charts --- */

@@ -3,8 +3,46 @@
  * WAI-ARIA Tabs pattern
  */
 import { useState, useCallback, useRef } from "hono/jsx";
-import { TABS_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+
+/** @internal CSS for Tabs — co-located for self-containment. */
+export const TABS_CSS = `/* --- Tabs --- */
+.ii-tabs { }
+.ii-tabs__list {
+  display: flex;
+  border-bottom: 1px solid var(--ii-outline-variant);
+  gap: 0;
+}
+.ii-tabs__tab {
+  min-height: 48px;
+  padding: var(--ii-spacing-3) var(--ii-spacing-5);
+  font-family: inherit;
+  font-size: var(--ii-font-base);
+  font-weight: 500;
+  color: var(--ii-on-surface-variant);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color var(--ii-transition), border-color var(--ii-transition);
+}
+.ii-tabs__tab:hover { color: var(--ii-on-surface); }
+.ii-tabs__tab--active {
+  color: var(--ii-primary);
+  border-bottom-color: var(--ii-primary);
+}
+.ii-tabs__tab:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+.ii-tabs__tab:focus-visible {
+  outline: 2px solid var(--ii-primary);
+  outline-offset: -2px;
+}
+.ii-tabs__panels { padding-top: var(--ii-spacing-5); }
+.ii-tabs__panel { }
+.ii-tabs__panel[hidden] { display: none; }
+`;
 
 /** A single tab panel definition. */
 export interface TabItem {
