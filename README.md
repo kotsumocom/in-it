@@ -30,6 +30,42 @@ import { Button, Card, ThemeToggle, Dialog } from "@kotsumo/in-it";
 <link rel="stylesheet" href="@kotsumo/in-it/src/css/main.css" />
 ```
 
+## ⚙️ Project Configuration (`in-it.config.ts`)
+
+All settings are optional with sensible defaults. Run `deno task gen` to apply.
+
+```typescript
+import { defineConfig } from "@kotsumo/in-it/config";
+
+export default defineConfig({
+  site: { name: "My SaaS", lang: "ja" },
+  theme: { primary: "#6750a4" },
+  icons: "outlined",    // or "filled"
+  locale: "ja",         // "en" (default) or "ja"
+  auth: { provider: "supabase" },  // metadata only
+  overrides: {
+    Button: "./client/overrides/Button.tsx",
+  },
+});
+```
+
+| Field | Generates | Default |
+|---|---|---|
+| `site` | `index.html` title, lang, meta description | `"My SaaS"`, `"ja"` |
+| `theme` | `client/theme.css` (HCT color scheme) | `"#6750a4"` |
+| `icons` | Icon import style | `"outlined"` |
+| `locale` | `client/locale-init.ts`, CJK CSS, Google Fonts | `"en"` |
+| `auth` | Nothing (metadata for AI/developers) | — |
+| `overrides` | `client/components.ts` barrel | All defaults |
+
+### 🇯🇵 Japanese UI Mode (`locale: "ja"`)
+
+- All built-in component strings in Japanese
+- Noto Sans JP auto-loaded from Google Fonts
+- Font stack: `Inter, Noto Sans JP, system-ui, sans-serif`
+- Body font size: 16px (CJK optimized)
+- Line height: 1.7 (CJK optimized)
+
 ## ✨ Features
 
 | | Feature | Description |
