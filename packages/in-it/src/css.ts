@@ -440,63 +440,7 @@ export const SECTION_CSS = `/* --- Section --- */
 `;
 
 /** CSS for dialog */
-export const DIALOG_CSS = `/* --- Dialog --- */
-.ii-dialog__backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  animation: ii-fade-in 150ms ease;
-}
-.ii-dialog {
-  background: var(--ii-surface);
-  border-radius: var(--ii-shape-lg);
-  padding: var(--ii-spacing-6);
-  min-width: 360px;
-  max-width: 560px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
-  animation: ii-slide-up 200ms ease;
-}
-.ii-dialog__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--ii-spacing-4);
-}
-.ii-dialog__title {
-  font-size: var(--ii-font-xl);
-  font-weight: 600;
-}
-.ii-dialog__close {
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  cursor: pointer;
-  color: var(--ii-on-surface-variant);
-  padding: var(--ii-spacing-2);
-  border-radius: var(--ii-shape-sm);
-}
-.ii-dialog__close:hover { background: var(--ii-surface-container-high); }
-.ii-dialog__desc {
-  color: var(--ii-on-surface-variant);
-  font-size: var(--ii-font-base);
-  margin-bottom: var(--ii-spacing-4);
-}
-.ii-dialog__body { }
-@keyframes ii-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes ii-slide-up {
-  from { transform: translateY(16px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-`;
+export { DIALOG_CSS } from "./components/interactive/Dialog.tsx";
 
 /** CSS for tabs */
 export const TABS_CSS = `/* --- Tabs --- */
@@ -538,66 +482,7 @@ export const TABS_CSS = `/* --- Tabs --- */
 `;
 
 /** CSS for menu */
-export const MENU_CSS = `/* --- Menu --- */
-.ii-menu {
-  position: relative;
-  display: inline-block;
-}
-.ii-menu__trigger {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  padding: var(--ii-spacing-2);
-  border-radius: var(--ii-shape-sm);
-  color: var(--ii-on-surface-variant);
-}
-.ii-menu__trigger:hover { background: var(--ii-surface-container-high); }
-.ii-menu__dropdown {
-  position: absolute;
-  top: 100%;
-  margin-top: 4px;
-  background: var(--ii-surface);
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md);
-  box-shadow: var(--ii-shadow-md);
-  min-width: 180px;
-  padding: 4px;
-  z-index: 50;
-  animation: ii-fade-in 100ms ease;
-}
-.ii-menu__dropdown--left { left: 0; }
-.ii-menu__dropdown--right { right: 0; }
-.ii-menu__item {
-  display: flex;
-  align-items: center;
-  gap: var(--ii-spacing-2);
-  width: 100%;
-  min-height: 48px;
-  padding: 8px 12px;
-  font-family: inherit;
-  font-size: var(--ii-font-base);
-  color: var(--ii-on-surface);
-  background: none;
-  border: none;
-  border-radius: var(--ii-shape-sm);
-  cursor: pointer;
-  text-align: left;
-}
-.ii-menu__item:hover, .ii-menu__item--focused {
-  background: var(--ii-surface-container-high);
-}
-.ii-menu__item--disabled {
-  opacity: 0.38;
-  cursor: not-allowed;
-}
-.ii-menu__icon { font-size: 1.1rem; }
-.ii-menu__separator {
-  height: 1px;
-  background: var(--ii-outline-variant);
-  margin: 4px 0;
-}
-`;
+export { MENU_CSS } from "./components/interactive/Menu.tsx";
 
 /** CSS for toast */
 export const TOAST_CSS = `/* --- Toast --- */
@@ -726,35 +611,7 @@ export const SELECT_CSS = `/* --- Select --- */
 export { ACCORDION_CSS } from "./components/interactive/Accordion.tsx";
 
 /** CSS for popover */
-export const POPOVER_CSS = `/* --- Popover --- */
-.ii-popover {
-  position: relative;
-  display: inline-block;
-}
-.ii-popover__trigger {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  color: var(--ii-on-surface);
-}
-.ii-popover__content {
-  position: absolute;
-  top: 100%;
-  margin-top: 8px;
-  background: var(--ii-surface);
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-lg);
-  box-shadow: var(--ii-shadow-lg);
-  padding: var(--ii-spacing-4);
-  min-width: 240px;
-  z-index: 50;
-  animation: ii-slide-up 150ms ease;
-}
-.ii-popover__content--left { left: 0; }
-.ii-popover__content--right { right: 0; }
-.ii-popover__content--center { left: 50%; transform: translateX(-50%); }
-`;
+export { POPOVER_CSS } from "./components/interactive/Popover.tsx";
 
 /** CSS for input */
 export const INPUT_CSS = `/* --- Input / TextField --- */
@@ -974,23 +831,7 @@ export { COMBOBOX_CSS } from "./components/interactive/Combobox.tsx";
 export { CHECKBOX_CSS } from "./components/interactive/Checkbox.tsx";
 
 /** CSS for radio-group */
-export const RADIO_GROUP_CSS = `/* --- Radio Group --- */
-.ii-radio-group { display: flex; flex-direction: column; gap: 8px; }
-.ii-radio-group--horizontal { flex-direction: row; gap: 16px; }
-.ii-radio { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
-.ii-radio--disabled { cursor: not-allowed; opacity: 0.38; }
-.ii-radio__control {
-  width: 20px; height: 20px; border: 2px solid var(--ii-on-surface-variant);
-  border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: all var(--ii-transition);
-}
-.ii-radio__control--checked { border-color: var(--ii-primary); }
-.ii-radio__control--checked::after {
-  content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--ii-primary);
-}
-.ii-radio__control:hover { border-color: var(--ii-on-surface); }
-.ii-radio__label { font-size: var(--ii-font-base); color: var(--ii-on-surface); }
-`;
+export { RADIO_GROUP_CSS } from "./components/interactive/RadioGroup.tsx";
 
 /** CSS for textarea */
 export const TEXTAREA_CSS = `/* --- Textarea --- */
@@ -1116,29 +957,7 @@ export const ALERT_CSS = `/* --- Alert --- */
 `;
 
 /** CSS for drawer */
-export const DRAWER_CSS = `/* --- Drawer --- */
-.ii-drawer-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100;
-  animation: ii-fade-in 200ms ease;
-}
-.ii-drawer {
-  position: fixed; z-index: 101; background: var(--ii-surface);
-  box-shadow: var(--ii-shadow-lg); display: flex; flex-direction: column;
-}
-.ii-drawer--left { top: 0; bottom: 0; left: 0; width: 320px; animation: ii-slide-in-left 200ms ease; }
-.ii-drawer--right { top: 0; bottom: 0; right: 0; width: 320px; animation: ii-slide-in-right 200ms ease; }
-.ii-drawer--top { top: 0; left: 0; right: 0; height: 320px; animation: ii-slide-in-top 200ms ease; }
-.ii-drawer--bottom { bottom: 0; left: 0; right: 0; height: 320px; animation: ii-slide-in-bottom 200ms ease; }
-.ii-drawer__header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--ii-outline-variant); }
-.ii-drawer__title { font-size: var(--ii-font-lg); font-weight: 600; }
-.ii-drawer__close { background: none; border: none; cursor: pointer; font-size: 1.25rem; color: var(--ii-on-surface-variant); }
-.ii-drawer__body { flex: 1; padding: 20px; overflow-y: auto; }
-.ii-drawer__footer { padding: 16px 20px; border-top: 1px solid var(--ii-outline-variant); }
-@keyframes ii-slide-in-left { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-@keyframes ii-slide-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
-@keyframes ii-slide-in-top { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-@keyframes ii-slide-in-bottom { from { transform: translateY(100%); } to { transform: translateY(0); } }
-`;
+export { DRAWER_CSS } from "./components/interactive/Drawer.tsx";
 
 /** CSS for progress */
 export const PROGRESS_CSS = `/* --- Progress Bar --- */
@@ -1165,20 +984,7 @@ export const PROGRESS_CSS = `/* --- Progress Bar --- */
 `;
 
 /** CSS for pagination */
-export const PAGINATION_CSS = `/* --- Pagination --- */
-.ii-pagination { display: flex; align-items: center; gap: 4px; }
-.ii-pagination__btn {
-  display: flex; align-items: center; justify-content: center;
-  min-width: 36px; height: 36px; border-radius: var(--ii-shape-sm);
-  border: none; background: transparent; cursor: pointer; font-family: inherit;
-  font-size: var(--ii-font-sm); font-weight: 500; color: var(--ii-on-surface);
-  transition: all var(--ii-transition);
-}
-.ii-pagination__btn:hover { background: var(--ii-surface-container-high); }
-.ii-pagination__btn--active { background: var(--ii-primary); color: var(--ii-on-primary); }
-.ii-pagination__btn:disabled { opacity: 0.38; cursor: not-allowed; }
-.ii-pagination__ellipsis { padding: 0 4px; color: var(--ii-on-surface-variant); }
-`;
+export { PAGINATION_CSS } from "./components/interactive/Pagination.tsx";
 
 /** CSS for steps */
 export const STEPS_CSS = `/* --- Steps --- */

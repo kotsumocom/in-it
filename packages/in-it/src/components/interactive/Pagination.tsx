@@ -2,9 +2,24 @@
  * Pagination component
  */
 import { useState, useMemo } from "hono/jsx";
-import { PAGINATION_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
+
+/** @internal CSS for Pagination — co-located for self-containment. */
+export const PAGINATION_CSS = `/* --- Pagination --- */
+.ii-pagination { display: flex; align-items: center; gap: 4px; }
+.ii-pagination__btn {
+  display: flex; align-items: center; justify-content: center;
+  min-width: 36px; height: 36px; border-radius: var(--ii-shape-sm);
+  border: none; background: transparent; cursor: pointer; font-family: inherit;
+  font-size: var(--ii-font-sm); font-weight: 500; color: var(--ii-on-surface);
+  transition: all var(--ii-transition);
+}
+.ii-pagination__btn:hover { background: var(--ii-surface-container-high); }
+.ii-pagination__btn--active { background: var(--ii-primary); color: var(--ii-on-primary); }
+.ii-pagination__btn:disabled { opacity: 0.38; cursor: not-allowed; }
+.ii-pagination__ellipsis { padding: 0 4px; color: var(--ii-on-surface-variant); }
+`;
 
 /** Props for the Pagination component. */
 export interface PaginationProps {
