@@ -3,6 +3,7 @@
  * WAI-ARIA Tabs pattern
  */
 import { useState, useCallback, useRef } from "hono/jsx";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Tabs — co-located for self-containment. */
 export const TABS_CSS = `/* --- Tabs --- */
@@ -60,6 +61,7 @@ export interface TabsProps {
 
 /** Tabbed interface with keyboard navigation and ARIA tabs pattern. */
 export function Tabs({ items, defaultTab, onChange }: TabsProps): any {
+  injectCSS("ii-tabs", TABS_CSS);
   const [activeId, setActiveId] = useState(defaultTab ?? items[0]?.id ?? "");
   const tabListRef = useRef<HTMLDivElement>(null);
 

@@ -2,6 +2,7 @@
  * Checkbox component
  */
 import { useState } from "hono/jsx";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Checkbox — co-located for self-containment. */
 export const CHECKBOX_CSS = `/* --- Checkbox --- */
@@ -33,6 +34,7 @@ export interface CheckboxProps {
 
 /** A checkbox input with optional indeterminate state. */
 export function Checkbox({ label, defaultChecked = false, indeterminate = false, disabled, onChange }: CheckboxProps): any {
+  injectCSS("ii-checkbox", CHECKBOX_CSS);
   const [checked, setChecked] = useState(defaultChecked);
 
   const toggle = () => {

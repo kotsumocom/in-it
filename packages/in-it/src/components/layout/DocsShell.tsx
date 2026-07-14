@@ -2,6 +2,8 @@
  * DocsShell — Documentation layout (Sidebar + Content + TOC)
  */
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for DocsShell — co-located for self-containment. */
 export const DOCS_CSS = `/* --- Docs Layout --- */
 .ii-docs-shell { display: flex; flex-direction: column; min-height: 100vh; }
@@ -48,14 +50,6 @@ export const DOCS_CSS = `/* --- Docs Layout --- */
 .ii-docs-article a { color: var(--ii-primary); text-decoration: underline; text-underline-offset: 2px; }
 .ii-docs-article img { max-width: 100%; border-radius: var(--ii-shape-md); }
 
-/* Aside/Callout (Note, Tip, Caution, Danger) */
-.ii-aside { padding: 16px; border-radius: var(--ii-shape-md); margin-bottom: 24px; border-left: 4px solid; }
-.ii-aside__title { font-weight: 600; font-size: var(--ii-font-sm); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-.ii-aside__body { font-size: var(--ii-font-sm); line-height: 1.6; }
-.ii-aside--note { border-left-color: var(--ii-info); background: color-mix(in srgb, var(--ii-info) 6%, var(--ii-surface)); }
-.ii-aside--tip { border-left-color: var(--ii-success); background: color-mix(in srgb, var(--ii-success) 6%, var(--ii-surface)); }
-.ii-aside--caution { border-left-color: var(--ii-warning); background: color-mix(in srgb, var(--ii-warning) 6%, var(--ii-surface)); }
-.ii-aside--danger { border-left-color: var(--ii-error); background: color-mix(in srgb, var(--ii-error) 6%, var(--ii-surface)); }
 
 /* Prev/Next navigation */
 .ii-docs-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--ii-outline-variant); }
@@ -99,6 +93,7 @@ export interface DocsShellProps {
 
 /** Documentation site layout with sidebar navigation, content area, and table of contents. */
 export function DocsShell({ brand, brandHref = "/", navLinks = [], sidebarGroups, tocItems = [], children, themeToggle }: DocsShellProps): any {
+  injectCSS("ii-docs-shell", DOCS_CSS);
   return (
     <div class="ii-docs-shell">
       <header class="ii-docs-header">

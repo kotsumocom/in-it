@@ -1,4 +1,6 @@
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for Skeleton — co-located for self-containment. */
 export const SKELETON_CSS = `/* --- Skeleton --- */
 .ii-skeleton {
@@ -28,6 +30,7 @@ export interface SkeletonProps {
 
 /** Animated placeholder block indicating content is loading. Supports text-line and circle shapes. */
 export function Skeleton({ width = "100%", height = "1em", circle = false }: SkeletonProps): any {
+  injectCSS("ii-skeleton", SKELETON_CSS);
   return (
     <div
       class={`ii-skeleton${circle ? " ii-skeleton--circle" : " ii-skeleton--text"}`}

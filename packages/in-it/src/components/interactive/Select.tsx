@@ -3,6 +3,7 @@
  * WAI-ARIA Listbox pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Select — co-located for self-containment. */
 export const SELECT_CSS = `/* --- Select --- */
@@ -104,6 +105,7 @@ export interface SelectProps {
 
 /** Custom select dropdown with keyboard navigation and ARIA listbox pattern. */
 export function Select({ options, value, placeholder = "Select...", label, disabled, onChange }: SelectProps): any {
+  injectCSS("ii-select", SELECT_CSS);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(value ?? "");
   const [focusedIdx, setFocusedIdx] = useState(-1);

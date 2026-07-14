@@ -52,7 +52,7 @@ import { BLOG_CSS } from "./components/ui/Blog.tsx";
 import { ERROR_PAGE_CSS } from "./components/ui/ErrorPage.tsx";
 import { PRICING_CARD_CSS } from "./components/ui/PricingCard.tsx";
 import { SETTINGS_SECTION_CSS } from "./components/ui/SettingsSection.tsx";
-import { SECTION_CSS } from "./components/ui/Aside.tsx";
+import { ASIDE_CSS } from "./components/ui/Aside.tsx";
 
 // --- Interactive Components ---
 import { SWITCH_CSS } from "./components/interactive/Switch.tsx";
@@ -90,7 +90,7 @@ import { DOCS_CSS } from "./components/layout/DocsShell.tsx";
 import { ADMIN_SHELL_CSS, ADMIN_SHELL_MOBILE_CSS } from "./components/admin/AdminShell.tsx";
 
 /** All in-it CSS as a string */
-export const CSS = [
+export const CSS: string = [
   BASE_CSS,
   // UI
   BUTTON_CSS,
@@ -113,7 +113,7 @@ export const CSS = [
   ERROR_PAGE_CSS,
   PRICING_CARD_CSS,
   SETTINGS_SECTION_CSS,
-  SECTION_CSS,
+  ASIDE_CSS,
   // Interactive
   SWITCH_CSS,
   DIALOG_CSS,

@@ -17,6 +17,7 @@
 import { useState, useCallback } from "hono/jsx";
 import { t } from "../../locale.ts";
 import { Button, Input } from "../ui/mod.tsx";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for AuthForm — co-located for self-containment. */
 export const AUTH_FORM_CSS = `/* --- AuthForm --- */
@@ -181,6 +182,7 @@ export function AuthForm({
   error,
   class: cls,
 }: AuthFormProps): any {
+  injectCSS("ii-auth-form", AUTH_FORM_CSS);
   const [formError, setFormError] = useState("");
 
   const handleSubmit = useCallback(

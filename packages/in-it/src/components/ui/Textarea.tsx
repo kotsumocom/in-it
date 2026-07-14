@@ -1,4 +1,6 @@
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for Textarea — co-located for self-containment. */
 export const TEXTAREA_CSS = `/* --- Textarea --- */
 .ii-textarea { display: flex; flex-direction: column; gap: var(--ii-spacing-1); }
@@ -27,6 +29,7 @@ export interface TextareaProps {
 
 /** Multi-line text input with label and validation support. */
 export function Textarea({ label, placeholder, rows = 3, helper, error, value, onInput }: TextareaProps): any {
+  injectCSS("ii-textarea", TEXTAREA_CSS);
   return (
     <div class={`ii-textarea${error ? " ii-input--error" : ""}`}>
       {label && <label class="ii-textarea__label">{label}</label>}

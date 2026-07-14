@@ -1,4 +1,6 @@
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for Avatar — co-located for self-containment. */
 export const AVATAR_CSS = `/* --- Avatar --- */
 .ii-avatar {
@@ -30,6 +32,7 @@ export interface AvatarProps {
 
 /** Circular avatar displaying a user image or auto-generated initials from the user's name. */
 export function Avatar({ name, src, size = "md" }: AvatarProps): any {
+  injectCSS("ii-avatar", AVATAR_CSS);
   const initials = name?.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() ?? "?";
   return (
     <div class={`ii-avatar ii-avatar--${size}`}>

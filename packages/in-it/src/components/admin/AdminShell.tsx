@@ -4,6 +4,7 @@
  */
 import { useState, useCallback } from "hono/jsx";
 import { ThemeToggle } from "../interactive/ThemeToggle.tsx";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for AdminShell — co-located for self-containment. */
 export const ADMIN_SHELL_CSS = `/* --- Admin Shell Layout --- */
@@ -169,6 +170,7 @@ export function AdminShell({
   onNavigate,
   children,
 }: AdminShellProps): any {
+  injectCSS("ii-admin-shell", ADMIN_SHELL_CSS);
   const [railExpanded, setRailExpanded] = useState(false);
 
   const handleNavClick = useCallback(

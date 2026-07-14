@@ -1,4 +1,6 @@
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for StatCard — co-located for self-containment. */
 export const STAT_CARD_CSS = `/* --- Stat Card --- */
 .ii-stat-card {
@@ -46,6 +48,7 @@ export interface StatCardProps {
 
 /** Dashboard metric card displaying a label, value, and optional up/down trend indicator. */
 export function StatCard({ label, value, trend, trendUp }: StatCardProps): any {
+  injectCSS("ii-stat-card", STAT_CARD_CSS);
   return (
     <div class="ii-stat-card">
       <div class="ii-stat-card__label">{label}</div>

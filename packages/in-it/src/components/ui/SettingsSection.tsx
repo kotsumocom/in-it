@@ -7,6 +7,8 @@
  *   </SettingsSection>
  */
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for SettingsSection — co-located for self-containment. */
 export const SETTINGS_SECTION_CSS = `/* --- SettingsSection --- */
 .ii-settings-section {
@@ -68,6 +70,7 @@ export function SettingsSection({
   children,
   class: cls,
 }: SettingsSectionProps): any {
+  injectCSS("ii-settings-section", SETTINGS_SECTION_CSS);
   return (
     <section class={`ii-settings-section${cls ? ` ${cls}` : ""}`}>
       <div class="ii-settings-section__header">

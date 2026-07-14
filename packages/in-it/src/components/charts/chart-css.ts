@@ -55,4 +55,4 @@ export const CHART_ANIMATIONS_CSS = `/* --- Chart Animations --- */
 `;
 
 /** Combined shared chart CSS. */
-export const CHART_SHARED_CSS = [CHART_BASE_CSS, CHART_TOOLTIP_CSS, CHART_ANIMATIONS_CSS].join("\n");
+export const CHART_SHARED_CSS: string = [CHART_BASE_CSS, CHART_TOOLTIP_CSS, CHART_ANIMATIONS_CSS].join("\n");

@@ -171,4 +171,4 @@ export const ANIMATIONS_CSS = `/* --- Utility: Animations --- */
 `;
 
 /** Combined base CSS (variables + reset + icon + animations). */
-export const BASE_CSS = [VARIABLES_CSS, RESET_CSS, ICON_CSS, ANIMATIONS_CSS].join("\n");
+export const BASE_CSS: string = [VARIABLES_CSS, RESET_CSS, ICON_CSS, ANIMATIONS_CSS].join("\n");

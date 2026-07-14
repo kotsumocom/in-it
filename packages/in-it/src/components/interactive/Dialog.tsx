@@ -4,6 +4,7 @@
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 import { t } from "../../locale.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Dialog — co-located for self-containment. */
 export const DIALOG_CSS = `/* --- Dialog --- */
@@ -83,6 +84,7 @@ export function Dialog({
   closeOnBackdrop = true,
   children,
 }: DialogProps): any {
+  injectCSS("ii-dialog", DIALOG_CSS);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

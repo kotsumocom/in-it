@@ -1,4 +1,6 @@
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for Badge — co-located for self-containment. */
 export const BADGE_CSS = `/* --- Badge --- */
 .ii-badge {
@@ -28,6 +30,7 @@ export interface BadgeProps {
 
 /** Small inline status label rendered as a `<span>` with color-coded variants. */
 export function Badge({ variant = "neutral", children }: BadgeProps): any {
+  injectCSS("ii-badge", BADGE_CSS);
   return (
     <span class={`ii-badge ii-badge--${variant}`}>
       {children}

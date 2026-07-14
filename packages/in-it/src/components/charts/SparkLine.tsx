@@ -5,6 +5,8 @@
  * <SparkLine data={[10, 25, 18, 32, 28, 40]} width={80} height={24} />
  */
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for SparkLine — co-located for self-containment. */
 export const SPARK_LINE_CSS = `/* --- SparkLine --- */
 .ii-sparkline {
@@ -38,6 +40,7 @@ export function SparkLine({
   variant = "default",
   class: cls,
 }: SparkLineProps): any {
+  injectCSS("ii-sparkline", SPARK_LINE_CSS);
   if (data.length < 2) return null;
 
   const max = Math.max(...data);

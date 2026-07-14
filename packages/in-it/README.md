@@ -44,17 +44,14 @@ const color = HctColor.fromHex("#6750a4");
 console.log(color.withTone(80).toHex());
 ```
 
-### CSS Setup
+### CSS
 
-All component styles are bundled as string constants — no CSS file imports needed.
-Call `injectStyles()` once at app startup, or use `<StyleSheet />` for SSR:
+全コンポーネントの CSS は `.tsx` ファイル内に文字列定数として内包されています。
+CSS ファイルの import やビルドステップは不要です。
+
+レイアウトの `<head>` に `<StyleSheet />` を配置するだけで全スタイルが適用されます（`create-in-it` テンプレートではデフォルトで設定済み）:
 
 ```tsx
-// Option 1: Runtime injection (SPA)
-import { injectStyles } from "@kotsumo/in-it/styles";
-injectStyles();  // Call once at startup
-
-// Option 2: SSR inline (recommended for Hono SSR)
 import { StyleSheet } from "@kotsumo/in-it/styles";
 
 function Layout() {

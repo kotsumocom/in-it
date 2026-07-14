@@ -2,6 +2,8 @@
  * Landing Page components
  */
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for Landing Page — co-located for self-containment. */
 export const LANDING_CSS = `/* --- Landing Page Layout --- */
 .ii-lp-header {
@@ -60,6 +62,7 @@ export interface LandingHeaderProps {
 
 /** Landing page top navigation bar with brand and nav links. */
 export function LandingHeader({ brand, brandHref = "/", navLinks = [], themeToggle }: LandingHeaderProps): any {
+  injectCSS("ii-landing", LANDING_CSS);
   return (
     <header class="ii-lp-header">
       <div class="ii-lp-header__inner">
@@ -87,6 +90,7 @@ export interface LandingHeroProps {
 
 /** Landing page hero section with headline, subhead, and call-to-action. */
 export function LandingHero({ badge, headline, subhead, actions, install }: LandingHeroProps): any {
+  injectCSS("ii-landing", LANDING_CSS);
   return (
     <section class="ii-lp-hero">
       <div class="ii-lp-hero__inner">
@@ -115,6 +119,7 @@ export interface LandingFeaturesProps {
 
 /** Grid of feature cards for the landing page. */
 export function LandingFeatures({ features }: LandingFeaturesProps): any {
+  injectCSS("ii-landing", LANDING_CSS);
   return (
     <section class="ii-lp-features">
       <div class="ii-lp-features__inner">
@@ -142,6 +147,7 @@ export interface LandingSectionProps {
 
 /** Generic content section for the landing page. */
 export function LandingSection({ title, subtitle, children }: LandingSectionProps): any {
+  injectCSS("ii-landing", LANDING_CSS);
   return (
     <section class="ii-lp-section">
       <div class="ii-lp-section__inner">
@@ -161,6 +167,7 @@ export interface LandingFooterProps {
 
 /** Landing page footer with custom content. */
 export function LandingFooter({ children }: LandingFooterProps): any {
+  injectCSS("ii-landing", LANDING_CSS);
   return (
     <footer class="ii-lp-footer">
       <div class="ii-lp-footer__inner">{children}</div>

@@ -1,4 +1,6 @@
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for Progress — co-located for self-containment. */
 export const PROGRESS_CSS = `/* --- Progress Bar --- */
 .ii-progress { display: flex; flex-direction: column; gap: 6px; }
@@ -32,6 +34,7 @@ export interface ProgressProps {
 
 /** Horizontal progress bar with optional label. */
 export function Progress({ value = 0, max = 100, label }: ProgressProps): any {
+  injectCSS("ii-progress", PROGRESS_CSS);
   const pct = Math.round((value / max) * 100);
   return (
     <div class="ii-progress" role="progressbar" aria-valuenow={value} aria-valuemax={max}>

@@ -9,6 +9,7 @@
  * />
  */
 import { useState } from "hono/jsx";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for BarChart — co-located for self-containment. */
 export const BAR_CHART_CSS = `/* --- Bar Chart --- */
@@ -51,6 +52,7 @@ export function BarChart({
   showValues = true,
   class: cls,
 }: BarChartProps): any {
+  injectCSS("ii-bar-chart", BAR_CHART_CSS);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; value: string } | null>(null);
   const max = Math.max(...data, 1);
   const padding = { top: 20, right: 16, bottom: labels ? 28 : 8, left: 16 };

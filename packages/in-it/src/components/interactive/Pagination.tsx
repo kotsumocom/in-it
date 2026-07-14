@@ -3,6 +3,7 @@
  */
 import { useState, useMemo } from "hono/jsx";
 import { t } from "../../locale.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Pagination — co-located for self-containment. */
 export const PAGINATION_CSS = `/* --- Pagination --- */
@@ -31,6 +32,7 @@ export interface PaginationProps {
 
 /** Page navigation with ellipsis, prev/next buttons, and keyboard support. */
 export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount = 1, onChange }: PaginationProps): any {
+  injectCSS("ii-pagination", PAGINATION_CSS);
   const [current, setCurrent] = useState(defaultPage);
   const totalPages = Math.ceil(total / pageSize);
 

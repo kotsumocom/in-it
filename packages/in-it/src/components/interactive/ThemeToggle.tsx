@@ -4,6 +4,7 @@
 import { useState, useEffect, useCallback } from "hono/jsx";
 import { Icon } from "../../icons/Icon.tsx";
 import { t } from "../../locale.ts";
+import { injectCSS } from "../../inject.ts";
 
 import { getConfig } from "../../config.ts";
 
@@ -65,6 +66,7 @@ function applyTheme(theme: Theme) {
 
 /** Light/dark/system theme toggle with persistence via data-theme attribute. */
 export function ThemeToggle({ defaultTheme, compact = false, onChange }: ThemeToggleProps): any {
+  injectCSS("ii-theme-toggle", THEME_TOGGLE_CSS);
   const initialTheme = defaultTheme ?? getConfig().theme?.defaultMode ?? "system";
   const [theme, setTheme] = useState<Theme>(initialTheme);
 

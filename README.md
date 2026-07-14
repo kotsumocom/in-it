@@ -20,17 +20,8 @@ deno run -A jsr:@kotsumo/create-in-it my-saas
 deno add @kotsumo/in-it
 ```
 
-```typescript
-import { Button, Card, ThemeToggle, Dialog } from "@kotsumo/in-it";
-import { injectStyles } from "@kotsumo/in-it/styles";
-
-// Inject all component CSS (call once at app startup)
-injectStyles();
-```
-
-For SSR, use `<StyleSheet />` in your layout's `<head>` instead:
-
 ```tsx
+import { Button, Card, ThemeToggle, Dialog } from "@kotsumo/in-it";
 import { StyleSheet } from "@kotsumo/in-it/styles";
 
 function Layout({ children }) {

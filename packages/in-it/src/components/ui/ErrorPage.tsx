@@ -8,6 +8,7 @@
 
 import { t } from "../../locale.ts";
 import { Button } from "./mod.tsx";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for ErrorPage — co-located for self-containment. */
 export const ERROR_PAGE_CSS = `/* --- ErrorPage --- */
@@ -68,6 +69,7 @@ export function ErrorPage({
   onAction,
   class: cls,
 }: ErrorPageProps): any {
+  injectCSS("ii-error-page", ERROR_PAGE_CSS);
   return (
     <div class={`ii-error-page${cls ? ` ${cls}` : ""}`}>
       <div class="ii-error-page__inner">

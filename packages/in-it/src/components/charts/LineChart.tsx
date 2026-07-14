@@ -10,6 +10,7 @@
  * />
  */
 import { useState } from "hono/jsx";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for LineChart — co-located for self-containment. */
 export const LINE_CHART_CSS = `/* --- Line Chart --- */
@@ -65,6 +66,7 @@ export function LineChart({
   showGrid = true,
   class: cls,
 }: LineChartProps): any {
+  injectCSS("ii-line-chart", LINE_CHART_CSS);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; value: string } | null>(null);
 
   const vw = 400;

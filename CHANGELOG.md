@@ -4,10 +4,10 @@
 
 ## [0.7.0] — 2026-07-14
 
-### ⚠️ Breaking Changes
+### 内部変更
 
-- **`injectCSS()` を廃止**: コンポーネントはランタイムで CSS を自動注入しなくなりました。アプリ起動時に `injectStyles()` を呼ぶか、SSR では `<StyleSheet />` を使用してください。
-- **`styles.ts` → `styles.tsx` にリネーム**: `import` パスが `@kotsumo/in-it/styles` のままであれば影響ありません（`deno.json` のエクスポートで吸収）。
+- **CSS アーキテクチャ刷新**: 全 CSS を `.css` ファイルからコンポーネント内の文字列定数に移行。外部 CSS ファイルへの依存を完全に排除。
+- **`styles.ts` → `styles.tsx` にリネーム**: `import` パスは `@kotsumo/in-it/styles` のまま変更なし（`deno.json` のエクスポートで吸収）。
 
 ### 追加
 

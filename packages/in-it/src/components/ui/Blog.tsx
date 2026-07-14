@@ -1,4 +1,5 @@
 import { Chip } from "./mod.tsx";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Blog and Notifications — co-located for self-containment. */
 export const BLOG_CSS = `/* --- Notification Item --- */
@@ -178,6 +179,7 @@ export interface BlogCardProps {
 }
 
 export function BlogCard({ post, basePath = "/blog" }: BlogCardProps): any {
+  injectCSS("ii-blog", BLOG_CSS);
   return (
     <div class="ii-blog-card">
       {post.coverImage && (

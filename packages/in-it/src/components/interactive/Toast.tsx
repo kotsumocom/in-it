@@ -4,6 +4,7 @@
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
 import { Icon } from "../../icons/Icon.tsx";
+import { injectCSS } from "../../inject.ts";
 import { t as tr } from "../../locale.ts";
 
 /** @internal CSS for Toast — co-located for self-containment. */
@@ -73,6 +74,7 @@ export interface ToastContainerProps {
 
 /** Container that renders active toast notifications with ARIA live region. */
 export function ToastContainer({ position = "top-right" }: ToastContainerProps): any {
+  injectCSS("ii-toast", TOAST_CSS);
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
   useEffect(() => {

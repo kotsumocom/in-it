@@ -3,6 +3,7 @@
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
 import { t } from "../../locale.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Drawer — co-located for self-containment. */
 export const DRAWER_CSS = `/* --- Drawer --- */
@@ -41,6 +42,7 @@ export interface DrawerProps {
 
 /** Slide-in panel for navigation or detail views. */
 export function Drawer({ open, onClose, position = "right", title, width = "320px", children }: DrawerProps): any {
+  injectCSS("ii-drawer", DRAWER_CSS);
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {

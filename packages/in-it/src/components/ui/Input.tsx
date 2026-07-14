@@ -1,4 +1,6 @@
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for Input — co-located for self-containment. */
 export const INPUT_CSS = `/* --- Input / TextField --- */
 .ii-input {
@@ -119,6 +121,7 @@ export interface InputProps {
 
 /** Text input field with optional label, helper text, and error state. Error takes priority over helper. */
 export function Input({ label, placeholder, value, type = "text", helper, error, disabled, onInput, id, name, required, autocomplete, minLength, class: cls }: InputProps): any {
+  injectCSS("ii-input", INPUT_CSS);
   return (
     <div class={`ii-input${cls ? ` ${cls}` : ""}`}>
       {label && <label class="ii-input__label" for={id}>{label}</label>}

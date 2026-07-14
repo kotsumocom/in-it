@@ -2,6 +2,8 @@
  * Step indicator component
  */
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for Steps — co-located for self-containment. */
 export const STEPS_CSS = `/* --- Steps --- */
 .ii-steps { display: flex; gap: 4px; }
@@ -37,6 +39,7 @@ export interface StepsProps {
 
 /** Step indicator showing progress through a multi-step process. */
 export function Steps({ items, current = 0, orientation = "horizontal" }: StepsProps): any {
+  injectCSS("ii-steps", STEPS_CSS);
   return (
     <div class={`ii-steps ii-steps--${orientation}`} role="list">
       {items.map((item, i) => {

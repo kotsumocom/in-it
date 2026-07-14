@@ -13,6 +13,8 @@
  * />
  */
 
+import { injectCSS } from "../../inject.ts";
+
 /** @internal CSS for DonutChart — co-located for self-containment. */
 export const DONUT_CHART_CSS = `/* --- Donut Chart --- */
 .ii-chart-donut__segment {
@@ -93,6 +95,7 @@ export function DonutChart({
   showLegend = true,
   class: cls,
 }: DonutChartProps): any {
+  injectCSS("ii-chart-donut", DONUT_CHART_CSS);
   const total = data.reduce((s, d) => s + d.value, 0) || 1;
   const r = (size - thickness) / 2;
   const circumference = 2 * Math.PI * r;

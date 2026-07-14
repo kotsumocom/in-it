@@ -14,6 +14,7 @@
 
 import { t } from "../../locale.ts";
 import { Button } from "./mod.tsx";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for PricingCard — co-located for self-containment. */
 export const PRICING_CARD_CSS = `/* --- PricingCard --- */
@@ -140,6 +141,7 @@ export function PricingCard({
   badge,
   class: cls,
 }: PricingCardProps): any {
+  injectCSS("ii-pricing-card", PRICING_CARD_CSS);
   return (
     <div class={`ii-pricing-card${highlighted ? " ii-pricing-card--highlighted" : ""}${cls ? ` ${cls}` : ""}`}>
       {badge && <span class="ii-pricing-card__badge">{badge}</span>}

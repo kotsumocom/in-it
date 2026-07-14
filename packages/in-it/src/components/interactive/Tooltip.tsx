@@ -2,6 +2,7 @@
  * Tooltip component
  */
 import { useState, useRef } from "hono/jsx";
+import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Tooltip — co-located for self-containment. */
 export const TOOLTIP_CSS = `/* --- Tooltip --- */
@@ -36,6 +37,7 @@ export interface TooltipProps {
 
 /** Informational tooltip shown on hover/focus with configurable position. */
 export function Tooltip({ content, position = "top", children }: TooltipProps): any {
+  injectCSS("ii-tooltip", TOOLTIP_CSS);
   const [visible, setVisible] = useState(false);
 
   return (
