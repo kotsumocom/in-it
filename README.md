@@ -22,6 +22,25 @@ deno add @kotsumo/in-it
 
 ```typescript
 import { Button, Card, ThemeToggle, Dialog } from "@kotsumo/in-it";
+import { injectStyles } from "@kotsumo/in-it/styles";
+
+// Inject all component CSS (call once at app startup)
+injectStyles();
+```
+
+For SSR, use `<StyleSheet />` in your layout's `<head>` instead:
+
+```tsx
+import { StyleSheet } from "@kotsumo/in-it/styles";
+
+function Layout({ children }) {
+  return (
+    <html>
+      <head><StyleSheet /></head>
+      <body>{children}</body>
+    </html>
+  );
+}
 ```
 
 ## ⚙️ Project Configuration (`in-it.config.ts`)
@@ -66,10 +85,12 @@ export default defineConfig({
 |---|---|---|
 | ⚡ | **One Stack** | Hono handles both server and client |
 | 🛡️ | **Hono-Only Dependency** | ARIA, router, HCT color, icons, Markdown parser — all built from scratch |
+| 🎨 | **Zero CSS Files** | All styles co-located in components; no CSS imports or build steps |
 | 🧩 | **50+ Components** | Forms, feedback, navigation, layouts |
 | 🎨 | **HCT Color System** | Material Design 3 compatible, light/dark themes from a single preset |
 | ♿ | **ARIA Compliant** | WAI-ARIA APG compliant interactive components |
 | 📎 | **Built-in Icons** | 5,093 Tabler-derived SVG icons (+ 1,053 filled), tree-shakeable |
+| 📈 | **SVG Charts** | BarChart, LineChart, DonutChart, SparkLine (no external dependency) |
 | 🔄 | **Dual Runtime** | Works on both Deno and Bun |
 
 ## 🧩 Components
@@ -111,6 +132,15 @@ Button, Badge, Card, StatCard, DataTable, Avatar, Chip, Skeleton, EmptyState, Di
 | AdminShell | Admin dashboard with sidebar, toolbar, and content area |
 | DocsShell | Documentation site with sidebar, content, and table of contents |
 | LandingHeader / Hero / Features / Section / Footer | Landing page building blocks |
+
+### Charts
+
+| Component | Description |
+|---|---|
+| BarChart | Vertical bar chart with labels and animations |
+| LineChart | SVG line chart with optional area fill |
+| DonutChart | Circular donut chart with segments |
+| SparkLine | Compact inline trend chart |
 
 ## 🎨 HCT Color System
 
@@ -176,10 +206,13 @@ Built-in Markdown parser with JSON frontmatter, auto-generated TOC, and Aside/Ca
 All classes use the `ii-` prefix with BEM convention:
 
 ```css
-.ii-button          /* Block */
-.ii-button__icon    /* Element */
-.ii-button--filled  /* Modifier */
+.ii-btn            /* Block */
+.ii-btn__icon      /* Element */
+.ii-btn--filled    /* Modifier */
 ```
+
+CSS is co-located inside each component as an exported string constant (e.g. `BUTTON_CSS`).
+All styles are aggregated and injected via `injectStyles()` or `<StyleSheet />`.
 
 ## 📎 Icons
 

@@ -10,11 +10,13 @@
 
 ## Features
 
+- **Zero CSS Files** — All styles are co-located in components as string constants; no CSS imports needed
 - **HCT Color System** — CAM16/HCT implementation for perceptually uniform colors
 - **MD3 Theming** — Material Design 3 color scheme generation from any source color
 - **WAI-ARIA Components** — Accessible interactive components (Switch, Dialog, Tabs, Menu, Toast, etc.)
 - **UI Components** — Button, Card, Badge, Input, Avatar, DataTable, and more
 - **Layout Components** — AdminShell, DocsShell, Landing page components
+- **SVG Charts** — BarChart, LineChart, DonutChart, SparkLine (no external dependency)
 - **Built-in Icons** — 5,093 Tabler-derived SVG icons (+ 1,053 filled), tree-shakeable
 - **SPA Router** — Lightweight History API-based router for hono/jsx/dom
 - **Markdown Parser** — Self-implemented parser with frontmatter, GFM, and TOC generation
@@ -40,6 +42,31 @@ const { light, dark } = generateScheme("#6750a4");
 // Use HCT color directly
 const color = HctColor.fromHex("#6750a4");
 console.log(color.withTone(80).toHex());
+```
+
+### CSS Setup
+
+All component styles are bundled as string constants — no CSS file imports needed.
+Call `injectStyles()` once at app startup, or use `<StyleSheet />` for SSR:
+
+```tsx
+// Option 1: Runtime injection (SPA)
+import { injectStyles } from "@kotsumo/in-it/styles";
+injectStyles();  // Call once at startup
+
+// Option 2: SSR inline (recommended for Hono SSR)
+import { StyleSheet } from "@kotsumo/in-it/styles";
+
+function Layout() {
+  return (
+    <html>
+      <head>
+        <StyleSheet />
+      </head>
+      <body>{/* ... */}</body>
+    </html>
+  );
+}
 ```
 
 ### Components
@@ -117,6 +144,20 @@ title: Hello
 # Heading
 Some **bold** text.
 `);
+```
+
+### SVG Charts
+
+```tsx
+import { BarChart, LineChart, DonutChart, SparkLine } from "@kotsumo/in-it/charts";
+
+<BarChart
+  data={[{ label: "Jan", value: 100 }, { label: "Feb", value: 200 }]}
+  height={200}
+/>
+<DonutChart
+  segments={[{ label: "A", value: 60 }, { label: "B", value: 40 }]}
+/>
 ```
 
 ### Router
