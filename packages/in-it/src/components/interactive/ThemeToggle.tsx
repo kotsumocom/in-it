@@ -6,6 +6,8 @@ import { Icon } from "../../icons/Icon.tsx";
 import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
 
+import { getConfig } from "../../config.ts";
+
 /** @internal CSS for ThemeToggle — co-located for self-containment. */
 export const THEME_TOGGLE_CSS = `/* --- Theme Toggle --- */
 .ii-theme-toggle {
@@ -63,9 +65,10 @@ function applyTheme(theme: Theme) {
 }
 
 /** Light/dark/system theme toggle with persistence via data-theme attribute. */
-export function ThemeToggle({ defaultTheme = "system", compact = false, onChange }: ThemeToggleProps): any {
+export function ThemeToggle({ defaultTheme, compact = false, onChange }: ThemeToggleProps): any {
   injectCSS("ii-theme-toggle", THEME_TOGGLE_CSS);
-  const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const initialTheme = defaultTheme ?? getConfig().theme?.defaultMode ?? "system";
+  const [theme, setTheme] = useState<Theme>(initialTheme);
 
   useEffect(() => {
     applyTheme(theme);

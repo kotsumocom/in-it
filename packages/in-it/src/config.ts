@@ -52,6 +52,8 @@ export interface SiteConfig {
 export interface ThemeConfig {
   /** Primary seed color (hex). HCT color scheme is auto-generated. Default: "#6750a4" */
   primary?: string;
+  /** Default theme mode. Default: "system" */
+  defaultMode?: "light" | "dark" | "system";
 }
 
 /** Auth provider declaration (metadata only — does not generate code). */
@@ -97,10 +99,27 @@ export interface InItConfig {
 /** Default configuration values. */
 export const defaults = {
   site: { name: "My SaaS", lang: "ja", description: "" },
-  theme: { primary: "#6750a4" },
+  theme: { primary: "#6750a4", defaultMode: "system" },
   icons: "outlined" as const,
   locale: "en" as Locale,
 } satisfies { site: Required<SiteConfig>; theme: Required<ThemeConfig>; icons: "outlined" | "filled"; locale: Locale };
+
+let activeConfig: InItConfig = { ...defaults };
+
+/** Set the active configuration (called during startup). */
+export function setConfig(config: InItConfig): void {
+  activeConfig = {
+    ...defaults,
+    ...config,
+    site: { ...defaults.site, ...config.site },
+    theme: { ...defaults.theme, ...config.theme },
+  };
+}
+
+/** Get the currently active configuration. */
+export function getConfig(): InItConfig {
+  return activeConfig;
+}
 
 /** Type-safe config helper. */
 export function defineConfig(config: InItConfig): InItConfig {

@@ -205,17 +205,33 @@ function genLocaleInit(root: string, config: InItConfig): void {
   const locale = config.locale ?? defaults.locale;
   const outPath = path.join(root, "client", "locale-init.ts");
 
+  // Safely serialize configuration
+  const configJson = JSON.stringify(config, null, 2);
+
   const output = `/**
- * Locale initialization — auto-generated from in-it.config.ts.
+ * in-it initialization — auto-generated from in-it.config.ts.
  * DO NOT EDIT — run \`deno task gen\` to regenerate.
  */
 import { setLocale } from "@kotsumo/in-it/locale";
+import { setConfig } from "@kotsumo/in-it/config";
+
 setLocale("${locale}");
+setConfig(${configJson});
+
+// Initial theme script injection (prevents flash)
+if (typeof document !== "undefined") {
+  const defaultMode = ${JSON.stringify(config.theme?.defaultMode ?? "system")};
+  let resolvedMode = defaultMode;
+  if (defaultMode === "system") {
+    resolvedMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  document.documentElement.setAttribute("data-theme", resolvedMode);
+}
 `;
 
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, output);
-  console.log(`✅ locale-init.ts — ${locale}`);
+  console.log(`✅ locale-init.ts — initialized with locale: ${locale} and config`);
 }
 
 /**

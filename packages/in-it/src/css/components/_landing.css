@@ -29,10 +29,10 @@
 .ii-lp-features__inner { max-width: 1200px; margin: 0 auto; }
 .ii-lp-features__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
 .ii-lp-features__card { padding: 32px; border-radius: var(--ii-shape-lg); border: 1px solid var(--ii-outline-variant); background: var(--ii-surface); transition: all var(--ii-transition); }
-.ii-lp-features__card:hover { border-color: var(--ii-primary); box-shadow: var(--ii-shadow-md); transform: translateY(-2px); }
+.ii-lp-features__card:hover { box-shadow: var(--ii-shadow-sm); }
 .ii-lp-features__card-icon { font-size: 2rem; margin-bottom: 16px; }
 .ii-lp-features__card-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 8px; }
-.ii-lp-features__card-desc { font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); line-height: 1.6; }
+.ii-lp-features__card-desc { font-size: var(--ii-font-base); color: var(--ii-on-surface-variant); line-height: 1.6; }
 
 .ii-lp-section { padding: 64px 24px; }
 .ii-lp-section__inner { max-width: 1200px; margin: 0 auto; }

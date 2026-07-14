@@ -29,7 +29,7 @@
   --ii-shadow-md: 0 4px 12px rgba(0,0,0,0.1);
   --ii-shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
   --ii-transition: 200ms ease;
-  --ii-font-family: 'Noto Sans JP', 'Inter', system-ui, sans-serif;
+  --ii-font-family: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
   /* MD3 Typography Scale */
   --ii-display-lg: 3.5625rem;
   --ii-display-md: 2.8125rem;
@@ -53,6 +53,17 @@
   --ii-font-xl: var(--ii-title-lg);
   --ii-font-2xl: var(--ii-headline-sm);
   color-scheme: light;
+}
+
+/* --- CJK Typography Scale Override --- */
+:root:lang(ja), :root[lang="ja"] {
+  --ii-label-sm: 0.75rem;      /* 11px → 12px */
+  --ii-body-sm: 0.8125rem;     /* 12px → 13px */
+  --ii-label-md: 0.8125rem;    /* 12px → 13px */
+  --ii-body-md: 1rem;          /* 14px → 16px */
+}
+:root:lang(ja) body, :root[lang="ja"] body {
+  line-height: 1.7;
 }
 
 /* --- Dark Mode --- */

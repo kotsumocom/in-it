@@ -61,7 +61,7 @@ export const CSS = `/* --- Variables --- */
   --ii-shadow-md: 0 4px 12px rgba(0,0,0,0.1);
   --ii-shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
   --ii-transition: 200ms ease;
-  --ii-font-family: 'Noto Sans JP', 'Inter', system-ui, sans-serif;
+  --ii-font-family: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
   /* MD3 Typography Scale */
   --ii-display-lg: 3.5625rem;
   --ii-display-md: 2.8125rem;
@@ -85,6 +85,17 @@ export const CSS = `/* --- Variables --- */
   --ii-font-xl: var(--ii-title-lg);
   --ii-font-2xl: var(--ii-headline-sm);
   color-scheme: light;
+}
+
+/* --- CJK Typography Scale Override --- */
+:root:lang(ja), :root[lang="ja"] {
+  --ii-label-sm: 0.75rem;      /* 11px → 12px */
+  --ii-body-sm: 0.8125rem;     /* 12px → 13px */
+  --ii-label-md: 0.8125rem;    /* 12px → 13px */
+  --ii-body-md: 1rem;          /* 14px → 16px */
+}
+:root:lang(ja) body, :root[lang="ja"] body {
+  line-height: 1.7;
 }
 
 /* --- Dark Mode --- */
@@ -187,15 +198,18 @@ body {
   align-items: center;
   justify-content: center;
   gap: var(--ii-spacing-2);
+  min-height: 40px;
+  padding: 10px 16px;
+  font-size: var(--ii-label-lg);
   font-family: inherit;
   font-weight: 500;
   letter-spacing: 0.01em;
   border: none;
-  border-radius: var(--ii-shape-xl);
+  border-radius: 20px;
   cursor: pointer;
   transition: background var(--ii-transition), box-shadow var(--ii-transition), filter var(--ii-transition);
   white-space: nowrap;
-  line-height: 1.25;
+  line-height: 1.43;
   position: relative;
   text-decoration: none;
   user-select: none;
@@ -203,8 +217,8 @@ body {
 
 /* Sizes */
 .ii-btn--sm { min-height: 32px; padding: 6px 16px; font-size: var(--ii-label-md); }
-.ii-btn--md { min-height: 40px; padding: 10px 24px; font-size: var(--ii-label-lg); }
-.ii-btn--lg { min-height: 48px; padding: 12px 28px; font-size: var(--ii-label-lg); }
+.ii-btn--md { min-height: 40px; padding: 10px 16px; font-size: var(--ii-label-lg); }
+.ii-btn--lg { min-height: 48px; padding: 12px 24px; font-size: var(--ii-label-lg); }
 
 /* Icon padding adjustments */
 .ii-btn--has-leading.ii-btn--sm  { padding-left: 12px; }
@@ -282,6 +296,7 @@ body {
   position: absolute;
   inset: -8px 0;
 }
+
 /* --- Badge --- */
 .ii-badge {
   display: inline-flex;
@@ -2129,26 +2144,6 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   margin-bottom: var(--ii-spacing-6);
 }
 
-/* LP Footer structure */
-.ii-lp-footer__row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--ii-spacing-4);
-}
-.ii-lp-footer__nav {
-  display: flex;
-  gap: var(--ii-spacing-4);
-}
-.ii-lp-footer__nav a {
-  color: inherit;
-  text-decoration: none;
-}
-.ii-lp-footer__nav a:hover {
-  color: var(--ii-primary);
-}
-
 /* --- Admin Page Structure --- */
 .ii-admin-page__header {
   display: flex;
@@ -2422,10 +2417,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-lp-features__inner { max-width: 1200px; margin: 0 auto; }
 .ii-lp-features__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
 .ii-lp-features__card { padding: 32px; border-radius: var(--ii-shape-lg); border: 1px solid var(--ii-outline-variant); background: var(--ii-surface); transition: all var(--ii-transition); }
-.ii-lp-features__card:hover { border-color: var(--ii-primary); box-shadow: var(--ii-shadow-md); transform: translateY(-2px); }
+.ii-lp-features__card:hover { box-shadow: var(--ii-shadow-sm); }
 .ii-lp-features__card-icon { font-size: 2rem; margin-bottom: 16px; }
 .ii-lp-features__card-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 8px; }
-.ii-lp-features__card-desc { font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); line-height: 1.6; }
+.ii-lp-features__card-desc { font-size: var(--ii-font-base); color: var(--ii-on-surface-variant); line-height: 1.6; }
 
 .ii-lp-section { padding: 64px 24px; }
 .ii-lp-section__inner { max-width: 1200px; margin: 0 auto; }

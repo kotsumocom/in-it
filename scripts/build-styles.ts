@@ -8,16 +8,57 @@
  * Run: deno run -A scripts/build-styles.ts
  */
 import * as path from "node:path";
+import { walk } from "https://deno.land/std@0.208.0/fs/walk.ts";
 
-const CSS_DIR = path.resolve(import.meta.dirname!, "../packages/in-it/src/css");
+const PACKAGES_DIR = path.resolve(import.meta.dirname!, "../packages/in-it");
+const CSS_DIR = path.resolve(PACKAGES_DIR, "src/css");
 const MAIN_CSS = path.join(CSS_DIR, "main.css");
-const OUT_CSS_MODULE = path.resolve(import.meta.dirname!, "../packages/in-it/src/css.ts");
-const OUT_STYLES = path.resolve(import.meta.dirname!, "../packages/in-it/src/styles.ts");
+const OUT_CSS_MODULE = path.resolve(PACKAGES_DIR, "src/css.ts");
+const OUT_STYLES = path.resolve(PACKAGES_DIR, "src/styles.ts");
+const COMPONENTS_DIR = path.resolve(PACKAGES_DIR, "src/components");
 
 // Base CSS files (injected automatically before any component CSS)
 const BASE_FILES = ["_variables.css", "_reset.css", "_icon.css", "_animations.css"];
 
-// Read main.css and extract @import order
+// --- 1. Detect colocated CSS constants in component TSX files ---
+interface ColocatedCSS {
+  name: string;
+  filePath: string; // Absolute path
+  importPath: string; // Relative path for css.ts (e.g. "./components/ui/Button.tsx")
+  content: string;
+}
+
+const colocatedMap = new Map<string, ColocatedCSS>();
+
+for await (const entry of walk(COMPONENTS_DIR, { exts: [".tsx"], includeDirs: false })) {
+  const fileContent = await Deno.readTextFile(entry.path);
+  const match = fileContent.match(/export\s+const\s+([A-Z0-9_]+_CSS)\s*=\s*`/);
+  if (match) {
+    const constName = match[1];
+    // Dynamic import to get the actual CSS string value
+    const fileUrl = "file:///" + entry.path.replace(/\\/g, "/");
+    const module = await import(fileUrl);
+    const cssContent = module[constName];
+
+    // Compute relative import path from src/ to components/...
+    const srcDir = path.resolve(PACKAGES_DIR, "src");
+    let relPath = path.relative(srcDir, entry.path).replace(/\\/g, "/");
+    if (!relPath.startsWith(".")) {
+      relPath = "./" + relPath;
+    }
+
+    colocatedMap.set(constName, {
+      name: constName,
+      filePath: entry.path,
+      importPath: relPath,
+      content: cssContent,
+    });
+  }
+}
+
+console.log(`🔍 Detected ${colocatedMap.size} colocated CSS constants from TSX files.`);
+
+// --- 2. Read main.css and extract @import order ---
 const mainContent = await Deno.readTextFile(MAIN_CSS);
 const importRegex = /@import\s+["'](.+?)["'];/g;
 const imports: string[] = [];
@@ -26,13 +67,34 @@ while ((match = importRegex.exec(mainContent)) !== null) {
   imports.push(match[1]);
 }
 
-// Read all CSS files
+// --- 3. Process all chunks (read from file or use colocated constants) ---
 const cssMap = new Map<string, string>();
 const allChunks: string[] = [];
 
+// Helper: CSS filename → export name
+// _button.css → BUTTON_CSS
+function toConstName(filename: string): string {
+  return filename
+    .replace(/^_/, "")
+    .replace(/\.css$/, "")
+    .replace(/-/g, "_")
+    .toUpperCase() + "_CSS";
+}
+
 for (const importPath of imports) {
-  const fullPath = path.resolve(CSS_DIR, importPath);
   const filename = path.basename(importPath);
+  const constName = toConstName(filename);
+
+  // Check if we have a colocated version first
+  const colocated = colocatedMap.get(constName);
+  if (colocated) {
+    cssMap.set(filename, colocated.content);
+    allChunks.push(colocated.content);
+    continue;
+  }
+
+  // Fallback to reading file
+  const fullPath = path.resolve(CSS_DIR, importPath);
   try {
     const content = await Deno.readTextFile(fullPath);
     cssMap.set(filename, content);
@@ -47,18 +109,7 @@ function esc(s: string): string {
   return s.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
 }
 
-// Helper: CSS filename → export name
-// _button.css → BUTTON_CSS, _admin-shell.css → ADMIN_SHELL_CSS
-function toConstName(filename: string): string {
-  return filename
-    .replace(/^_/, "")
-    .replace(/\.css$/, "")
-    .replace(/-/g, "_")
-    .toUpperCase() + "_CSS";
-}
-
-// --- Generate css.ts (per-component CSS strings + base CSS setup) ---
-
+// --- 4. Generate css.ts (supporting both raw string exports and re-exports) ---
 const baseCSS = BASE_FILES.map((f) => cssMap.get(f) || "").join("\n");
 const componentFiles = imports
   .map((p) => path.basename(p))
@@ -84,18 +135,24 @@ setBaseCSS(BASE_CSS);
 `;
 
 for (const filename of componentFiles) {
-  const content = cssMap.get(filename);
-  if (!content) continue;
   const constName = toConstName(filename);
+  const colocated = colocatedMap.get(constName);
+
   cssModuleLines += `/** CSS for ${filename.replace(/^_/, "").replace(/\.css$/, "")} */\n`;
-  cssModuleLines += `export const ${constName} = \`${esc(content)}\`;\n\n`;
+  if (colocated) {
+    // Output re-export
+    cssModuleLines += `export { ${constName} } from "${colocated.importPath}";\n\n`;
+  } else {
+    // Output raw string literal
+    const content = cssMap.get(filename) || "";
+    cssModuleLines += `export const ${constName} = \`${esc(content)}\`;\n\n`;
+  }
 }
 
 await Deno.writeTextFile(OUT_CSS_MODULE, cssModuleLines);
 console.log(`✅ Generated ${OUT_CSS_MODULE} (${componentFiles.length} components)`);
 
-// --- Generate styles.ts (backward compat) ---
-
+// --- 5. Generate styles.ts (combined CSS for backward compat) ---
 const allCSS = allChunks.join("\n");
 const stylesOutput = `/**
  * @module styles
@@ -162,3 +219,4 @@ export function StyleSheet(): null {
 
 await Deno.writeTextFile(OUT_STYLES, stylesOutput);
 console.log(`✅ Generated ${OUT_STYLES} (${(allCSS.length / 1024).toFixed(1)} KB CSS)`);
+
