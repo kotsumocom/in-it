@@ -4,6 +4,7 @@
 
 import { BLOG_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { Chip } from "./mod.tsx";
 export interface BlogPost {
   slug: string;
   title: string;
@@ -32,7 +33,7 @@ export function BlogCard({ post, basePath = "/blog" }: BlogCardProps): any {
         {post.tags && post.tags.length > 0 && (
           <div class="ii-blog-card__tags">
             {post.tags.map(tag => (
-              <span key={tag} class="ii-chip ii-chip--sm">{tag}</span>
+              <Chip key={tag} size="sm">{tag}</Chip>
             ))}
           </div>
         )}
@@ -79,7 +80,7 @@ export function BlogArticle({ post, children }: BlogArticleProps): any {
         {post.tags && post.tags.length > 0 && (
           <div class="ii-blog-card__tags">
             {post.tags.map(tag => (
-              <span key={tag} class="ii-chip ii-chip--sm">{tag}</span>
+              <Chip key={tag} size="sm">{tag}</Chip>
             ))}
           </div>
         )}

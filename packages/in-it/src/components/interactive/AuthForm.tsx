@@ -18,7 +18,7 @@ import { useState, useCallback } from "hono/jsx";
 import { AUTH_FORM_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
-import { Button } from "../ui/mod.tsx";
+import { Button, Input } from "../ui/mod.tsx";
 
 /** Auth form mode. */
 export type AuthMode = "login" | "signup";
@@ -151,49 +151,40 @@ export function AuthForm({
 
       <form onSubmit={handleSubmit} noValidate>
         {!isLogin && (
-          <div class="ii-input-field">
-            <label class="ii-input-field__label" for="auth-name">{t("name")}</label>
-            <input
-              id="auth-name"
-              name="name"
-              type="text"
-              class="ii-input"
-              placeholder={t("namePlaceholder")}
-              required
-              autocomplete="name"
-              disabled={loading}
-            />
-          </div>
+          <Input
+            id="auth-name"
+            name="name"
+            type="text"
+            label={t("name")}
+            placeholder={t("namePlaceholder")}
+            required
+            autocomplete="name"
+            disabled={loading}
+          />
         )}
 
-        <div class="ii-input-field">
-          <label class="ii-input-field__label" for="auth-email">{t("email")}</label>
-          <input
-            id="auth-email"
-            name="email"
-            type="email"
-            class="ii-input"
-            placeholder="you@example.com"
-            required
-            autocomplete="email"
-            disabled={loading}
-          />
-        </div>
+        <Input
+          id="auth-email"
+          name="email"
+          type="email"
+          label={t("email")}
+          placeholder="you@example.com"
+          required
+          autocomplete="email"
+          disabled={loading}
+        />
 
-        <div class="ii-input-field">
-          <label class="ii-input-field__label" for="auth-password">{t("password")}</label>
-          <input
-            id="auth-password"
-            name="password"
-            type="password"
-            class="ii-input"
-            placeholder={isLogin ? t("passwordPlaceholder") : t("passwordMinPlaceholder")}
-            required
-            minLength={8}
-            autocomplete={isLogin ? "current-password" : "new-password"}
-            disabled={loading}
-          />
-        </div>
+        <Input
+          id="auth-password"
+          name="password"
+          type="password"
+          label={t("password")}
+          placeholder={isLogin ? t("passwordPlaceholder") : t("passwordMinPlaceholder")}
+          required
+          minLength={8}
+          autocomplete={isLogin ? "current-password" : "new-password"}
+          disabled={loading}
+        />
 
         {displayError && (
           <div class="ii-auth-form__error" role="alert">{displayError}</div>

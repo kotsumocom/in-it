@@ -193,20 +193,37 @@ export interface InputProps {
   error?: string;
   disabled?: boolean;
   onInput?: (e: Event) => void;
+  /** HTML id attribute for the input element. */
+  id?: string;
+  /** HTML name attribute for form submission. */
+  name?: string;
+  /** Whether the field is required. */
+  required?: boolean;
+  /** Autocomplete hint. */
+  autocomplete?: string;
+  /** Minimum input length. */
+  minLength?: number;
+  /** Additional CSS class. */
+  class?: string;
 }
 
 /** Text input field with optional label, helper text, and error state. Error takes priority over helper. */
-export function Input({ label, placeholder, value, type = "text", helper, error, disabled, onInput }: InputProps): any {
+export function Input({ label, placeholder, value, type = "text", helper, error, disabled, onInput, id, name, required, autocomplete, minLength, class: cls }: InputProps): any {
   injectCSS("ii-input", INPUT_CSS);
   return (
-    <div class="ii-input">
-      {label && <label class="ii-input__label">{label}</label>}
+    <div class={`ii-input${cls ? ` ${cls}` : ""}`}>
+      {label && <label class="ii-input__label" for={id}>{label}</label>}
       <input
+        id={id}
+        name={name}
         type={type}
         class="ii-input__field"
         placeholder={placeholder}
         value={value}
         disabled={disabled}
+        required={required}
+        autocomplete={autocomplete}
+        minLength={minLength}
         onInput={onInput}
       />
       {error && <span class="ii-input__error">{error}</span>}
@@ -239,19 +256,22 @@ export function Avatar({ name, src, size = "md" }: AvatarProps): any {
 
 /** Props for the {@link Chip} component.
  * @property variant - Color variant: default, primary, success, or error.
+ * @property size - Size variant: sm or md (default).
  * @property onClose - When provided, renders a close button that calls this handler.
  */
 export interface ChipProps {
   variant?: "default" | "primary" | "success" | "error";
+  size?: "sm" | "md";
   onClose?: () => void;
   children: any;
 }
 
 /** Compact label element for tags, filters, or selections. Supports an optional dismiss button. */
-export function Chip({ variant = "default", onClose, children }: ChipProps): any {
+export function Chip({ variant = "default", size = "md", onClose, children }: ChipProps): any {
   injectCSS("ii-chip", CHIP_CSS);
+  const mods = `ii-chip${variant !== "default" ? ` ii-chip--${variant}` : ""}${size !== "md" ? ` ii-chip--${size}` : ""}`;
   return (
-    <span class={`ii-chip${variant !== "default" ? ` ii-chip--${variant}` : ""}`}>
+    <span class={mods}>
       {children}
       {onClose && (
         <button type="button" class="ii-chip__close" aria-label={t("remove")} onClick={onClose}>
