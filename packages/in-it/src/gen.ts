@@ -1,8 +1,10 @@
 /**
  * @module gen
- * Generates client/components.ts from in-it.config.ts overrides.
- *
- * Used by `deno task gen` in user projects.
+ * Code generator for in-it projects.
+ * Reads in-it.config.ts and generates:
+ * - client/components.ts (component barrel with overrides)
+ * - client/theme.css (HCT color scheme from primary color)
+ * - Updates index.html (site name, lang, description)
  *
  * @example
  * ```ts
@@ -12,6 +14,9 @@
  */
 import * as path from "node:path";
 import * as fs from "node:fs";
+import type { InItConfig } from "./config.ts";
+import { defaults } from "./config.ts";
+import { generateCss } from "./color/scheme.ts";
 
 /** All component names exported from @kotsumo/in-it/components */
 const ALL_COMPONENTS = [
@@ -34,35 +39,31 @@ const ALL_COMPONENTS = [
 const ALL_CHARTS = ["BarChart", "LineChart", "DonutChart", "SparkLine"];
 
 /**
- * Read in-it.config.ts and generate client/components.ts.
- * @param projectRoot - Root directory of the user project. Defaults to cwd.
+ * Load in-it.config.ts from project root.
  */
-export async function generateComponents(projectRoot?: string): Promise<void> {
-  const root = projectRoot ?? process.cwd();
+async function loadConfig(root: string): Promise<InItConfig> {
   const configPath = path.join(root, "in-it.config.ts");
-  const outPath = path.join(root, "client", "components.ts");
-
-  // Load config
-  let overrides: Record<string, string> = {};
-
-  if (fs.existsSync(configPath)) {
-    try {
-      const configModule = await import(
-        `file://${configPath.replace(/\\/g, "/")}`
-      );
-      const config = configModule.default ?? configModule;
-      overrides = config.overrides ?? {};
-      console.log(
-        `📋 in-it.config.ts: ${Object.keys(overrides).length} override(s)`,
-      );
-    } catch (e) {
-      console.warn(`⚠ Could not load in-it.config.ts: ${e}`);
-    }
-  } else {
+  if (!fs.existsSync(configPath)) {
     console.log("📋 No in-it.config.ts found — using all defaults");
+    return {};
   }
+  try {
+    const mod = await import(`file://${configPath.replace(/\\/g, "/")}`);
+    const config: InItConfig = mod.default ?? mod;
+    console.log("📋 Loaded in-it.config.ts");
+    return config;
+  } catch (e) {
+    console.warn(`⚠ Could not load in-it.config.ts: ${e}`);
+    return {};
+  }
+}
 
-  // Categorize
+/**
+ * Generate client/components.ts from overrides config.
+ */
+function genComponents(root: string, config: InItConfig): void {
+  const outPath = path.join(root, "client", "components.ts");
+  const overrides = config.overrides ?? {};
   const overriddenNames = new Set(Object.keys(overrides));
   const defaultComponents = ALL_COMPONENTS.filter(
     (n) => !overriddenNames.has(n),
@@ -70,25 +71,12 @@ export async function generateComponents(projectRoot?: string): Promise<void> {
   const overriddenCharts = ALL_CHARTS.filter((n) => overriddenNames.has(n));
   const defaultCharts = ALL_CHARTS.filter((n) => !overriddenNames.has(n));
 
-  // Generate output
   let output = `/**
  * Component barrel — auto-generated from in-it.config.ts.
  * DO NOT EDIT — run \`deno task gen\` to regenerate.
- *
- * Override components by editing in-it.config.ts:
- * @example
- * \`\`\`ts
- * import { defineConfig } from "@kotsumo/in-it/config";
- * export default defineConfig({
- *   overrides: {
- *     Button: "./client/overrides/Button.tsx",
- *   },
- * });
- * \`\`\`
  */
 `;
 
-  // Override imports
   if (overriddenNames.size > 0) {
     output += `\n// Overrides\n`;
     for (const [name, filePath] of Object.entries(overrides)) {
@@ -100,7 +88,6 @@ export async function generateComponents(projectRoot?: string): Promise<void> {
     }
   }
 
-  // Default components
   if (defaultComponents.length > 0) {
     output += `\n// in-it defaults\n`;
     const lines: string[] = [];
@@ -117,11 +104,10 @@ export async function generateComponents(projectRoot?: string): Promise<void> {
     output += `export {\n${lines.map((l) => `  ${l},`).join("\n")}\n} from "@kotsumo/in-it/components";\n`;
   }
 
-  // Charts
   if (overriddenCharts.length > 0) {
     output += `\n// Chart overrides\n`;
     for (const name of overriddenCharts) {
-      const filePath = overrides[name];
+      const filePath = overrides[name as keyof typeof overrides]!;
       const relPath = path
         .relative(path.dirname(outPath), path.resolve(root, filePath))
         .replace(/\\/g, "/");
@@ -133,12 +119,94 @@ export async function generateComponents(projectRoot?: string): Promise<void> {
     output += `export { ${defaultCharts.join(", ")} } from "@kotsumo/in-it/charts";\n`;
   }
 
-  // Write
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, output);
 
-  console.log(`✅ Generated ${outPath}`);
   if (overriddenNames.size > 0) {
-    console.log(`   Overrides: ${[...overriddenNames].join(", ")}`);
+    console.log(
+      `✅ components.ts — ${overriddenNames.size} override(s): ${[...overriddenNames].join(", ")}`,
+    );
+  } else {
+    console.log("✅ components.ts — all defaults");
   }
+}
+
+/**
+ * Generate client/theme.css from theme config.
+ */
+function genTheme(root: string, config: InItConfig): void {
+  const primary = config.theme?.primary ?? defaults.theme.primary;
+  const outPath = path.join(root, "client", "theme.css");
+
+  const css = generateCss(primary);
+  const output = `/**
+ * Theme CSS — auto-generated from in-it.config.ts.
+ * DO NOT EDIT — run \`deno task gen\` to regenerate.
+ *
+ * Primary: ${primary}
+ */
+${css}`;
+
+  fs.writeFileSync(outPath, output);
+  console.log(`✅ theme.css — primary: ${primary}`);
+}
+
+/**
+ * Update index.html with site config.
+ */
+function genIndexHtml(root: string, config: InItConfig): void {
+  const htmlPath = path.join(root, "index.html");
+  if (!fs.existsSync(htmlPath)) return;
+
+  const site = { ...defaults.site, ...config.site };
+  let html = fs.readFileSync(htmlPath, "utf-8");
+
+  // Update lang
+  html = html.replace(
+    /(<html\s+)lang="[^"]*"/,
+    `$1lang="${site.lang}"`,
+  );
+
+  // Update title
+  html = html.replace(
+    /<title>[^<]*<\/title>/,
+    `<title>${site.name}</title>`,
+  );
+
+  // Update or add meta description
+  if (site.description) {
+    if (html.includes('name="description"')) {
+      html = html.replace(
+        /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/,
+        `<meta name="description" content="${site.description}" />`,
+      );
+    } else {
+      html = html.replace(
+        "</head>",
+        `  <meta name="description" content="${site.description}" />\n</head>`,
+      );
+    }
+  }
+
+  fs.writeFileSync(htmlPath, html);
+  console.log(`✅ index.html — "${site.name}" (${site.lang})`);
+}
+
+/**
+ * Run all generators.
+ * @param projectRoot - Root directory of the user project. Defaults to cwd.
+ */
+export async function generateComponents(
+  projectRoot?: string,
+): Promise<void> {
+  const root = projectRoot ?? process.cwd();
+  console.log("🔧 in-it gen\n");
+
+  const config = await loadConfig(root);
+
+  genComponents(root, config);
+  genTheme(root, config);
+  genIndexHtml(root, config);
+
+  console.log("\n✨ Done!");
 }

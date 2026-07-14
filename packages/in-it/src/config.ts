@@ -8,9 +8,11 @@
  * import { defineConfig } from "@kotsumo/in-it/config";
  *
  * export default defineConfig({
+ *   site: { name: "My SaaS", lang: "ja" },
+ *   theme: { primary: "#ff5722" },
+ *   icons: "filled",
  *   overrides: {
  *     Button: "./client/overrides/Button.tsx",
- *     AdminShell: "./client/overrides/AdminShell.tsx",
  *   },
  * });
  * ```
@@ -18,41 +20,77 @@
 
 /** All overridable component names exported by in-it. */
 export type OverridableComponent =
-  // UI
   | "Badge" | "Card" | "Button" | "StatCard" | "DataTable" | "Input"
   | "Avatar" | "Chip" | "Skeleton" | "EmptyState"
   | "Textarea" | "Alert" | "Progress" | "ProgressCircular"
   | "Breadcrumb" | "Divider" | "Kbd" | "Aside"
   | "PricingCard" | "SettingsSection" | "ErrorPage"
   | "BlogCard" | "BlogGrid" | "BlogArticle"
-  // Interactive
   | "Switch" | "Dialog" | "Tabs" | "Menu" | "ToastContainer"
   | "Select" | "Accordion" | "Popover" | "ThemeToggle"
   | "Combobox" | "Checkbox" | "RadioGroup" | "Drawer"
   | "Slider" | "Pagination" | "Steps" | "Tooltip"
   | "AuthForm" | "UserMenu"
-  // Layout
   | "AdminShell" | "DocsShell"
   | "LandingHeader" | "LandingHero" | "LandingFeatures"
   | "LandingSection" | "LandingFooter"
-  // Charts
   | "BarChart" | "LineChart" | "DonutChart" | "SparkLine";
+
+/** Site metadata. */
+export interface SiteConfig {
+  /** Site/app name. Default: "My SaaS" */
+  name?: string;
+  /** HTML lang attribute. Default: "ja" */
+  lang?: string;
+  /** Meta description. Default: "" */
+  description?: string;
+}
+
+/** Theme configuration. */
+export interface ThemeConfig {
+  /** Primary seed color (hex). HCT color scheme is auto-generated. Default: "#6750a4" */
+  primary?: string;
+}
+
+/** Auth provider declaration (metadata only — does not generate code). */
+export interface AuthConfig {
+  /** Auth provider name. Informational only. */
+  provider?: "supabase" | "auth0" | "clerk" | "firebase" | "custom";
+}
 
 /** in-it project configuration. */
 export interface InItConfig {
+  /** Site metadata (name, lang, description). */
+  site?: SiteConfig;
+
+  /** Theme color configuration. */
+  theme?: ThemeConfig;
+
+  /**
+   * Icon style.
+   * @default "outlined"
+   */
+  icons?: "outlined" | "filled";
+
+  /**
+   * Auth provider declaration (metadata only — no code generated).
+   * Serves as documentation for AI/LLM and developers.
+   */
+  auth?: AuthConfig;
+
   /**
    * Component overrides.
    * Map component names to file paths relative to the project root.
-   *
-   * @example
-   * ```ts
-   * overrides: {
-   *   Button: "./client/overrides/Button.tsx",
-   * }
-   * ```
    */
   overrides?: Partial<Record<OverridableComponent, string>>;
 }
+
+/** Default configuration values. */
+export const defaults = {
+  site: { name: "My SaaS", lang: "ja", description: "" },
+  theme: { primary: "#6750a4" },
+  icons: "outlined" as const,
+} satisfies { site: Required<SiteConfig>; theme: Required<ThemeConfig>; icons: "outlined" | "filled" };
 
 /** Type-safe config helper. */
 export function defineConfig(config: InItConfig): InItConfig {
