@@ -18,6 +18,7 @@ import { useState, useCallback } from "hono/jsx";
 import { AUTH_FORM_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
+import { Button } from "../ui/mod.tsx";
 
 /** Auth form mode. */
 export type AuthMode = "login" | "signup";
@@ -198,9 +199,9 @@ export function AuthForm({
           <div class="ii-auth-form__error" role="alert">{displayError}</div>
         )}
 
-        <button type="submit" class="ii-btn ii-btn--filled ii-auth-form__submit" disabled={loading}>
+        <Button type="submit" variant="filled" class="ii-auth-form__submit" disabled={loading}>
           {loading ? t("loading") : isLogin ? t("signIn") : t("createAccount")}
-        </button>
+        </Button>
       </form>
 
       {onModeSwitch && (

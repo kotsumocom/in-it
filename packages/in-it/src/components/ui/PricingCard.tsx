@@ -16,6 +16,7 @@
 import { PRICING_CARD_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
+import { Button } from "./mod.tsx";
 export interface PricingCardProps {
   /** Plan name (e.g. "Free", "Pro", "Enterprise"). */
   name: string;
@@ -70,13 +71,9 @@ export function PricingCard({
           </li>
         ))}
       </ul>
-      <button
-        type="button"
-        class={`ii-btn${highlighted ? " ii-btn--filled" : " ii-btn--outlined"}`}
-        onClick={onCtaClick}
-      >
+      <Button variant={highlighted ? "filled" : "outlined"} onClick={onCtaClick}>
         {cta ?? t("getStarted")}
-      </button>
+      </Button>
     </div>
   );
 }

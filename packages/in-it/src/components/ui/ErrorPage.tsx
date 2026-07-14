@@ -10,6 +10,7 @@
 import { ERROR_PAGE_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
 import { t } from "../../locale.ts";
+import { Button } from "./mod.tsx";
 export interface ErrorPageProps {
   /** HTTP status code to display. */
   code: number;
@@ -41,9 +42,9 @@ export function ErrorPage({
         <span class="ii-error-page__code">{code}</span>
         <h1 class="ii-error-page__title">{title}</h1>
         {description && <p class="ii-error-page__desc">{description}</p>}
-        <button type="button" class="ii-btn ii-btn--filled" onClick={onAction}>
+        <Button variant="filled" onClick={onAction}>
           {actionLabel ?? t("goHome")}
-        </button>
+        </Button>
       </div>
     </div>
   );
