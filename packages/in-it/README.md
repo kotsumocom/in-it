@@ -1,10 +1,8 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/kotsumocom/in-it/main/assets/logo.svg" alt="in-it" width="400" />
-</p>
+# in-it
 
-<p align="center">
-  <strong>Everything is in it.</strong> — Hono-only dependency SaaS starter framework for Deno/Bun.
-</p>
+![in-it](https://raw.githubusercontent.com/kotsumocom/in-it/main/assets/logo.svg)
+
+**Everything is in it.** — Hono-only dependency SaaS starter framework for Deno/Bun.
 
 [![JSR](https://jsr.io/badges/@kotsumo/in-it)](https://jsr.io/@kotsumo/in-it)
 
