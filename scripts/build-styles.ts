@@ -74,6 +74,7 @@ const allChunks: string[] = [];
 // Helper: CSS filename → export name
 // _button.css → BUTTON_CSS
 function toConstName(filename: string): string {
+  if (filename === "_blog-notifications.css") return "BLOG_CSS";
   return filename
     .replace(/^_/, "")
     .replace(/\.css$/, "")

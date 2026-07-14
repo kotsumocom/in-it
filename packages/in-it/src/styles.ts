@@ -2073,6 +2073,11 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   object-fit: cover;
   background: var(--ii-surface-container);
 }
+.ii-blog-card__image--empty {
+  width: 100%;
+  height: 200px;
+  background: var(--ii-surface-container);
+}
 .ii-blog-card__body {
   padding: var(--ii-spacing-4);
 }

@@ -908,7 +908,7 @@ export const CHART_CSS = `/* --- Charts --- */
 `;
 
 /** CSS for blog-notifications */
-export { BLOG_NOTIFICATIONS_CSS } from "./components/ui/Blog.tsx";
+export { BLOG_CSS } from "./components/ui/Blog.tsx";
 
 /** CSS for page */
 export const PAGE_CSS = `/* --- Admin Page Structure --- */

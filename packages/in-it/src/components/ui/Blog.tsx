@@ -2,7 +2,7 @@ import { injectCSS } from "../../inject.ts";
 import { Chip } from "./mod.tsx";
 
 /** @internal CSS for Blog and Notifications — co-located for self-containment. */
-export const BLOG_NOTIFICATIONS_CSS = `/* --- Notification Item --- */
+export const BLOG_CSS = `/* --- Notification Item --- */
 .ii-notification-list {
   display: flex;
   flex-direction: column;
@@ -83,6 +83,11 @@ export const BLOG_NOTIFICATIONS_CSS = `/* --- Notification Item --- */
   width: 100%;
   height: 200px;
   object-fit: cover;
+  background: var(--ii-surface-container);
+}
+.ii-blog-card__image--empty {
+  width: 100%;
+  height: 200px;
   background: var(--ii-surface-container);
 }
 .ii-blog-card__body {
@@ -174,7 +179,7 @@ export interface BlogCardProps {
 }
 
 export function BlogCard({ post, basePath = "/blog" }: BlogCardProps): any {
-  injectCSS("ii-blog", BLOG_NOTIFICATIONS_CSS);
+  injectCSS("ii-blog", BLOG_CSS);
   return (
     <div class="ii-blog-card">
       {post.coverImage && (
@@ -214,7 +219,7 @@ export interface BlogGridProps {
 }
 
 export function BlogGrid({ children }: BlogGridProps): any {
-  injectCSS("ii-blog", BLOG_NOTIFICATIONS_CSS);
+  injectCSS("ii-blog", BLOG_CSS);
   return <div class="ii-blog-grid">{children}</div>;
 }
 
@@ -227,7 +232,7 @@ export interface BlogArticleProps {
 }
 
 export function BlogArticle({ post, children }: BlogArticleProps): any {
-  injectCSS("ii-blog", BLOG_NOTIFICATIONS_CSS);
+  injectCSS("ii-blog", BLOG_CSS);
   return (
     <article class="ii-blog-article">
       <header class="ii-blog-article__header">
