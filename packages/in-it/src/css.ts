@@ -178,201 +178,22 @@ body {
 setBaseCSS(BASE_CSS);
 
 /** CSS for button */
-export const BUTTON_CSS = `/* --- Button (MD3) --- */
-.ii-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--ii-spacing-2);
-  min-height: 40px;
-  padding: 10px 16px;
-  font-size: var(--ii-label-lg);
-  font-family: inherit;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background var(--ii-transition), box-shadow var(--ii-transition), filter var(--ii-transition);
-  white-space: nowrap;
-  line-height: 1.43;
-  position: relative;
-  text-decoration: none;
-  user-select: none;
-}
-
-/* Sizes */
-.ii-btn--sm { min-height: 32px; padding: 6px 16px; font-size: var(--ii-label-md); }
-.ii-btn--md { min-height: 40px; padding: 10px 16px; font-size: var(--ii-label-lg); }
-.ii-btn--lg { min-height: 48px; padding: 12px 24px; font-size: var(--ii-label-lg); }
-
-/* Icon padding adjustments */
-.ii-btn--has-leading.ii-btn--sm  { padding-left: 12px; }
-.ii-btn--has-leading.ii-btn--md  { padding-left: 16px; }
-.ii-btn--has-leading.ii-btn--lg  { padding-left: 20px; }
-.ii-btn--has-trailing.ii-btn--sm { padding-right: 12px; }
-.ii-btn--has-trailing.ii-btn--md { padding-right: 16px; }
-.ii-btn--has-trailing.ii-btn--lg { padding-right: 20px; }
-
-/* Icon slots */
-.ii-btn__icon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.ii-btn--sm .ii-btn__icon { width: 16px; height: 16px; }
-.ii-btn--md .ii-btn__icon { width: 20px; height: 20px; }
-.ii-btn--lg .ii-btn__icon { width: 24px; height: 24px; }
-.ii-btn__icon svg { width: 100%; height: 100%; }
-
-/* --- Variants --- */
-
-/* Filled */
-.ii-btn--filled {
-  background: var(--ii-primary);
-  color: var(--ii-on-primary);
-}
-.ii-btn--filled:hover { box-shadow: var(--ii-shadow-sm); filter: brightness(1.08); }
-.ii-btn--filled:active { filter: brightness(0.95); }
-
-/* Tonal */
-.ii-btn--tonal {
-  background: var(--ii-primary-container);
-  color: var(--ii-on-primary-container);
-}
-.ii-btn--tonal:hover { box-shadow: var(--ii-shadow-sm); filter: brightness(1.05); }
-.ii-btn--tonal:active { filter: brightness(0.95); }
-
-/* Elevated */
-.ii-btn--elevated {
-  background: var(--ii-surface-container);
-  color: var(--ii-primary);
-  box-shadow: var(--ii-shadow-sm);
-}
-.ii-btn--elevated:hover { box-shadow: var(--ii-shadow-md); filter: brightness(1.03); }
-.ii-btn--elevated:active { box-shadow: var(--ii-shadow-sm); }
-
-/* Outlined */
-.ii-btn--outlined {
-  background: transparent;
-  color: var(--ii-primary);
-  border: 1px solid var(--ii-outline);
-}
-.ii-btn--outlined:hover { background: color-mix(in srgb, var(--ii-primary) 8%, transparent); }
-.ii-btn--outlined:active { background: color-mix(in srgb, var(--ii-primary) 12%, transparent); }
-
-/* Text */
-.ii-btn--text {
-  background: transparent;
-  color: var(--ii-primary);
-  padding-inline: var(--ii-spacing-3);
-}
-.ii-btn--text:hover { background: color-mix(in srgb, var(--ii-primary) 8%, transparent); }
-.ii-btn--text:active { background: color-mix(in srgb, var(--ii-primary) 12%, transparent); }
-
-/* Disabled */
-.ii-btn:disabled,
-.ii-btn[aria-disabled="true"] {
-  opacity: 0.38;
-  cursor: not-allowed;
-  pointer-events: none;
-  box-shadow: none;
-  filter: none;
-}
-
-/* Touch target (ensure 48px min for accessibility) */
-.ii-btn--sm::after {
-  content: "";
-  position: absolute;
-  inset: -8px 0;
-}`;
+export { BUTTON_CSS } from "./components/ui/Button.tsx";
 
 /** CSS for badge */
-export const BADGE_CSS = `/* --- Badge --- */
-.ii-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 10px;
-  border-radius: 100px;
-  font-size: var(--ii-font-sm);
-  font-weight: 500;
-  line-height: 1.5;
-}
-.ii-badge--success { background: color-mix(in srgb, var(--ii-success) 12%, transparent); color: var(--ii-success); }
-.ii-badge--error { background: color-mix(in srgb, var(--ii-error) 12%, transparent); color: var(--ii-error); }
-.ii-badge--warning { background: color-mix(in srgb, var(--ii-warning) 12%, transparent); color: var(--ii-warning); }
-.ii-badge--info { background: color-mix(in srgb, var(--ii-info) 12%, transparent); color: var(--ii-info); }
-.ii-badge--neutral { background: var(--ii-surface-container-high); color: var(--ii-on-surface-variant); }
-`;
+export { BADGE_CSS } from "./components/ui/Badge.tsx";
 
 /** CSS for card */
-export const CARD_CSS = `/* --- Card --- */
-.ii-card {
-  background: var(--ii-surface);
-  border-radius: var(--ii-shape-md);
-  padding: var(--ii-spacing-5);
-}
-.ii-card--outlined {
-  border: 1px solid var(--ii-outline-variant);
-}
-`;
+export { CARD_CSS } from "./components/ui/Card.tsx";
 
 /** CSS for stat-card */
-export const STAT_CARD_CSS = `/* --- Stat Card --- */
-.ii-stat-card {
-  background: var(--ii-surface);
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md);
-  padding: var(--ii-spacing-5);
-}
-.ii-stat-card__label {
-  font-size: var(--ii-font-sm);
-  color: var(--ii-on-surface-variant);
-}
-.ii-stat-card__value {
-  font-size: var(--ii-font-2xl);
-  font-weight: 700;
-  margin-top: var(--ii-spacing-1);
-}
-.ii-stat-card__trend {
-  font-size: var(--ii-font-sm);
-  margin-top: var(--ii-spacing-1);
-}
-.ii-stat-card__trend--up { color: var(--ii-success); }
-.ii-stat-card__trend--down { color: var(--ii-error); }
-
-/* --- Stats Grid --- */
-.ii-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--ii-spacing-4);
-}
-`;
+export { STAT_CARD_CSS } from "./components/ui/StatCard.tsx";
 
 /** CSS for switch */
 export { SWITCH_CSS } from "./components/interactive/Switch.tsx";
 
 /** CSS for data-table */
-export const DATA_TABLE_CSS = `/* --- Data Table --- */
-.ii-data-table-wrap {
-  overflow-x: auto;
-}
-.ii-data-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: var(--ii-font-base);
-}
-.ii-data-table th {
-  text-align: left;
-  padding: var(--ii-spacing-3) var(--ii-spacing-4);
-  font-weight: 500;
-  color: var(--ii-on-surface-variant);
-  border-bottom: 1px solid var(--ii-outline-variant);
-  font-size: var(--ii-font-sm);
-}
-.ii-data-table td {
-  padding: var(--ii-spacing-3) var(--ii-spacing-4);
-  border-bottom: 1px solid var(--ii-outline-variant);
-}
-.ii-data-table__th--right, .ii-data-table__td--right { text-align: right; }
-.ii-data-table__th--center, .ii-data-table__td--center { text-align: center; }
-`;
+export { DATA_TABLE_CSS } from "./components/ui/DataTable.tsx";
 
 /** CSS for section */
 export const SECTION_CSS = `/* --- Section --- */
@@ -408,180 +229,19 @@ export { ACCORDION_CSS } from "./components/interactive/Accordion.tsx";
 export { POPOVER_CSS } from "./components/interactive/Popover.tsx";
 
 /** CSS for input */
-export const INPUT_CSS = `/* --- Input / TextField --- */
-.ii-input {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ii-spacing-1);
-}
-.ii-input__label {
-  font-size: var(--ii-font-sm);
-  font-weight: 500;
-  color: var(--ii-on-surface-variant);
-}
-.ii-input__field {
-  min-height: 40px;
-  padding: 10px 12px;
-  background: var(--ii-surface);
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md);
-  font-family: inherit;
-  font-size: var(--ii-font-base);
-  color: var(--ii-on-surface);
-  transition: border-color var(--ii-transition);
-}
-.ii-input__field:hover { border-color: var(--ii-outline); }
-.ii-input__field:focus {
-  outline: 2px solid var(--ii-primary);
-  outline-offset: 2px;
-  border-color: var(--ii-primary);
-}
-.ii-input__field::placeholder { color: var(--ii-on-surface-variant); }
-.ii-input__helper {
-  font-size: var(--ii-font-sm);
-  color: var(--ii-on-surface-variant);
-}
-.ii-input__error {
-  font-size: var(--ii-font-sm);
-  color: var(--ii-error);
-}
-
-/* --- Input Validation States --- */
-.ii-input--error .ii-input__field,
-.ii-input__field[aria-invalid="true"] {
-  border-color: var(--ii-error);
-}
-.ii-input--error .ii-input__field:focus,
-.ii-input__field[aria-invalid="true"]:focus {
-  outline-color: var(--ii-error);
-}
-.ii-input--success .ii-input__field {
-  border-color: var(--ii-success);
-}
-.ii-input--success .ii-input__field:focus {
-  outline-color: var(--ii-success);
-}
-/* Also support bare input elements using ii-input class */
-input.ii-input, select.ii-input, textarea.ii-input {
-  padding: 10px 12px;
-  background: var(--ii-surface);
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md);
-  font-family: inherit;
-  font-size: var(--ii-font-base);
-  color: var(--ii-on-surface);
-  transition: border-color var(--ii-transition);
-  width: 100%;
-  box-sizing: border-box;
-}
-input.ii-input:hover, select.ii-input:hover, textarea.ii-input:hover {
-  border-color: var(--ii-outline);
-}
-input.ii-input:focus, select.ii-input:focus, textarea.ii-input:focus {
-  outline: 2px solid var(--ii-primary);
-  outline-offset: 2px;
-  border-color: var(--ii-primary);
-}
-input.ii-input::placeholder, textarea.ii-input::placeholder {
-  color: var(--ii-on-surface-variant);
-}
-.ii-input-field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ii-spacing-1);
-}
-.ii-input-field__label {
-  font-size: var(--ii-font-sm);
-  font-weight: 500;
-  color: var(--ii-on-surface-variant);
-}
-`;
+export { INPUT_CSS } from "./components/ui/Input.tsx";
 
 /** CSS for chip */
-export const CHIP_CSS = `/* --- Chip / Tag --- */
-.ii-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 32px;
-  padding: 6px 12px;
-  border-radius: 99px;
-  font-size: var(--ii-font-sm);
-  font-weight: 500;
-  border: 1px solid var(--ii-outline-variant);
-  background: var(--ii-surface);
-  color: var(--ii-on-surface);
-  cursor: default;
-}
-.ii-chip--primary { background: var(--ii-primary-container); color: var(--ii-primary); border-color: transparent; }
-.ii-chip--success { background: color-mix(in srgb, var(--ii-success) 12%, var(--ii-surface)); color: var(--ii-success); border-color: transparent; }
-.ii-chip--error { background: color-mix(in srgb, var(--ii-error) 12%, var(--ii-surface)); color: var(--ii-error); border-color: transparent; }
-.ii-chip__close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.75rem;
-  color: inherit;
-  padding: 0;
-  margin-left: 2px;
-}
-`;
+export { CHIP_CSS } from "./components/ui/Chip.tsx";
 
 /** CSS for avatar */
-export const AVATAR_CSS = `/* --- Avatar --- */
-.ii-avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: var(--ii-primary-container);
-  color: var(--ii-primary);
-  font-weight: 600;
-  overflow: hidden;
-}
-.ii-avatar--sm { width: 32px; height: 32px; font-size: 0.8rem; }
-.ii-avatar--md { width: 40px; height: 40px; font-size: 1rem; }
-.ii-avatar--lg { width: 56px; height: 56px; font-size: 1.25rem; }
-.ii-avatar img { width: 100%; height: 100%; object-fit: cover; }
-`;
+export { AVATAR_CSS } from "./components/ui/Avatar.tsx";
 
 /** CSS for skeleton */
-export const SKELETON_CSS = `/* --- Skeleton --- */
-.ii-skeleton {
-  background: linear-gradient(90deg, var(--ii-surface-container) 25%, var(--ii-surface-container-high) 50%, var(--ii-surface-container) 75%);
-  background-size: 200% 100%;
-  animation: ii-skeleton-shimmer 1.5s infinite;
-  border-radius: var(--ii-shape-sm);
-}
-.ii-skeleton--text { height: 1em; width: 100%; }
-.ii-skeleton--circle { border-radius: 50%; }
-@keyframes ii-skeleton-shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-`;
+export { SKELETON_CSS } from "./components/ui/Skeleton.tsx";
 
 /** CSS for empty-state */
-export const EMPTY_STATE_CSS = `/* --- Empty State --- */
-.ii-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  text-align: center;
-}
-.ii-empty__icon { font-size: 3rem; margin-bottom: 16px; }
-.ii-empty__title {
-  font-size: var(--ii-font-lg);
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-.ii-empty__desc {
-  color: var(--ii-on-surface-variant);
-  max-width: 360px;
-}
-`;
+export { EMPTY_STATE_CSS } from "./components/ui/EmptyState.tsx";
 
 /** CSS for theme-toggle */
 export { THEME_TOGGLE_CSS } from "./components/interactive/ThemeToggle.tsx";

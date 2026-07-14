@@ -1,0 +1,161 @@
+import { injectCSS } from "../../inject.ts";
+
+/** @internal CSS for Button — co-located for self-containment. */
+export const BUTTON_CSS = `/* --- Button (MD3) --- */
+.ii-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ii-spacing-2);
+  min-height: 40px;
+  padding: 10px 16px;
+  font-size: var(--ii-label-lg);
+  font-family: inherit;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background var(--ii-transition), box-shadow var(--ii-transition), filter var(--ii-transition);
+  white-space: nowrap;
+  line-height: 1.43;
+  position: relative;
+  text-decoration: none;
+  user-select: none;
+}
+
+/* Sizes */
+.ii-btn--sm { min-height: 32px; padding: 6px 16px; font-size: var(--ii-label-md); }
+.ii-btn--md { min-height: 40px; padding: 10px 16px; font-size: var(--ii-label-lg); }
+.ii-btn--lg { min-height: 48px; padding: 12px 24px; font-size: var(--ii-label-lg); }
+
+/* Icon padding adjustments */
+.ii-btn--has-leading.ii-btn--sm  { padding-left: 12px; }
+.ii-btn--has-leading.ii-btn--md  { padding-left: 16px; }
+.ii-btn--has-leading.ii-btn--lg  { padding-left: 20px; }
+.ii-btn--has-trailing.ii-btn--sm { padding-right: 12px; }
+.ii-btn--has-trailing.ii-btn--md { padding-right: 16px; }
+.ii-btn--has-trailing.ii-btn--lg { padding-right: 20px; }
+
+/* Icon slots */
+.ii-btn__icon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ii-btn--sm .ii-btn__icon { width: 16px; height: 16px; }
+.ii-btn--md .ii-btn__icon { width: 20px; height: 20px; }
+.ii-btn--lg .ii-btn__icon { width: 24px; height: 24px; }
+.ii-btn__icon svg { width: 100%; height: 100%; }
+
+/* --- Variants --- */
+
+/* Filled */
+.ii-btn--filled {
+  background: var(--ii-primary);
+  color: var(--ii-on-primary);
+}
+.ii-btn--filled:hover { box-shadow: var(--ii-shadow-sm); filter: brightness(1.08); }
+.ii-btn--filled:active { filter: brightness(0.95); }
+
+/* Tonal */
+.ii-btn--tonal {
+  background: var(--ii-primary-container);
+  color: var(--ii-on-primary-container);
+}
+.ii-btn--tonal:hover { box-shadow: var(--ii-shadow-sm); filter: brightness(1.05); }
+.ii-btn--tonal:active { filter: brightness(0.95); }
+
+/* Elevated */
+.ii-btn--elevated {
+  background: var(--ii-surface-container);
+  color: var(--ii-primary);
+  box-shadow: var(--ii-shadow-sm);
+}
+.ii-btn--elevated:hover { box-shadow: var(--ii-shadow-md); filter: brightness(1.03); }
+.ii-btn--elevated:active { box-shadow: var(--ii-shadow-sm); }
+
+/* Outlined */
+.ii-btn--outlined {
+  background: transparent;
+  color: var(--ii-primary);
+  border: 1px solid var(--ii-outline);
+}
+.ii-btn--outlined:hover { background: color-mix(in srgb, var(--ii-primary) 8%, transparent); }
+.ii-btn--outlined:active { background: color-mix(in srgb, var(--ii-primary) 12%, transparent); }
+
+/* Text */
+.ii-btn--text {
+  background: transparent;
+  color: var(--ii-primary);
+  padding-inline: var(--ii-spacing-3);
+}
+.ii-btn--text:hover { background: color-mix(in srgb, var(--ii-primary) 8%, transparent); }
+.ii-btn--text:active { background: color-mix(in srgb, var(--ii-primary) 12%, transparent); }
+
+/* Disabled */
+.ii-btn:disabled,
+.ii-btn[aria-disabled="true"] {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  filter: none;
+}
+
+/* Touch target (ensure 48px min for accessibility) */
+.ii-btn--sm::after {
+  content: "";
+  position: absolute;
+  inset: -8px 0;
+}
+`;
+
+/** Props for the {@link Button} component.
+ * @property variant - filled (default), tonal, elevated, outlined, or text.
+ * @property size - sm, md (default), or lg.
+ * @property leadingIcon - Icon element displayed before the label.
+ * @property trailingIcon - Icon element displayed after the label.
+ */
+export interface ButtonProps {
+  variant?: "filled" | "tonal" | "elevated" | "outlined" | "text";
+  size?: "sm" | "md" | "lg";
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  onClick?: () => void;
+  leadingIcon?: any;
+  trailingIcon?: any;
+  children: any;
+  class?: string;
+}
+
+/** Interactive button with filled, tonal, elevated, outlined, or text variants, three sizes, and optional leading/trailing icons. */
+export function Button({
+  variant = "filled",
+  size = "md",
+  disabled = false,
+  type = "button",
+  onClick,
+  leadingIcon,
+  trailingIcon,
+  children,
+  class: cls,
+}: ButtonProps): any {
+  injectCSS("ii-btn", BUTTON_CSS);
+  const mods = [
+    `ii-btn--${variant}`,
+    `ii-btn--${size}`,
+    leadingIcon && "ii-btn--has-leading",
+    trailingIcon && "ii-btn--has-trailing",
+    cls,
+  ].filter(Boolean).join(" ");
+
+  return (
+    <button
+      type={type}
+      class={`ii-btn ${mods}`}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {leadingIcon && <span class="ii-btn__icon">{leadingIcon}</span>}
+      {children}
+      {trailingIcon && <span class="ii-btn__icon">{trailingIcon}</span>}
+    </button>
+  );
+}
