@@ -1,6 +1,6 @@
 {
   "name": "@kotsumo/create-in-it",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "exports": "./create.ts",
   "publish": {
     "include": [
