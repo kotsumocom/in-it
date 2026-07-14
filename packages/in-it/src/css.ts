@@ -723,66 +723,7 @@ export const SELECT_CSS = `/* --- Select --- */
 `;
 
 /** CSS for accordion */
-export const ACCORDION_CSS = `/* --- Accordion --- */
-.ii-accordion {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md);
-  overflow: hidden;
-}
-.ii-accordion__item {
-  border-bottom: 1px solid var(--ii-outline-variant);
-}
-.ii-accordion__item:last-child { border-bottom: none; }
-.ii-accordion__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 14px 16px;
-  background: var(--ii-surface);
-  border: none;
-  font-family: inherit;
-  font-size: var(--ii-font-base);
-  font-weight: 500;
-  color: var(--ii-on-surface);
-  cursor: pointer;
-  transition: background var(--ii-transition);
-}
-.ii-accordion__header:hover { background: var(--ii-surface-container-high); }
-.ii-accordion__header:focus-visible {
-  outline: 2px solid var(--ii-primary);
-  outline-offset: -2px;
-}
-.ii-accordion__header:disabled {
-  opacity: 0.38;
-  cursor: not-allowed;
-}
-.ii-accordion__chevron {
-  font-size: 0.7rem;
-  color: var(--ii-on-surface-variant);
-  transition: transform 200ms ease;
-}
-.ii-accordion__chevron--open {
-  transform: rotate(180deg);
-}
-.ii-accordion__panel {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 200ms ease;
-}
-.ii-accordion__panel--open {
-  max-height: 500px;
-}
-.ii-accordion__panel[hidden] { display: none; }
-.ii-accordion__content {
-  padding: 0 16px 16px;
-  color: var(--ii-on-surface-variant);
-  font-size: var(--ii-font-base);
-  line-height: 1.6;
-}
-`;
+export { ACCORDION_CSS } from "./components/interactive/Accordion.tsx";
 
 /** CSS for popover */
 export const POPOVER_CSS = `/* --- Popover --- */
@@ -1027,94 +968,10 @@ export const THEME_TOGGLE_CSS = `/* --- Theme Toggle --- */
 `;
 
 /** CSS for combobox */
-export const COMBOBOX_CSS = `/* --- Combobox --- */
-.ii-combobox {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ii-spacing-1);
-  position: relative;
-}
-.ii-combobox__label {
-  font-size: var(--ii-font-sm);
-  font-weight: 500;
-  color: var(--ii-on-surface-variant);
-}
-.ii-combobox__input {
-  padding: 10px 12px;
-  background: var(--ii-surface);
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md);
-  font-family: inherit;
-  font-size: var(--ii-font-base);
-  color: var(--ii-on-surface);
-  transition: border-color var(--ii-transition);
-}
-.ii-combobox__input:hover { border-color: var(--ii-outline); }
-.ii-combobox__input:focus {
-  outline: 2px solid var(--ii-primary);
-  outline-offset: 2px;
-  border-color: var(--ii-primary);
-}
-.ii-combobox__dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  margin-top: 4px;
-  background: var(--ii-surface);
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md);
-  box-shadow: var(--ii-shadow-md);
-  padding: 4px;
-  z-index: 50;
-  max-height: 240px;
-  overflow-y: auto;
-  animation: ii-fade-in 100ms ease;
-}
-.ii-combobox__option {
-  padding: 8px 12px;
-  border-radius: var(--ii-shape-sm);
-  cursor: pointer;
-  font-size: var(--ii-font-base);
-  color: var(--ii-on-surface);
-}
-.ii-combobox__option:hover, .ii-combobox__option--highlighted {
-  background: var(--ii-surface-container-high);
-}
-.ii-combobox__option--selected {
-  color: var(--ii-primary);
-  font-weight: 500;
-}
-.ii-combobox__option--disabled {
-  opacity: 0.38;
-  cursor: not-allowed;
-}
-.ii-combobox__empty {
-  padding: 12px;
-  text-align: center;
-  color: var(--ii-on-surface-variant);
-  font-size: var(--ii-font-sm);
-}
-`;
+export { COMBOBOX_CSS } from "./components/interactive/Combobox.tsx";
 
 /** CSS for checkbox */
-export const CHECKBOX_CSS = `/* --- Checkbox --- */
-.ii-checkbox { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
-.ii-checkbox--disabled { cursor: not-allowed; opacity: 0.38; }
-.ii-checkbox__control {
-  position: relative; display: inline-flex; align-items: center; justify-content: center;
-  width: 18px; height: 18px; border: 2px solid var(--ii-on-surface-variant);
-  border-radius: 4px; background: transparent; color: transparent; flex-shrink: 0;
-  transition: all var(--ii-transition);
-}
-.ii-checkbox__control--checked, .ii-checkbox__control--indeterminate {
-  background: var(--ii-primary); border-color: var(--ii-primary); color: var(--ii-on-primary);
-}
-.ii-checkbox__control:hover { border-color: var(--ii-on-surface); }
-.ii-checkbox__indicator { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; font-size: 0.7rem; }
-.ii-checkbox__label { font-size: var(--ii-font-base); color: var(--ii-on-surface); }
-.ii-checkbox__input { position: absolute; opacity: 0; width: 0; height: 0; }
-`;
+export { CHECKBOX_CSS } from "./components/interactive/Checkbox.tsx";
 
 /** CSS for radio-group */
 export const RADIO_GROUP_CSS = `/* --- Radio Group --- */
@@ -1679,100 +1536,7 @@ export const PRICING_CARD_CSS = `/* --- PricingCard --- */
 `;
 
 /** CSS for auth-form */
-export const AUTH_FORM_CSS = `/* --- AuthForm --- */
-.ii-auth-form {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: var(--ii-spacing-6);
-}
-.ii-auth-form__title {
-  font-size: var(--ii-font-xl);
-  font-weight: 700;
-  color: var(--ii-on-surface);
-  margin: 0 0 var(--ii-spacing-6);
-  text-align: center;
-}
-.ii-auth-form__providers {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ii-spacing-2);
-  margin-bottom: var(--ii-spacing-4);
-}
-.ii-auth-form__provider-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--ii-spacing-2);
-  padding: 10px 16px;
-  background: var(--ii-surface);
-  border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md);
-  font-family: inherit;
-  font-size: var(--ii-font-base);
-  color: var(--ii-on-surface);
-  cursor: pointer;
-  transition: background var(--ii-transition), border-color var(--ii-transition);
-}
-.ii-auth-form__provider-btn:hover {
-  background: var(--ii-surface-container);
-  border-color: var(--ii-outline);
-}
-.ii-auth-form__provider-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.ii-auth-form__divider {
-  display: flex;
-  align-items: center;
-  gap: var(--ii-spacing-3);
-  margin: var(--ii-spacing-3) 0;
-  color: var(--ii-on-surface-variant);
-  font-size: var(--ii-font-sm);
-}
-.ii-auth-form__divider::before,
-.ii-auth-form__divider::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--ii-outline-variant);
-}
-.ii-auth-form form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ii-spacing-4);
-}
-.ii-auth-form__error {
-  padding: var(--ii-spacing-3);
-  background: color-mix(in srgb, var(--ii-error) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--ii-error) 30%, transparent);
-  border-radius: var(--ii-shape-sm);
-  color: var(--ii-error);
-  font-size: var(--ii-font-sm);
-}
-.ii-auth-form__submit {
-  width: 100%;
-  margin-top: var(--ii-spacing-2);
-}
-.ii-auth-form__switch {
-  text-align: center;
-  margin-top: var(--ii-spacing-4);
-  font-size: var(--ii-font-sm);
-  color: var(--ii-on-surface-variant);
-}
-.ii-auth-form__switch-btn {
-  background: none;
-  border: none;
-  color: var(--ii-primary);
-  font-weight: 600;
-  cursor: pointer;
-  font-size: inherit;
-  font-family: inherit;
-  padding: 0;
-}
-.ii-auth-form__switch-btn:hover {
-  text-decoration: underline;
-}
-`;
+export { AUTH_FORM_CSS } from "./components/interactive/AuthForm.tsx";
 
 /** CSS for settings-section */
 export const SETTINGS_SECTION_CSS = `/* --- SettingsSection --- */

@@ -2,8 +2,26 @@
  * Checkbox component
  */
 import { useState } from "hono/jsx";
-import { CHECKBOX_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+
+/** @internal CSS for Checkbox — co-located for self-containment. */
+export const CHECKBOX_CSS = `/* --- Checkbox --- */
+.ii-checkbox { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+.ii-checkbox--disabled { cursor: not-allowed; opacity: 0.38; }
+.ii-checkbox__control {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border: 2px solid var(--ii-on-surface-variant);
+  border-radius: 4px; background: transparent; color: transparent; flex-shrink: 0;
+  transition: all var(--ii-transition);
+}
+.ii-checkbox__control--checked, .ii-checkbox__control--indeterminate {
+  background: var(--ii-primary); border-color: var(--ii-primary); color: var(--ii-on-primary);
+}
+.ii-checkbox__control:hover { border-color: var(--ii-on-surface); }
+.ii-checkbox__indicator { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; font-size: 0.7rem; }
+.ii-checkbox__label { font-size: var(--ii-font-base); color: var(--ii-on-surface); }
+.ii-checkbox__input { position: absolute; opacity: 0; width: 0; height: 0; }
+`;
 
 /** Props for the Checkbox component. */
 export interface CheckboxProps {
