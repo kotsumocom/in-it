@@ -23,11 +23,31 @@ bunx jsr:@kotsumo/create-in-it my-saas
 
 - **Landing page** — hero, features, pricing, CTA
 - **Admin dashboard** — charts, tables, sidebar navigation
-- **Auth pages** — login, signup
+- **Auth pages** — login, signup with localized UI
 - **Blog** — headless CMS integration (Sanity/Contentful)
 - **Docs page** — markdown-based documentation
 - **API server** — Hono with security middleware
 - **50+ components** — buttons, cards, dialogs, tables, and more
+- **`in-it.config.ts`** — centralized project configuration
+
+## Configuration
+
+After scaffolding, customize your project in `in-it.config.ts`:
+
+```ts
+import { defineConfig } from "@kotsumo/in-it/config";
+
+export default defineConfig({
+  site: { name: "My SaaS", lang: "ja" },
+  theme: { primary: "#ff5722" },
+  locale: "ja",  // Japanese UI + CJK typography
+  overrides: {
+    Button: "./client/overrides/Button.tsx",
+  },
+});
+```
+
+Run `deno task gen` to apply changes. `deno task dev` runs it automatically.
 
 ## Build tool selection
 

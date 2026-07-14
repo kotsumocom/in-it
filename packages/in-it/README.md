@@ -58,6 +58,32 @@ function App() {
 }
 ```
 
+### Project Configuration
+
+```ts
+// in-it.config.ts
+import { defineConfig } from "@kotsumo/in-it/config";
+
+export default defineConfig({
+  site: { name: "My SaaS", lang: "ja" },
+  theme: { primary: "#6750a4" },  // HCT color scheme auto-generated
+  icons: "outlined",               // or "filled"
+  locale: "ja",                    // Japanese UI + CJK typography
+  overrides: {
+    Button: "./client/overrides/Button.tsx",
+  },
+});
+```
+
+Run `deno task gen` to generate `components.ts`, `theme.css`, and `locale-init.ts`.
+
+### Japanese UI (`locale: "ja"`)
+
+- All component strings in Japanese (aria-labels, form labels, messages)
+- Noto Sans JP auto-loaded from Google Fonts
+- Font stack: `Inter, Noto Sans JP, system-ui, sans-serif`
+- Body font size: 16px / Line height: 1.7 (CJK optimized)
+
 ### ARIA Helpers
 
 ```ts
