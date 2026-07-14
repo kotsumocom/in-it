@@ -1,4 +1,5 @@
 /**
+ * @module icons/paths
  * Icon SVG path data derived from Tabler Icons (https://tabler.io/icons)
  * License: MIT — Copyright (c) 2020-2026 Paweł Kuna
  *

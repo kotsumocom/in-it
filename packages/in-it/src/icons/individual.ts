@@ -1,4 +1,5 @@
 /**
+ * @module icons/individual
  * Tree-shakeable individual icon exports from Tabler Icons.
  * Import only the icons you need:
  *

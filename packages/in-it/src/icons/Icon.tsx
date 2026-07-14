@@ -1,4 +1,5 @@
 /**
+ * @module icons
  * Icon component — renders Tabler-derived SVG icons inline.
  *
  * Usage:

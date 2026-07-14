@@ -1,33 +1,27 @@
-<p align="center">
-  <img src="./assets/logo.svg" alt="in-it" width="400" />
-</p>
+# in-it
 
-<p align="center">
-  <strong>Everything is in it.</strong> — Hono-only dependency SaaS starter framework
-</p>
+![in-it](./assets/logo.svg)
 
-<p align="center">
-  <a href="https://jsr.io/@kotsumo/in-it"><img src="https://jsr.io/badges/@kotsumo/in-it" alt="JSR" /></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License" /></a>
-  <a href="https://github.com/sponsors/kotsumocom"><img src="https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?style=flat" alt="Sponsor" /></a>
-</p>
+**Everything is in it.** — Hono-only dependency SaaS starter framework
 
-<p align="center">
-  🌐 <a href="https://in-it.dev">Website</a> · 📖 <a href="https://in-it.dev/docs">Docs</a> · 🎨 <a href="https://in-it.dev/colors">Color Preview</a>
-</p>
+[![JSR](https://jsr.io/badges/@kotsumo/in-it)](https://jsr.io/@kotsumo/in-it)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?style=flat)](https://github.com/sponsors/kotsumocom)
+
+🌐 [Website](https://in-it.dev) · 📖 [Docs](https://in-it.dev/docs) · 🎨 [Color Preview](https://in-it.dev/colors)
 
 ## 🚀 Quick Start
 
 ```bash
+# New project
+deno run -A jsr:@kotsumo/create-in-it my-saas
+
+# Or add to existing project
 deno add @kotsumo/in-it
 ```
 
 ```typescript
 import { Button, Card, ThemeToggle, Dialog } from "@kotsumo/in-it";
-```
-
-```html
-<link rel="stylesheet" href="@kotsumo/in-it/src/css/main.css" />
 ```
 
 ## ⚙️ Project Configuration (`in-it.config.ts`)
@@ -187,19 +181,11 @@ All classes use the `ii-` prefix with BEM convention:
 .ii-button--filled  /* Modifier */
 ```
 
-## 📄 License
-
-[MIT](./LICENSE)
-
-## Icons
+## 📎 Icons
 
 Built-in icons are derived from [Tabler Icons](https://tabler.io/icons) (MIT License).
 SVG path data is bundled directly — no runtime dependency on the Tabler package.
 Tree-shakeable individual imports are available for bundle-size-conscious users.
-
-We're exploring the development of a custom icon set for in-it.
-If you're a designer interested in contributing, please reach out via
-[GitHub Discussions](https://github.com/kotsumocom/in-it/discussions).
 
 ## ❤️ Sponsors
 
@@ -208,3 +194,7 @@ We welcome sponsors to support the development of in-it!
 [See our sponsors →](./SPONSORS.md)
 
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?style=for-the-badge)](https://github.com/sponsors/kotsumocom)
+
+## 📄 License
+
+[MIT](./LICENSE)
