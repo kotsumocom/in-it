@@ -3,6 +3,8 @@
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
 import { Icon } from "../../icons/Icon.tsx";
+import { THEME_TOGGLE_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** Available theme modes: light, dark, or system preference. */
 export type Theme = "light" | "dark" | "system";
@@ -27,6 +29,7 @@ function applyTheme(theme: Theme) {
 
 /** Light/dark/system theme toggle with persistence via data-theme attribute. */
 export function ThemeToggle({ defaultTheme = "system", compact = false, onChange }: ThemeToggleProps): any {
+  injectCSS("ii-theme-toggle", THEME_TOGGLE_CSS);
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 
   useEffect(() => {

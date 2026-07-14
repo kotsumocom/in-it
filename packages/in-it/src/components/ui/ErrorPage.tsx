@@ -7,6 +7,8 @@
  */
 
 /** Props for ErrorPage. */
+import { ERROR_PAGE_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 export interface ErrorPageProps {
   /** HTTP status code to display. */
   code: number;
@@ -31,6 +33,7 @@ export function ErrorPage({
   onAction,
   class: cls,
 }: ErrorPageProps): any {
+  injectCSS("ii-error-page", ERROR_PAGE_CSS);
   return (
     <div class={`ii-error-page${cls ? ` ${cls}` : ""}`}>
       <div class="ii-error-page__inner">

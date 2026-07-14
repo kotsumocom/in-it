@@ -3,6 +3,8 @@
  * WAI-ARIA Menu Button pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
+import { MENU_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** Definition of a single menu item with optional icon and separator. */
 export interface MenuItemDef {
@@ -23,6 +25,7 @@ export interface MenuProps {
 
 /** Dropdown menu button with keyboard navigation and focus management. */
 export function Menu({ items, onSelect, trigger, align = "left" }: MenuProps): any {
+  injectCSS("ii-menu", MENU_CSS);
   const [open, setOpen] = useState(false);
   const [focusedIdx, setFocusedIdx] = useState(-1);
   const menuRef = useRef<HTMLDivElement>(null);

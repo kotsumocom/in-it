@@ -9,6 +9,8 @@
  * />
  */
 import { useState } from "hono/jsx";
+import { CHART_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 export interface BarChartProps {
   data: number[];
@@ -27,6 +29,7 @@ export function BarChart({
   showValues = true,
   class: cls,
 }: BarChartProps): any {
+  injectCSS("ii-chart", CHART_CSS);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; value: string } | null>(null);
   const max = Math.max(...data, 1);
   const padding = { top: 20, right: 16, bottom: labels ? 28 : 8, left: 16 };

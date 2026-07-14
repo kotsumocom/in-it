@@ -4,6 +4,8 @@
  */
 import { useState, useCallback } from "hono/jsx";
 import { ThemeToggle } from "../interactive/ThemeToggle.tsx";
+import { ADMIN_SHELL_CSS, ADMIN_SHELL_MOBILE_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** A navigation item for the admin sidebar rail. */
 export interface NavItem {
@@ -29,6 +31,8 @@ export function AdminShell({
   onNavigate,
   children,
 }: AdminShellProps): any {
+  injectCSS("ii-admin-shell", ADMIN_SHELL_CSS);
+  injectCSS("ii-admin-shell-mobile", ADMIN_SHELL_MOBILE_CSS);
   const [railExpanded, setRailExpanded] = useState(false);
 
   const handleNavClick = useCallback(

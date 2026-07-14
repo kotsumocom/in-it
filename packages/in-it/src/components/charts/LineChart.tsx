@@ -10,6 +10,8 @@
  * />
  */
 import { useState } from "hono/jsx";
+import { CHART_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 export interface LineChartProps {
   data: number[];
@@ -32,6 +34,7 @@ export function LineChart({
   showGrid = true,
   class: cls,
 }: LineChartProps): any {
+  injectCSS("ii-chart", CHART_CSS);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; value: string } | null>(null);
 
   const vw = 400;

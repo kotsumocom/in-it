@@ -3,6 +3,8 @@
  */
 
 /** A single documentation sidebar link. */
+import { DOCS_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 export interface DocsSidebarItem {
   href: string;
   label: string;
@@ -35,6 +37,7 @@ export interface DocsShellProps {
 
 /** Documentation site layout with sidebar navigation, content area, and table of contents. */
 export function DocsShell({ brand, brandHref = "/", navLinks = [], sidebarGroups, tocItems = [], children, themeToggle }: DocsShellProps): any {
+  injectCSS("ii-docs", DOCS_CSS);
   return (
     <div class="ii-docs-shell">
       <header class="ii-docs-header">

@@ -8,6 +8,8 @@
  */
 
 /** Props for SettingsSection. */
+import { SETTINGS_SECTION_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 export interface SettingsSectionProps {
   /** Section title. */
   title: string;
@@ -26,6 +28,7 @@ export function SettingsSection({
   children,
   class: cls,
 }: SettingsSectionProps): any {
+  injectCSS("ii-settings", SETTINGS_SECTION_CSS);
   return (
     <section class={`ii-settings-section${cls ? ` ${cls}` : ""}`}>
       <div class="ii-settings-section__header">

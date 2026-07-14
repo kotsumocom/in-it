@@ -2,6 +2,8 @@
  * @property variant - Visual style: success, error, warning, info, or neutral (default).
  * @property children - Badge content.
  */
+import { BADGE_CSS, CARD_CSS, BUTTON_CSS, STAT_CARD_CSS, DATA_TABLE_CSS, INPUT_CSS, AVATAR_CSS, CHIP_CSS, SKELETON_CSS, EMPTY_STATE_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 export interface BadgeProps {
   variant?: "success" | "error" | "warning" | "info" | "neutral";
   children: any;
@@ -9,6 +11,7 @@ export interface BadgeProps {
 
 /** Small inline status label rendered as a `<span>` with color-coded variants. */
 export function Badge({ variant = "neutral", children }: BadgeProps): any {
+  injectCSS("ii-badge", BADGE_CSS);
   return (
     <span class={`ii-badge ii-badge--${variant}`}>
       {children}
@@ -28,6 +31,7 @@ export interface CardProps {
 
 /** Surface container for grouping related content. Supports filled (default) and outlined styles. */
 export function Card({ outlined = false, children, class: cls }: CardProps): any {
+  injectCSS("ii-card", CARD_CSS);
   return (
     <div class={`ii-card${outlined ? " ii-card--outlined" : ""}${cls ? ` ${cls}` : ""}`}>
       {children}
@@ -65,6 +69,7 @@ export function Button({
   children,
   class: cls,
 }: ButtonProps): any {
+  injectCSS("ii-btn", BUTTON_CSS);
   const mods = [
     `ii-btn--${variant}`,
     `ii-btn--${size}`,
@@ -102,6 +107,7 @@ export interface StatCardProps {
 
 /** Dashboard metric card displaying a label, value, and optional up/down trend indicator. */
 export function StatCard({ label, value, trend, trendUp }: StatCardProps): any {
+  injectCSS("ii-stat", STAT_CARD_CSS);
   return (
     <div class="ii-stat-card">
       <div class="ii-stat-card__label">{label}</div>
@@ -142,6 +148,7 @@ export interface DataTableProps<T> {
 
 /** Responsive HTML table with configurable columns, custom cell renderers, and column alignment. */
 export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>): any {
+  injectCSS("ii-table", DATA_TABLE_CSS);
   const getKey = rowKey ?? ((_row: T, i: number) => String(i));
   return (
     <div class="ii-data-table-wrap">
@@ -189,6 +196,7 @@ export interface InputProps {
 
 /** Text input field with optional label, helper text, and error state. Error takes priority over helper. */
 export function Input({ label, placeholder, value, type = "text", helper, error, disabled, onInput }: InputProps): any {
+  injectCSS("ii-input", INPUT_CSS);
   return (
     <div class="ii-input">
       {label && <label class="ii-input__label">{label}</label>}
@@ -219,6 +227,7 @@ export interface AvatarProps {
 
 /** Circular avatar displaying a user image or auto-generated initials from the user's name. */
 export function Avatar({ name, src, size = "md" }: AvatarProps): any {
+  injectCSS("ii-avatar", AVATAR_CSS);
   const initials = name?.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() ?? "?";
   return (
     <div class={`ii-avatar ii-avatar--${size}`}>
@@ -239,6 +248,7 @@ export interface ChipProps {
 
 /** Compact label element for tags, filters, or selections. Supports an optional dismiss button. */
 export function Chip({ variant = "default", onClose, children }: ChipProps): any {
+  injectCSS("ii-chip", CHIP_CSS);
   return (
     <span class={`ii-chip${variant !== "default" ? ` ii-chip--${variant}` : ""}`}>
       {children}
@@ -264,6 +274,7 @@ export interface SkeletonProps {
 
 /** Animated placeholder block indicating content is loading. Supports text-line and circle shapes. */
 export function Skeleton({ width = "100%", height = "1em", circle = false }: SkeletonProps): any {
+  injectCSS("ii-skeleton", SKELETON_CSS);
   return (
     <div
       class={`ii-skeleton${circle ? " ii-skeleton--circle" : " ii-skeleton--text"}`}
@@ -287,6 +298,7 @@ export interface EmptyStateProps {
 
 /** Centered placeholder for empty lists or search results, with icon, title, description, and optional actions. */
 export function EmptyState({ icon = "", title, description, children }: EmptyStateProps): any {
+  injectCSS("ii-empty", EMPTY_STATE_CSS);
   return (
     <div class="ii-empty">
       <div class="ii-empty__icon">{icon}</div>

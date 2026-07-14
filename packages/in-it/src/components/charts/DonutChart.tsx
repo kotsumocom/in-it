@@ -13,6 +13,8 @@
  * />
  */
 
+import { CHART_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 export interface DonutSegment {
   label: string;
   value: number;
@@ -49,6 +51,7 @@ export function DonutChart({
   showLegend = true,
   class: cls,
 }: DonutChartProps): any {
+  injectCSS("ii-chart", CHART_CSS);
   const total = data.reduce((s, d) => s + d.value, 0) || 1;
   const r = (size - thickness) / 2;
   const circumference = 2 * Math.PI * r;

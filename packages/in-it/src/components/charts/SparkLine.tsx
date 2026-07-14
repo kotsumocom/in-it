@@ -5,6 +5,8 @@
  * <SparkLine data={[10, 25, 18, 32, 28, 40]} width={80} height={24} />
  */
 
+import { CHART_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 export interface SparkLineProps {
   data: number[];
   width?: number;
@@ -22,6 +24,7 @@ export function SparkLine({
   variant = "default",
   class: cls,
 }: SparkLineProps): any {
+  injectCSS("ii-chart", CHART_CSS);
   if (data.length < 2) return null;
 
   const max = Math.max(...data);

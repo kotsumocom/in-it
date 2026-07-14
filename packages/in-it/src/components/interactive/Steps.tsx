@@ -3,6 +3,8 @@
  */
 
 /** A single step with label and optional description. */
+import { STEPS_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 export interface StepItem {
   label: string;
   description?: string;
@@ -17,6 +19,7 @@ export interface StepsProps {
 
 /** Step indicator showing progress through a multi-step process. */
 export function Steps({ items, current = 0, orientation = "horizontal" }: StepsProps): any {
+  injectCSS("ii-steps", STEPS_CSS);
   return (
     <div class={`ii-steps ii-steps--${orientation}`} role="list">
       {items.map((item, i) => {

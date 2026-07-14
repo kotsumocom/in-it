@@ -3,6 +3,8 @@
  * WAI-ARIA Dialog (Modal) pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
+import { DIALOG_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** Props for the Dialog component. */
 export interface DialogProps {
@@ -23,6 +25,7 @@ export function Dialog({
   closeOnBackdrop = true,
   children,
 }: DialogProps): any {
+  injectCSS("ii-dialog", DIALOG_CSS);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

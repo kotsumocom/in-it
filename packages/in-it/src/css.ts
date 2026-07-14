@@ -1,36 +1,16 @@
 /**
- * @module styles
- * Auto-generated from CSS component files.
+ * @module css
+ * Auto-generated per-component CSS strings.
  * DO NOT EDIT — run `deno task build:styles` to regenerate.
  *
- * Provides runtime CSS injection so in-it works without
- * any CSS file imports or build tool configuration.
- *
- * @example
- * ```tsx
- * import { injectStyles } from "@kotsumo/in-it/styles";
- *
- * // Call once at app startup
- * injectStyles();
- * ```
- *
- * Or use the component version:
- * ```tsx
- * import { StyleSheet } from "@kotsumo/in-it/styles";
- *
- * function App() {
- *   return (
- *     <>
- *       <StyleSheet />
- *       <MyApp />
- *     </>
- *   );
- * }
- * ```
+ * Each component imports its CSS constant and calls injectCSS().
+ * Base CSS (variables, reset, animations) is auto-injected.
  */
 
-/** All in-it CSS as a string */
-export const CSS = `/* --- Variables --- */
+import { setBaseCSS } from "./inject.ts";
+
+/** Base CSS: variables + reset + icon + animations */
+const BASE_CSS = `/* --- Variables --- */
 :root {
   --ii-primary: #6750a4;
   --ii-primary-container: #eaddff;
@@ -180,8 +160,13 @@ body {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+`;
 
-/* --- Button (MD3) --- */
+// Register base CSS for auto-injection
+setBaseCSS(BASE_CSS);
+
+/** CSS for button */
+export const BUTTON_CSS = `/* --- Button (MD3) --- */
 .ii-btn {
   display: inline-flex;
   align-items: center;
@@ -281,8 +266,10 @@ body {
   content: "";
   position: absolute;
   inset: -8px 0;
-}
-/* --- Badge --- */
+}`;
+
+/** CSS for badge */
+export const BADGE_CSS = `/* --- Badge --- */
 .ii-badge {
   display: inline-flex;
   align-items: center;
@@ -297,8 +284,10 @@ body {
 .ii-badge--warning { background: color-mix(in srgb, var(--ii-warning) 12%, transparent); color: var(--ii-warning); }
 .ii-badge--info { background: color-mix(in srgb, var(--ii-info) 12%, transparent); color: var(--ii-info); }
 .ii-badge--neutral { background: var(--ii-surface-container-high); color: var(--ii-on-surface-variant); }
+`;
 
-/* --- Card --- */
+/** CSS for card */
+export const CARD_CSS = `/* --- Card --- */
 .ii-card {
   background: var(--ii-surface);
   border-radius: var(--ii-shape-md);
@@ -307,8 +296,10 @@ body {
 .ii-card--outlined {
   border: 1px solid var(--ii-outline-variant);
 }
+`;
 
-/* --- Stat Card --- */
+/** CSS for stat-card */
+export const STAT_CARD_CSS = `/* --- Stat Card --- */
 .ii-stat-card {
   background: var(--ii-surface);
   border: 1px solid var(--ii-outline-variant);
@@ -337,8 +328,10 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--ii-spacing-4);
 }
+`;
 
-/* --- Switch --- */
+/** CSS for switch */
+export const SWITCH_CSS = `/* --- Switch --- */
 .ii-switch {
   display: flex;
   align-items: center;
@@ -391,8 +384,10 @@ body {
 .ii-switch__track--checked .ii-switch__thumb {
   transform: translateX(20px);
 }
+`;
 
-/* --- Data Table --- */
+/** CSS for data-table */
+export const DATA_TABLE_CSS = `/* --- Data Table --- */
 .ii-data-table-wrap {
   overflow-x: auto;
 }
@@ -415,8 +410,10 @@ body {
 }
 .ii-data-table__th--right, .ii-data-table__td--right { text-align: right; }
 .ii-data-table__th--center, .ii-data-table__td--center { text-align: center; }
+`;
 
-/* --- Section --- */
+/** CSS for section */
+export const SECTION_CSS = `/* --- Section --- */
 .ii-section {
   margin-top: var(--ii-spacing-6);
 }
@@ -425,8 +422,10 @@ body {
   font-weight: 600;
   margin-bottom: var(--ii-spacing-4);
 }
+`;
 
-/* --- Dialog --- */
+/** CSS for dialog */
+export const DIALOG_CSS = `/* --- Dialog --- */
 .ii-dialog__backdrop {
   position: fixed;
   inset: 0;
@@ -482,8 +481,10 @@ body {
   from { transform: translateY(16px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+`;
 
-/* --- Tabs --- */
+/** CSS for tabs */
+export const TABS_CSS = `/* --- Tabs --- */
 .ii-tabs { }
 .ii-tabs__list {
   display: flex;
@@ -519,8 +520,10 @@ body {
 .ii-tabs__panels { padding-top: var(--ii-spacing-5); }
 .ii-tabs__panel { }
 .ii-tabs__panel[hidden] { display: none; }
+`;
 
-/* --- Menu --- */
+/** CSS for menu */
+export const MENU_CSS = `/* --- Menu --- */
 .ii-menu {
   position: relative;
   display: inline-block;
@@ -579,8 +582,10 @@ body {
   background: var(--ii-outline-variant);
   margin: 4px 0;
 }
+`;
 
-/* --- Toast --- */
+/** CSS for toast */
+export const TOAST_CSS = `/* --- Toast --- */
 .ii-toast-container {
   position: fixed;
   z-index: 200;
@@ -619,8 +624,10 @@ body {
   padding: 2px;
   font-size: 0.85rem;
 }
+`;
 
-/* --- Select --- */
+/** CSS for select */
+export const SELECT_CSS = `/* --- Select --- */
 .ii-select {
   display: flex;
   flex-direction: column;
@@ -698,8 +705,10 @@ body {
   color: var(--ii-primary);
   font-weight: 600;
 }
+`;
 
-/* --- Accordion --- */
+/** CSS for accordion */
+export const ACCORDION_CSS = `/* --- Accordion --- */
 .ii-accordion {
   display: flex;
   flex-direction: column;
@@ -758,8 +767,10 @@ body {
   font-size: var(--ii-font-base);
   line-height: 1.6;
 }
+`;
 
-/* --- Popover --- */
+/** CSS for popover */
+export const POPOVER_CSS = `/* --- Popover --- */
 .ii-popover {
   position: relative;
   display: inline-block;
@@ -787,8 +798,10 @@ body {
 .ii-popover__content--left { left: 0; }
 .ii-popover__content--right { right: 0; }
 .ii-popover__content--center { left: 50%; transform: translateX(-50%); }
+`;
 
-/* --- Input / TextField --- */
+/** CSS for input */
+export const INPUT_CSS = `/* --- Input / TextField --- */
 .ii-input {
   display: flex;
   flex-direction: column;
@@ -875,8 +888,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   font-weight: 500;
   color: var(--ii-on-surface-variant);
 }
+`;
 
-/* --- Chip / Tag --- */
+/** CSS for chip */
+export const CHIP_CSS = `/* --- Chip / Tag --- */
 .ii-chip {
   display: inline-flex;
   align-items: center;
@@ -903,8 +918,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   padding: 0;
   margin-left: 2px;
 }
+`;
 
-/* --- Avatar --- */
+/** CSS for avatar */
+export const AVATAR_CSS = `/* --- Avatar --- */
 .ii-avatar {
   display: inline-flex;
   align-items: center;
@@ -919,8 +936,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-avatar--md { width: 40px; height: 40px; font-size: 1rem; }
 .ii-avatar--lg { width: 56px; height: 56px; font-size: 1.25rem; }
 .ii-avatar img { width: 100%; height: 100%; object-fit: cover; }
+`;
 
-/* --- Skeleton --- */
+/** CSS for skeleton */
+export const SKELETON_CSS = `/* --- Skeleton --- */
 .ii-skeleton {
   background: linear-gradient(90deg, var(--ii-surface-container) 25%, var(--ii-surface-container-high) 50%, var(--ii-surface-container) 75%);
   background-size: 200% 100%;
@@ -933,8 +952,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+`;
 
-/* --- Empty State --- */
+/** CSS for empty-state */
+export const EMPTY_STATE_CSS = `/* --- Empty State --- */
 .ii-empty {
   display: flex;
   flex-direction: column;
@@ -953,8 +974,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   color: var(--ii-on-surface-variant);
   max-width: 360px;
 }
+`;
 
-/* --- Theme Toggle --- */
+/** CSS for theme-toggle */
+export const THEME_TOGGLE_CSS = `/* --- Theme Toggle --- */
 .ii-theme-toggle {
   background: none;
   border: none;
@@ -986,8 +1009,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   background: var(--ii-surface);
   box-shadow: var(--ii-shadow-sm);
 }
+`;
 
-/* --- Combobox --- */
+/** CSS for combobox */
+export const COMBOBOX_CSS = `/* --- Combobox --- */
 .ii-combobox {
   display: flex;
   flex-direction: column;
@@ -1055,8 +1080,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   color: var(--ii-on-surface-variant);
   font-size: var(--ii-font-sm);
 }
+`;
 
-/* --- Checkbox --- */
+/** CSS for checkbox */
+export const CHECKBOX_CSS = `/* --- Checkbox --- */
 .ii-checkbox { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
 .ii-checkbox--disabled { cursor: not-allowed; opacity: 0.38; }
 .ii-checkbox__control {
@@ -1072,8 +1099,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-checkbox__indicator { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; font-size: 0.7rem; }
 .ii-checkbox__label { font-size: var(--ii-font-base); color: var(--ii-on-surface); }
 .ii-checkbox__input { position: absolute; opacity: 0; width: 0; height: 0; }
+`;
 
-/* --- Radio Group --- */
+/** CSS for radio-group */
+export const RADIO_GROUP_CSS = `/* --- Radio Group --- */
 .ii-radio-group { display: flex; flex-direction: column; gap: 8px; }
 .ii-radio-group--horizontal { flex-direction: row; gap: 16px; }
 .ii-radio { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
@@ -1089,8 +1118,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 }
 .ii-radio__control:hover { border-color: var(--ii-on-surface); }
 .ii-radio__label { font-size: var(--ii-font-base); color: var(--ii-on-surface); }
+`;
 
-/* --- Textarea --- */
+/** CSS for textarea */
+export const TEXTAREA_CSS = `/* --- Textarea --- */
 .ii-textarea { display: flex; flex-direction: column; gap: var(--ii-spacing-1); }
 .ii-textarea__label { font-size: var(--ii-font-sm); font-weight: 500; color: var(--ii-on-surface-variant); }
 .ii-textarea__field {
@@ -1102,8 +1133,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-textarea__field:focus { outline: 2px solid var(--ii-primary); outline-offset: 2px; border-color: var(--ii-primary); }
 .ii-textarea__field::placeholder { color: var(--ii-on-surface-variant); }
 .ii-textarea__count { font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); text-align: right; }
+`;
 
-/* --- Slider --- */
+/** CSS for slider */
+export const SLIDER_CSS = `/* --- Slider --- */
 .ii-slider { display: flex; flex-direction: column; gap: 8px; }
 .ii-slider__label { display: flex; justify-content: space-between; font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); }
 .ii-slider__track { position: relative; height: 4px; background: var(--ii-outline-variant); border-radius: 2px; cursor: pointer; }
@@ -1115,8 +1148,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 }
 .ii-slider__thumb:hover { box-shadow: 0 0 0 8px color-mix(in srgb, var(--ii-primary) 12%, transparent); }
 .ii-slider__thumb:active { cursor: grabbing; }
+`;
 
-/* --- Number Input --- */
+/** CSS for number-input */
+export const NUMBER_INPUT_CSS = `/* --- Number Input --- */
 .ii-number-input { display: inline-flex; align-items: center; border: 1px solid var(--ii-outline-variant); border-radius: var(--ii-shape-md); overflow: hidden; }
 .ii-number-input__btn {
   display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;
@@ -1130,16 +1165,20 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   font-family: inherit; font-size: var(--ii-font-base); color: var(--ii-on-surface); padding: 6px 4px;
 }
 .ii-number-input__field:focus { outline: none; }
+`;
 
-/* --- Password Input --- */
+/** CSS for password-input */
+export const PASSWORD_INPUT_CSS = `/* --- Password Input --- */
 .ii-password-input { position: relative; }
 .ii-password-input .ii-input__field { padding-right: 40px; }
 .ii-password-input__toggle {
   position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
   background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--ii-on-surface-variant);
 }
+`;
 
-/* --- Pin Input --- */
+/** CSS for pin-input */
+export const PIN_INPUT_CSS = `/* --- Pin Input --- */
 .ii-pin-input { display: inline-flex; gap: 8px; }
 .ii-pin-input__field {
   width: 42px; height: 48px; text-align: center; font-size: 1.25rem; font-weight: 600;
@@ -1147,8 +1186,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   background: var(--ii-surface); color: var(--ii-on-surface); transition: border-color var(--ii-transition);
 }
 .ii-pin-input__field:focus { outline: 2px solid var(--ii-primary); outline-offset: 2px; border-color: var(--ii-primary); }
+`;
 
-/* --- Tags Input --- */
+/** CSS for tags-input */
+export const TAGS_INPUT_CSS = `/* --- Tags Input --- */
 .ii-tags-input {
   display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 12px; min-height: 42px;
   border: 1px solid var(--ii-outline-variant); border-radius: var(--ii-shape-md);
@@ -1164,8 +1205,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   flex: 1; min-width: 80px; border: none; background: transparent; outline: none;
   font-family: inherit; font-size: var(--ii-font-base); color: var(--ii-on-surface);
 }
+`;
 
-/* --- Toggle --- */
+/** CSS for toggle */
+export const TOGGLE_CSS = `/* --- Toggle --- */
 .ii-toggle {
   display: inline-flex; align-items: center; justify-content: center; padding: 8px 16px;
   border: 1px solid var(--ii-outline-variant); border-radius: var(--ii-shape-md);
@@ -1174,13 +1217,17 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 }
 .ii-toggle:hover { background: var(--ii-surface-container); }
 .ii-toggle--pressed { background: var(--ii-primary-container); color: var(--ii-primary); border-color: var(--ii-primary); }
+`;
 
-/* --- Toggle Group --- */
+/** CSS for toggle-group */
+export const TOGGLE_GROUP_CSS = `/* --- Toggle Group --- */
 .ii-toggle-group { display: inline-flex; border-radius: var(--ii-shape-md); overflow: hidden; border: 1px solid var(--ii-outline-variant); }
 .ii-toggle-group .ii-toggle { border-radius: 0; border: none; border-right: 1px solid var(--ii-outline-variant); }
 .ii-toggle-group .ii-toggle:last-child { border-right: none; }
+`;
 
-/* --- Alert --- */
+/** CSS for alert */
+export const ALERT_CSS = `/* --- Alert --- */
 .ii-alert {
   display: flex; gap: 12px; padding: 16px; border-radius: var(--ii-shape-md);
   border: 1px solid var(--ii-outline-variant); background: var(--ii-surface);
@@ -1194,8 +1241,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-alert__title { font-weight: 600; margin-bottom: 4px; }
 .ii-alert__desc { font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); }
 .ii-alert__close { background: none; border: none; cursor: pointer; color: var(--ii-on-surface-variant); font-size: 1rem; padding: 0; }
+`;
 
-/* --- Drawer --- */
+/** CSS for drawer */
+export const DRAWER_CSS = `/* --- Drawer --- */
 .ii-drawer-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100;
   animation: ii-fade-in 200ms ease;
@@ -1217,8 +1266,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 @keyframes ii-slide-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
 @keyframes ii-slide-in-top { from { transform: translateY(-100%); } to { transform: translateY(0); } }
 @keyframes ii-slide-in-bottom { from { transform: translateY(100%); } to { transform: translateY(0); } }
+`;
 
-/* --- Progress Bar --- */
+/** CSS for progress */
+export const PROGRESS_CSS = `/* --- Progress Bar --- */
 .ii-progress { display: flex; flex-direction: column; gap: 6px; }
 .ii-progress__label { display: flex; justify-content: space-between; font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); }
 .ii-progress__track { height: 4px; background: var(--ii-outline-variant); border-radius: 2px; overflow: hidden; }
@@ -1239,8 +1290,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   font-size: var(--ii-font-sm); font-weight: 600; color: var(--ii-on-surface);
 }
+`;
 
-/* --- Pagination --- */
+/** CSS for pagination */
+export const PAGINATION_CSS = `/* --- Pagination --- */
 .ii-pagination { display: flex; align-items: center; gap: 4px; }
 .ii-pagination__btn {
   display: flex; align-items: center; justify-content: center;
@@ -1253,8 +1306,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-pagination__btn--active { background: var(--ii-primary); color: var(--ii-on-primary); }
 .ii-pagination__btn:disabled { opacity: 0.38; cursor: not-allowed; }
 .ii-pagination__ellipsis { padding: 0 4px; color: var(--ii-on-surface-variant); }
+`;
 
-/* --- Steps --- */
+/** CSS for steps */
+export const STEPS_CSS = `/* --- Steps --- */
 .ii-steps { display: flex; gap: 4px; }
 .ii-steps--vertical { flex-direction: column; }
 .ii-step { display: flex; align-items: center; gap: 8px; flex: 1; }
@@ -1271,8 +1326,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-step__separator { flex: 1; height: 2px; background: var(--ii-outline-variant); margin: 0 8px; }
 .ii-step--completed + .ii-step .ii-step__separator,
 .ii-step--active + .ii-step .ii-step__separator { background: var(--ii-primary); }
+`;
 
-/* --- Segmented Control --- */
+/** CSS for segmented-control */
+export const SEGMENTED_CONTROL_CSS = `/* --- Segmented Control --- */
 .ii-segmented {
   display: inline-flex; padding: 2px; background: var(--ii-surface-container);
   border-radius: var(--ii-shape-md); gap: 2px;
@@ -1284,8 +1341,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 }
 .ii-segmented__btn:hover { color: var(--ii-on-surface); }
 .ii-segmented__btn--active { background: var(--ii-surface); color: var(--ii-on-surface); box-shadow: var(--ii-shadow-sm); }
+`;
 
-/* --- Collapsible --- */
+/** CSS for collapsible */
+export const COLLAPSIBLE_CSS = `/* --- Collapsible --- */
 .ii-collapsible {}
 .ii-collapsible__trigger {
   display: flex; align-items: center; justify-content: space-between; width: 100%;
@@ -1296,8 +1355,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-collapsible__chevron--open { transform: rotate(180deg); }
 .ii-collapsible__content { overflow: hidden; transition: max-height 200ms ease; }
 .ii-collapsible__content[hidden] { display: none; }
+`;
 
-/* --- HoverCard --- */
+/** CSS for hover-card */
+export const HOVER_CARD_CSS = `/* --- HoverCard --- */
 .ii-hover-card { position: relative; display: inline-block; }
 .ii-hover-card__content {
   position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
@@ -1305,8 +1366,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   border-radius: var(--ii-shape-lg); box-shadow: var(--ii-shadow-lg); padding: 16px;
   min-width: 280px; z-index: 50; animation: ii-fade-in 100ms ease;
 }
+`;
 
-/* --- Clipboard --- */
+/** CSS for clipboard */
+export const CLIPBOARD_CSS = `/* --- Clipboard --- */
 .ii-clipboard { display: inline-flex; align-items: center; gap: 8px; }
 .ii-clipboard__text {
   padding: 8px 12px; background: var(--ii-surface-container); border-radius: var(--ii-shape-sm);
@@ -1319,15 +1382,19 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   background: var(--ii-surface); cursor: pointer; transition: all var(--ii-transition);
 }
 .ii-clipboard__btn:hover { background: var(--ii-surface-container-high); }
+`;
 
-/* --- Breadcrumb --- */
+/** CSS for breadcrumb */
+export const BREADCRUMB_CSS = `/* --- Breadcrumb --- */
 .ii-breadcrumb { display: flex; align-items: center; gap: 8px; font-size: var(--ii-font-sm); }
 .ii-breadcrumb__item { color: var(--ii-on-surface-variant); text-decoration: none; }
 .ii-breadcrumb__item:hover { color: var(--ii-primary); }
 .ii-breadcrumb__item--current { color: var(--ii-on-surface); font-weight: 500; }
 .ii-breadcrumb__sep { color: var(--ii-outline); font-size: 0.7rem; }
+`;
 
-/* --- File Upload --- */
+/** CSS for file-upload */
+export const FILE_UPLOAD_CSS = `/* --- File Upload --- */
 .ii-file-upload {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 40px 20px; border: 2px dashed var(--ii-outline-variant); border-radius: var(--ii-shape-lg);
@@ -1346,8 +1413,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   font-size: var(--ii-font-sm);
 }
 .ii-file-upload__file-remove { background: none; border: none; cursor: pointer; color: var(--ii-error); }
+`;
 
-/* --- Editable --- */
+/** CSS for editable */
+export const EDITABLE_CSS = `/* --- Editable --- */
 .ii-editable { display: inline-flex; align-items: center; gap: 8px; }
 .ii-editable__preview {
   padding: 4px 8px; border-radius: var(--ii-shape-sm); cursor: pointer;
@@ -1365,8 +1434,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   border: 1px solid var(--ii-outline-variant); border-radius: var(--ii-shape-sm);
   background: var(--ii-surface); cursor: pointer; font-size: 0.75rem;
 }
+`;
 
-/* --- Rating Group --- */
+/** CSS for rating-group */
+export const RATING_GROUP_CSS = `/* --- Rating Group --- */
 .ii-rating { display: inline-flex; gap: 4px; }
 .ii-rating__star {
   font-size: 1.5rem; cursor: pointer; color: var(--ii-outline-variant);
@@ -1374,8 +1445,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 }
 .ii-rating__star--filled { color: #f59e0b; }
 .ii-rating__star:hover { transform: scale(1.2); }
+`;
 
-/* --- NavigationMenu --- */
+/** CSS for navigation-menu */
+export const NAVIGATION_MENU_CSS = `/* --- NavigationMenu --- */
 .ii-nav-menu { display: flex; align-items: center; gap: 4px; }
 .ii-nav-menu__item {
   padding: 8px 16px; border-radius: var(--ii-shape-sm); background: none; border: none;
@@ -1395,8 +1468,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   transition: background var(--ii-transition);
 }
 .ii-nav-menu__link:hover { background: var(--ii-surface-container-high); }
+`;
 
-/* --- Listbox --- */
+/** CSS for listbox */
+export const LISTBOX_CSS = `/* --- Listbox --- */
 .ii-listbox {
   border: 1px solid var(--ii-outline-variant); border-radius: var(--ii-shape-md);
   background: var(--ii-surface); max-height: 300px; overflow-y: auto; padding: 4px;
@@ -1409,8 +1484,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-listbox__option--selected { background: color-mix(in srgb, var(--ii-primary) 12%, var(--ii-surface)); color: var(--ii-primary); font-weight: 500; }
 .ii-listbox__option--disabled { opacity: 0.38; cursor: not-allowed; }
 .ii-listbox__group-label { padding: 8px 12px; font-size: var(--ii-font-sm); font-weight: 600; color: var(--ii-on-surface-variant); }
+`;
 
-/* --- Carousel --- */
+/** CSS for carousel */
+export const CAROUSEL_CSS = `/* --- Carousel --- */
 .ii-carousel { position: relative; overflow: hidden; border-radius: var(--ii-shape-lg); }
 .ii-carousel__track { display: flex; transition: transform 300ms ease; }
 .ii-carousel__slide { min-width: 100%; flex-shrink: 0; }
@@ -1430,14 +1507,18 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   border: none; cursor: pointer; transition: all var(--ii-transition);
 }
 .ii-carousel__dot--active { background: var(--ii-primary); width: 24px; border-radius: 4px; }
+`;
 
-/* --- Marquee --- */
+/** CSS for marquee */
+export const MARQUEE_CSS = `/* --- Marquee --- */
 .ii-marquee { overflow: hidden; width: 100%; }
 .ii-marquee__track { display: flex; animation: ii-marquee-scroll 20s linear infinite; width: max-content; }
 .ii-marquee__track:hover { animation-play-state: paused; }
 @keyframes ii-marquee-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+`;
 
-/* --- Timer --- */
+/** CSS for timer */
+export const TIMER_CSS = `/* --- Timer --- */
 .ii-timer { display: inline-flex; gap: 8px; align-items: center; }
 .ii-timer__segment {
   display: flex; flex-direction: column; align-items: center; padding: 8px 12px;
@@ -1447,8 +1528,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-timer__value { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .ii-timer__label { font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); }
 .ii-timer__sep { font-size: 1.5rem; font-weight: 700; color: var(--ii-on-surface-variant); }
+`;
 
-/* --- TreeView --- */
+/** CSS for tree-view */
+export const TREE_VIEW_CSS = `/* --- TreeView --- */
 .ii-tree { list-style: none; padding: 0; }
 .ii-tree__item { }
 .ii-tree__node {
@@ -1461,20 +1544,26 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-tree__toggle { background: none; border: none; cursor: pointer; font-size: 0.6rem; color: var(--ii-on-surface-variant); width: 16px; }
 .ii-tree__icon { font-size: 1rem; }
 .ii-tree__children { padding-left: 20px; }
+`;
 
-/* --- Divider --- */
+/** CSS for divider */
+export const DIVIDER_CSS = `/* --- Divider --- */
 .ii-divider { border: none; border-top: 1px solid var(--ii-outline-variant); margin: var(--ii-spacing-4) 0; }
 .ii-divider--vertical { border-top: none; border-left: 1px solid var(--ii-outline-variant); margin: 0 var(--ii-spacing-4); height: auto; align-self: stretch; }
+`;
 
-/* --- Kbd --- */
+/** CSS for kbd */
+export const KBD_CSS = `/* --- Kbd --- */
 .ii-kbd {
   display: inline-flex; align-items: center; padding: 2px 6px; border: 1px solid var(--ii-outline-variant);
   border-radius: 4px; background: var(--ii-surface-container); font-family: 'Fira Code', monospace;
   font-size: 0.75rem; font-weight: 500; color: var(--ii-on-surface);
   box-shadow: 0 1px 0 var(--ii-outline-variant);
 }
+`;
 
-/* --- Toolbar --- */
+/** CSS for toolbar */
+export const TOOLBAR_CSS = `/* --- Toolbar --- */
 .ii-toolbar { display: flex; align-items: center; gap: 4px; padding: 4px; background: var(--ii-surface-container); border-radius: var(--ii-shape-md); }
 .ii-toolbar__btn {
   display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;
@@ -1484,8 +1573,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-toolbar__btn:hover { background: var(--ii-surface-container-high); }
 .ii-toolbar__btn--active { background: var(--ii-primary-container); color: var(--ii-primary); }
 .ii-toolbar__sep { width: 1px; height: 24px; background: var(--ii-outline-variant); margin: 0 4px; }
+`;
 
-/* --- PricingCard --- */
+/** CSS for pricing-card */
+export const PRICING_CARD_CSS = `/* --- PricingCard --- */
 .ii-pricing-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1570,8 +1661,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   color: var(--ii-success);
   flex-shrink: 0;
 }
+`;
 
-/* --- AuthForm --- */
+/** CSS for auth-form */
+export const AUTH_FORM_CSS = `/* --- AuthForm --- */
 .ii-auth-form {
   max-width: 400px;
   margin: 0 auto;
@@ -1664,8 +1757,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-auth-form__switch-btn:hover {
   text-decoration: underline;
 }
+`;
 
-/* --- SettingsSection --- */
+/** CSS for settings-section */
+export const SETTINGS_SECTION_CSS = `/* --- SettingsSection --- */
 .ii-settings-section {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -1704,8 +1799,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
     gap: var(--ii-spacing-3);
   }
 }
+`;
 
-/* --- ErrorPage --- */
+/** CSS for error-page */
+export const ERROR_PAGE_CSS = `/* --- ErrorPage --- */
 .ii-error-page {
   display: flex;
   align-items: center;
@@ -1736,8 +1833,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   color: var(--ii-on-surface-variant);
   margin: 0 0 var(--ii-spacing-6);
 }
+`;
 
-/* --- UserMenu --- */
+/** CSS for user-menu */
+export const USER_MENU_CSS = `/* --- UserMenu --- */
 .ii-user-menu {
   position: relative;
 }
@@ -1821,8 +1920,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   border: none;
   border-top: 1px solid var(--ii-outline-variant);
 }
+`;
 
-/* --- Charts --- */
+/** CSS for chart */
+export const CHART_CSS = `/* --- Charts --- */
 .ii-chart {
   position: relative;
   width: 100%;
@@ -1974,8 +2075,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   from { stroke-dashoffset: var(--ii-donut-circumference, 0); }
   to { stroke-dashoffset: var(--ii-donut-offset, 0); }
 }
+`;
 
-/* --- Notification Item --- */
+/** CSS for blog-notifications */
+export const BLOG_NOTIFICATIONS_CSS = `/* --- Notification Item --- */
 .ii-notification-list {
   display: flex;
   flex-direction: column;
@@ -2148,8 +2251,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-lp-footer__nav a:hover {
   color: var(--ii-primary);
 }
+`;
 
-/* --- Admin Page Structure --- */
+/** CSS for page */
+export const PAGE_CSS = `/* --- Admin Page Structure --- */
 .ii-admin-page__header {
   display: flex;
   justify-content: space-between;
@@ -2202,8 +2307,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-placeholder__sub {
   font-size: var(--ii-font-sm);
   margin-top: var(--ii-spacing-1);
-}
-/* --- Admin Shell Layout --- */
+}`;
+
+/** CSS for admin-shell */
+export const ADMIN_SHELL_CSS = `/* --- Admin Shell Layout --- */
 .ii-admin-shell {
   display: flex;
   height: 100vh;
@@ -2300,8 +2407,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   overflow-y: auto;
   padding: var(--ii-spacing-6);
 }
+`;
 
-/* --- AdminShell Mobile --- */
+/** CSS for admin-shell-mobile */
+export const ADMIN_SHELL_MOBILE_CSS = `/* --- AdminShell Mobile --- */
 .ii-admin-header__hamburger {
   display: none;
   align-items: center;
@@ -2338,8 +2447,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   }
   .ii-admin-rail--mobile-open .ii-admin-rail__label { opacity: 1; }
 }
+`;
 
-/* --- Auth Page --- */
+/** CSS for auth-page */
+export const AUTH_PAGE_CSS = `/* --- Auth Page --- */
 .ii-auth-page {
   min-height: 100vh;
   display: flex;
@@ -2355,8 +2466,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   text-decoration: none;
   color: var(--ii-primary);
 }
+`;
 
-/* --- Legal Page --- */
+/** CSS for legal-page */
+export const LEGAL_PAGE_CSS = `/* --- Legal Page --- */
 .ii-legal-page {
   max-width: 720px;
   margin: 0 auto;
@@ -2390,8 +2503,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-legal-page a {
   color: var(--ii-primary);
 }
+`;
 
-/* ======================================
+/** CSS for landing */
+export const LANDING_CSS = `/* ======================================
    in-it Core CSS
    ====================================== */
 
@@ -2473,8 +2588,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-docs-toc__link:hover { color: var(--ii-on-surface); }
 .ii-docs-toc__link--active { color: var(--ii-primary); border-left-color: var(--ii-primary); }
 .ii-docs-toc__link--h3 { padding-left: 24px; }
+`;
 
-/* Docs article typography */
+/** CSS for docs */
+export const DOCS_CSS = `/* Docs article typography */
 .ii-docs-article { line-height: 1.7; color: var(--ii-on-surface); }
 .ii-docs-article h1 { font-size: 2rem; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.02em; }
 .ii-docs-article h2 { font-size: 1.5rem; font-weight: 600; margin-top: 48px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--ii-outline-variant); }
@@ -2508,8 +2625,10 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 .ii-docs-pager__link--next { text-align: right; }
 .ii-docs-pager__label { font-size: 0.6875rem; color: var(--ii-on-surface-variant); text-transform: uppercase; }
 .ii-docs-pager__title { font-weight: 600; color: var(--ii-primary); }
+`;
 
-/* Responsive */
+/** CSS for responsive */
+export const RESPONSIVE_CSS = `/* Responsive */
 @media (max-width: 1024px) {
   .ii-docs-toc { display: none; }
   .ii-docs-content { padding: 24px; max-width: 100%; }
@@ -2524,30 +2643,3 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
 }
 `;
 
-let injected = false;
-
-/**
- * Inject all in-it CSS into the document head.
- * Safe to call multiple times — only injects once.
- *
- * Note: If you use per-component auto-injection (default behavior),
- * you don't need to call this function.
- */
-export function injectStyles(): void {
-  if (injected) return;
-  if (typeof document === "undefined") return;
-  injected = true;
-  const style = document.createElement("style");
-  style.id = "ii-styles";
-  style.textContent = CSS;
-  document.head.appendChild(style);
-}
-
-/**
- * Component that injects in-it CSS on first render.
- * Place once at the top of your app.
- */
-export function StyleSheet(): null {
-  injectStyles();
-  return null;
-}

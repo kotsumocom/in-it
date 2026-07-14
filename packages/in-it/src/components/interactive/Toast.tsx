@@ -4,6 +4,8 @@
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 import { Icon } from "../../icons/Icon.tsx";
+import { TOAST_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** A single toast notification with message, variant, and auto-dismiss duration. */
 export interface ToastItem {
@@ -18,6 +20,7 @@ let globalAddToast: ((t: ToastItem) => void) | null = null;
 
 /** Global toast function to show notifications from anywhere. */
 export function toast(message: string, variant: ToastItem["variant"] = "info", duration = 4000): any {
+  injectCSS("ii-toast", TOAST_CSS);
   if (globalAddToast) {
     globalAddToast({ id: ++toastIdCounter, message, variant, duration });
   }

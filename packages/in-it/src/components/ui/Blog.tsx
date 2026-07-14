@@ -2,6 +2,8 @@
  * BlogCard — Blog post card for listing pages.
  */
 
+import { BLOG_NOTIFICATIONS_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 export interface BlogPost {
   slug: string;
   title: string;
@@ -19,6 +21,7 @@ export interface BlogCardProps {
 }
 
 export function BlogCard({ post, basePath = "/blog" }: BlogCardProps): any {
+  injectCSS("ii-blog", BLOG_NOTIFICATIONS_CSS);
   return (
     <div class="ii-blog-card">
       {post.coverImage && (

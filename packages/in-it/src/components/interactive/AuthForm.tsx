@@ -15,6 +15,8 @@
  * - Form uses noValidate + custom validation to prevent XSS in error messages
  */
 import { useState, useCallback } from "hono/jsx";
+import { AUTH_FORM_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** Auth form mode. */
 export type AuthMode = "login" | "signup";
@@ -83,6 +85,7 @@ export function AuthForm({
   error,
   class: cls,
 }: AuthFormProps): any {
+  injectCSS("ii-auth-form", AUTH_FORM_CSS);
   const [formError, setFormError] = useState("");
 
   const handleSubmit = useCallback(

@@ -2,6 +2,8 @@
  * extras.tsx - Additional UI components
  */
 import { Icon } from "../../icons/Icon.tsx";
+import { TEXTAREA_CSS, ALERT_CSS, PROGRESS_CSS, BREADCRUMB_CSS, DIVIDER_CSS, KBD_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** Props for the Textarea component. */
 export interface TextareaProps {
@@ -10,6 +12,7 @@ export interface TextareaProps {
 }
 /** Multi-line text input with label and validation support. */
 export function Textarea({ label, placeholder, rows = 3, helper, error, value, onInput }: TextareaProps): any {
+  injectCSS("ii-textarea", TEXTAREA_CSS);
   return (
     <div class={`ii-input${error ? " ii-input--error" : ""}`}>
       {label && <label class="ii-input__label">{label}</label>}
@@ -27,6 +30,7 @@ export interface AlertProps {
 }
 /** Inline alert banner with icon, title, and dismissible option. */
 export function Alert({ variant = "info", title, icon, closable, onClose, children }: AlertProps): any {
+  injectCSS("ii-alert", ALERT_CSS);
   const defaultIcons: Record<string, any> = {
     info: <Icon name="info-circle" size={18} />,
     success: <Icon name="circle-check" size={18} />,
@@ -51,6 +55,7 @@ export function Alert({ variant = "info", title, icon, closable, onClose, childr
 export interface ProgressProps { value?: number; max?: number; label?: string; }
 /** Horizontal progress bar with optional label. */
 export function Progress({ value = 0, max = 100, label }: ProgressProps): any {
+  injectCSS("ii-progress", PROGRESS_CSS);
   const pct = Math.round((value / max) * 100);
   return (
     <div class="ii-progress" role="progressbar" aria-valuenow={value} aria-valuemax={max}>
@@ -88,6 +93,7 @@ export interface BreadcrumbItem { label: string; href?: string; }
 export interface BreadcrumbProps { items: BreadcrumbItem[]; separator?: string; }
 /** Breadcrumb navigation trail with customizable separator. */
 export function Breadcrumb({ items, separator = "/" }: BreadcrumbProps): any {
+  injectCSS("ii-breadcrumb", BREADCRUMB_CSS);
   return (
     <nav class="ii-breadcrumb" aria-label="Breadcrumb">
       <ol class="ii-breadcrumb__list">
@@ -108,6 +114,7 @@ export function Breadcrumb({ items, separator = "/" }: BreadcrumbProps): any {
 export interface DividerProps { label?: string; }
 /** Horizontal rule divider with optional label. */
 export function Divider({ label }: DividerProps): any {
+  injectCSS("ii-divider", DIVIDER_CSS);
   if (label) {
     return <div class="ii-divider ii-divider--label"><span>{label}</span></div>;
   }
@@ -118,5 +125,6 @@ export function Divider({ label }: DividerProps): any {
 export interface KbdProps { children: any; }
 /** Keyboard shortcut indicator styled as a key cap. */
 export function Kbd({ children }: KbdProps): any {
+  injectCSS("ii-kbd", KBD_CSS);
   return <kbd class="ii-kbd">{children}</kbd>;
 }

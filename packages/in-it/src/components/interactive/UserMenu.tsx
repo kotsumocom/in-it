@@ -13,6 +13,8 @@
  *   />
  */
 import { useState, useCallback, useRef, useEffect } from "hono/jsx";
+import { USER_MENU_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** A menu item in the user dropdown. */
 export interface UserMenuItem {
@@ -54,6 +56,7 @@ export function UserMenu({
   items = [],
   class: cls,
 }: UserMenuProps): any {
+  injectCSS("ii-user-menu", USER_MENU_CSS);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 

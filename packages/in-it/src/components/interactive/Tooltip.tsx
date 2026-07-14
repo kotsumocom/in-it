@@ -2,6 +2,8 @@
  * Tooltip component
  */
 import { useState, useRef } from "hono/jsx";
+import { POPOVER_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** Props for the Tooltip component. */
 export interface TooltipProps {
@@ -12,6 +14,7 @@ export interface TooltipProps {
 
 /** Informational tooltip shown on hover/focus with configurable position. */
 export function Tooltip({ content, position = "top", children }: TooltipProps): any {
+  injectCSS("ii-popover", POPOVER_CSS);
   const [visible, setVisible] = useState(false);
 
   return (

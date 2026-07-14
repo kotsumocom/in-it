@@ -4,6 +4,8 @@
 
 // --- LandingHeader ---
 /** Props for the LandingHeader component. */
+import { LANDING_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 export interface LandingHeaderProps {
   brand: string;
   brandHref?: string;
@@ -13,6 +15,7 @@ export interface LandingHeaderProps {
 
 /** Landing page top navigation bar with brand and nav links. */
 export function LandingHeader({ brand, brandHref = "/", navLinks = [], themeToggle }: LandingHeaderProps): any {
+  injectCSS("ii-landing", LANDING_CSS);
   return (
     <header class="ii-lp-header">
       <div class="ii-lp-header__inner">

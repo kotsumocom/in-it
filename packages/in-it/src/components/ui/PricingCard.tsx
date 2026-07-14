@@ -13,6 +13,8 @@
  */
 
 /** Props for PricingCard. */
+import { PRICING_CARD_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 export interface PricingCardProps {
   /** Plan name (e.g. "Free", "Pro", "Enterprise"). */
   name: string;
@@ -49,6 +51,7 @@ export function PricingCard({
   badge,
   class: cls,
 }: PricingCardProps): any {
+  injectCSS("ii-pricing", PRICING_CARD_CSS);
   return (
     <div class={`ii-pricing-card${highlighted ? " ii-pricing-card--highlighted" : ""}${cls ? ` ${cls}` : ""}`}>
       {badge && <span class="ii-pricing-card__badge">{badge}</span>}

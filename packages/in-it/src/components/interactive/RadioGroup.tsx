@@ -2,6 +2,8 @@
  * RadioGroup component
  */
 import { useState, useCallback } from "hono/jsx";
+import { RADIO_GROUP_CSS } from "../../css.ts";
+import { injectCSS } from "../../inject.ts";
 
 /** A single radio button option. */
 export interface RadioOption { value: string; label: string; disabled?: boolean; }
@@ -17,6 +19,7 @@ export interface RadioGroupProps {
 
 /** A group of mutually exclusive radio buttons. */
 export function RadioGroup({ name, options, value: controlledValue, orientation = "vertical", onChange }: RadioGroupProps): any {
+  injectCSS("ii-radio", RADIO_GROUP_CSS);
   const [internalValue, setInternalValue] = useState(controlledValue ?? "");
   const value = controlledValue ?? internalValue;
 

@@ -1,6 +1,9 @@
 /**
- * Build script: Reads all CSS component files and generates styles.ts
- * with the concatenated CSS as a JS string constant + runtime injector.
+ * Build script: Generates per-component CSS modules + combined styles.ts
+ *
+ * Output:
+ *   - packages/in-it/src/css.ts  — per-component CSS string exports + base CSS setup
+ *   - packages/in-it/src/styles.ts — combined CSS for backward compat (injectStyles)
  *
  * Run: deno run -A scripts/build-styles.ts
  */
@@ -8,7 +11,11 @@ import * as path from "node:path";
 
 const CSS_DIR = path.resolve(import.meta.dirname!, "../packages/in-it/src/css");
 const MAIN_CSS = path.join(CSS_DIR, "main.css");
-const OUT_FILE = path.resolve(import.meta.dirname!, "../packages/in-it/src/styles.ts");
+const OUT_CSS_MODULE = path.resolve(import.meta.dirname!, "../packages/in-it/src/css.ts");
+const OUT_STYLES = path.resolve(import.meta.dirname!, "../packages/in-it/src/styles.ts");
+
+// Base CSS files (injected automatically before any component CSS)
+const BASE_FILES = ["_variables.css", "_reset.css", "_icon.css", "_animations.css"];
 
 // Read main.css and extract @import order
 const mainContent = await Deno.readTextFile(MAIN_CSS);
@@ -19,28 +26,78 @@ while ((match = importRegex.exec(mainContent)) !== null) {
   imports.push(match[1]);
 }
 
-// Read and concatenate all CSS files in order
-const cssChunks: string[] = [];
+// Read all CSS files
+const cssMap = new Map<string, string>();
+const allChunks: string[] = [];
+
 for (const importPath of imports) {
   const fullPath = path.resolve(CSS_DIR, importPath);
+  const filename = path.basename(importPath);
   try {
     const content = await Deno.readTextFile(fullPath);
-    cssChunks.push(content);
+    cssMap.set(filename, content);
+    allChunks.push(content);
   } catch {
     console.warn(`Warning: Could not read ${fullPath}`);
   }
 }
 
-const allCSS = cssChunks.join("\n");
+// Helper: escape for template literal
+function esc(s: string): string {
+  return s.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
+}
 
-// Escape backticks and ${} in CSS for template literal
-const escaped = allCSS
-  .replace(/\\/g, "\\\\")
-  .replace(/`/g, "\\`")
-  .replace(/\$\{/g, "\\${");
+// Helper: CSS filename → export name
+// _button.css → BUTTON_CSS, _admin-shell.css → ADMIN_SHELL_CSS
+function toConstName(filename: string): string {
+  return filename
+    .replace(/^_/, "")
+    .replace(/\.css$/, "")
+    .replace(/-/g, "_")
+    .toUpperCase() + "_CSS";
+}
 
-// Generate styles.ts
-const output = `/**
+// --- Generate css.ts (per-component CSS strings + base CSS setup) ---
+
+const baseCSS = BASE_FILES.map((f) => cssMap.get(f) || "").join("\n");
+const componentFiles = imports
+  .map((p) => path.basename(p))
+  .filter((f) => !BASE_FILES.includes(f));
+
+let cssModuleLines = `/**
+ * @module css
+ * Auto-generated per-component CSS strings.
+ * DO NOT EDIT — run \`deno task build:styles\` to regenerate.
+ *
+ * Each component imports its CSS constant and calls injectCSS().
+ * Base CSS (variables, reset, animations) is auto-injected.
+ */
+
+import { setBaseCSS } from "./inject.ts";
+
+/** Base CSS: variables + reset + icon + animations */
+const BASE_CSS = \`${esc(baseCSS)}\`;
+
+// Register base CSS for auto-injection
+setBaseCSS(BASE_CSS);
+
+`;
+
+for (const filename of componentFiles) {
+  const content = cssMap.get(filename);
+  if (!content) continue;
+  const constName = toConstName(filename);
+  cssModuleLines += `/** CSS for ${filename.replace(/^_/, "").replace(/\.css$/, "")} */\n`;
+  cssModuleLines += `export const ${constName} = \`${esc(content)}\`;\n\n`;
+}
+
+await Deno.writeTextFile(OUT_CSS_MODULE, cssModuleLines);
+console.log(`✅ Generated ${OUT_CSS_MODULE} (${componentFiles.length} components)`);
+
+// --- Generate styles.ts (backward compat) ---
+
+const allCSS = allChunks.join("\n");
+const stylesOutput = `/**
  * @module styles
  * Auto-generated from CSS component files.
  * DO NOT EDIT — run \`deno task build:styles\` to regenerate.
@@ -72,13 +129,16 @@ const output = `/**
  */
 
 /** All in-it CSS as a string */
-export const CSS = \`${escaped}\`;
+export const CSS = \`${esc(allCSS)}\`;
 
 let injected = false;
 
 /**
  * Inject all in-it CSS into the document head.
  * Safe to call multiple times — only injects once.
+ *
+ * Note: If you use per-component auto-injection (default behavior),
+ * you don't need to call this function.
  */
 export function injectStyles(): void {
   if (injected) return;
@@ -100,5 +160,5 @@ export function StyleSheet(): null {
 }
 `;
 
-await Deno.writeTextFile(OUT_FILE, output);
-console.log(`✅ Generated ${OUT_FILE} (${(allCSS.length / 1024).toFixed(1)} KB CSS)`);
+await Deno.writeTextFile(OUT_STYLES, stylesOutput);
+console.log(`✅ Generated ${OUT_STYLES} (${(allCSS.length / 1024).toFixed(1)} KB CSS)`);
