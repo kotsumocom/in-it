@@ -30,11 +30,28 @@
   --ii-shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
   --ii-transition: 200ms ease;
   --ii-font-family: 'Noto Sans JP', 'Inter', system-ui, sans-serif;
-  --ii-font-sm: 0.75rem;
-  --ii-font-base: 0.875rem;
-  --ii-font-lg: 1rem;
-  --ii-font-xl: 1.25rem;
-  --ii-font-2xl: 1.5rem;
+  /* MD3 Typography Scale */
+  --ii-display-lg: 3.5625rem;
+  --ii-display-md: 2.8125rem;
+  --ii-display-sm: 2.25rem;
+  --ii-headline-lg: 2rem;
+  --ii-headline-md: 1.75rem;
+  --ii-headline-sm: 1.5rem;
+  --ii-title-lg: 1.375rem;
+  --ii-title-md: 1rem;
+  --ii-title-sm: 0.875rem;
+  --ii-body-lg: 1rem;
+  --ii-body-md: 0.875rem;
+  --ii-body-sm: 0.75rem;
+  --ii-label-lg: 0.875rem;
+  --ii-label-md: 0.75rem;
+  --ii-label-sm: 0.6875rem;
+  /* Legacy aliases */
+  --ii-font-sm: var(--ii-body-sm);
+  --ii-font-base: var(--ii-body-md);
+  --ii-font-lg: var(--ii-body-lg);
+  --ii-font-xl: var(--ii-title-lg);
+  --ii-font-2xl: var(--ii-headline-sm);
   color-scheme: light;
 }
 

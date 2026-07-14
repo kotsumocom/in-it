@@ -3,7 +3,8 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 12px;
+  min-height: 32px;
+  padding: 6px 12px;
   border-radius: 99px;
   font-size: var(--ii-font-sm);
   font-weight: 500;

@@ -62,11 +62,28 @@ export const CSS = `/* --- Variables --- */
   --ii-shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
   --ii-transition: 200ms ease;
   --ii-font-family: 'Noto Sans JP', 'Inter', system-ui, sans-serif;
-  --ii-font-sm: 0.75rem;
-  --ii-font-base: 0.875rem;
-  --ii-font-lg: 1rem;
-  --ii-font-xl: 1.25rem;
-  --ii-font-2xl: 1.5rem;
+  /* MD3 Typography Scale */
+  --ii-display-lg: 3.5625rem;
+  --ii-display-md: 2.8125rem;
+  --ii-display-sm: 2.25rem;
+  --ii-headline-lg: 2rem;
+  --ii-headline-md: 1.75rem;
+  --ii-headline-sm: 1.5rem;
+  --ii-title-lg: 1.375rem;
+  --ii-title-md: 1rem;
+  --ii-title-sm: 0.875rem;
+  --ii-body-lg: 1rem;
+  --ii-body-md: 0.875rem;
+  --ii-body-sm: 0.75rem;
+  --ii-label-lg: 0.875rem;
+  --ii-label-md: 0.75rem;
+  --ii-label-sm: 0.6875rem;
+  /* Legacy aliases */
+  --ii-font-sm: var(--ii-body-sm);
+  --ii-font-base: var(--ii-body-md);
+  --ii-font-lg: var(--ii-body-lg);
+  --ii-font-xl: var(--ii-title-lg);
+  --ii-font-2xl: var(--ii-headline-sm);
   color-scheme: light;
 }
 
@@ -133,6 +150,8 @@ body {
   background: var(--ii-surface);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 /* Offset for fixed headers when scrolling to anchors */
 [id] {
@@ -162,40 +181,107 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Button --- */
+/* --- Button (MD3) --- */
 .ii-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--ii-spacing-2);
   font-family: inherit;
   font-weight: 500;
+  letter-spacing: 0.01em;
   border: none;
-  border-radius: var(--ii-shape-sm);
+  border-radius: var(--ii-shape-xl);
   cursor: pointer;
-  transition: background var(--ii-transition), box-shadow var(--ii-transition);
+  transition: background var(--ii-transition), box-shadow var(--ii-transition), filter var(--ii-transition);
   white-space: nowrap;
+  line-height: 1.25;
+  position: relative;
+  text-decoration: none;
+  user-select: none;
 }
-.ii-btn--sm { padding: 6px 12px; font-size: var(--ii-font-sm); }
-.ii-btn--md { padding: 10px 20px; font-size: var(--ii-font-base); }
-.ii-btn--lg { padding: 12px 24px; font-size: var(--ii-font-lg); }
+
+/* Sizes */
+.ii-btn--sm { min-height: 32px; padding: 6px 16px; font-size: var(--ii-label-md); }
+.ii-btn--md { min-height: 40px; padding: 10px 24px; font-size: var(--ii-label-lg); }
+.ii-btn--lg { min-height: 48px; padding: 12px 28px; font-size: var(--ii-label-lg); }
+
+/* Icon padding adjustments */
+.ii-btn--has-leading.ii-btn--sm  { padding-left: 12px; }
+.ii-btn--has-leading.ii-btn--md  { padding-left: 16px; }
+.ii-btn--has-leading.ii-btn--lg  { padding-left: 20px; }
+.ii-btn--has-trailing.ii-btn--sm { padding-right: 12px; }
+.ii-btn--has-trailing.ii-btn--md { padding-right: 16px; }
+.ii-btn--has-trailing.ii-btn--lg { padding-right: 20px; }
+
+/* Icon slots */
+.ii-btn__icon { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ii-btn--sm .ii-btn__icon { width: 16px; height: 16px; }
+.ii-btn--md .ii-btn__icon { width: 20px; height: 20px; }
+.ii-btn--lg .ii-btn__icon { width: 24px; height: 24px; }
+.ii-btn__icon svg { width: 100%; height: 100%; }
+
+/* --- Variants --- */
+
+/* Filled */
 .ii-btn--filled {
   background: var(--ii-primary);
   color: var(--ii-on-primary);
 }
-.ii-btn--filled:hover { box-shadow: var(--ii-shadow-sm); filter: brightness(1.1); }
+.ii-btn--filled:hover { box-shadow: var(--ii-shadow-sm); filter: brightness(1.08); }
+.ii-btn--filled:active { filter: brightness(0.95); }
+
+/* Tonal */
+.ii-btn--tonal {
+  background: var(--ii-primary-container);
+  color: var(--ii-on-primary-container);
+}
+.ii-btn--tonal:hover { box-shadow: var(--ii-shadow-sm); filter: brightness(1.05); }
+.ii-btn--tonal:active { filter: brightness(0.95); }
+
+/* Elevated */
+.ii-btn--elevated {
+  background: var(--ii-surface-container);
+  color: var(--ii-primary);
+  box-shadow: var(--ii-shadow-sm);
+}
+.ii-btn--elevated:hover { box-shadow: var(--ii-shadow-md); filter: brightness(1.03); }
+.ii-btn--elevated:active { box-shadow: var(--ii-shadow-sm); }
+
+/* Outlined */
 .ii-btn--outlined {
   background: transparent;
   color: var(--ii-primary);
   border: 1px solid var(--ii-outline);
 }
 .ii-btn--outlined:hover { background: color-mix(in srgb, var(--ii-primary) 8%, transparent); }
+.ii-btn--outlined:active { background: color-mix(in srgb, var(--ii-primary) 12%, transparent); }
+
+/* Text */
 .ii-btn--text {
   background: transparent;
-  color: var(--ii-on-surface-variant);
-  padding-inline: var(--ii-spacing-2);
+  color: var(--ii-primary);
+  padding-inline: var(--ii-spacing-3);
 }
-.ii-btn--text:hover { background: var(--ii-surface-container-high); }
+.ii-btn--text:hover { background: color-mix(in srgb, var(--ii-primary) 8%, transparent); }
+.ii-btn--text:active { background: color-mix(in srgb, var(--ii-primary) 12%, transparent); }
 
+/* Disabled */
+.ii-btn:disabled,
+.ii-btn[aria-disabled="true"] {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  filter: none;
+}
+
+/* Touch target (ensure 48px min for accessibility) */
+.ii-btn--sm::after {
+  content: "";
+  position: absolute;
+  inset: -8px 0;
+}
 /* --- Badge --- */
 .ii-badge {
   display: inline-flex;
@@ -405,6 +491,7 @@ body {
   gap: 0;
 }
 .ii-tabs__tab {
+  min-height: 48px;
   padding: var(--ii-spacing-3) var(--ii-spacing-5);
   font-family: inherit;
   font-size: var(--ii-font-base);
@@ -468,6 +555,7 @@ body {
   align-items: center;
   gap: var(--ii-spacing-2);
   width: 100%;
+  min-height: 48px;
   padding: 8px 12px;
   font-family: inherit;
   font-size: var(--ii-font-base);
@@ -712,6 +800,7 @@ body {
   color: var(--ii-on-surface-variant);
 }
 .ii-input__field {
+  min-height: 40px;
   padding: 10px 12px;
   background: var(--ii-surface);
   border: 1px solid var(--ii-outline-variant);
@@ -792,7 +881,8 @@ input.ii-input::placeholder, textarea.ii-input::placeholder {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 12px;
+  min-height: 32px;
+  padding: 6px 12px;
   border-radius: 99px;
   font-size: var(--ii-font-sm);
   font-weight: 500;

@@ -10,6 +10,7 @@
   color: var(--ii-on-surface-variant);
 }
 .ii-input__field {
+  min-height: 40px;
   padding: 10px 12px;
   background: var(--ii-surface);
   border: 1px solid var(--ii-outline-variant);

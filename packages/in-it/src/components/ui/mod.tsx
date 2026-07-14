@@ -36,37 +36,53 @@ export function Card({ outlined = false, children, class: cls }: CardProps): any
 }
 
 /** Props for the {@link Button} component.
- * @property variant - filled (elevated), outlined (bordered), or text (minimal).
+ * @property variant - filled (default), tonal, elevated, outlined, or text.
  * @property size - sm, md (default), or lg.
+ * @property leadingIcon - Icon element displayed before the label.
+ * @property trailingIcon - Icon element displayed after the label.
  */
 export interface ButtonProps {
-  variant?: "filled" | "outlined" | "text";
+  variant?: "filled" | "tonal" | "elevated" | "outlined" | "text";
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
+  leadingIcon?: any;
+  trailingIcon?: any;
   children: any;
   class?: string;
 }
 
-/** Interactive button element with filled, outlined, or text variants and three size options. */
+/** Interactive button with filled, tonal, elevated, outlined, or text variants, three sizes, and optional leading/trailing icons. */
 export function Button({
   variant = "filled",
   size = "md",
   disabled = false,
   type = "button",
   onClick,
+  leadingIcon,
+  trailingIcon,
   children,
   class: cls,
 }: ButtonProps): any {
+  const mods = [
+    `ii-btn--${variant}`,
+    `ii-btn--${size}`,
+    leadingIcon && "ii-btn--has-leading",
+    trailingIcon && "ii-btn--has-trailing",
+    cls,
+  ].filter(Boolean).join(" ");
+
   return (
     <button
       type={type}
-      class={`ii-btn ii-btn--${variant} ii-btn--${size}${cls ? ` ${cls}` : ""}`}
+      class={`ii-btn ${mods}`}
       disabled={disabled}
       onClick={onClick}
     >
+      {leadingIcon && <span class="ii-btn__icon">{leadingIcon}</span>}
       {children}
+      {trailingIcon && <span class="ii-btn__icon">{trailingIcon}</span>}
     </button>
   );
 }
