@@ -13,6 +13,7 @@
 - Export all public components and types from `src/components/mod.ts`.
 - Export all public color utilities from `src/color/`.
 - Export all public docs utilities from `src/docs/`.
+- 一括修正や一括置換を行う自動スクリプトは使用せず、各コンポーネントおよびファイルを1つずつ確認しながら丁寧に修正・検証すること。
 
 ## Architecture
 - Zero external dependencies for core functionality (ARIA, color, markdown, router).
