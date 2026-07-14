@@ -256,19 +256,7 @@ export { CHECKBOX_CSS } from "./components/interactive/Checkbox.tsx";
 export { RADIO_GROUP_CSS } from "./components/interactive/RadioGroup.tsx";
 
 /** CSS for textarea */
-export const TEXTAREA_CSS = `/* --- Textarea --- */
-.ii-textarea { display: flex; flex-direction: column; gap: var(--ii-spacing-1); }
-.ii-textarea__label { font-size: var(--ii-font-sm); font-weight: 500; color: var(--ii-on-surface-variant); }
-.ii-textarea__field {
-  padding: 10px 12px; background: var(--ii-surface); border: 1px solid var(--ii-outline-variant);
-  border-radius: var(--ii-shape-md); font-family: inherit; font-size: var(--ii-font-base);
-  color: var(--ii-on-surface); min-height: 100px; resize: vertical; transition: border-color var(--ii-transition);
-}
-.ii-textarea__field:hover { border-color: var(--ii-outline); }
-.ii-textarea__field:focus { outline: 2px solid var(--ii-primary); outline-offset: 2px; border-color: var(--ii-primary); }
-.ii-textarea__field::placeholder { color: var(--ii-on-surface-variant); }
-.ii-textarea__count { font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); text-align: right; }
-`;
+export { TEXTAREA_CSS } from "./components/ui/Textarea.tsx";
 
 /** CSS for slider */
 export { SLIDER_CSS } from "./components/interactive/Slider.tsx";
@@ -350,48 +338,13 @@ export const TOGGLE_GROUP_CSS = `/* --- Toggle Group --- */
 `;
 
 /** CSS for alert */
-export const ALERT_CSS = `/* --- Alert --- */
-.ii-alert {
-  display: flex; gap: 12px; padding: 16px; border-radius: var(--ii-shape-md);
-  border: 1px solid var(--ii-outline-variant); background: var(--ii-surface);
-}
-.ii-alert--info { border-color: var(--ii-info); background: color-mix(in srgb, var(--ii-info) 8%, var(--ii-surface)); }
-.ii-alert--success { border-color: var(--ii-success); background: color-mix(in srgb, var(--ii-success) 8%, var(--ii-surface)); }
-.ii-alert--warning { border-color: var(--ii-warning); background: color-mix(in srgb, var(--ii-warning) 8%, var(--ii-surface)); }
-.ii-alert--error { border-color: var(--ii-error); background: color-mix(in srgb, var(--ii-error) 8%, var(--ii-surface)); }
-.ii-alert__icon { font-size: 1.25rem; flex-shrink: 0; }
-.ii-alert__body { flex: 1; }
-.ii-alert__title { font-weight: 600; margin-bottom: 4px; }
-.ii-alert__desc { font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); }
-.ii-alert__close { background: none; border: none; cursor: pointer; color: var(--ii-on-surface-variant); font-size: 1rem; padding: 0; }
-`;
+export { ALERT_CSS } from "./components/ui/Alert.tsx";
 
 /** CSS for drawer */
 export { DRAWER_CSS } from "./components/interactive/Drawer.tsx";
 
 /** CSS for progress */
-export const PROGRESS_CSS = `/* --- Progress Bar --- */
-.ii-progress { display: flex; flex-direction: column; gap: 6px; }
-.ii-progress__label { display: flex; justify-content: space-between; font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); }
-.ii-progress__track { height: 4px; background: var(--ii-outline-variant); border-radius: 2px; overflow: hidden; }
-.ii-progress__fill { height: 100%; background: var(--ii-primary); border-radius: 2px; transition: width 300ms ease; }
-.ii-progress__fill--indeterminate {
-  width: 40%; animation: ii-progress-indeterminate 1.5s infinite ease-in-out;
-}
-@keyframes ii-progress-indeterminate {
-  0% { transform: translateX(-100%); } 100% { transform: translateX(350%); }
-}
-
-/* --- Progress Circular --- */
-.ii-progress-circular { display: inline-flex; position: relative; }
-.ii-progress-circular__svg { transform: rotate(-90deg); }
-.ii-progress-circular__track { stroke: var(--ii-outline-variant); fill: none; }
-.ii-progress-circular__fill { stroke: var(--ii-primary); fill: none; stroke-linecap: round; transition: stroke-dashoffset 300ms ease; }
-.ii-progress-circular__label {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  font-size: var(--ii-font-sm); font-weight: 600; color: var(--ii-on-surface);
-}
-`;
+export { PROGRESS_CSS } from "./components/ui/Progress.tsx";
 
 /** CSS for pagination */
 export { PAGINATION_CSS } from "./components/interactive/Pagination.tsx";
@@ -456,13 +409,7 @@ export const CLIPBOARD_CSS = `/* --- Clipboard --- */
 `;
 
 /** CSS for breadcrumb */
-export const BREADCRUMB_CSS = `/* --- Breadcrumb --- */
-.ii-breadcrumb { display: flex; align-items: center; gap: 8px; font-size: var(--ii-font-sm); }
-.ii-breadcrumb__item { color: var(--ii-on-surface-variant); text-decoration: none; }
-.ii-breadcrumb__item:hover { color: var(--ii-primary); }
-.ii-breadcrumb__item--current { color: var(--ii-on-surface); font-weight: 500; }
-.ii-breadcrumb__sep { color: var(--ii-outline); font-size: 0.7rem; }
-`;
+export { BREADCRUMB_CSS } from "./components/ui/Breadcrumb.tsx";
 
 /** CSS for file-upload */
 export const FILE_UPLOAD_CSS = `/* --- File Upload --- */
@@ -618,20 +565,10 @@ export const TREE_VIEW_CSS = `/* --- TreeView --- */
 `;
 
 /** CSS for divider */
-export const DIVIDER_CSS = `/* --- Divider --- */
-.ii-divider { border: none; border-top: 1px solid var(--ii-outline-variant); margin: var(--ii-spacing-4) 0; }
-.ii-divider--vertical { border-top: none; border-left: 1px solid var(--ii-outline-variant); margin: 0 var(--ii-spacing-4); height: auto; align-self: stretch; }
-`;
+export { DIVIDER_CSS } from "./components/ui/Divider.tsx";
 
 /** CSS for kbd */
-export const KBD_CSS = `/* --- Kbd --- */
-.ii-kbd {
-  display: inline-flex; align-items: center; padding: 2px 6px; border: 1px solid var(--ii-outline-variant);
-  border-radius: 4px; background: var(--ii-surface-container); font-family: 'Fira Code', monospace;
-  font-size: 0.75rem; font-weight: 500; color: var(--ii-on-surface);
-  box-shadow: 0 1px 0 var(--ii-outline-variant);
-}
-`;
+export { KBD_CSS } from "./components/ui/Kbd.tsx";
 
 /** CSS for toolbar */
 export const TOOLBAR_CSS = `/* --- Toolbar --- */
