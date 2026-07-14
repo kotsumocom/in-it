@@ -9,6 +9,7 @@
 /** Props for ErrorPage. */
 import { ERROR_PAGE_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { t } from "../../locale.ts";
 export interface ErrorPageProps {
   /** HTTP status code to display. */
   code: number;
@@ -29,7 +30,7 @@ export function ErrorPage({
   code,
   title,
   description,
-  actionLabel = "Go Home",
+  actionLabel,
   onAction,
   class: cls,
 }: ErrorPageProps): any {
@@ -41,7 +42,7 @@ export function ErrorPage({
         <h1 class="ii-error-page__title">{title}</h1>
         {description && <p class="ii-error-page__desc">{description}</p>}
         <button type="button" class="ii-btn ii-btn--filled" onClick={onAction}>
-          {actionLabel}
+          {actionLabel ?? t("goHome")}
         </button>
       </div>
     </div>

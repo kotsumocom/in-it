@@ -27,8 +27,14 @@ export interface LocaleStrings {
   nextPage: string;
   // Theme
   theme: string;
+  light: string;
+  dark: string;
+  system: string;
   // Breadcrumb
   breadcrumb: string;
+  // UI defaults
+  goHome: string;
+  getStarted: string;
   // AuthForm
   signIn: string;
   createAccount: string;
@@ -58,7 +64,12 @@ const en: LocaleStrings = {
   previousPage: "Previous page",
   nextPage: "Next page",
   theme: "Theme",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
   breadcrumb: "Breadcrumb",
+  goHome: "Go Home",
+  getStarted: "Get Started",
   signIn: "Sign In",
   createAccount: "Create Account",
   loading: "Loading...",
@@ -87,7 +98,12 @@ const ja: LocaleStrings = {
   previousPage: "前のページ",
   nextPage: "次のページ",
   theme: "テーマ",
+  light: "ライト",
+  dark: "ダーク",
+  system: "システム",
   breadcrumb: "パンくずリスト",
+  goHome: "ホームへ",
+  getStarted: "はじめる",
   signIn: "ログイン",
   createAccount: "アカウント作成",
   loading: "読み込み中...",

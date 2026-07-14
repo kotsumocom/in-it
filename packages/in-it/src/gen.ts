@@ -141,12 +141,7 @@ function genTheme(root: string, config: InItConfig): void {
 
   const css = generateCss(primary);
 
-  // CJK typography optimizations
-  const cjkCss = locale === "ja"
-    ? `\n/* CJK typography optimizations (locale: ja) */\n:root {\n  --ii-font-family: 'Inter', 'Noto Sans JP', system-ui, sans-serif;\n  --ii-body-md: 1rem;\n  --ii-body-line-height: 1.7;\n}\nbody {\n  line-height: var(--ii-body-line-height);\n}\n`
-    : "";
-
-  const output = `/**\n * Theme CSS — auto-generated from in-it.config.ts.\n * DO NOT EDIT — run \\\`deno task gen\\\` to regenerate.\n *\n * Primary: ${primary}\n * Locale: ${locale}\n */\n${css}${cjkCss}`;
+  const output = `/**\n * Theme CSS — auto-generated from in-it.config.ts.\n * DO NOT EDIT — run \\\`deno task gen\\\` to regenerate.\n *\n * Primary: ${primary}\n * Locale: ${locale}\n */\n${css}`;
 
   fs.writeFileSync(outPath, output);
   console.log(`✅ theme.css — primary: ${primary}, locale: ${locale}`);

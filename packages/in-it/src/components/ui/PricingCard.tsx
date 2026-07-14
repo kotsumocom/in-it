@@ -15,6 +15,7 @@
 /** Props for PricingCard. */
 import { PRICING_CARD_CSS } from "../../css.ts";
 import { injectCSS } from "../../inject.ts";
+import { t } from "../../locale.ts";
 export interface PricingCardProps {
   /** Plan name (e.g. "Free", "Pro", "Enterprise"). */
   name: string;
@@ -45,7 +46,7 @@ export function PricingCard({
   period,
   description,
   features,
-  cta = "Get Started",
+  cta,
   onCtaClick,
   highlighted,
   badge,
@@ -74,7 +75,7 @@ export function PricingCard({
         class={`ii-btn${highlighted ? " ii-btn--filled" : " ii-btn--outlined"}`}
         onClick={onCtaClick}
       >
-        {cta}
+        {cta ?? t("getStarted")}
       </button>
     </div>
   );

@@ -62,25 +62,25 @@ export function ThemeToggle({ defaultTheme = "system", compact = false, onChange
     );
   }
 
-  const setAndNotify = (t: Theme) => {
-    setTheme(t);
-    onChange?.(t);
+  const setAndNotify = (mode: Theme) => {
+    setTheme(mode);
+    onChange?.(mode);
   };
 
   return (
     <div class="ii-theme-toggle-group" role="radiogroup" aria-label={t("theme")}>
-      {(["light", "dark", "system"] as Theme[]).map((t) => (
+      {(["light", "dark", "system"] as Theme[]).map((mode) => (
         <button
-          key={t}
+          key={mode}
           type="button"
           role="radio"
-          aria-checked={theme === t}
-          class={`ii-theme-toggle-group__btn${theme === t ? " ii-theme-toggle-group__btn--active" : ""}`}
-          onClick={() => setAndNotify(t)}
+          aria-checked={theme === mode}
+          class={`ii-theme-toggle-group__btn${theme === mode ? " ii-theme-toggle-group__btn--active" : ""}`}
+          onClick={() => setAndNotify(mode)}
         >
-          {t === "light" && <><Icon name="sun" size={16} /> Light</>}
-          {t === "dark" && <><Icon name="moon" size={16} /> Dark</>}
-          {t === "system" && <><Icon name="device-desktop" size={16} /> System</>}
+          {mode === "light" && <><Icon name="sun" size={16} /> {t("light")}</>}
+          {mode === "dark" && <><Icon name="moon" size={16} /> {t("dark")}</>}
+          {mode === "system" && <><Icon name="device-desktop" size={16} /> {t("system")}</>}
         </button>
       ))}
     </div>
