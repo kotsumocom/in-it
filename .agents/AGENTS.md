@@ -23,5 +23,19 @@
 
 ## JSR Publishing
 - Version is managed in `packages/in-it/deno.json`.
+- `create-in-it` version is managed in `create-in-it/deno.json`.
 - Tag format: `v{major}.{minor}.{patch}` (e.g., `v0.1.0`).
-- Publishing is automated via GitHub Actions on tag push.
+- **DO NOT run `deno publish` manually.** Publishing is fully automated:
+  1. Update version in `packages/in-it/deno.json` (and `create-in-it/deno.json` if changed).
+  2. `git tag v0.X.Y && git push --tags`
+  3. GitHub Actions (`publish.yml`) publishes both packages to JSR and creates a GitHub Release.
+  4. On failure: a GitHub Issue is auto-created and synced to Linear via GitHub integration.
+
+### create-in-it Template Updates
+- Template files are inlined into `create-in-it/templates.gen.ts` (not read from the filesystem at runtime).
+- After modifying any file under `create-in-it/templates/`, run:
+  ```bash
+  cd create-in-it
+  deno task build   # Regenerates templates.gen.ts
+  ```
+- Commit `templates.gen.ts` along with the template changes before tagging a release.
