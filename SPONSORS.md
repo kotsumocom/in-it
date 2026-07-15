@@ -2,7 +2,9 @@
 
 Thank you to all our sponsors! ❤️
 
-![Sponsors](.github/sponsors/sponsors.svg)
+<p align="center">
+  <img src=".github/sponsors/sponsors.svg" />
+</p>
 
 ## Become a Sponsor
 
