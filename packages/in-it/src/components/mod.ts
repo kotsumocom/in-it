@@ -67,6 +67,8 @@ export { AuthForm } from "./interactive/AuthForm.tsx";
 export type { AuthFormProps, AuthFormData, AuthMode, AuthProvider } from "./interactive/AuthForm.tsx";
 export { UserMenu } from "./interactive/UserMenu.tsx";
 export type { UserMenuProps, UserMenuItem } from "./interactive/UserMenu.tsx";
+export { FileUpload } from "./interactive/FileUpload.tsx";
+export type { FileUploadProps, FileUploadError } from "./interactive/FileUpload.tsx";
 
 // UI
 export { PricingCard } from "./ui/PricingCard.tsx";

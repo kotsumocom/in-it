@@ -73,6 +73,15 @@ export const VARIABLES_CSS = `/* --- Variables --- */
 }
 :root:lang(ja) body, :root[lang="ja"] body {
   line-height: 1.7;
+  word-break: auto-phrase;     /* Chrome 119+ 日本語自動改行 */
+  overflow-wrap: anywhere;
+}
+/* CJK UI element adjustments */
+:lang(ja) .ii-button,
+:lang(ja) .ii-input,
+:lang(ja) .ii-select__trigger,
+:lang(ja) .ii-file-upload__label {
+  letter-spacing: 0.04em;
 }
 
 /* --- Dark Mode --- */

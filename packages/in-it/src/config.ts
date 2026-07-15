@@ -31,7 +31,7 @@ export type OverridableComponent =
   | "Switch" | "Dialog" | "Tabs" | "Menu" | "ToastContainer"
   | "Select" | "Accordion" | "Popover" | "ThemeToggle"
   | "Combobox" | "Checkbox" | "RadioGroup" | "Drawer"
-  | "Slider" | "Pagination" | "Steps" | "Tooltip"
+  | "Slider" | "Pagination" | "Steps" | "Tooltip" | "FileUpload"
   | "AuthForm" | "UserMenu"
   | "AdminShell" | "DocsShell"
   | "LandingHeader" | "LandingHero" | "LandingFeatures"
