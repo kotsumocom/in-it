@@ -31,6 +31,22 @@
   3. GitHub Actions (`publish.yml`) publishes both packages to JSR and creates a GitHub Release.
   4. On failure: a GitHub Issue is auto-created and synced to Linear via GitHub integration.
 
+### JSR の minimum-dependency-age 24h 制限
+- Deno は供給チェーン攻撃対策として、`deno.lock` の作成日より新しいバージョンのパッケージを自動解決しない。
+- リリース直後（24h 以内）に `deno install` すると以下のエラーが発生する：
+  ```
+  error: Could not find version of '@kotsumo/in-it' that matches specified version constraint '^0.X'
+  A newer matching version was found, but it was not used because it was newer than the specified minimum dependency date
+  ```
+- **回避方法**: `--minimum-dependency-age 0` フラグを使って制約を無効化する：
+  ```bash
+  # ロックファイルと node_modules を削除
+  rm deno.lock node_modules -rf
+  # minimum-dependency-age=0 でインストール（24h 制限を無効化）
+  deno install --reload --minimum-dependency-age 0
+  ```
+- これは `test.in-it.dev` や `in-it.dev` など、in-it パッケージを使用する全プロジェクトで共通。
+
 ### create-in-it Template Updates
 - Template files are inlined into `create-in-it/templates.gen.ts` (not read from the filesystem at runtime).
 - After modifying any file under `create-in-it/templates/`, run:
