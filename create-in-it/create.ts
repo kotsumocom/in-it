@@ -15,12 +15,11 @@ import { existsSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { createInterface } from "node:readline/promises";
 import { stdin, stdout } from "node:process";
+import { TEMPLATE_FILES } from "./templates.gen.ts";
 
 // ============================================================
 // Config
 // ============================================================
-
-const TEMPLATE_DIR = path.resolve(import.meta.dirname!, "templates/saas-starter");
 
 type Bundler = "vite" | "esbuild" | "none";
 
@@ -165,32 +164,19 @@ async function promptChoice<T extends string>(
 }
 
 // ============================================================
-// File copy (recursive)
+// Write template files from inline data
 // ============================================================
 
-async function copyTemplateFiles(
-  srcDir: string,
+async function writeTemplateFiles(
   destDir: string,
 ): Promise<void> {
-  const entries = await fs.readdir(srcDir, { withFileTypes: true });
+  for (const [filePath, content] of TEMPLATE_FILES) {
+    if (SKIP_FILES.has(filePath)) continue;
 
-  for (const entry of entries) {
-    const srcPath = path.join(srcDir, entry.name);
-    const destPath = path.join(destDir, entry.name);
-
-    if (entry.isDirectory()) {
-      // Skip .agents directory
-      if (entry.name === ".agents") continue;
-
-      await fs.mkdir(destPath, { recursive: true });
-      await copyTemplateFiles(srcPath, destPath);
-    } else if (entry.isFile()) {
-      const rel = path.relative(TEMPLATE_DIR, srcPath).replace(/\\/g, "/");
-      if (SKIP_FILES.has(rel)) continue;
-
-      await fs.copyFile(srcPath, destPath);
-      ok(rel);
-    }
+    const destPath = path.join(destDir, filePath);
+    await fs.mkdir(path.dirname(destPath), { recursive: true });
+    await fs.writeFile(destPath, content);
+    ok(filePath);
   }
 }
 
@@ -321,8 +307,8 @@ async function createProject(
 
   await fs.mkdir(absPath, { recursive: true });
 
-  // 1. Copy template files (excludes deno.json, vite.config.ts, .agents/)
-  await copyTemplateFiles(TEMPLATE_DIR, absPath);
+  // 1. Write template files from inline data (excludes deno.json, vite.config.ts)
+  await writeTemplateFiles(absPath);
   log("");
 
   // 2. Generate deno.json for selected bundler
@@ -335,11 +321,11 @@ async function createProject(
   // 3. Bundler-specific files
   switch (bundler) {
     case "vite": {
-      await fs.copyFile(
-        path.join(TEMPLATE_DIR, "vite.config.ts"),
-        path.join(absPath, "vite.config.ts"),
-      );
-      ok("vite.config.ts");
+      const viteConfig = TEMPLATE_FILES.get("vite.config.ts");
+      if (viteConfig) {
+        await fs.writeFile(path.join(absPath, "vite.config.ts"), viteConfig);
+        ok("vite.config.ts");
+      }
       break;
     }
 
