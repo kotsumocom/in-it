@@ -2,6 +2,29 @@
 
 すべての重要な変更を記録します。
 
+## [0.8.0] — 2026-07-15
+
+### 追加
+
+- **認証アダプターレイヤー** (`auth/`): `AuthAdapter` インターフェース、`createAuth()` ファクトリ、`authMiddleware`、Supabase REST API アダプター
+- **サーバーサイドルーティング** (`server/`): `withLayout`（ネストレイアウト）、`contextProvider`、`routeGroup`
+- **FileUpload コンポーネント**: ドラッグ&ドロップ、プレビュー、バリデーション対応
+- **ライブプレビュー機能** (`docs/`): `CodePreview` コンポーネント + `hydratePreviews()` ハイドレーション
+- 全コンポーネントに `labels` props によるロケール文字列オーバーライド機能
+- CJK Typography 強化: `word-break: auto-phrase`、`overflow-wrap: anywhere`、UI 要素の `letter-spacing`
+
+### 変更
+
+- `t()` 関数を内部専用に変更（公開エクスポートを削除）
+- 全コンポーネントのロケール文字列を `useLabels()` 経由に統一
+
+### エクスポート追加
+
+- `./auth` — 認証モジュール
+- `./auth/supabase` — Supabase アダプター
+- `./server` — サーバーヘルパー
+- `./docs/preview` — ライブプレビューハイドレーション
+
 ## [0.7.0] — 2026-07-14
 
 ### 内部変更
