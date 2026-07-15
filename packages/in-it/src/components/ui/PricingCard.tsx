@@ -12,7 +12,8 @@
  *   />
  */
 
-import { t } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 import { Button } from "./mod.tsx";
 import { injectCSS } from "../../inject.ts";
 
@@ -126,6 +127,8 @@ export interface PricingCardProps {
   badge?: string;
   /** Additional CSS class. */
   class?: string;
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, "getStarted">>;
 }
 
 /** Pricing plan card with features list and CTA button. */
@@ -140,8 +143,10 @@ export function PricingCard({
   highlighted,
   badge,
   class: cls,
+  labels: labelOverrides,
 }: PricingCardProps): any {
   injectCSS("ii-pricing-card", PRICING_CARD_CSS);
+  const l = useLabels(["getStarted"] as const, labelOverrides);
   return (
     <div class={`ii-pricing-card${highlighted ? " ii-pricing-card--highlighted" : ""}${cls ? ` ${cls}` : ""}`}>
       {badge && <span class="ii-pricing-card__badge">{badge}</span>}
@@ -160,7 +165,7 @@ export function PricingCard({
         ))}
       </ul>
       <Button variant={highlighted ? "filled" : "outlined"} onClick={onCtaClick}>
-        {cta ?? t("getStarted")}
+        {cta ?? l.getStarted}
       </Button>
     </div>
   );

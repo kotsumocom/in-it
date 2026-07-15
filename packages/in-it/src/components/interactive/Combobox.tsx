@@ -3,7 +3,8 @@
  * WAI-ARIA Combobox pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
-import { t } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Combobox — co-located for self-containment. */
@@ -84,12 +85,15 @@ export interface ComboboxProps {
   placeholder?: string;
   label?: string;
   onChange?: (value: string) => void;
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, "search">>;
 }
 
 /** Autocomplete text input with filterable dropdown options. */
-export function Combobox({ options, value = "", placeholder, label, onChange }: ComboboxProps): any {
+export function Combobox({ options, value = "", placeholder, label, onChange, labels: labelOverrides }: ComboboxProps): any {
   injectCSS("ii-combobox", COMBOBOX_CSS);
-  const resolvedPlaceholder = placeholder ?? t("search");
+  const l = useLabels(["search"] as const, labelOverrides);
+  const resolvedPlaceholder = placeholder ?? l.search;
   const [query, setQuery] = useState(value);
   const [open, setOpen] = useState(false);
   const [focusedIdx, setFocusedIdx] = useState(-1);

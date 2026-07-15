@@ -1,4 +1,5 @@
-import { t } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Chip — co-located for self-containment. */
@@ -41,17 +42,20 @@ export interface ChipProps {
   size?: "sm" | "md";
   onClose?: () => void;
   children: any;
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, "remove">>;
 }
 
 /** Compact label element for tags, filters, or selections. Supports an optional dismiss button. */
-export function Chip({ variant = "default", size = "md", onClose, children }: ChipProps): any {
+export function Chip({ variant = "default", size = "md", onClose, children, labels: labelOverrides }: ChipProps): any {
   injectCSS("ii-chip", CHIP_CSS);
+  const l = useLabels(["remove"] as const, labelOverrides);
   const mods = `ii-chip${variant !== "default" ? ` ii-chip--${variant}` : ""}${size !== "md" ? ` ii-chip--${size}` : ""}`;
   return (
     <span class={mods}>
       {children}
       {onClose && (
-        <button type="button" class="ii-chip__close" aria-label={t("remove")} onClick={onClose}>
+        <button type="button" class="ii-chip__close" aria-label={l.remove} onClick={onClose}>
           x
         </button>
       )}

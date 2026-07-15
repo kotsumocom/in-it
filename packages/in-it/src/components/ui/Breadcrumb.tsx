@@ -1,4 +1,5 @@
-import { t } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Breadcrumb — co-located for self-containment. */
@@ -20,13 +21,16 @@ export interface BreadcrumbItem {
 export interface BreadcrumbProps {
   items: BreadcrumbItem[];
   separator?: string;
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, "breadcrumb">>;
 }
 
 /** Breadcrumb navigation trail with customizable separator. */
-export function Breadcrumb({ items, separator = "/" }: BreadcrumbProps): any {
+export function Breadcrumb({ items, separator = "/", labels: labelOverrides }: BreadcrumbProps): any {
   injectCSS("ii-breadcrumb", BREADCRUMB_CSS);
+  const l = useLabels(["breadcrumb"] as const, labelOverrides);
   return (
-    <nav class="ii-breadcrumb" aria-label={t("breadcrumb")}>
+    <nav class="ii-breadcrumb" aria-label={l.breadcrumb}>
       <ol class="ii-breadcrumb__list" style={{ display: "flex", alignItems: "center", gap: "8px", listStyle: "none", padding: 0, margin: 0 }}>
         {items.map((item, i) => (
           <li key={i} class="ii-breadcrumb__item" style={{ display: "flex", alignItems: "center", gap: "8px" }}>

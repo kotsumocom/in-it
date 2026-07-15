@@ -5,7 +5,8 @@
 import { useState, useEffect, useCallback } from "hono/jsx";
 import { Icon } from "../../icons/Icon.tsx";
 import { injectCSS } from "../../inject.ts";
-import { t as tr } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 
 /** @internal CSS for Toast — co-located for self-containment. */
 export const TOAST_CSS = `/* --- Toast --- */
@@ -70,11 +71,14 @@ export function toast(message: string, variant: ToastItem["variant"] = "info", d
 /** Props for the ToastContainer component. */
 export interface ToastContainerProps {
   position?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, "close">>;
 }
 
 /** Container that renders active toast notifications with ARIA live region. */
-export function ToastContainer({ position = "top-right" }: ToastContainerProps): any {
+export function ToastContainer({ position = "top-right", labels: labelOverrides }: ToastContainerProps): any {
   injectCSS("ii-toast", TOAST_CSS);
+  const l = useLabels(["close"] as const, labelOverrides);
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
   useEffect(() => {
@@ -104,7 +108,7 @@ export function ToastContainer({ position = "top-right" }: ToastContainerProps):
             {(!t.variant || t.variant === "info") && <Icon name="info-circle" size={18} />}
           </span>
           <span class="ii-toast__message">{t.message}</span>
-          <button class="ii-toast__close" onClick={() => remove(t.id)} aria-label={tr("close")}><Icon name="x" size={16} /></button>
+          <button class="ii-toast__close" onClick={() => remove(t.id)} aria-label={l.close}><Icon name="x" size={16} /></button>
         </div>
       ))}
     </div>

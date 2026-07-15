@@ -54,6 +54,16 @@ export interface LocaleStrings {
   invalidEmail: string;
   passwordTooShort: string;
   nameRequired: string;
+  // FileUpload
+  dropFiles: string;
+  browseFiles: string;
+  fileTooLarge: string;
+  invalidFileType: string;
+  tooManyFiles: string;
+  // Auth
+  signOut: string;
+  sessionExpired: string;
+  unauthorized: string;
 }
 
 const en: LocaleStrings = {
@@ -88,6 +98,16 @@ const en: LocaleStrings = {
   invalidEmail: "Please enter a valid email address.",
   passwordTooShort: "Password must be at least 8 characters.",
   nameRequired: "Please enter your name.",
+  // FileUpload
+  dropFiles: "Drop files here or",
+  browseFiles: "browse",
+  fileTooLarge: "File is too large",
+  invalidFileType: "File type not accepted",
+  tooManyFiles: "Too many files",
+  // Auth
+  signOut: "Sign Out",
+  sessionExpired: "Your session has expired. Please sign in again.",
+  unauthorized: "You must be signed in to access this page.",
 };
 
 const ja: LocaleStrings = {
@@ -122,6 +142,16 @@ const ja: LocaleStrings = {
   invalidEmail: "有効なメールアドレスを入力してください。",
   passwordTooShort: "パスワードは8文字以上必要です。",
   nameRequired: "名前を入力してください。",
+  // FileUpload
+  dropFiles: "ここにファイルをドロップ、または",
+  browseFiles: "ファイルを選択",
+  fileTooLarge: "ファイルサイズが大きすぎます",
+  invalidFileType: "対応していないファイル形式です",
+  tooManyFiles: "ファイル数が上限を超えています",
+  // Auth
+  signOut: "ログアウト",
+  sessionExpired: "セッションが期限切れです。再度ログインしてください。",
+  unauthorized: "このページにアクセスするにはログインが必要です。",
 };
 
 /** All locales. */
@@ -147,4 +177,28 @@ export function getLocale(): Locale {
 /** Get a translated string by key. */
 export function t(key: keyof LocaleStrings): string {
   return locales[currentLocale][key];
+}
+
+/**
+ * Resolve locale labels with optional per-component overrides.
+ *
+ * Components use this to allow callers to customize built-in strings
+ * via a `labels` prop while falling back to the global `t()` defaults.
+ *
+ * @example
+ * ```ts
+ * // Inside a component:
+ * const l = useLabels(["close", "remove"] as const, props.labels);
+ * // l.close → props.labels?.close ?? t("close")
+ * ```
+ */
+export function useLabels<K extends keyof LocaleStrings>(
+  keys: readonly K[],
+  overrides?: Partial<Pick<LocaleStrings, K>>,
+): Pick<LocaleStrings, K> {
+  const result = {} as Pick<LocaleStrings, K>;
+  for (const key of keys) {
+    result[key] = overrides?.[key] ?? t(key);
+  }
+  return result;
 }

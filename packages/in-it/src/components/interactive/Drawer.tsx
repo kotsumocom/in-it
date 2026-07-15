@@ -2,7 +2,8 @@
  * Drawer component - slide panel
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
-import { t } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Drawer — co-located for self-containment. */
@@ -38,11 +39,14 @@ export interface DrawerProps {
   title?: string;
   width?: string;
   children: any;
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, "close">>;
 }
 
 /** Slide-in panel for navigation or detail views. */
-export function Drawer({ open, onClose, position = "right", title, width = "320px", children }: DrawerProps): any {
+export function Drawer({ open, onClose, position = "right", title, width = "320px", children, labels: labelOverrides }: DrawerProps): any {
   injectCSS("ii-drawer", DRAWER_CSS);
+  const l = useLabels(["close"] as const, labelOverrides);
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
@@ -64,7 +68,7 @@ export function Drawer({ open, onClose, position = "right", title, width = "320p
       <div class={`ii-drawer ii-drawer--${position}`} role="dialog" aria-modal={true} style={{ width }}>
         <div class="ii-drawer__header">
           {title && <h2 class="ii-drawer__title">{title}</h2>}
-          <button type="button" class="ii-drawer__close" aria-label={t("close")} onClick={onClose}>x</button>
+          <button type="button" class="ii-drawer__close" aria-label={l.close} onClick={onClose}>x</button>
         </div>
         <div class="ii-drawer__body">{children}</div>
       </div>

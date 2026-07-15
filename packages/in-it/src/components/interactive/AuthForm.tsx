@@ -15,7 +15,8 @@
  * - Form uses noValidate + custom validation to prevent XSS in error messages
  */
 import { useState, useCallback } from "hono/jsx";
-import { t } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 import { Button, Input } from "../ui/mod.tsx";
 import { injectCSS } from "../../inject.ts";
 
@@ -132,6 +133,23 @@ export interface AuthProvider {
   icon?: any;
 }
 
+/** Locale keys used by AuthForm. */
+type AuthFormLabelKeys =
+  | "signIn" | "createAccount" | "loading" | "continueWith" | "or"
+  | "name" | "namePlaceholder" | "email" | "password"
+  | "passwordPlaceholder" | "passwordMinPlaceholder"
+  | "dontHaveAccount" | "alreadyHaveAccount" | "signUp"
+  | "invalidEmail" | "passwordTooShort" | "nameRequired";
+
+/** @internal Keys array for useLabels. */
+const AUTH_FORM_KEYS: readonly AuthFormLabelKeys[] = [
+  "signIn", "createAccount", "loading", "continueWith", "or",
+  "name", "namePlaceholder", "email", "password",
+  "passwordPlaceholder", "passwordMinPlaceholder",
+  "dontHaveAccount", "alreadyHaveAccount", "signUp",
+  "invalidEmail", "passwordTooShort", "nameRequired",
+] as const;
+
 /** Props for AuthForm. */
 export interface AuthFormProps {
   /** Login or signup mode. */
@@ -148,6 +166,8 @@ export interface AuthFormProps {
   loading?: boolean;
   /** Error message to display. */
   error?: string;
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, AuthFormLabelKeys>>;
   /** Additional CSS class. */
   class?: string;
 }
@@ -180,9 +200,11 @@ export function AuthForm({
   onModeSwitch,
   loading,
   error,
+  labels: labelOverrides,
   class: cls,
 }: AuthFormProps): any {
   injectCSS("ii-auth-form", AUTH_FORM_CSS);
+  const l = useLabels(AUTH_FORM_KEYS, labelOverrides);
   const [formError, setFormError] = useState("");
 
   const handleSubmit = useCallback(
@@ -195,15 +217,15 @@ export function AuthForm({
       const name = mode === "signup" ? sanitize((data.get("name") as string) ?? "").trim() : undefined;
 
       if (!EMAIL_RE.test(email)) {
-        setFormError(t("invalidEmail"));
+        setFormError(l.invalidEmail);
         return;
       }
       if (password.length < 8) {
-        setFormError(t("passwordTooShort"));
+        setFormError(l.passwordTooShort);
         return;
       }
       if (mode === "signup" && (!name || name.length < 1)) {
-        setFormError(t("nameRequired"));
+        setFormError(l.nameRequired);
         return;
       }
 
@@ -222,7 +244,7 @@ export function AuthForm({
 
   return (
     <div class={`ii-auth-form${cls ? ` ${cls}` : ""}`}>
-      <h2 class="ii-auth-form__title">{isLogin ? t("signIn") : t("createAccount")}</h2>
+      <h2 class="ii-auth-form__title">{isLogin ? l.signIn : l.createAccount}</h2>
 
       {resolvedProviders.length > 0 && (
         <div class="ii-auth-form__providers">
@@ -235,11 +257,11 @@ export function AuthForm({
               disabled={loading}
             >
               {p.icon ?? null}
-              <span>{t("continueWith").replace("{provider}", p.label)}</span>
+              <span>{l.continueWith.replace("{provider}", p.label)}</span>
             </button>
           ))}
           <div class="ii-auth-form__divider">
-            <span>{t("or")}</span>
+            <span>{l.or}</span>
           </div>
         </div>
       )}
@@ -250,8 +272,8 @@ export function AuthForm({
             id="auth-name"
             name="name"
             type="text"
-            label={t("name")}
-            placeholder={t("namePlaceholder")}
+            label={l.name}
+            placeholder={l.namePlaceholder}
             required
             autocomplete="name"
             disabled={loading}
@@ -262,7 +284,7 @@ export function AuthForm({
           id="auth-email"
           name="email"
           type="email"
-          label={t("email")}
+          label={l.email}
           placeholder="you@example.com"
           required
           autocomplete="email"
@@ -273,8 +295,8 @@ export function AuthForm({
           id="auth-password"
           name="password"
           type="password"
-          label={t("password")}
-          placeholder={isLogin ? t("passwordPlaceholder") : t("passwordMinPlaceholder")}
+          label={l.password}
+          placeholder={isLogin ? l.passwordPlaceholder : l.passwordMinPlaceholder}
           required
           minLength={8}
           autocomplete={isLogin ? "current-password" : "new-password"}
@@ -286,15 +308,15 @@ export function AuthForm({
         )}
 
         <Button type="submit" variant="filled" class="ii-auth-form__submit" disabled={loading}>
-          {loading ? t("loading") : isLogin ? t("signIn") : t("createAccount")}
+          {loading ? l.loading : isLogin ? l.signIn : l.createAccount}
         </Button>
       </form>
 
       {onModeSwitch && (
         <p class="ii-auth-form__switch">
-          {isLogin ? t("dontHaveAccount") : t("alreadyHaveAccount")}
+          {isLogin ? l.dontHaveAccount : l.alreadyHaveAccount}
           <button type="button" class="ii-auth-form__switch-btn" onClick={onModeSwitch}>
-            {isLogin ? t("signUp") : t("signIn")}
+            {isLogin ? l.signUp : l.signIn}
           </button>
         </p>
       )}

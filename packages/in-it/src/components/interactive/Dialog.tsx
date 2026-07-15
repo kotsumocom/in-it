@@ -3,7 +3,8 @@
  * WAI-ARIA Dialog (Modal) pattern
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
-import { t } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Dialog — co-located for self-containment. */
@@ -73,6 +74,8 @@ export interface DialogProps {
   description?: string;
   closeOnBackdrop?: boolean;
   children: any;
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, "close">>;
 }
 
 /** Modal dialog overlay with backdrop and close button. */
@@ -83,8 +86,10 @@ export function Dialog({
   description,
   closeOnBackdrop = true,
   children,
+  labels: labelOverrides,
 }: DialogProps): any {
   injectCSS("ii-dialog", DIALOG_CSS);
+  const l = useLabels(["close"] as const, labelOverrides);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -132,7 +137,7 @@ export function Dialog({
         {title && (
           <div class="ii-dialog__header">
             <h2 id="dialog-title" class="ii-dialog__title">{title}</h2>
-            <button type="button" class="ii-dialog__close" aria-label={t("close")} onClick={onClose}>
+            <button type="button" class="ii-dialog__close" aria-label={l.close} onClick={onClose}>
               x
             </button>
           </div>

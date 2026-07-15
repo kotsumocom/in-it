@@ -2,7 +2,8 @@
  * Pagination component
  */
 import { useState, useMemo } from "hono/jsx";
-import { t } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Pagination — co-located for self-containment. */
@@ -21,6 +22,13 @@ export const PAGINATION_CSS = `/* --- Pagination --- */
 .ii-pagination__ellipsis { padding: 0 4px; color: var(--ii-on-surface-variant); }
 `;
 
+/** Locale keys used by Pagination. */
+type PaginationLabelKeys = "pagination" | "previousPage" | "nextPage";
+
+const PAGINATION_KEYS: readonly PaginationLabelKeys[] = [
+  "pagination", "previousPage", "nextPage",
+] as const;
+
 /** Props for the Pagination component. */
 export interface PaginationProps {
   total: number;
@@ -28,11 +36,14 @@ export interface PaginationProps {
   defaultPage?: number;
   siblingCount?: number;
   onChange?: (page: number) => void;
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, PaginationLabelKeys>>;
 }
 
 /** Page navigation with ellipsis, prev/next buttons, and keyboard support. */
-export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount = 1, onChange }: PaginationProps): any {
+export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount = 1, onChange, labels: labelOverrides }: PaginationProps): any {
   injectCSS("ii-pagination", PAGINATION_CSS);
+  const l = useLabels(PAGINATION_KEYS, labelOverrides);
   const [current, setCurrent] = useState(defaultPage);
   const totalPages = Math.ceil(total / pageSize);
 
@@ -60,8 +71,8 @@ export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount
   };
 
   return (
-    <nav class="ii-pagination" aria-label={t("pagination")}>
-      <button class="ii-pagination__btn" disabled={current === 1} onClick={() => go(current - 1)} aria-label={t("previousPage")}>
+    <nav class="ii-pagination" aria-label={l.pagination}>
+      <button class="ii-pagination__btn" disabled={current === 1} onClick={() => go(current - 1)} aria-label={l.previousPage}>
         ←
       </button>
       {pages.map((p, i) =>
@@ -74,7 +85,7 @@ export function Pagination({ total, pageSize = 10, defaultPage = 1, siblingCount
           </button>
         )
       )}
-      <button class="ii-pagination__btn" disabled={current === totalPages} onClick={() => go(current + 1)} aria-label={t("nextPage")}>
+      <button class="ii-pagination__btn" disabled={current === totalPages} onClick={() => go(current + 1)} aria-label={l.nextPage}>
         →
       </button>
     </nav>

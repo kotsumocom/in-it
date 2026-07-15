@@ -6,7 +6,8 @@
  *   <ErrorPage code={500} title="Server Error" description="Something went wrong." />
  */
 
-import { t } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 import { Button } from "./mod.tsx";
 import { injectCSS } from "../../inject.ts";
 
@@ -58,6 +59,8 @@ export interface ErrorPageProps {
   onAction?: () => void;
   /** Additional CSS class. */
   class?: string;
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, "goHome">>;
 }
 
 /** Full-page error display with status code, title, and optional action. */
@@ -68,8 +71,10 @@ export function ErrorPage({
   actionLabel,
   onAction,
   class: cls,
+  labels: labelOverrides,
 }: ErrorPageProps): any {
   injectCSS("ii-error-page", ERROR_PAGE_CSS);
+  const l = useLabels(["goHome"] as const, labelOverrides);
   return (
     <div class={`ii-error-page${cls ? ` ${cls}` : ""}`}>
       <div class="ii-error-page__inner">
@@ -77,7 +82,7 @@ export function ErrorPage({
         <h1 class="ii-error-page__title">{title}</h1>
         {description && <p class="ii-error-page__desc">{description}</p>}
         <Button variant="filled" onClick={onAction}>
-          {actionLabel ?? t("goHome")}
+          {actionLabel ?? l.goHome}
         </Button>
       </div>
     </div>

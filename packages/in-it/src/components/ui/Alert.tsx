@@ -1,5 +1,6 @@
 import { Icon } from "../../icons/Icon.tsx";
-import { t } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for Alert — co-located for self-containment. */
@@ -27,11 +28,14 @@ export interface AlertProps {
   closable?: boolean;
   onClose?: () => void;
   children: any;
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, "close">>;
 }
 
 /** Inline alert banner with icon, title, and dismissible option. */
-export function Alert({ variant = "info", title, icon, closable, onClose, children }: AlertProps): any {
+export function Alert({ variant = "info", title, icon, closable, onClose, children, labels: labelOverrides }: AlertProps): any {
   injectCSS("ii-alert", ALERT_CSS);
+  const l = useLabels(["close"] as const, labelOverrides);
   const defaultIcons: Record<string, any> = {
     info: <Icon name="info-circle" size={18} />,
     success: <Icon name="circle-check" size={18} />,
@@ -46,7 +50,7 @@ export function Alert({ variant = "info", title, icon, closable, onClose, childr
         <div class="ii-alert__desc">{children}</div>
       </div>
       {closable && (
-        <button class="ii-alert__close" onClick={onClose} aria-label={t("close")}><Icon name="x" size={16} /></button>
+        <button class="ii-alert__close" onClick={onClose} aria-label={l.close}><Icon name="x" size={16} /></button>
       )}
     </div>
   );

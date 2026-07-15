@@ -3,7 +3,8 @@
  */
 import { useState, useEffect, useCallback } from "hono/jsx";
 import { Icon } from "../../icons/Icon.tsx";
-import { t } from "../../locale.ts";
+import { useLabels } from "../../locale.ts";
+import type { LocaleStrings } from "../../locale.ts";
 import { injectCSS } from "../../inject.ts";
 
 import { getConfig } from "../../config.ts";
@@ -46,11 +47,20 @@ export const THEME_TOGGLE_CSS = `/* --- Theme Toggle --- */
 /** Available theme modes: light, dark, or system preference. */
 export type Theme = "light" | "dark" | "system";
 
+/** Locale keys used by ThemeToggle. */
+type ThemeToggleLabelKeys = "theme" | "light" | "dark" | "system";
+
+const THEME_TOGGLE_KEYS: readonly ThemeToggleLabelKeys[] = [
+  "theme", "light", "dark", "system",
+] as const;
+
 /** Props for the ThemeToggle component. */
 export interface ThemeToggleProps {
   defaultTheme?: Theme;
   compact?: boolean;
   onChange?: (theme: Theme) => void;
+  /** Override built-in locale strings. */
+  labels?: Partial<Pick<LocaleStrings, ThemeToggleLabelKeys>>;
 }
 
 function getSystemTheme(): "light" | "dark" {
@@ -65,8 +75,9 @@ function applyTheme(theme: Theme) {
 }
 
 /** Light/dark/system theme toggle with persistence via data-theme attribute. */
-export function ThemeToggle({ defaultTheme, compact = false, onChange }: ThemeToggleProps): any {
+export function ThemeToggle({ defaultTheme, compact = false, onChange, labels: labelOverrides }: ThemeToggleProps): any {
   injectCSS("ii-theme-toggle", THEME_TOGGLE_CSS);
+  const l = useLabels(THEME_TOGGLE_KEYS, labelOverrides);
   const initialTheme = defaultTheme ?? getConfig().theme?.defaultMode ?? "system";
   const [theme, setTheme] = useState<Theme>(initialTheme);
 
@@ -105,7 +116,7 @@ export function ThemeToggle({ defaultTheme, compact = false, onChange }: ThemeTo
   };
 
   return (
-    <div class="ii-theme-toggle-group" role="radiogroup" aria-label={t("theme")}>
+    <div class="ii-theme-toggle-group" role="radiogroup" aria-label={l.theme}>
       {(["light", "dark", "system"] as Theme[]).map((mode) => (
         <button
           key={mode}
@@ -115,9 +126,9 @@ export function ThemeToggle({ defaultTheme, compact = false, onChange }: ThemeTo
           class={`ii-theme-toggle-btn${theme === mode ? " ii-theme-toggle-btn--active" : ""}`}
           onClick={() => setAndNotify(mode)}
         >
-          {mode === "light" && <><Icon name="sun" size={16} /> {t("light")}</>}
-          {mode === "dark" && <><Icon name="moon" size={16} /> {t("dark")}</>}
-          {mode === "system" && <><Icon name="device-desktop" size={16} /> {t("system")}</>}
+          {mode === "light" && <><Icon name="sun" size={16} /> {l.light}</>}
+          {mode === "dark" && <><Icon name="moon" size={16} /> {l.dark}</>}
+          {mode === "system" && <><Icon name="device-desktop" size={16} /> {l.system}</>}
         </button>
       ))}
     </div>
