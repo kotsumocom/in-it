@@ -79,6 +79,12 @@ export { ErrorPage } from "./ui/ErrorPage.tsx";
 export type { ErrorPageProps } from "./ui/ErrorPage.tsx";
 export { BlogCard, BlogGrid, BlogArticle } from "./ui/Blog.tsx";
 export type { BlogCardProps, BlogGridProps, BlogArticleProps, BlogPost } from "./ui/Blog.tsx";
+export { PageHeader } from "./ui/PageHeader.tsx";
+export type { PageHeaderProps } from "./ui/PageHeader.tsx";
+export { ListItem } from "./ui/ListItem.tsx";
+export type { ListItemProps } from "./ui/ListItem.tsx";
+export { Text } from "./ui/Text.tsx";
+export type { TextProps, TextSize, TextWeight, TextAlign } from "./ui/Text.tsx";
 
 // Layout
 export { AdminShell } from "./admin/AdminShell.tsx";
@@ -89,6 +95,12 @@ export { CodePreview } from "./docs/CodePreview.tsx";
 export type { CodePreviewProps } from "./docs/CodePreview.tsx";
 export { LandingHeader, LandingHero, LandingFeatures, LandingSection, LandingFooter } from "./layout/Landing.tsx";
 export type { LandingHeaderProps, LandingHeroProps, FeatureCard, LandingFeaturesProps, LandingSectionProps, LandingFooterProps } from "./layout/Landing.tsx";
+export { Stack } from "./layout/Stack.tsx";
+export type { StackProps } from "./layout/Stack.tsx";
+export { Row } from "./layout/Row.tsx";
+export type { RowProps } from "./layout/Row.tsx";
+export { Grid } from "./layout/Grid.tsx";
+export type { GridProps } from "./layout/Grid.tsx";
 
 // Charts
 export { BarChart } from "./charts/BarChart.tsx";

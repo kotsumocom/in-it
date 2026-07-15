@@ -53,6 +53,9 @@ import { ERROR_PAGE_CSS } from "./components/ui/ErrorPage.tsx";
 import { PRICING_CARD_CSS } from "./components/ui/PricingCard.tsx";
 import { SETTINGS_SECTION_CSS } from "./components/ui/SettingsSection.tsx";
 import { ASIDE_CSS } from "./components/ui/Aside.tsx";
+import { PAGE_HEADER_CSS } from "./components/ui/PageHeader.tsx";
+import { LIST_ITEM_CSS } from "./components/ui/ListItem.tsx";
+import { TEXT_CSS } from "./components/ui/Text.tsx";
 
 // --- Interactive Components ---
 import { SWITCH_CSS } from "./components/interactive/Switch.tsx";
@@ -85,6 +88,9 @@ import { SPARK_LINE_CSS } from "./components/charts/SparkLine.tsx";
 // --- Layout ---
 import { LANDING_CSS } from "./components/layout/Landing.tsx";
 import { DOCS_CSS } from "./components/layout/DocsShell.tsx";
+import { STACK_CSS } from "./components/layout/Stack.tsx";
+import { ROW_CSS } from "./components/layout/Row.tsx";
+import { GRID_CSS } from "./components/layout/Grid.tsx";
 
 // --- Admin ---
 import { ADMIN_SHELL_CSS, ADMIN_SHELL_MOBILE_CSS } from "./components/admin/AdminShell.tsx";
@@ -114,6 +120,9 @@ export const CSS: string = [
   PRICING_CARD_CSS,
   SETTINGS_SECTION_CSS,
   ASIDE_CSS,
+  PAGE_HEADER_CSS,
+  LIST_ITEM_CSS,
+  TEXT_CSS,
   // Interactive
   SWITCH_CSS,
   DIALOG_CSS,
@@ -143,6 +152,9 @@ export const CSS: string = [
   // Layout
   LANDING_CSS,
   DOCS_CSS,
+  STACK_CSS,
+  ROW_CSS,
+  GRID_CSS,
   // Admin
   ADMIN_SHELL_CSS,
   ADMIN_SHELL_MOBILE_CSS,
