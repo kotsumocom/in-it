@@ -20,6 +20,9 @@
     "./styles": "./src/styles.tsx",
     "./config": "./src/config.ts",
     "./locale": "./src/locale.ts",
+    "./auth": "./src/auth/mod.ts",
+    "./auth/supabase": "./src/auth/adapters/supabase.ts",
+    "./server": "./src/server/mod.ts",
     "./gen": "./src/gen.ts"
   },
   "compilerOptions": {
