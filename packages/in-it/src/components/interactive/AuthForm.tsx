@@ -136,7 +136,7 @@ export interface AuthProvider {
 /** Locale keys used by AuthForm. */
 type AuthFormLabelKeys =
   | "signIn" | "createAccount" | "loading" | "continueWith" | "or"
-  | "name" | "namePlaceholder" | "email" | "password"
+  | "name" | "namePlaceholder" | "email" | "emailPlaceholder" | "password"
   | "passwordPlaceholder" | "passwordMinPlaceholder"
   | "dontHaveAccount" | "alreadyHaveAccount" | "signUp"
   | "invalidEmail" | "passwordTooShort" | "nameRequired";
@@ -144,7 +144,7 @@ type AuthFormLabelKeys =
 /** @internal Keys array for useLabels. */
 const AUTH_FORM_KEYS: readonly AuthFormLabelKeys[] = [
   "signIn", "createAccount", "loading", "continueWith", "or",
-  "name", "namePlaceholder", "email", "password",
+  "name", "namePlaceholder", "email", "emailPlaceholder", "password",
   "passwordPlaceholder", "passwordMinPlaceholder",
   "dontHaveAccount", "alreadyHaveAccount", "signUp",
   "invalidEmail", "passwordTooShort", "nameRequired",
@@ -285,7 +285,7 @@ export function AuthForm({
           name="email"
           type="email"
           label={l.email}
-          placeholder="you@example.com"
+          placeholder={l.emailPlaceholder}
           required
           autocomplete="email"
           disabled={loading}

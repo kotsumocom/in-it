@@ -1,5 +1,6 @@
 
 import { injectCSS } from "../../inject.ts";
+import { Icon } from "../../icons/Icon.tsx";
 
 /** @internal CSS for EmptyState — co-located for self-containment. */
 export const EMPTY_STATE_CSS = `/* --- Empty State --- */
@@ -30,7 +31,7 @@ export const EMPTY_STATE_CSS = `/* --- Empty State --- */
  * @property children - Optional action elements (e.g., a button).
  */
 export interface EmptyStateProps {
-  icon?: string;
+  icon?: string | any;
   title: string;
   description?: string;
   children?: any;
@@ -41,7 +42,7 @@ export function EmptyState({ icon = "", title, description, children }: EmptySta
   injectCSS("ii-empty", EMPTY_STATE_CSS);
   return (
     <div class="ii-empty">
-      <div class="ii-empty__icon">{icon}</div>
+      <div class="ii-empty__icon">{typeof icon === "string" ? <Icon name={icon} size={48} /> : icon}</div>
       <h3 class="ii-empty__title">{title}</h3>
       {description && <p class="ii-empty__desc">{description}</p>}
       {children}

@@ -39,6 +39,11 @@ export interface AuthMiddlewareOptions {
    * Return a Response to override default behavior.
    */
   onUnauthenticated?: (c: Context) => Response | Promise<Response> | void;
+  /**
+   * Called after successful authentication, before proceeding to the handler.
+   * Use this to bind user-scoped resources (e.g., DB clients) to the context.
+   */
+  onAuthenticated?: (c: Context, session: AuthSession) => void | Promise<void>;
 }
 
 /**
@@ -69,6 +74,7 @@ export function authMiddleware(options: AuthMiddlewareOptions): MiddlewareHandle
     loginPath = "/login",
     publicPaths = [],
     onUnauthenticated,
+    onAuthenticated,
   } = options;
 
   return async (c: Context, next: Next) => {
@@ -90,6 +96,9 @@ export function authMiddleware(options: AuthMiddlewareOptions): MiddlewareHandle
       // Authenticated — set context variables
       c.set("authUser" as never, session.user as never);
       c.set("authSession" as never, session as never);
+      if (onAuthenticated) {
+        await onAuthenticated(c, session);
+      }
       return next();
     }
 
