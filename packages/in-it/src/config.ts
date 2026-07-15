@@ -33,7 +33,7 @@ export type OverridableComponent =
   | "Combobox" | "Checkbox" | "RadioGroup" | "Drawer"
   | "Slider" | "Pagination" | "Steps" | "Tooltip" | "FileUpload"
   | "AuthForm" | "UserMenu"
-  | "AdminShell" | "DocsShell"
+  | "AdminShell" | "DocsShell" | "CodePreview"
   | "LandingHeader" | "LandingHero" | "LandingFeatures"
   | "LandingSection" | "LandingFooter"
   | "BarChart" | "LineChart" | "DonutChart" | "SparkLine";

@@ -85,6 +85,8 @@ export { AdminShell } from "./admin/AdminShell.tsx";
 export type { AdminShellProps, NavItem } from "./admin/AdminShell.tsx";
 export { DocsShell } from "./layout/DocsShell.tsx";
 export type { DocsShellProps, DocsSidebarGroup, DocsSidebarItem, DocsTocItem } from "./layout/DocsShell.tsx";
+export { CodePreview } from "./docs/CodePreview.tsx";
+export type { CodePreviewProps } from "./docs/CodePreview.tsx";
 export { LandingHeader, LandingHero, LandingFeatures, LandingSection, LandingFooter } from "./layout/Landing.tsx";
 export type { LandingHeaderProps, LandingHeroProps, FeatureCard, LandingFeaturesProps, LandingSectionProps, LandingFooterProps } from "./layout/Landing.tsx";
 

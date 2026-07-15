@@ -11,6 +11,7 @@
     "./color/scheme": "./src/color/scheme.ts",
     "./color/presets": "./src/color/presets.ts",
     "./docs": "./src/docs/markdown.ts",
+    "./docs/preview": "./src/docs/hydrate-previews.ts",
     "./router": "./src/router.tsx",
     "./icons": "./src/icons/Icon.tsx",
     "./icons/paths": "./src/icons/paths.ts",

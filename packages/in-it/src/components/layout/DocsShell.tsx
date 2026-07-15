@@ -50,6 +50,13 @@ export const DOCS_CSS = `/* --- Docs Layout --- */
 .ii-docs-article a { color: var(--ii-primary); text-decoration: underline; text-underline-offset: 2px; }
 .ii-docs-article img { max-width: 100%; border-radius: var(--ii-shape-md); }
 
+/* Code preview placeholder (SSR fallback before hydration) */
+.ii-code-preview-placeholder { border: 1px solid var(--ii-outline-variant); border-radius: var(--ii-shape-lg); overflow: hidden; margin-bottom: 24px; }
+.ii-code-preview-placeholder__preview { padding: 24px; background: #ffffff; display: flex; align-items: center; justify-content: center; min-height: 80px; }
+[data-theme="dark"] .ii-code-preview-placeholder__preview { background: #1a1a2e; }
+.ii-code-preview-placeholder__details { border-top: 1px solid var(--ii-outline-variant); }
+.ii-code-preview-placeholder__details summary { padding: 8px 16px; font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); cursor: pointer; background: var(--ii-surface-container); }
+.ii-code-preview-placeholder__details pre { margin: 0; padding: 16px; }
 
 /* Prev/Next navigation */
 .ii-docs-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--ii-outline-variant); }

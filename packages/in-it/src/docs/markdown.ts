@@ -133,12 +133,13 @@ export function parseMarkdown(content: string): ParsedMarkdown {
   while (i < lines.length) {
     const line = lines[i];
 
-    // Code block
-    const codeMatch = line.match(/^```(\w*)\s*(title="([^"]*)")?\s*$/);
+    // Code block (supports: ```lang, ```lang title="...", ```lang preview)
+    const codeMatch = line.match(/^```(\w*)\s*(title="([^"]*)")?\s*(preview)?\s*$/);
     if (codeMatch) {
       closeList(); closeTable();
       const lang = codeMatch[1] || "";
       const title = codeMatch[3] || "";
+      const isPreview = !!codeMatch[4];
       const codeLines: string[] = [];
       i++;
       while (i < lines.length && !lines[i].startsWith("```")) {
@@ -146,8 +147,18 @@ export function parseMarkdown(content: string): ParsedMarkdown {
         i++;
       }
       i++; // skip closing ```
-      const code = escapeHtml(codeLines.join("\n"));
-      if (title) {
+      const rawCode = codeLines.join("\n");
+      const code = escapeHtml(rawCode);
+      if (isPreview) {
+        // Emit a live preview block (rendered by CodePreview on client)
+        const escapedRaw = rawCode.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+        htmlParts.push(
+          `<div class="ii-code-preview-placeholder" data-code="${escapedRaw}" data-lang="${lang}"${title ? ` data-title="${escapeHtml(title)}"` : ""}>` +
+          `<div class="ii-code-preview-placeholder__preview">${rawCode}</div>` +
+          `<details class="ii-code-preview-placeholder__details"><summary>Code</summary><pre><code class="language-${lang}">${code}</code></pre></details>` +
+          `</div>`
+        );
+      } else if (title) {
         htmlParts.push(`<div class="ii-code-block"><div class="ii-code-block__title">${escapeHtml(title)}</div><pre><code class="language-${lang}">${code}</code></pre></div>`);
       } else {
         htmlParts.push(`<pre><code class="language-${lang}">${code}</code></pre>`);
