@@ -174,8 +174,8 @@ export function getLocale(): Locale {
   return currentLocale;
 }
 
-/** Get a translated string by key. */
-export function t(key: keyof LocaleStrings): string {
+/** Get a translated string by key (internal — use `useLabels` in components). */
+function t(key: keyof LocaleStrings): string {
   return locales[currentLocale][key];
 }
 

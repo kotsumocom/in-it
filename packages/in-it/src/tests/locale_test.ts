@@ -1,8 +1,8 @@
 /**
- * Tests for locale.ts — setLocale / getLocale / t
+ * Tests for locale.ts — setLocale / getLocale / useLabels
  */
 import { assertEquals } from "jsr:@std/assert";
-import { setLocale, getLocale, t, locales } from "../locale.ts";
+import { setLocale, getLocale, useLabels, locales } from "../locale.ts";
 import type { Locale, LocaleStrings } from "../locale.ts";
 
 Deno.test("getLocale returns 'en' by default", () => {
@@ -17,22 +17,31 @@ Deno.test("setLocale changes locale to 'ja'", () => {
   setLocale("en");
 });
 
-Deno.test("t returns English strings when locale is 'en'", () => {
+Deno.test("useLabels returns English strings when locale is 'en'", () => {
   setLocale("en");
-  assertEquals(t("close"), "Close");
-  assertEquals(t("search"), "Search...");
-  assertEquals(t("signIn"), "Sign In");
-  assertEquals(t("goHome"), "Go Home");
+  const l = useLabels(["close", "search", "signIn", "goHome"] as const);
+  assertEquals(l.close, "Close");
+  assertEquals(l.search, "Search...");
+  assertEquals(l.signIn, "Sign In");
+  assertEquals(l.goHome, "Go Home");
 });
 
-Deno.test("t returns Japanese strings when locale is 'ja'", () => {
+Deno.test("useLabels returns Japanese strings when locale is 'ja'", () => {
   setLocale("ja");
-  assertEquals(t("close"), "閉じる");
-  assertEquals(t("search"), "検索...");
-  assertEquals(t("signIn"), "ログイン");
-  assertEquals(t("goHome"), "ホームへ");
+  const l = useLabels(["close", "search", "signIn", "goHome"] as const);
+  assertEquals(l.close, "閉じる");
+  assertEquals(l.search, "検索...");
+  assertEquals(l.signIn, "ログイン");
+  assertEquals(l.goHome, "ホームへ");
   // Reset
   setLocale("en");
+});
+
+Deno.test("useLabels respects overrides over locale defaults", () => {
+  setLocale("en");
+  const l = useLabels(["close", "search"] as const, { close: "Dismiss" });
+  assertEquals(l.close, "Dismiss");
+  assertEquals(l.search, "Search...");
 });
 
 Deno.test("locales object contains both en and ja", () => {
