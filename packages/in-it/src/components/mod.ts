@@ -89,6 +89,10 @@ export type { TextProps, TextSize, TextWeight, TextAlign } from "./ui/Text.tsx";
 // Layout
 export { AdminShell } from "./admin/AdminShell.tsx";
 export type { AdminShellProps, NavItem, NavGroup } from "./admin/AdminShell.tsx";
+export { SubNav } from "./admin/SubNav.tsx";
+export type { SubNavProps, SubNavItem, SubNavGroup } from "./admin/SubNav.tsx";
+export { ContextSwitcher } from "./admin/ContextSwitcher.tsx";
+export type { ContextSwitcherProps, ContextLevel, ContextItem } from "./admin/ContextSwitcher.tsx";
 export { DocsShell } from "./layout/DocsShell.tsx";
 export type { DocsShellProps, DocsSidebarGroup, DocsSidebarItem, DocsTocItem } from "./layout/DocsShell.tsx";
 export { CodePreview } from "./docs/CodePreview.tsx";

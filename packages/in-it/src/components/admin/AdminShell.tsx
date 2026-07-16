@@ -1,16 +1,20 @@
 /**
- * AdminShell - Admin layout
- * Icon Rail + Header + Optional Sidebar + Content
+ * AdminShell - Modern admin layout
+ * Full sidebar + Header + Optional SubNav + Content
  *
  * Supports:
  * - NavGroup (grouped navigation items)
  * - Legacy NavItem[] (backward compatible)
+ * - NavItem with children (auto SubNav expansion)
  * - Header actions slot & user menu slot
- * - Sidebar (secondary navigation) slot
- * - Mobile hamburger menu
+ * - Sidebar slot (manual secondary navigation)
+ * - Mobile hamburger menu with drawer
+ * - Collapsible sidebar (button-driven, not hover)
  */
 import { useState, useCallback } from "hono/jsx";
 import { ThemeToggle } from "../interactive/ThemeToggle.tsx";
+import { SubNav } from "./SubNav.tsx";
+import type { SubNavItem } from "./SubNav.tsx";
 import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for AdminShell — co-located for self-containment. */
@@ -21,9 +25,9 @@ export const ADMIN_SHELL_CSS = `/* --- Admin Shell Layout --- */
   overflow: hidden;
 }
 
-/* Rail */
-.ii-admin-rail {
-  width: 56px;
+/* Sidebar */
+.ii-admin-sidebar-nav {
+  width: 240px;
   background: var(--ii-surface);
   border-right: 1px solid var(--ii-outline-variant);
   display: flex;
@@ -33,18 +37,55 @@ export const ADMIN_SHELL_CSS = `/* --- Admin Shell Layout --- */
   flex-shrink: 0;
   z-index: 10;
 }
-.ii-admin-rail--expanded {
-  width: 220px;
+.ii-admin-sidebar-nav--collapsed {
+  width: 56px;
 }
-.ii-admin-rail__items {
+.ii-admin-sidebar-nav__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ii-spacing-3) var(--ii-spacing-3);
+  border-bottom: 1px solid var(--ii-outline-variant);
+  min-height: 56px;
+  gap: var(--ii-spacing-2);
+}
+.ii-admin-sidebar-nav__brand {
+  font-size: var(--ii-font-lg);
+  font-weight: 600;
+  color: var(--ii-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.ii-admin-sidebar-nav--collapsed .ii-admin-sidebar-nav__brand {
+  display: none;
+}
+.ii-admin-sidebar-nav__collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  color: var(--ii-on-surface-variant);
+  cursor: pointer;
+  border-radius: var(--ii-shape-sm);
+  flex-shrink: 0;
+}
+.ii-admin-sidebar-nav__collapse-btn:hover {
+  background: var(--ii-surface-container-high);
+}
+.ii-admin-sidebar-nav__items {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   padding: var(--ii-spacing-2);
   flex: 1;
   overflow-y: auto;
 }
-.ii-admin-rail__group-label {
+.ii-admin-sidebar-nav__group-label {
   font-size: var(--ii-label-sm);
   font-weight: 600;
   color: var(--ii-on-surface-variant);
@@ -52,41 +93,43 @@ export const ADMIN_SHELL_CSS = `/* --- Admin Shell Layout --- */
   letter-spacing: 0.05em;
   padding: var(--ii-spacing-3) var(--ii-spacing-3) var(--ii-spacing-1);
   white-space: nowrap;
-  opacity: 0;
-  transition: opacity var(--ii-transition);
-  height: 0;
-  overflow: hidden;
 }
-.ii-admin-rail--expanded .ii-admin-rail__group-label {
-  opacity: 1;
-  height: auto;
+.ii-admin-sidebar-nav--collapsed .ii-admin-sidebar-nav__group-label {
+  display: none;
 }
-.ii-admin-rail__separator {
+.ii-admin-sidebar-nav__separator {
   height: 1px;
   background: var(--ii-outline-variant);
   margin: var(--ii-spacing-2) var(--ii-spacing-2);
 }
-.ii-admin-rail__item {
+.ii-admin-sidebar-nav__item {
   display: flex;
   align-items: center;
   gap: var(--ii-spacing-3);
-  padding: var(--ii-spacing-3);
+  padding: var(--ii-spacing-2) var(--ii-spacing-3);
   border-radius: var(--ii-shape-sm);
   text-decoration: none;
   color: var(--ii-on-surface-variant);
   white-space: nowrap;
   transition: background var(--ii-transition), color var(--ii-transition);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: var(--ii-font-base);
+  width: 100%;
+  text-align: left;
 }
-.ii-admin-rail__item:hover {
+.ii-admin-sidebar-nav__item:hover {
   background: var(--ii-surface-container-high);
   color: var(--ii-on-surface);
 }
-.ii-admin-rail__item--active {
+.ii-admin-sidebar-nav__item--active {
   background: var(--ii-primary-container);
   color: var(--ii-on-primary-container);
   font-weight: 500;
 }
-.ii-admin-rail__icon {
+.ii-admin-sidebar-nav__icon {
   font-size: 1.25rem;
   width: 24px;
   text-align: center;
@@ -95,15 +138,32 @@ export const ADMIN_SHELL_CSS = `/* --- Admin Shell Layout --- */
   align-items: center;
   justify-content: center;
 }
-.ii-admin-rail__label {
-  font-size: var(--ii-font-base);
-  opacity: 0;
-  transition: opacity var(--ii-transition);
+.ii-admin-sidebar-nav__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
 }
-.ii-admin-rail--expanded .ii-admin-rail__label {
-  opacity: 1;
+.ii-admin-sidebar-nav--collapsed .ii-admin-sidebar-nav__label {
+  display: none;
 }
-.ii-admin-rail__footer {
+.ii-admin-sidebar-nav__expand-indicator {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+  flex-shrink: 0;
+  transition: transform 150ms ease;
+}
+.ii-admin-sidebar-nav__expand-indicator--open {
+  transform: rotate(90deg);
+}
+.ii-admin-sidebar-nav--collapsed .ii-admin-sidebar-nav__expand-indicator {
+  display: none;
+}
+.ii-admin-sidebar-nav__children {
+  padding-left: var(--ii-spacing-4);
+}
+.ii-admin-sidebar-nav__footer {
   padding: var(--ii-spacing-2);
   border-top: 1px solid var(--ii-outline-variant);
   flex-shrink: 0;
@@ -153,8 +213,8 @@ export const ADMIN_SHELL_CSS = `/* --- Admin Shell Layout --- */
   min-height: 0;
 }
 
-/* Sidebar (secondary nav) */
-.ii-admin-sidebar {
+/* Sidebar secondary (manual slot) */
+.ii-admin-sidebar-secondary {
   width: 240px;
   background: var(--ii-surface);
   border-right: 1px solid var(--ii-outline-variant);
@@ -198,35 +258,43 @@ export const ADMIN_SHELL_MOBILE_CSS = `/* --- AdminShell Mobile --- */
 .ii-admin-overlay--open { display: block; }
 @media (max-width: 768px) {
   .ii-admin-header__hamburger { display: flex; }
-  .ii-admin-rail {
+  .ii-admin-sidebar-nav {
     display: none;
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 260px;
+    width: 280px;
     z-index: 100;
     box-shadow: var(--ii-shadow-lg);
   }
-  .ii-admin-rail--mobile-open {
+  .ii-admin-sidebar-nav--mobile-open {
     display: flex;
   }
-  .ii-admin-rail--mobile-open .ii-admin-rail__label { opacity: 1; }
-  .ii-admin-rail--mobile-open .ii-admin-rail__group-label { opacity: 1; height: auto; }
-  .ii-admin-sidebar { display: none; }
+  .ii-admin-sidebar-nav--mobile-open .ii-admin-sidebar-nav__label { display: inline; }
+  .ii-admin-sidebar-nav--mobile-open .ii-admin-sidebar-nav__group-label { display: block; }
+  .ii-admin-sidebar-nav--mobile-open .ii-admin-sidebar-nav__expand-indicator { display: inline; }
+  .ii-admin-sidebar-nav__collapse-btn { display: none; }
+  .ii-admin-sidebar-secondary { display: none; }
 }
 `;
 
-/** A navigation item for the admin sidebar rail. */
+/** A navigation item for the admin sidebar. */
 export interface NavItem {
+  /** Icon (string icon name or JSX element). */
   icon: string | any;
+  /** Display label. */
   label: string;
+  /** Navigation target or base path for active detection. */
   href: string;
+  /** Sub-navigation items. When present, tapping this item
+   *  expands the children inline instead of navigating. */
+  children?: SubNavItem[];
 }
 
 /** A group of navigation items with a label. */
 export interface NavGroup {
-  /** Group label (displayed when rail is expanded). */
+  /** Group label (displayed in expanded sidebar). */
   label: string;
   /** Navigation items in this group. */
   items: NavItem[];
@@ -234,23 +302,75 @@ export interface NavGroup {
 
 /** Props for the AdminShell layout component. */
 export interface AdminShellProps {
+  /** Brand text or JSX (displayed in sidebar header). */
   brand?: string | any;
   /** @deprecated Use `navGroups` instead. Flat list of nav items (backward compatible). */
   navItems?: NavItem[];
   /** Grouped navigation items. Takes priority over navItems. */
   navGroups?: NavGroup[];
+  /** Current path for active highlighting. */
   currentPath?: string;
+  /** Called when a navigation item is clicked. */
   onNavigate?: (href: string) => void;
   /** Content rendered in the header actions area (right side). */
   headerActions?: any;
-  /** User menu slot (rendered in the rail footer or header). */
+  /** User menu slot (rendered in the sidebar footer). */
   userMenu?: any;
-  /** Secondary navigation sidebar content. */
+  /** Secondary navigation sidebar content (manual slot, overrides auto SubNav). */
   sidebar?: any;
+  /** Start with sidebar collapsed. Default: false. */
+  defaultCollapsed?: boolean;
+  /** Main content. */
   children: any;
 }
 
-/** Admin dashboard layout with icon rail sidebar, header, and content area. */
+/** Chevron-right SVG for expand indicators. */
+function ChevronRight(): any {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+  );
+}
+
+/** Sidebar collapse/expand toggle icon. */
+function SidebarToggleIcon({ collapsed }: { collapsed: boolean }): any {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      {collapsed ? (
+        <>
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <line x1="9" y1="3" x2="9" y2="21" />
+          <polyline points="14 9 17 12 14 15" />
+        </>
+      ) : (
+        <>
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <line x1="9" y1="3" x2="9" y2="21" />
+          <polyline points="16 9 13 12 16 15" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+/** Admin dashboard layout with full sidebar, header, and content area. */
 export function AdminShell({
   brand = "in-it",
   navItems = [],
@@ -260,16 +380,32 @@ export function AdminShell({
   headerActions,
   userMenu,
   sidebar,
+  defaultCollapsed = false,
   children,
 }: AdminShellProps): any {
   injectCSS("ii-admin-shell", ADMIN_SHELL_CSS);
   injectCSS("ii-admin-shell-mobile", ADMIN_SHELL_MOBILE_CSS);
-  const [railExpanded, setRailExpanded] = useState(false);
+  const [collapsed, setCollapsed] = useState(defaultCollapsed);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
   const handleNavClick = useCallback(
-    (e: Event, href: string) => {
+    (e: Event, item: NavItem) => {
       e.preventDefault();
+      if (item.children && item.children.length > 0) {
+        // Toggle SubNav expansion
+        setExpandedItem((prev) => (prev === item.href ? null : item.href));
+      } else {
+        // Navigate
+        setMobileOpen(false);
+        onNavigate?.(item.href);
+      }
+    },
+    [onNavigate],
+  );
+
+  const handleSubNavClick = useCallback(
+    (href: string) => {
       setMobileOpen(false);
       onNavigate?.(href);
     },
@@ -279,27 +415,70 @@ export function AdminShell({
   // Normalize navItems to navGroups for unified rendering
   const groups: NavGroup[] = navGroups ?? [{ label: "", items: navItems }];
 
+  // Auto-expand the group containing the current path
+  const autoExpandedHref = (() => {
+    for (const group of groups) {
+      for (const item of group.items) {
+        if (item.children) {
+          const match = item.children.some(
+            (child) =>
+              currentPath === child.href ||
+              (child.href !== "/" && currentPath.startsWith(child.href + "/")),
+          );
+          if (match) return item.href;
+        }
+      }
+    }
+    return null;
+  })();
+
+  // Use explicit expandedItem or auto-expand
+  const activeExpanded = expandedItem ?? autoExpandedHref;
+
   const renderItem = (item: NavItem) => {
-    const isActive = currentPath === item.href ||
-      (item.href !== "/" && currentPath.startsWith(item.href + "/"));
+    const hasChildren = item.children && item.children.length > 0;
+    const isExpanded = activeExpanded === item.href;
+    const isActive = hasChildren
+      ? isExpanded
+      : currentPath === item.href ||
+        (item.href !== "/" && currentPath.startsWith(item.href + "/"));
+
     return (
-      <a
-        key={item.href}
-        href={item.href}
-        class={`ii-admin-rail__item${isActive ? " ii-admin-rail__item--active" : ""}`}
-        title={item.label}
-        onClick={(e: Event) => handleNavClick(e, item.href)}
-      >
-        <span class="ii-admin-rail__icon">{item.icon}</span>
-        <span class="ii-admin-rail__label">{item.label}</span>
-      </a>
+      <>
+        <a
+          key={item.href}
+          href={item.href}
+          class={`ii-admin-sidebar-nav__item${isActive ? " ii-admin-sidebar-nav__item--active" : ""}`}
+          title={item.label}
+          onClick={(e: Event) => handleNavClick(e, item)}
+        >
+          <span class="ii-admin-sidebar-nav__icon">{item.icon}</span>
+          <span class="ii-admin-sidebar-nav__label">{item.label}</span>
+          {hasChildren && (
+            <span
+              class={`ii-admin-sidebar-nav__expand-indicator${isExpanded ? " ii-admin-sidebar-nav__expand-indicator--open" : ""}`}
+            >
+              <ChevronRight />
+            </span>
+          )}
+        </a>
+        {hasChildren && isExpanded && (
+          <div class="ii-admin-sidebar-nav__children">
+            <SubNav
+              items={item.children}
+              currentPath={currentPath}
+              onNavigate={handleSubNavClick}
+            />
+          </div>
+        )}
+      </>
     );
   };
 
-  const railClass = [
-    "ii-admin-rail",
-    railExpanded && "ii-admin-rail--expanded",
-    mobileOpen && "ii-admin-rail--mobile-open",
+  const sidebarClass = [
+    "ii-admin-sidebar-nav",
+    collapsed && "ii-admin-sidebar-nav--collapsed",
+    mobileOpen && "ii-admin-sidebar-nav--mobile-open",
   ].filter(Boolean).join(" ");
 
   return (
@@ -312,25 +491,34 @@ export function AdminShell({
         />
       )}
 
-      {/* Rail sidebar */}
-      <nav
-        class={railClass}
-        onMouseEnter={() => setRailExpanded(true)}
-        onMouseLeave={() => setRailExpanded(false)}
-      >
-        <div class="ii-admin-rail__items">
+      {/* Sidebar */}
+      <nav class={sidebarClass}>
+        <div class="ii-admin-sidebar-nav__header">
+          <div class="ii-admin-sidebar-nav__brand">{brand}</div>
+          <button
+            class="ii-admin-sidebar-nav__collapse-btn"
+            onClick={() => setCollapsed(!collapsed)}
+            title={collapsed ? "サイドバーを展開" : "サイドバーを折りたたみ"}
+          >
+            <SidebarToggleIcon collapsed={collapsed} />
+          </button>
+        </div>
+
+        <div class="ii-admin-sidebar-nav__items">
           {groups.map((group, gi) => (
             <>
-              {gi > 0 && <div class="ii-admin-rail__separator" />}
+              {gi > 0 && <div class="ii-admin-sidebar-nav__separator" />}
               {group.label && (
-                <div class="ii-admin-rail__group-label">{group.label}</div>
+                <div class="ii-admin-sidebar-nav__group-label">
+                  {group.label}
+                </div>
               )}
               {group.items.map(renderItem)}
             </>
           ))}
         </div>
         {userMenu && (
-          <div class="ii-admin-rail__footer">{userMenu}</div>
+          <div class="ii-admin-sidebar-nav__footer">{userMenu}</div>
         )}
       </nav>
 
@@ -349,7 +537,6 @@ export function AdminShell({
                 <line x1="3" y1="18" x2="21" y2="18" />
               </svg>
             </button>
-            <div class="ii-admin-header__brand">{brand}</div>
           </div>
           <div class="ii-admin-header__actions">
             {headerActions}
@@ -359,7 +546,7 @@ export function AdminShell({
 
         <div class="ii-admin-body">
           {sidebar && (
-            <aside class="ii-admin-sidebar">{sidebar}</aside>
+            <aside class="ii-admin-sidebar-secondary">{sidebar}</aside>
           )}
           <main class="ii-admin-content">
             {children}

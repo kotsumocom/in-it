@@ -1,11 +1,14 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "../in-it.dev"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": ".",
+    },
+    {
+      "path": "../in-it.dev",
+    },
+    {
+      "path": "../test.in-it.dev",
+    },
+  ],
+  "settings": {},
 }
