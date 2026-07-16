@@ -5,13 +5,19 @@
  * Provides an adapter-based auth system that works with any auth provider.
  * in-it defines only the interfaces; concrete implementations are adapters.
  *
+ * Built-in adapters:
+ * - `supabaseAdapter` — Supabase Auth (REST API direct)
+ * - `jwtAdapter` — Generic JWT (HS256/RS256, Web Crypto)
+ * - `sessionAdapter` — Server-side sessions (callback-based)
+ * - `sessionApiAdapter` — HTTP session endpoint (Better Auth, NextAuth, etc.)
+ *
  * @example
  * ```ts
  * import { createAuth } from "@kotsumo/in-it/auth";
- * import { supabaseAdapter } from "@kotsumo/in-it/auth/supabase";
+ * import { jwtAdapter } from "@kotsumo/in-it/auth/jwt";
  *
  * const auth = createAuth({
- *   adapter: supabaseAdapter({ url: "...", anonKey: "..." }),
+ *   adapter: jwtAdapter({ secret: "..." }),
  *   loginPath: "/login",
  *   publicPaths: ["/", "/about", "/api/public/*"],
  * });

@@ -23,6 +23,9 @@
     "./locale": "./src/locale.ts",
     "./auth": "./src/auth/mod.ts",
     "./auth/supabase": "./src/auth/adapters/supabase.ts",
+    "./auth/jwt": "./src/auth/adapters/jwt.ts",
+    "./auth/session": "./src/auth/adapters/session.ts",
+    "./auth/session-api": "./src/auth/adapters/session-api.ts",
     "./server": "./src/server/mod.ts",
     "./gen": "./src/gen.ts"
   },
