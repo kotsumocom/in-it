@@ -13,6 +13,10 @@ export const INPUT_CSS = `/* --- Input / TextField --- */
   font-weight: 500;
   color: var(--ii-on-surface-variant);
 }
+.ii-input__label--required::after {
+  content: ' *';
+  color: var(--ii-error);
+}
 .ii-input__field {
   min-height: 40px;
   padding: 10px 12px;
@@ -123,8 +127,8 @@ export interface InputProps {
 export function Input({ label, placeholder, value, type = "text", helper, error, disabled, onInput, id, name, required, autocomplete, minLength, class: cls }: InputProps): any {
   injectCSS("ii-input", INPUT_CSS);
   return (
-    <div class={`ii-input${cls ? ` ${cls}` : ""}`}>
-      {label && <label class="ii-input__label" for={id}>{label}</label>}
+    <div class={`ii-input${error ? " ii-input--error" : ""}${cls ? ` ${cls}` : ""}`}>
+      {label && <label class={`ii-input__label${required ? " ii-input__label--required" : ""}`} for={id}>{label}</label>}
       <input
         id={id}
         name={name}

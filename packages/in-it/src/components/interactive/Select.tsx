@@ -18,6 +18,10 @@ export const SELECT_CSS = `/* --- Select --- */
   font-weight: 500;
   color: var(--ii-on-surface-variant);
 }
+.ii-select__label--required::after {
+  content: ' *';
+  color: var(--ii-error);
+}
 .ii-select__trigger {
   display: flex;
   align-items: center;
@@ -100,11 +104,13 @@ export interface SelectProps {
   placeholder?: string;
   label?: string;
   disabled?: boolean;
+  /** Whether the field is required. */
+  required?: boolean;
   onChange?: (value: string) => void;
 }
 
 /** Custom select dropdown with keyboard navigation and ARIA listbox pattern. */
-export function Select({ options, value, placeholder = "Select...", label, disabled, onChange }: SelectProps): any {
+export function Select({ options, value, placeholder = "Select...", label, disabled, required, onChange }: SelectProps): any {
   injectCSS("ii-select", SELECT_CSS);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(value ?? "");
@@ -173,7 +179,7 @@ export function Select({ options, value, placeholder = "Select...", label, disab
 
   return (
     <div class={`ii-select${disabled ? " ii-select--disabled" : ""}`} ref={ref} onKeyDown={handleKeyDown}>
-      {label && <label class="ii-select__label">{label}</label>}
+      {label && <label class={`ii-select__label${required ? " ii-select__label--required" : ""}`}>{label}</label>}
       <button
         type="button"
         class={`ii-select__trigger${open ? " ii-select__trigger--open" : ""}`}
