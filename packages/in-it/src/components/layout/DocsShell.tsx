@@ -22,6 +22,8 @@ export const DOCS_CSS = `/* --- Docs Layout --- */
 .ii-docs-sidebar__link { display: block; padding: 6px 12px; border-radius: var(--ii-shape-sm); font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); text-decoration: none; transition: all var(--ii-transition); }
 .ii-docs-sidebar__link:hover { background: var(--ii-surface-container); color: var(--ii-on-surface); }
 .ii-docs-sidebar__link--active { background: color-mix(in srgb, var(--ii-primary) 12%, var(--ii-surface)); color: var(--ii-primary); font-weight: 500; }
+.ii-docs-sidebar__subgroup { margin-bottom: 12px; padding-left: 4px; }
+.ii-docs-sidebar__subgroup-label { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ii-on-surface-variant); opacity: 0.7; margin: 12px 0 4px; padding: 0 12px; }
 
 .ii-docs-content { flex: 1; min-width: 0; padding: 32px 48px; max-width: 800px; }
 
