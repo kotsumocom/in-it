@@ -122,6 +122,17 @@ Edit `client/pages/blog/cms.ts` to connect your CMS.
 Edit `server/middleware/auth.ts` to connect Supabase Auth, Auth0, etc.
 Optionally declare `auth.provider` in `in-it.config.ts` for documentation.
 
+## Deploy (Deno Deploy)
+
+This project uses **Dynamic App** mode — the server generates HTML dynamically (no `index.html`).
+
+1. Create a new app on [Deno Deploy](https://console.deno.com)
+2. Connect your GitHub repository
+3. Configure:
+   - **Mode**: Dynamic App
+   - **Entrypoint**: `server/main.ts`
+   - **Build command**: `deno task build`
+
 ## Documentation
 
 - [in-it Docs](https://in-it.dev)

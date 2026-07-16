@@ -56,5 +56,11 @@ export default defineConfig({
     extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
   },
   server: { port: 3000 },
-  build: { outDir: "dist" },
+  build: {
+    outDir: "dist",
+    manifest: true,
+    rollupOptions: {
+      input: path.resolve(__dirname, "client/main.tsx"),
+    },
+  },
 });
