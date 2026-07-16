@@ -69,6 +69,8 @@ export { UserMenu } from "./interactive/UserMenu.tsx";
 export type { UserMenuProps, UserMenuItem } from "./interactive/UserMenu.tsx";
 export { FileUpload } from "./interactive/FileUpload.tsx";
 export type { FileUploadProps, FileUploadError } from "./interactive/FileUpload.tsx";
+export { ConfirmDialog } from "./interactive/ConfirmDialog.tsx";
+export type { ConfirmDialogProps, ConfirmDialogVariant } from "./interactive/ConfirmDialog.tsx";
 
 // UI
 export { PricingCard } from "./ui/PricingCard.tsx";
@@ -85,6 +87,10 @@ export { ListItem } from "./ui/ListItem.tsx";
 export type { ListItemProps } from "./ui/ListItem.tsx";
 export { Text } from "./ui/Text.tsx";
 export type { TextProps, TextSize, TextWeight, TextAlign } from "./ui/Text.tsx";
+export { ContentLoader } from "./ui/ContentLoader.tsx";
+export type { ContentLoaderProps } from "./ui/ContentLoader.tsx";
+export { FormSection } from "./ui/FormSection.tsx";
+export type { FormSectionProps } from "./ui/FormSection.tsx";
 
 // Layout
 export { AdminShell } from "./admin/AdminShell.tsx";

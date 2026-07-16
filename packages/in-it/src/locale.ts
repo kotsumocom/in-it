@@ -64,6 +64,9 @@ export interface LocaleStrings {
   signOut: string;
   sessionExpired: string;
   unauthorized: string;
+  // ConfirmDialog
+  confirm: string;
+  cancel: string;
 }
 
 const en: LocaleStrings = {
@@ -108,6 +111,9 @@ const en: LocaleStrings = {
   signOut: "Sign Out",
   sessionExpired: "Your session has expired. Please sign in again.",
   unauthorized: "You must be signed in to access this page.",
+  // ConfirmDialog
+  confirm: "Confirm",
+  cancel: "Cancel",
 };
 
 const ja: LocaleStrings = {
@@ -152,6 +158,9 @@ const ja: LocaleStrings = {
   signOut: "ログアウト",
   sessionExpired: "セッションが期限切れです。再度ログインしてください。",
   unauthorized: "このページにアクセスするにはログインが必要です。",
+  // ConfirmDialog
+  confirm: "確認",
+  cancel: "キャンセル",
 };
 
 /** All locales. */
