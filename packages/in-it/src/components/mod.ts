@@ -22,6 +22,18 @@
 export { Badge, Card, Button, StatCard, DataTable, Input, Avatar, Chip, Skeleton, EmptyState } from "./ui/mod.tsx";
 export type { BadgeProps, CardProps, ButtonProps, StatCardProps, DataTableColumn, DataTableProps, InputProps, AvatarProps, ChipProps, SkeletonProps, EmptyStateProps } from "./ui/mod.tsx";
 
+export { StatusBadge } from "./ui/StatusBadge.tsx";
+export type { StatusBadgeProps, StatusConfig, StatusDef } from "./ui/StatusBadge.tsx";
+
+export { Toolbar } from "./ui/Toolbar.tsx";
+export type { ToolbarProps, ToolbarSearchConfig } from "./ui/Toolbar.tsx";
+
+export { Timeline } from "./ui/Timeline.tsx";
+export type { TimelineProps, TimelineItem } from "./ui/Timeline.tsx";
+
+export { ValidationSummary } from "./ui/ValidationSummary.tsx";
+export type { ValidationSummaryProps, ValidationItem } from "./ui/ValidationSummary.tsx";
+
 export { Textarea, Alert, Progress, ProgressCircular, Breadcrumb, Divider, Kbd } from "./ui/extras.tsx";
 export type { TextareaProps, AlertProps, ProgressProps, ProgressCircularProps, BreadcrumbItem, BreadcrumbProps, DividerProps, KbdProps } from "./ui/extras.tsx";
 
@@ -71,6 +83,8 @@ export { FileUpload } from "./interactive/FileUpload.tsx";
 export type { FileUploadProps, FileUploadError } from "./interactive/FileUpload.tsx";
 export { ConfirmDialog } from "./interactive/ConfirmDialog.tsx";
 export type { ConfirmDialogProps, ConfirmDialogVariant } from "./interactive/ConfirmDialog.tsx";
+export { NumberInput } from "./interactive/NumberInput.tsx";
+export type { NumberInputProps } from "./interactive/NumberInput.tsx";
 
 // UI
 export { PricingCard } from "./ui/PricingCard.tsx";

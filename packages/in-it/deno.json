@@ -27,6 +27,7 @@
     "./auth/session": "./src/auth/adapters/session.ts",
     "./auth/session-api": "./src/auth/adapters/session-api.ts",
     "./server": "./src/server/mod.ts",
+    "./security": "./src/security/mod.ts",
     "./gen": "./src/gen.ts"
   },
   "compilerOptions": {

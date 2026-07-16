@@ -25,6 +25,12 @@ export const DATA_TABLE_CSS = `/* --- Data Table --- */
 }
 .ii-data-table__th--right, .ii-data-table__td--right { text-align: right; }
 .ii-data-table__th--center, .ii-data-table__td--center { text-align: center; }
+.ii-data-table tfoot td {
+  padding: var(--ii-spacing-3) var(--ii-spacing-4);
+  border-top: 2px solid var(--ii-outline-variant);
+  font-weight: 600;
+  color: var(--ii-on-surface);
+}
 `;
 
 /** Column definition for the {@link DataTable} component.
@@ -50,10 +56,12 @@ export interface DataTableProps<T> {
   columns: DataTableColumn<T>[];
   data: T[];
   rowKey?: (row: T) => string;
+  /** Optional footer content rendered inside `<tfoot>`. Accepts `<tr>` elements. */
+  footer?: any;
 }
 
 /** Responsive HTML table with configurable columns, custom cell renderers, and column alignment. */
-export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>): any {
+export function DataTable<T>({ columns, data, rowKey, footer }: DataTableProps<T>): any {
   injectCSS("ii-data-table", DATA_TABLE_CSS);
   const getKey = rowKey ?? ((_row: T, i: number) => String(i));
   return (
@@ -79,6 +87,7 @@ export function DataTable<T>({ columns, data, rowKey }: DataTableProps<T>): any 
             </tr>
           ))}
         </tbody>
+        {footer && <tfoot>{footer}</tfoot>}
       </table>
     </div>
   );

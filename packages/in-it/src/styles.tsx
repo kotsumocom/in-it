@@ -192,6 +192,8 @@ export function injectStyles(): void {
  */
 export function StyleSheet(): any {
   return (
+    // SECURITY: CSS is a build-time constant generated from in-it's own
+    // design tokens. No user input flows into this string.
     <style id="ii-styles" dangerouslySetInnerHTML={{ __html: CSS }} />
   );
 }

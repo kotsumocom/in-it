@@ -53,6 +53,9 @@ export function hydratePreviews(options: HydratePreviewsOptions = {}): void {
 /** Decode HTML entities from data attributes. */
 function decodeEntities(str: string): string {
   const textarea = document.createElement("textarea");
+  // SECURITY: Uses textarea.innerHTML solely for HTML entity decoding
+  // (e.g. &amp; → &). Input comes from data-code attributes that were
+  // already escaped by escapeHtml() at build time. No script execution.
   textarea.innerHTML = str;
   return textarea.value;
 }

@@ -61,6 +61,8 @@ export function Icon({
       role={ariaLabel ? "img" : undefined}
       aria-label={ariaLabel}
       aria-hidden={ariaLabel ? undefined : "true"}
+      // SECURITY: `resolved` contains only static SVG path data from
+      // paths.ts (or filled.ts). No user input flows into this string.
       dangerouslySetInnerHTML={{ __html: resolved }}
     />
   );

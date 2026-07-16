@@ -19,6 +19,7 @@ import { useLabels } from "../../locale.ts";
 import type { LocaleStrings } from "../../locale.ts";
 import { Button, Input } from "../ui/mod.tsx";
 import { injectCSS } from "../../inject.ts";
+import { escapeHtml } from "../../security/sanitize.ts";
 
 /** @internal CSS for AuthForm — co-located for self-containment. */
 export const AUTH_FORM_CSS = `/* --- AuthForm --- */
@@ -172,14 +173,9 @@ export interface AuthFormProps {
   class?: string;
 }
 
-/** Sanitize user input to prevent XSS. */
+/** Sanitize user input to prevent XSS (delegates to shared escapeHtml). */
 function sanitize(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#x27;");
+  return escapeHtml(str);
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
