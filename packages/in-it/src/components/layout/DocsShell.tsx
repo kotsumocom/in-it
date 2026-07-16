@@ -24,26 +24,22 @@ export const DOCS_CSS = `/* --- Docs Layout --- */
 .ii-docs-sidebar__link--active { background: color-mix(in srgb, var(--ii-primary) 12%, var(--ii-surface)); color: var(--ii-primary); font-weight: 500; }
 
 /* Collapsible group/subgroup (details/summary) */
-.ii-docs-sidebar__group > details,
-.ii-docs-sidebar__subgroup { border: none; margin: 0; }
-.ii-docs-sidebar__group > details > summary,
-.ii-docs-sidebar__subgroup > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 4px; user-select: none; }
-.ii-docs-sidebar__group > details > summary::-webkit-details-marker,
-.ii-docs-sidebar__subgroup > summary::-webkit-details-marker { display: none; }
-.ii-docs-sidebar__group > details > summary::marker,
-.ii-docs-sidebar__subgroup > summary::marker { display: none; content: ""; }
+.ii-docs-sidebar details { border: none; margin: 0; }
+.ii-docs-sidebar details > summary { list-style: none; list-style-type: none; cursor: pointer; display: flex; align-items: center; gap: 4px; user-select: none; padding: 2px 0; }
+.ii-docs-sidebar details > summary::-webkit-details-marker { display: none; }
+.ii-docs-sidebar details > summary::marker { display: none; content: ""; }
 
 /* Chevron for collapsible groups */
-.ii-docs-sidebar__chevron { width: 14px; height: 14px; flex-shrink: 0; transition: transform 0.15s ease; stroke: currentColor; }
+.ii-docs-sidebar__chevron { width: 14px; height: 14px; flex-shrink: 0; transition: transform 0.15s ease; stroke: currentColor; color: var(--ii-on-surface-variant); }
 details[open] > summary .ii-docs-sidebar__chevron { transform: rotate(90deg); }
 
 /* Group-level collapsible label */
-.ii-docs-sidebar__group > details > summary .ii-docs-sidebar__group-label { margin-bottom: 0; cursor: pointer; flex: 1; }
-.ii-docs-sidebar__group > details > .ii-docs-sidebar__group-content { padding-top: 8px; }
+.ii-docs-sidebar details > summary .ii-docs-sidebar__group-label { margin-bottom: 0; cursor: pointer; flex: 1; }
+.ii-docs-sidebar details > .ii-docs-sidebar__group-content { padding-top: 8px; }
 
 /* Subgroup */
 .ii-docs-sidebar__subgroup { margin-bottom: 4px; }
-.ii-docs-sidebar__subgroup-label { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ii-on-surface-variant); opacity: 0.7; padding: 4px 12px; cursor: pointer; flex: 1; }
+.ii-docs-sidebar__subgroup-label { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ii-on-surface-variant); opacity: 0.7; padding: 2px 0; cursor: pointer; flex: 1; }
 .ii-docs-sidebar__subgroup-content { }
 
 .ii-docs-content { flex: 1; min-width: 0; padding: 32px 48px; max-width: 800px; }
