@@ -93,10 +93,27 @@ export interface DocsSidebarItem {
   active?: boolean;
 }
 
+/** A nested subgroup within a sidebar group. */
+export interface DocsSidebarSubgroup {
+  label: string;
+  items: DocsSidebarItem[];
+  /** Whether this subgroup is collapsible (default: true when rendered). */
+  collapsible?: boolean;
+  /** Whether this subgroup starts open (default: false). */
+  defaultOpen?: boolean;
+}
+
 /** A labeled group of sidebar links. */
 export interface DocsSidebarGroup {
   group: string;
-  items: DocsSidebarItem[];
+  /** Direct items in this group (rendered before subgroups). */
+  items?: DocsSidebarItem[];
+  /** Nested subgroups within this group. */
+  subgroups?: DocsSidebarSubgroup[];
+  /** Whether this group is collapsible (default: false). */
+  collapsible?: boolean;
+  /** Whether this group starts open (default: true). */
+  defaultOpen?: boolean;
 }
 
 /** A table-of-contents entry (h2 or h3 heading). */
@@ -136,15 +153,7 @@ export function DocsShell({ brand, brandHref = "/", navLinks = [], sidebarGroups
       <div class="ii-docs-body">
         <aside class="ii-docs-sidebar">
           {sidebarGroups.map(group => (
-            <div key={group.group} class="ii-docs-sidebar__group">
-              <div class="ii-docs-sidebar__group-label">{group.group}</div>
-              {group.items.map(item => (
-                <a key={item.href} href={item.href}
-                  class={`ii-docs-sidebar__link${item.active ? " ii-docs-sidebar__link--active" : ""}`}>
-                  {item.label}
-                </a>
-              ))}
-            </div>
+            <SidebarGroup key={group.group} group={group} />
           ))}
         </aside>
         <main class="ii-docs-content">
@@ -172,3 +181,86 @@ export function DocsShell({ brand, brandHref = "/", navLinks = [], sidebarGroups
 }
 
 function DocsPager() { return null; } // placeholder
+
+/** Inline chevron SVG for collapsible sections. */
+function Chevron(): any {
+  return (
+    <svg class="ii-docs-sidebar__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 6l6 6-6 6" />
+    </svg>
+  );
+}
+
+/** Renders a single sidebar link. */
+function SidebarLink({ item }: { item: DocsSidebarItem }): any {
+  return (
+    <a href={item.href}
+      class={`ii-docs-sidebar__link${item.active ? " ii-docs-sidebar__link--active" : ""}`}>
+      {item.label}
+    </a>
+  );
+}
+
+/** Renders a sidebar group, optionally collapsible with subgroups. */
+function SidebarGroup({ group }: { group: DocsSidebarGroup }): any {
+  const items = group.items ?? [];
+  const subgroups = group.subgroups ?? [];
+  const hasActive = items.some(i => i.active) || subgroups.some(s => s.items.some(i => i.active));
+  const isOpen = group.defaultOpen !== false || hasActive;
+
+  const content = (
+    <>
+      {items.map(item => <SidebarLink key={item.href} item={item} />)}
+      {subgroups.map(sub => <SidebarSubgroup key={sub.label} subgroup={sub} />)}
+    </>
+  );
+
+  if (group.collapsible) {
+    return (
+      <div class="ii-docs-sidebar__group">
+        <details open={isOpen || undefined}>
+          <summary>
+            <Chevron />
+            <span class="ii-docs-sidebar__group-label">{group.group}</span>
+          </summary>
+          <div class="ii-docs-sidebar__group-content">{content}</div>
+        </details>
+      </div>
+    );
+  }
+
+  return (
+    <div class="ii-docs-sidebar__group">
+      <div class="ii-docs-sidebar__group-label">{group.group}</div>
+      {content}
+    </div>
+  );
+}
+
+/** Renders a sidebar subgroup, collapsible by default. */
+function SidebarSubgroup({ subgroup }: { subgroup: DocsSidebarSubgroup }): any {
+  const hasActive = subgroup.items.some(i => i.active);
+  const isCollapsible = subgroup.collapsible !== false;
+  const isOpen = subgroup.defaultOpen || hasActive;
+
+  if (isCollapsible) {
+    return (
+      <details class="ii-docs-sidebar__subgroup" open={isOpen || undefined}>
+        <summary>
+          <Chevron />
+          <span class="ii-docs-sidebar__subgroup-label">{subgroup.label}</span>
+        </summary>
+        <div class="ii-docs-sidebar__subgroup-content">
+          {subgroup.items.map(item => <SidebarLink key={item.href} item={item} />)}
+        </div>
+      </details>
+    );
+  }
+
+  return (
+    <div class="ii-docs-sidebar__subgroup">
+      <div class="ii-docs-sidebar__subgroup-label">{subgroup.label}</div>
+      {subgroup.items.map(item => <SidebarLink key={item.href} item={item} />)}
+    </div>
+  );
+}

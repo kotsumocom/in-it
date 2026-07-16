@@ -94,7 +94,7 @@ export type { SubNavProps, SubNavItem, SubNavGroup } from "./admin/SubNav.tsx";
 export { ContextSwitcher } from "./admin/ContextSwitcher.tsx";
 export type { ContextSwitcherProps, ContextLevel, ContextItem } from "./admin/ContextSwitcher.tsx";
 export { DocsShell } from "./layout/DocsShell.tsx";
-export type { DocsShellProps, DocsSidebarGroup, DocsSidebarItem, DocsTocItem } from "./layout/DocsShell.tsx";
+export type { DocsShellProps, DocsSidebarGroup, DocsSidebarSubgroup, DocsSidebarItem, DocsTocItem } from "./layout/DocsShell.tsx";
 export { CodePreview } from "./docs/CodePreview.tsx";
 export type { CodePreviewProps } from "./docs/CodePreview.tsx";
 export { LandingHeader, LandingHero, LandingFeatures, LandingSection, LandingFooter } from "./layout/Landing.tsx";
