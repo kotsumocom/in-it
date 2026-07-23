@@ -85,6 +85,8 @@ export { ConfirmDialog } from "./interactive/ConfirmDialog.tsx";
 export type { ConfirmDialogProps, ConfirmDialogVariant } from "./interactive/ConfirmDialog.tsx";
 export { NumberInput } from "./interactive/NumberInput.tsx";
 export type { NumberInputProps } from "./interactive/NumberInput.tsx";
+export { DateRangePicker } from "./interactive/DateRangePicker.tsx";
+export type { DateRangePickerProps, DateRangePreset } from "./interactive/DateRangePicker.tsx";
 
 // UI
 export { PricingCard } from "./ui/PricingCard.tsx";
