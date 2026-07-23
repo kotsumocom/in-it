@@ -90,7 +90,7 @@ export function ConfirmDialog({
 }: ConfirmDialogProps): any {
   injectCSS("ii-dialog", DIALOG_CSS);
   injectCSS("ii-confirm-dialog", CONFIRM_DIALOG_CSS);
-  const l = useLabels(["close", "confirm", "cancel"] as const, labelOverrides);
+  const l = useLabels<"close" | "confirm" | "cancel">(["close", "confirm", "cancel"], labelOverrides);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   // Keyboard handling
