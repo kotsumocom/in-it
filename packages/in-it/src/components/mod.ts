@@ -106,6 +106,9 @@ export type { ContentLoaderProps } from "./ui/ContentLoader.tsx";
 export { FormSection } from "./ui/FormSection.tsx";
 export type { FormSectionProps } from "./ui/FormSection.tsx";
 
+export { FormField } from "./ui/FormField.tsx";
+export type { FormFieldProps } from "./ui/FormField.tsx";
+
 // Layout
 export { AdminShell } from "./admin/AdminShell.tsx";
 export type { AdminShellProps, NavItem, NavGroup } from "./admin/AdminShell.tsx";
