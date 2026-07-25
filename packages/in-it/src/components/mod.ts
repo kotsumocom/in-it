@@ -113,7 +113,7 @@ export type { FormFieldProps } from "./ui/FormField.tsx";
 
 // Layout
 export { AdminShell } from "./admin/AdminShell.tsx";
-export type { AdminShellProps, NavItem, NavGroup } from "./admin/AdminShell.tsx";
+export type { AdminShellProps, NavItem, NavGroup, DrilldownState } from "./admin/AdminShell.tsx";
 export { SubNav } from "./admin/SubNav.tsx";
 export type { SubNavProps, SubNavItem, SubNavGroup } from "./admin/SubNav.tsx";
 export { ContextSwitcher } from "./admin/ContextSwitcher.tsx";

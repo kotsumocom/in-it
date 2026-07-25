@@ -169,6 +169,90 @@ export const ADMIN_SHELL_CSS = `/* --- Admin Shell Layout --- */
   flex-shrink: 0;
 }
 
+/* Drilldown sidebar */
+.ii-admin-sidebar-nav__drilldown {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+.ii-admin-sidebar-nav__drill-back {
+  display: flex;
+  align-items: center;
+  gap: var(--ii-spacing-2);
+  padding: var(--ii-spacing-2) var(--ii-spacing-3);
+  border: none;
+  background: none;
+  color: var(--ii-on-surface-variant);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--ii-font-sm);
+  width: 100%;
+  text-align: left;
+  border-radius: var(--ii-shape-sm);
+  transition: background var(--ii-transition), color var(--ii-transition);
+}
+.ii-admin-sidebar-nav__drill-back:hover {
+  background: var(--ii-surface-container-high);
+  color: var(--ii-on-surface);
+}
+.ii-admin-sidebar-nav__drill-back-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.ii-admin-sidebar-nav__drill-context {
+  padding: var(--ii-spacing-1) var(--ii-spacing-3) var(--ii-spacing-2);
+}
+.ii-admin-sidebar-nav__drill-title {
+  font-size: var(--ii-font-base);
+  font-weight: 600;
+  color: var(--ii-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ii-admin-sidebar-nav__drill-subtitle {
+  font-size: var(--ii-label-sm);
+  color: var(--ii-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+.ii-admin-sidebar-nav__drill-divider {
+  height: 1px;
+  background: var(--ii-outline-variant);
+  margin: 0 var(--ii-spacing-2) var(--ii-spacing-2);
+}
+
+/* Drilldown slide animation */
+.ii-admin-sidebar-nav__slide {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+.ii-admin-sidebar-nav__slide-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  animation: ii-admin-slide-in 200ms ease-out;
+}
+@keyframes ii-admin-slide-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes ii-admin-slide-back {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.ii-admin-sidebar-nav__slide-panel--back {
+  animation: ii-admin-slide-back 200ms ease-out;
+}
+
 /* Main */
 .ii-admin-main {
   flex: 1;
@@ -300,6 +384,18 @@ export interface NavGroup {
   items: NavItem[];
 }
 
+/** Drilldown state for nested sidebar navigation. */
+export interface DrilldownState {
+  /** Label for the back button (e.g., parent category name). */
+  backLabel: string;
+  /** Context title displayed below the back button. */
+  title: string;
+  /** Optional subtitle (e.g., date, status). */
+  subtitle?: string;
+  /** Navigation groups to display in the drilled-down sidebar. */
+  navGroups: NavGroup[];
+}
+
 /** Props for the AdminShell layout component. */
 export interface AdminShellProps {
   /** Brand text or JSX (displayed in sidebar header). */
@@ -320,6 +416,12 @@ export interface AdminShellProps {
   sidebar?: any;
   /** Start with sidebar collapsed. Default: false. */
   defaultCollapsed?: boolean;
+  /** Drilldown state. When set, the sidebar shows drilldown navigation
+   *  with a back button, context title, and replacement nav groups.
+   *  Set to null/undefined to show the default top-level navigation. */
+  drilldown?: DrilldownState | null;
+  /** Called when the drilldown back button is clicked. */
+  onDrillBack?: () => void;
   /** Main content. */
   children: any;
 }
@@ -370,6 +472,22 @@ function SidebarToggleIcon({ collapsed }: { collapsed: boolean }): any {
   );
 }
 
+/** Chevron-left SVG for drilldown back button. */
+function ChevronLeft(): any {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <polyline points="15 18 9 12 15 6" />
+    </svg>
+  );
+}
+
 /** Admin dashboard layout with full sidebar, header, and content area. */
 export function AdminShell({
   brand = "in-it",
@@ -381,6 +499,8 @@ export function AdminShell({
   userMenu,
   sidebar,
   defaultCollapsed = false,
+  drilldown,
+  onDrillBack,
   children,
 }: AdminShellProps): any {
   injectCSS("ii-admin-shell", ADMIN_SHELL_CSS);
@@ -388,6 +508,13 @@ export function AdminShell({
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
+
+  const handleDrillBack = useCallback(
+    () => {
+      onDrillBack?.();
+    },
+    [onDrillBack],
+  );
 
   const handleNavClick = useCallback(
     (e: Event, item: NavItem) => {
@@ -505,6 +632,46 @@ export function AdminShell({
         </div>
 
         <div class="ii-admin-sidebar-nav__items">
+          {drilldown ? (
+            <div class="ii-admin-sidebar-nav__drilldown">
+              <button
+                class="ii-admin-sidebar-nav__drill-back"
+                onClick={handleDrillBack}
+              >
+                <span class="ii-admin-sidebar-nav__drill-back-icon">
+                  <ChevronLeft />
+                </span>
+                {drilldown.backLabel}
+              </button>
+              <div class="ii-admin-sidebar-nav__drill-context">
+                <div class="ii-admin-sidebar-nav__drill-title">
+                  {drilldown.title}
+                </div>
+                {drilldown.subtitle && (
+                  <div class="ii-admin-sidebar-nav__drill-subtitle">
+                    {drilldown.subtitle}
+                  </div>
+                )}
+              </div>
+              <div class="ii-admin-sidebar-nav__drill-divider" />
+              <div class="ii-admin-sidebar-nav__slide">
+                <div class="ii-admin-sidebar-nav__slide-panel" key={drilldown.title}>
+                  {drilldown.navGroups.map((group, gi) => (
+                    <>
+                      {gi > 0 && <div class="ii-admin-sidebar-nav__separator" />}
+                      {group.label && (
+                        <div class="ii-admin-sidebar-nav__group-label">
+                          {group.label}
+                        </div>
+                      )}
+                      {group.items.map(renderItem)}
+                    </>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+          <>
           {groups.map((group, gi) => (
             <>
               {gi > 0 && <div class="ii-admin-sidebar-nav__separator" />}
@@ -516,6 +683,8 @@ export function AdminShell({
               {group.items.map(renderItem)}
             </>
           ))}
+          </>
+          )}
         </div>
         {userMenu && (
           <div class="ii-admin-sidebar-nav__footer">{userMenu}</div>
