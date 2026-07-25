@@ -25,6 +25,28 @@ export const ADMIN_SHELL_CSS = `/* --- Admin Shell Layout --- */
   overflow: hidden;
 }
 
+/* Top-header layout: header on top, sidebar+content below */
+.ii-admin-shell--top {
+  flex-direction: column;
+}
+.ii-admin-shell--top .ii-admin-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+.ii-admin-shell--top .ii-admin-sidebar-nav__header {
+  display: none;
+}
+.ii-admin-shell--top .ii-admin-header {
+  border-bottom: 1px solid var(--ii-outline-variant);
+}
+.ii-admin-shell--top .ii-admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 /* Sidebar */
 .ii-admin-sidebar-nav {
   width: 240px;
@@ -422,6 +444,11 @@ export interface AdminShellProps {
   drilldown?: DrilldownState | null;
   /** Called when the drilldown back button is clicked. */
   onDrillBack?: () => void;
+  /** Header layout. "top" (default) = header spans full width above sidebar + content.
+   *  "classic" = header inside main area, sidebar has its own brand header. */
+  headerLayout?: "top" | "classic";
+  /** Content rendered in the header left area (e.g., breadcrumb). Only used with headerLayout="top". */
+  headerLeft?: any;
   /** Main content. */
   children: any;
 }
@@ -501,6 +528,8 @@ export function AdminShell({
   defaultCollapsed = false,
   drilldown,
   onDrillBack,
+  headerLayout = "top",
+  headerLeft,
   children,
 }: AdminShellProps): any {
   injectCSS("ii-admin-shell", ADMIN_SHELL_CSS);
@@ -602,15 +631,151 @@ export function AdminShell({
     );
   };
 
+  const isTopHeader = headerLayout !== "classic";
+
+  const shellClass = [
+    "ii-admin-shell",
+    isTopHeader && "ii-admin-shell--top",
+  ].filter(Boolean).join(" ");
+
   const sidebarClass = [
     "ii-admin-sidebar-nav",
     collapsed && "ii-admin-sidebar-nav--collapsed",
     mobileOpen && "ii-admin-sidebar-nav--mobile-open",
   ].filter(Boolean).join(" ");
 
+  /** Render the header element. */
+  const renderHeader = () => (
+    <header class="ii-admin-header">
+      <div class="ii-admin-header__left">
+        <button
+          class="ii-admin-header__hamburger"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="メニュー"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+        {isTopHeader && brand && (
+          <div class="ii-admin-header__brand">{brand}</div>
+        )}
+        {headerLeft}
+      </div>
+      <div class="ii-admin-header__actions">
+        {headerActions}
+        <ThemeToggle compact />
+      </div>
+    </header>
+  );
+
+  /** Render sidebar content (nav items area). */
+  const renderSidebarContent = () => (
+    <>
+      <div class="ii-admin-sidebar-nav__items">
+        {drilldown ? (
+          <div class="ii-admin-sidebar-nav__drilldown">
+            <button
+              class="ii-admin-sidebar-nav__drill-back"
+              onClick={handleDrillBack}
+            >
+              <span class="ii-admin-sidebar-nav__drill-back-icon">
+                <ChevronLeft />
+              </span>
+              {drilldown.backLabel}
+            </button>
+            <div class="ii-admin-sidebar-nav__drill-context">
+              <div class="ii-admin-sidebar-nav__drill-title">
+                {drilldown.title}
+              </div>
+              {drilldown.subtitle && (
+                <div class="ii-admin-sidebar-nav__drill-subtitle">
+                  {drilldown.subtitle}
+                </div>
+              )}
+            </div>
+            <div class="ii-admin-sidebar-nav__drill-divider" />
+            <div class="ii-admin-sidebar-nav__slide">
+              <div class="ii-admin-sidebar-nav__slide-panel" key={drilldown.title}>
+                {drilldown.navGroups.map((group, gi) => (
+                  <>
+                    {gi > 0 && <div class="ii-admin-sidebar-nav__separator" />}
+                    {group.label && (
+                      <div class="ii-admin-sidebar-nav__group-label">
+                        {group.label}
+                      </div>
+                    )}
+                    {group.items.map(renderItem)}
+                  </>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            {groups.map((group, gi) => (
+              <>
+                {gi > 0 && <div class="ii-admin-sidebar-nav__separator" />}
+                {group.label && (
+                  <div class="ii-admin-sidebar-nav__group-label">
+                    {group.label}
+                  </div>
+                )}
+                {group.items.map(renderItem)}
+              </>
+            ))}
+          </>
+        )}
+      </div>
+      {userMenu && (
+        <div class="ii-admin-sidebar-nav__footer">{userMenu}</div>
+      )}
+    </>
+  );
+
+  if (isTopHeader) {
+    // Top-header layout: header → body(sidebar + main)
+    return (
+      <div class={shellClass}>
+        {mobileOpen && (
+          <div
+            class="ii-admin-overlay ii-admin-overlay--open"
+            onClick={() => setMobileOpen(false)}
+          />
+        )}
+        {renderHeader()}
+        <div class="ii-admin-body">
+          <nav class={sidebarClass}>
+            <div class="ii-admin-sidebar-nav__header">
+              <div class="ii-admin-sidebar-nav__brand">{brand}</div>
+              <button
+                class="ii-admin-sidebar-nav__collapse-btn"
+                onClick={() => setCollapsed(!collapsed)}
+                title={collapsed ? "サイドバーを展開" : "サイドバーを折りたたみ"}
+              >
+                <SidebarToggleIcon collapsed={collapsed} />
+              </button>
+            </div>
+            {renderSidebarContent()}
+          </nav>
+          <div class="ii-admin-main">
+            {sidebar && (
+              <aside class="ii-admin-sidebar-secondary">{sidebar}</aside>
+            )}
+            <main class="ii-admin-content">
+              {children}
+            </main>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Default layout: sidebar(brand+nav) + main(header+content)
   return (
-    <div class="ii-admin-shell">
-      {/* Mobile overlay */}
+    <div class={shellClass}>
       {mobileOpen && (
         <div
           class="ii-admin-overlay ii-admin-overlay--open"
@@ -618,7 +783,6 @@ export function AdminShell({
         />
       )}
 
-      {/* Sidebar */}
       <nav class={sidebarClass}>
         <div class="ii-admin-sidebar-nav__header">
           <div class="ii-admin-sidebar-nav__brand">{brand}</div>
@@ -630,89 +794,11 @@ export function AdminShell({
             <SidebarToggleIcon collapsed={collapsed} />
           </button>
         </div>
-
-        <div class="ii-admin-sidebar-nav__items">
-          {drilldown ? (
-            <div class="ii-admin-sidebar-nav__drilldown">
-              <button
-                class="ii-admin-sidebar-nav__drill-back"
-                onClick={handleDrillBack}
-              >
-                <span class="ii-admin-sidebar-nav__drill-back-icon">
-                  <ChevronLeft />
-                </span>
-                {drilldown.backLabel}
-              </button>
-              <div class="ii-admin-sidebar-nav__drill-context">
-                <div class="ii-admin-sidebar-nav__drill-title">
-                  {drilldown.title}
-                </div>
-                {drilldown.subtitle && (
-                  <div class="ii-admin-sidebar-nav__drill-subtitle">
-                    {drilldown.subtitle}
-                  </div>
-                )}
-              </div>
-              <div class="ii-admin-sidebar-nav__drill-divider" />
-              <div class="ii-admin-sidebar-nav__slide">
-                <div class="ii-admin-sidebar-nav__slide-panel" key={drilldown.title}>
-                  {drilldown.navGroups.map((group, gi) => (
-                    <>
-                      {gi > 0 && <div class="ii-admin-sidebar-nav__separator" />}
-                      {group.label && (
-                        <div class="ii-admin-sidebar-nav__group-label">
-                          {group.label}
-                        </div>
-                      )}
-                      {group.items.map(renderItem)}
-                    </>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-          <>
-          {groups.map((group, gi) => (
-            <>
-              {gi > 0 && <div class="ii-admin-sidebar-nav__separator" />}
-              {group.label && (
-                <div class="ii-admin-sidebar-nav__group-label">
-                  {group.label}
-                </div>
-              )}
-              {group.items.map(renderItem)}
-            </>
-          ))}
-          </>
-          )}
-        </div>
-        {userMenu && (
-          <div class="ii-admin-sidebar-nav__footer">{userMenu}</div>
-        )}
+        {renderSidebarContent()}
       </nav>
 
-      {/* Main area */}
       <div class="ii-admin-main">
-        <header class="ii-admin-header">
-          <div class="ii-admin-header__left">
-            <button
-              class="ii-admin-header__hamburger"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="メニュー"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-            </button>
-          </div>
-          <div class="ii-admin-header__actions">
-            {headerActions}
-            <ThemeToggle compact />
-          </div>
-        </header>
-
+        {renderHeader()}
         <div class="ii-admin-body">
           {sidebar && (
             <aside class="ii-admin-sidebar-secondary">{sidebar}</aside>
