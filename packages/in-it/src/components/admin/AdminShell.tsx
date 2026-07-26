@@ -21,30 +21,20 @@ import { injectCSS } from "../../inject.ts";
 export const ADMIN_SHELL_CSS = `/* --- Admin Shell Layout --- */
 .ii-admin-shell {
   display: flex;
+  flex-direction: column;
   height: 100vh;
   overflow: hidden;
 }
-
-/* Top-header layout: header on top, sidebar+content below */
-.ii-admin-shell--top {
-  flex-direction: column;
-}
-.ii-admin-shell--top .ii-admin-body {
+.ii-admin-shell > .ii-admin-body {
   flex: 1;
   display: flex;
   min-height: 0;
 }
-.ii-admin-shell--top .ii-admin-sidebar-nav__header {
+.ii-admin-sidebar-nav__header {
   display: none;
 }
-.ii-admin-shell--top .ii-admin-header {
+.ii-admin-header {
   border-bottom: 1px solid var(--ii-outline-variant);
-}
-.ii-admin-shell--top .ii-admin-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
 }
 
 /* Sidebar */
@@ -444,10 +434,7 @@ export interface AdminShellProps {
   drilldown?: DrilldownState | null;
   /** Called when the drilldown back button is clicked. */
   onDrillBack?: () => void;
-  /** Header layout. "top" (default) = header spans full width above sidebar + content.
-   *  "classic" = header inside main area, sidebar has its own brand header. */
-  headerLayout?: "top" | "classic";
-  /** Content rendered in the header left area (e.g., breadcrumb). Only used with headerLayout="top". */
+  /** Content rendered in the header left area (e.g., breadcrumb). */
   headerLeft?: any;
   /** Main content. */
   children: any;
@@ -528,7 +515,7 @@ export function AdminShell({
   defaultCollapsed = false,
   drilldown,
   onDrillBack,
-  headerLayout = "top",
+
   headerLeft,
   children,
 }: AdminShellProps): any {
@@ -631,12 +618,7 @@ export function AdminShell({
     );
   };
 
-  const isTopHeader = headerLayout !== "classic";
 
-  const shellClass = [
-    "ii-admin-shell",
-    isTopHeader && "ii-admin-shell--top",
-  ].filter(Boolean).join(" ");
 
   const sidebarClass = [
     "ii-admin-sidebar-nav",
@@ -659,7 +641,7 @@ export function AdminShell({
             <line x1="3" y1="18" x2="21" y2="18" />
           </svg>
         </button>
-        {isTopHeader && brand && (
+        {brand && (
           <div class="ii-admin-header__brand">{brand}</div>
         )}
         {headerLeft}
@@ -735,71 +717,20 @@ export function AdminShell({
     </>
   );
 
-  if (isTopHeader) {
-    // Top-header layout: header → body(sidebar + main)
-    return (
-      <div class={shellClass}>
-        {mobileOpen && (
-          <div
-            class="ii-admin-overlay ii-admin-overlay--open"
-            onClick={() => setMobileOpen(false)}
-          />
-        )}
-        {renderHeader()}
-        <div class="ii-admin-body">
-          <nav class={sidebarClass}>
-            <div class="ii-admin-sidebar-nav__header">
-              <div class="ii-admin-sidebar-nav__brand">{brand}</div>
-              <button
-                class="ii-admin-sidebar-nav__collapse-btn"
-                onClick={() => setCollapsed(!collapsed)}
-                title={collapsed ? "サイドバーを展開" : "サイドバーを折りたたみ"}
-              >
-                <SidebarToggleIcon collapsed={collapsed} />
-              </button>
-            </div>
-            {renderSidebarContent()}
-          </nav>
-          <div class="ii-admin-main">
-            {sidebar && (
-              <aside class="ii-admin-sidebar-secondary">{sidebar}</aside>
-            )}
-            <main class="ii-admin-content">
-              {children}
-            </main>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Default layout: sidebar(brand+nav) + main(header+content)
   return (
-    <div class={shellClass}>
+    <div class="ii-admin-shell">
       {mobileOpen && (
         <div
           class="ii-admin-overlay ii-admin-overlay--open"
           onClick={() => setMobileOpen(false)}
         />
       )}
-
-      <nav class={sidebarClass}>
-        <div class="ii-admin-sidebar-nav__header">
-          <div class="ii-admin-sidebar-nav__brand">{brand}</div>
-          <button
-            class="ii-admin-sidebar-nav__collapse-btn"
-            onClick={() => setCollapsed(!collapsed)}
-            title={collapsed ? "サイドバーを展開" : "サイドバーを折りたたみ"}
-          >
-            <SidebarToggleIcon collapsed={collapsed} />
-          </button>
-        </div>
-        {renderSidebarContent()}
-      </nav>
-
-      <div class="ii-admin-main">
-        {renderHeader()}
-        <div class="ii-admin-body">
+      {renderHeader()}
+      <div class="ii-admin-body">
+        <nav class={sidebarClass}>
+          {renderSidebarContent()}
+        </nav>
+        <div class="ii-admin-main">
           {sidebar && (
             <aside class="ii-admin-sidebar-secondary">{sidebar}</aside>
           )}
