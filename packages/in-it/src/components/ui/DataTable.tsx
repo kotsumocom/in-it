@@ -31,6 +31,13 @@ export const DATA_TABLE_CSS = `/* --- Data Table --- */
   font-weight: 600;
   color: var(--ii-on-surface);
 }
+.ii-data-table tr.ii-data-table__row--clickable {
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.ii-data-table tr.ii-data-table__row--clickable:hover {
+  background-color: var(--ii-surface-container);
+}
 `;
 
 /** Column definition for the {@link DataTable} component.
@@ -58,10 +65,12 @@ export interface DataTableProps<T> {
   rowKey?: (row: T) => string;
   /** Optional footer content rendered inside `<tfoot>`. Accepts `<tr>` elements. */
   footer?: any;
+  /** Called when a row is clicked. Receives the row data. */
+  onRowClick?: (row: T) => void;
 }
 
 /** Responsive HTML table with configurable columns, custom cell renderers, and column alignment. */
-export function DataTable<T>({ columns, data, rowKey, footer }: DataTableProps<T>): any {
+export function DataTable<T>({ columns, data, rowKey, footer, onRowClick }: DataTableProps<T>): any {
   injectCSS("ii-data-table", DATA_TABLE_CSS);
   const getKey = rowKey ?? ((_row: T, i: number) => String(i));
   return (
@@ -78,7 +87,11 @@ export function DataTable<T>({ columns, data, rowKey, footer }: DataTableProps<T
         </thead>
         <tbody>
           {data.map((row, i) => (
-            <tr key={getKey(row, i)}>
+            <tr
+              key={getKey(row, i)}
+              class={onRowClick ? "ii-data-table__row--clickable" : ""}
+              onClick={onRowClick ? () => onRowClick(row) : undefined}
+            >
               {columns.map((col) => (
                 <td key={col.key} class={col.align ? `ii-data-table__td--${col.align}` : ""}>
                   {col.render ? col.render(row[col.key], row) : String(row[col.key])}
