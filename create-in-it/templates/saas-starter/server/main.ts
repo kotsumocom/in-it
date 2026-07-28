@@ -14,7 +14,9 @@ app.use("*", securityHeaders());
 // API routes
 app.route("/api", apiRoutes);
 
-// Static assets (production build)
+// Static assets (production build — JS/CSS bundles + imported images)
+// Place images in client/assets/ and import them in your components.
+// The bundler will hash the filenames for cache busting.
 app.use("/assets/*", serveStatic({ root: "./dist" }));
 
 /**
