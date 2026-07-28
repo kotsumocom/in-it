@@ -5,18 +5,24 @@
 import { injectCSS } from "../../inject.ts";
 
 /** @internal CSS for DocsShell — co-located for self-containment. */
-export const DOCS_CSS = `/* --- Docs Layout --- */
+export const DOCS_CSS = `/* --- Docs Layout (Mobile-First) --- */
 .ii-docs-shell { display: flex; flex-direction: column; min-height: 100vh; }
 .ii-docs-header { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--ii-surface) 90%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--ii-outline-variant); }
-.ii-docs-header__inner { max-width: 1400px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; }
+.ii-docs-header__inner { max-width: 1400px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; }
 .ii-docs-header__brand { font-weight: 700; font-size: 1.125rem; text-decoration: none; color: var(--ii-on-surface); }
-.ii-docs-header__nav { display: flex; align-items: center; gap: 20px; }
+.ii-docs-header__nav { display: flex; align-items: center; gap: 12px; }
 .ii-docs-header__link { font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); text-decoration: none; }
 .ii-docs-header__link:hover { color: var(--ii-primary); }
 
+/* Hamburger button — visible by default (mobile) */
+.ii-docs-header__hamburger { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: none; background: none; cursor: pointer; color: var(--ii-on-surface); border-radius: var(--ii-shape-sm); transition: background var(--ii-transition); }
+.ii-docs-header__hamburger:hover { background: var(--ii-surface-container); }
+.ii-docs-header__hamburger svg { width: 24px; height: 24px; }
+
 .ii-docs-body { display: flex; flex: 1; max-width: 1400px; margin: 0 auto; width: 100%; }
 
-.ii-docs-sidebar { width: 260px; flex-shrink: 0; padding: 24px 16px; border-right: 1px solid var(--ii-outline-variant); overflow-y: auto; position: sticky; top: 49px; height: calc(100vh - 49px); }
+/* Sidebar — hidden by default (mobile), shown in Drawer */
+.ii-docs-sidebar { display: none; }
 .ii-docs-sidebar__group { margin-bottom: 20px; }
 .ii-docs-sidebar__group-label { font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ii-on-surface-variant); margin-bottom: 8px; padding: 0 12px; }
 .ii-docs-sidebar__link { display: block; padding: 6px 12px; border-radius: var(--ii-shape-sm); font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); text-decoration: none; transition: all var(--ii-transition); }
@@ -42,9 +48,11 @@ details[open] > summary .ii-docs-sidebar__chevron { transform: rotate(90deg); }
 .ii-docs-sidebar__subgroup-label { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ii-on-surface-variant); opacity: 0.7; padding: 2px 0; cursor: pointer; flex: 1; }
 .ii-docs-sidebar__subgroup-content { }
 
-.ii-docs-content { flex: 1; min-width: 0; padding: 32px 48px; max-width: 800px; }
+/* Content — mobile padding */
+.ii-docs-content { flex: 1; min-width: 0; padding: 16px; max-width: 800px; }
 
-.ii-docs-toc { width: 200px; flex-shrink: 0; padding: 24px 16px; position: sticky; top: 49px; height: calc(100vh - 49px); overflow-y: auto; }
+/* TOC — hidden by default (mobile) */
+.ii-docs-toc { display: none; }
 .ii-docs-toc__title { font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ii-on-surface-variant); margin-bottom: 12px; }
 .ii-docs-toc__link { display: block; padding: 4px 0; font-size: 0.8125rem; color: var(--ii-on-surface-variant); text-decoration: none; border-left: 2px solid transparent; padding-left: 12px; transition: all var(--ii-transition); }
 .ii-docs-toc__link:hover { color: var(--ii-on-surface); }
@@ -53,9 +61,9 @@ details[open] > summary .ii-docs-sidebar__chevron { transform: rotate(90deg); }
 
 /* Docs article typography */
 .ii-docs-article { line-height: 1.7; color: var(--ii-on-surface); }
-.ii-docs-article h1 { font-size: 2rem; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.02em; }
-.ii-docs-article h2 { font-size: 1.5rem; font-weight: 600; margin-top: 48px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--ii-outline-variant); }
-.ii-docs-article h3 { font-size: 1.25rem; font-weight: 600; margin-top: 32px; margin-bottom: 12px; }
+.ii-docs-article h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.02em; }
+.ii-docs-article h2 { font-size: 1.375rem; font-weight: 600; margin-top: 48px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--ii-outline-variant); }
+.ii-docs-article h3 { font-size: 1.125rem; font-weight: 600; margin-top: 32px; margin-bottom: 12px; }
 .ii-docs-article p { margin-bottom: 16px; }
 .ii-docs-article code { padding: 2px 6px; border-radius: 4px; background: var(--ii-surface-container); font-family: monospace; font-size: 0.875em; }
 .ii-docs-article pre { padding: 16px; border-radius: var(--ii-shape-md); background: var(--ii-surface-container); overflow-x: auto; margin-bottom: 24px; }
@@ -78,12 +86,29 @@ details[open] > summary .ii-docs-sidebar__chevron { transform: rotate(90deg); }
 .ii-code-preview-placeholder__details pre { margin: 0; padding: 16px; }
 
 /* Prev/Next navigation */
-.ii-docs-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--ii-outline-variant); }
+.ii-docs-pager { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--ii-outline-variant); }
 .ii-docs-pager__link { display: flex; flex-direction: column; gap: 4px; padding: 16px; border: 1px solid var(--ii-outline-variant); border-radius: var(--ii-shape-md); text-decoration: none; transition: all var(--ii-transition); }
 .ii-docs-pager__link:hover { border-color: var(--ii-primary); }
 .ii-docs-pager__link--next { text-align: right; }
 .ii-docs-pager__label { font-size: 0.6875rem; color: var(--ii-on-surface-variant); text-transform: uppercase; }
 .ii-docs-pager__title { font-weight: 600; color: var(--ii-primary); }
+
+/* Sidebar content inside Drawer (mobile) */
+.ii-docs-drawer-sidebar { padding: 16px; }
+
+/* --- Desktop: MD3 Expanded (>= 840px) --- */
+@media (width >= 840px) {
+  .ii-docs-header__inner { padding: 10px 24px; }
+  .ii-docs-header__nav { gap: 20px; }
+  .ii-docs-header__hamburger { display: none; }
+  .ii-docs-sidebar { display: block; width: 260px; flex-shrink: 0; padding: 24px 16px; border-right: 1px solid var(--ii-outline-variant); overflow-y: auto; position: sticky; top: 49px; height: calc(100vh - 49px); }
+  .ii-docs-content { padding: 32px 48px; }
+  .ii-docs-toc { display: block; width: 200px; flex-shrink: 0; padding: 24px 16px; position: sticky; top: 49px; height: calc(100vh - 49px); overflow-y: auto; }
+  .ii-docs-article h1 { font-size: 2rem; }
+  .ii-docs-article h2 { font-size: 1.5rem; }
+  .ii-docs-article h3 { font-size: 1.25rem; }
+  .ii-docs-pager { grid-template-columns: 1fr 1fr; }
+}
 `;
 
 /** A single documentation sidebar link. */
