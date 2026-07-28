@@ -155,7 +155,10 @@ export function Switch({ children }: { children: any }): any {
       const match = matchPath(child.props.path, current);
       if (match) {
         const Component = child.props.component;
-        return <Component params={match} />;
+        // Use the matched pattern as key to force remount on route change.
+        // Without this, hono/jsx/dom's VDOM diffing may leave stale DOM
+        // nodes from the previous route component.
+        return <Component key={child.props.path} params={match} />;
       }
     }
   }
