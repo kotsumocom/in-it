@@ -295,6 +295,14 @@ export const ADMIN_SHELL_CSS = `/* --- Admin Shell Layout --- */
   font-weight: 600;
   color: var(--ii-on-surface);
 }
+.ii-admin-header__brand-link {
+  display: flex;
+  align-items: center;
+  gap: var(--ii-spacing-2);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
 .ii-admin-header__actions {
   display: flex;
   align-items: center;
@@ -412,6 +420,8 @@ export interface DrilldownState {
 export interface AdminShellProps {
   /** Brand text or JSX (displayed in sidebar header). */
   brand?: string | any;
+  /** Brand click target (e.g., "/app"). When set, wraps brand in a clickable link. */
+  brandHref?: string;
   /** @deprecated Use `navGroups` instead. Flat list of nav items (backward compatible). */
   navItems?: NavItem[];
   /** Grouped navigation items. Takes priority over navItems. */
@@ -505,6 +515,7 @@ function ChevronLeft(): any {
 /** Admin dashboard layout with full sidebar, header, and content area. */
 export function AdminShell({
   brand = "in-it",
+  brandHref,
   navItems = [],
   navGroups,
   currentPath = "/",
@@ -642,7 +653,15 @@ export function AdminShell({
           </svg>
         </button>
         {brand && (
-          <div class="ii-admin-header__brand">{brand}</div>
+          <div class="ii-admin-header__brand">
+            {brandHref ? (
+              <a
+                href={brandHref}
+                class="ii-admin-header__brand-link"
+                onClick={(e: Event) => { e.preventDefault(); onNavigate?.(brandHref); }}
+              >{brand}</a>
+            ) : brand}
+          </div>
         )}
         {headerLeft}
       </div>
