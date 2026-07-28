@@ -32,7 +32,7 @@ function notify() {
 /** Scroll to a hash target with smooth behavior */
 function scrollToHash(hash: string): void {
   if (!hash) {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    globalThis.scrollTo({ top: 0, behavior: "smooth" });
     return;
   }
   const id = hash.replace(/^#/, "");
@@ -47,7 +47,7 @@ function parseHref(href: string): { pathname: string; hash: string } {
   const hashIndex = href.indexOf("#");
   if (hashIndex === -1) return { pathname: href, hash: "" };
   return {
-    pathname: href.slice(0, hashIndex) || window.location.pathname,
+    pathname: href.slice(0, hashIndex) || globalThis.location.pathname,
     hash: href.slice(hashIndex),
   };
 }
@@ -55,30 +55,30 @@ function parseHref(href: string): { pathname: string; hash: string } {
 /** Hook to get current path and navigate */
 export function useLocation(): [string, (to: string) => void] {
   const [path, setPath] = useState(
-    typeof window !== "undefined" ? window.location.pathname : "/",
+    typeof globalThis !== "undefined" ? globalThis.location.pathname : "/",
   );
 
   useEffect(() => {
-    const handler = () => setPath(window.location.pathname);
-    window.addEventListener("popstate", handler);
+    const handler = () => setPath(globalThis.location.pathname);
+    globalThis.addEventListener("popstate", handler);
     listeners.add(handler);
     return () => {
-      window.removeEventListener("popstate", handler);
+      globalThis.removeEventListener("popstate", handler);
       listeners.delete(handler);
     };
   }, []);
 
   const navigate = useCallback((to: string) => {
     const { pathname, hash } = parseHref(to);
-    const currentPath = window.location.pathname;
+    const currentPath = globalThis.location.pathname;
 
     if (pathname === currentPath && hash) {
       // Same page, just scroll to hash
-      window.history.pushState(null, "", to);
+      globalThis.history.pushState(null, "", to);
       scrollToHash(hash);
     } else {
       // Different page
-      window.history.pushState(null, "", to);
+      globalThis.history.pushState(null, "", to);
       notify();
       if (hash) {
         // Wait for render, then scroll to hash
@@ -87,7 +87,7 @@ export function useLocation(): [string, (to: string) => void] {
         });
       } else {
         // Scroll to top on page change
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        globalThis.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
   }, []);
