@@ -3,12 +3,10 @@
  *
  * Displays a breadcrumb-like row of selectable context levels.
  * Each level shows the currently selected item and opens a
- * dropdown (Menu-style) to switch between available items.
+ * combobox dropdown (with search) to switch between available items.
  *
- * Uses Menu component internally for dropdown behavior.
- *
- * Future: ContextSearch will provide a Combobox-based variant
- * for use cases with many items requiring search.
+ * Combobox search is enabled by default; set `searchable: false`
+ * on a ContextLevel to use a simple dropdown without search.
  */
 import { useState, useEffect, useCallback, useRef } from "hono/jsx";
 import { injectCSS } from "../../inject.ts";
@@ -79,11 +77,33 @@ export const CONTEXT_SWITCHER_CSS = `/* --- ContextSwitcher --- */
   border: 1px solid var(--ii-outline-variant);
   border-radius: var(--ii-shape-md);
   box-shadow: var(--ii-shadow-md);
-  min-width: 180px;
-  max-width: 280px;
+  min-width: 200px;
+  max-width: 320px;
   padding: 4px;
   z-index: 50;
   animation: ii-fade-in 100ms ease;
+}
+.ii-context-switcher__search {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  border: 1px solid var(--ii-outline-variant);
+  border-radius: var(--ii-shape-sm);
+  font-family: inherit;
+  font-size: var(--ii-font-sm);
+  color: var(--ii-on-surface);
+  background: var(--ii-surface-container);
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color var(--ii-transition);
+}
+.ii-context-switcher__search:focus {
+  border-color: var(--ii-primary);
+}
+.ii-context-switcher__list {
+  max-height: 240px;
+  overflow-y: auto;
 }
 .ii-context-switcher__option {
   display: flex;
@@ -115,6 +135,12 @@ export const CONTEXT_SWITCHER_CSS = `/* --- ContextSwitcher --- */
   justify-content: center;
   flex-shrink: 0;
 }
+.ii-context-switcher__empty {
+  padding: 12px;
+  text-align: center;
+  color: var(--ii-on-surface-variant);
+  font-size: var(--ii-font-sm);
+}
 `;
 
 /** A selectable item within a context level. */
@@ -135,6 +161,10 @@ export interface ContextLevel {
   items: ContextItem[];
   /** Optional label for this level (e.g., "Organization"). */
   label?: string;
+  /** Enable search filtering in the dropdown. Default: true. */
+  searchable?: boolean;
+  /** Placeholder text for the search input. */
+  searchPlaceholder?: string;
 }
 
 /** Props for the ContextSwitcher component. */
@@ -164,7 +194,7 @@ function ChevronDown({ open }: { open: boolean }): any {
   );
 }
 
-/** A single level trigger + dropdown. */
+/** A single level trigger + dropdown with combobox search. */
 function ContextLevelView({
   level,
   levelIndex,
@@ -175,7 +205,10 @@ function ContextLevelView({
   onSwitch?: (levelIndex: number, item: ContextItem) => void;
 }): any {
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
   const ref = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const searchable = level.searchable !== false;
 
   // Close on outside click
   useEffect(() => {
@@ -183,15 +216,24 @@ function ContextLevelView({
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
+        setQuery("");
       }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
+  // Focus search input when dropdown opens
+  useEffect(() => {
+    if (open && searchable && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [open, searchable]);
+
   const handleSelect = useCallback(
     (item: ContextItem) => {
       setOpen(false);
+      setQuery("");
       if (item.key !== level.selected.key) {
         onSwitch?.(levelIndex, item);
       }
@@ -215,11 +257,21 @@ function ContextLevelView({
     );
   }
 
+  // Filter items by search query
+  const filtered = query
+    ? level.items.filter(item =>
+        item.label.toLowerCase().includes(query.toLowerCase())
+      )
+    : level.items;
+
   return (
     <div class="ii-context-switcher__level" ref={ref}>
       <button
         class="ii-context-switcher__trigger"
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          setOpen(!open);
+          if (open) setQuery("");
+        }}
         aria-expanded={open}
         aria-haspopup="listbox"
         title={level.label ? `${level.label}: ${level.selected.label}` : level.selected.label}
@@ -235,29 +287,57 @@ function ContextLevelView({
 
       {open && (
         <div class="ii-context-switcher__dropdown" role="listbox">
-          {level.items.map((item) => (
-            <button
-              key={item.key}
-              class={`ii-context-switcher__option${item.key === level.selected.key ? " ii-context-switcher__option--active" : ""}`}
-              role="option"
-              aria-selected={item.key === level.selected.key}
-              onClick={() => handleSelect(item)}
-            >
-              {item.icon && (
-                <span class="ii-context-switcher__option-icon">
-                  {item.icon}
-                </span>
-              )}
-              {item.label}
-            </button>
-          ))}
+          {searchable && (
+            <input
+              ref={inputRef}
+              class="ii-context-switcher__search"
+              type="text"
+              placeholder={level.searchPlaceholder || "検索..."}
+              value={query}
+              onInput={(e: Event) => setQuery((e.target as HTMLInputElement).value)}
+              onKeyDown={(e: KeyboardEvent) => {
+                if (e.key === "Escape") {
+                  setOpen(false);
+                  setQuery("");
+                } else if (e.key === "Enter" && filtered.length === 1) {
+                  handleSelect(filtered[0]);
+                }
+              }}
+              aria-label="Search"
+              role="combobox"
+              aria-expanded={true}
+              aria-autocomplete="list"
+            />
+          )}
+          <div class="ii-context-switcher__list">
+            {filtered.length === 0 ? (
+              <div class="ii-context-switcher__empty">該当なし</div>
+            ) : (
+              filtered.map((item) => (
+                <button
+                  key={item.key}
+                  class={`ii-context-switcher__option${item.key === level.selected.key ? " ii-context-switcher__option--active" : ""}`}
+                  role="option"
+                  aria-selected={item.key === level.selected.key}
+                  onClick={() => handleSelect(item)}
+                >
+                  {item.icon && (
+                    <span class="ii-context-switcher__option-icon">
+                      {item.icon}
+                    </span>
+                  )}
+                  {item.label}
+                </button>
+              ))
+            )}
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-/** Breadcrumb-style hierarchical context switcher with dropdown selection. */
+/** Breadcrumb-style hierarchical context switcher with combobox search. */
 export function ContextSwitcher({
   levels,
   onSwitch,
