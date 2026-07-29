@@ -24,7 +24,7 @@ export const DOCS_CSS = `/* --- Docs Layout (Mobile-First) --- */
 /* Sidebar — hidden by default (mobile), shown in Drawer */
 .ii-docs-sidebar { display: none; }
 .ii-docs-sidebar__group { margin-bottom: 20px; }
-.ii-docs-sidebar__group-label { font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ii-on-surface-variant); margin-bottom: 8px; padding: 0 12px; }
+.ii-docs-sidebar__group-label { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ii-on-surface-variant); margin-bottom: 8px; padding: 0 12px; }
 .ii-docs-sidebar__link { display: block; padding: 6px 12px; border-radius: var(--ii-shape-sm); font-size: var(--ii-font-sm); color: var(--ii-on-surface-variant); text-decoration: none; transition: all var(--ii-transition); }
 .ii-docs-sidebar__link:hover { background: var(--ii-surface-container); color: var(--ii-on-surface); }
 .ii-docs-sidebar__link--active { background: color-mix(in srgb, var(--ii-primary) 12%, var(--ii-surface)); color: var(--ii-primary); font-weight: 500; }
@@ -45,7 +45,7 @@ details[open] > summary .ii-docs-sidebar__chevron { transform: rotate(90deg); }
 
 /* Subgroup */
 .ii-docs-sidebar__subgroup { margin-bottom: 4px; }
-.ii-docs-sidebar__subgroup-label { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ii-on-surface-variant); opacity: 0.7; padding: 2px 0; cursor: pointer; flex: 1; }
+.ii-docs-sidebar__subgroup-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ii-on-surface-variant); padding: 2px 0; cursor: pointer; flex: 1; }
 .ii-docs-sidebar__subgroup-content { }
 
 /* Content — mobile padding */
@@ -53,7 +53,7 @@ details[open] > summary .ii-docs-sidebar__chevron { transform: rotate(90deg); }
 
 /* TOC — hidden by default (mobile) */
 .ii-docs-toc { display: none; }
-.ii-docs-toc__title { font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ii-on-surface-variant); margin-bottom: 12px; }
+.ii-docs-toc__title { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ii-on-surface-variant); margin-bottom: 12px; }
 .ii-docs-toc__link { display: block; padding: 4px 0; font-size: 0.8125rem; color: var(--ii-on-surface-variant); text-decoration: none; border-left: 2px solid transparent; padding-left: 12px; transition: all var(--ii-transition); }
 .ii-docs-toc__link:hover { color: var(--ii-on-surface); }
 .ii-docs-toc__link--active { color: var(--ii-primary); border-left-color: var(--ii-primary); }
@@ -90,7 +90,7 @@ details[open] > summary .ii-docs-sidebar__chevron { transform: rotate(90deg); }
 .ii-docs-pager__link { display: flex; flex-direction: column; gap: 4px; padding: 16px; border: 1px solid var(--ii-outline-variant); border-radius: var(--ii-shape-md); text-decoration: none; transition: all var(--ii-transition); }
 .ii-docs-pager__link:hover { border-color: var(--ii-primary); }
 .ii-docs-pager__link--next { text-align: right; }
-.ii-docs-pager__label { font-size: 0.6875rem; color: var(--ii-on-surface-variant); text-transform: uppercase; }
+.ii-docs-pager__label { font-size: 0.75rem; color: var(--ii-on-surface-variant); text-transform: uppercase; }
 .ii-docs-pager__title { font-weight: 600; color: var(--ii-primary); }
 
 /* Sidebar content inside Drawer (mobile) */
