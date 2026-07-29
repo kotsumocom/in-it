@@ -45,7 +45,7 @@ details[open] > summary .ii-docs-sidebar__chevron { transform: rotate(90deg); }
 
 /* Subgroup */
 .ii-docs-sidebar__subgroup { margin-bottom: 4px; }
-.ii-docs-sidebar__subgroup-label { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ii-on-surface-variant); opacity: 0.7; padding: 2px 0; cursor: pointer; flex: 1; }
+.ii-docs-sidebar__subgroup-label { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ii-on-surface-variant); opacity: 0.7; padding: 2px 0; cursor: pointer; flex: 1; }
 .ii-docs-sidebar__subgroup-content { }
 
 /* Content — mobile padding */

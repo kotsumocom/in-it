@@ -91,7 +91,7 @@ export const LANDING_CSS = `/* --- Landing Page Layout --- */
 .ii-component-card:hover { border-color: var(--ii-primary); box-shadow: var(--ii-shadow-sm); }
 .ii-component-card__icon { font-size: 1.5rem; }
 .ii-component-card__name { font-size: var(--ii-font-sm); font-weight: 500; }
-.ii-component-card__tag { font-size: 0.625rem; padding: 1px 6px; border-radius: 4px; background: var(--ii-surface-container-high); color: var(--ii-on-surface-variant); }
+.ii-component-card__tag { font-size: 0.6875rem; padding: 1px 6px; border-radius: 4px; background: var(--ii-surface-container-high); color: var(--ii-on-surface-variant); }
 `;
 
 // --- LandingHeader ---
@@ -323,7 +323,7 @@ export function LandingShowcaseCard({ icon, title, description, tags, href, onCl
       {tags && tags.length > 0 && (
         <div class="ii-lp-showcase-card__tags">
           {tags.map(tag => (
-            <span class="ii-badge ii-badge--neutral" style="font-size: 0.65rem">{tag}</span>
+            <span class="ii-badge ii-badge--neutral" style="font-size: 0.6875rem">{tag}</span>
           ))}
         </div>
       )}
